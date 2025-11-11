@@ -1,0 +1,57 @@
+[gd_scene load_steps=2 format=3 uid="uid://b6yc3nymf7b2k"]
+
+[ext_resource type="Theme" uid="uid://ds0dxmwlq5niw" path="res://Art/Themes/Default_Theme.tres" id="1_n6rwa"]
+
+[node name="MainMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -152.0
+offset_bottom = 352.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Main Options" type="VBoxContainer" parent="."]
+layout_mode = 1
+offset_top = 300.0
+offset_right = 150.0
+offset_bottom = 449.9999
+size_flags_vertical = 4
+theme = ExtResource("1_n6rwa")
+alignment = 1
+
+[node name="BTN Open Setup" type="Button" parent="Main Options"]
+layout_mode = 2
+theme = ExtResource("1_n6rwa")
+text = "Open Setup"
+
+[node name="BTN Tutorials" type="Button" parent="Main Options"]
+layout_mode = 2
+theme = ExtResource("1_n6rwa")
+text = "Tutorial"
+
+[node name="BTN Options" type="Button" parent="Main Options"]
+layout_mode = 2
+theme = ExtResource("1_n6rwa")
+text = "Options"
+
+[node name="BTN Exit Game" type="Button" parent="Main Options"]
+layout_mode = 2
+theme = ExtResource("1_n6rwa")
+text = "Exit Game"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -200.0
+offset_top = 100.0
+offset_bottom = 153.22995
+grow_horizontal = 0
+alignment = 1
+
+[node name="Label" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "Current Session:"

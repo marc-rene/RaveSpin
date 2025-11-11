@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3 uid="uid://dixosugdlls6v"]
+
+[ext_resource type="Script" uid="uid://cjw3mllds5qjs" path="res://Scripts/arena.gd" id="1_5o1c7"]
+[ext_resource type="PackedScene" uid="uid://ohc5g4ss6tlg" path="res://GLOBAL/Player.tscn" id="1_hagq7"]
+
+[node name="Arena" type="Node3D"]
+script = ExtResource("1_5o1c7")
+
+[node name="XROrigin3D" parent="." instance=ExtResource("1_hagq7")]

@@ -1,0 +1,31 @@
+[gd_scene load_steps=4 format=3 uid="uid://ohc5g4ss6tlg"]
+
+[ext_resource type="PackedScene" uid="uid://cqhw276realc" path="res://addons/godot-xr-tools/functions/function_pointer.tscn" id="1_sxbc5"]
+[ext_resource type="PackedScene" uid="uid://16colgxrw27d" path="res://addons/godot-xr-tools/hands/model/Hand_low_L.gltf" id="2_o378l"]
+[ext_resource type="PackedScene" uid="uid://cjrac51wst3tu" path="res://addons/godot-xr-tools/hands/model/Hand_low_R.gltf" id="3_ka53w"]
+
+[node name="XROrigin3D" type="XROrigin3D"]
+
+[node name="XRCamera3D" type="XRCamera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7, 0)
+near = 0.001
+
+[node name="XR_LeftHand" type="XRController3D" parent="."]
+tracker = &"left_hand"
+
+[node name="FunctionPointer" parent="XR_LeftHand" instance=ExtResource("1_sxbc5")]
+show_laser = 2
+laser_length = 1
+show_target = true
+
+[node name="Hand_low_L" parent="XR_LeftHand" instance=ExtResource("2_o378l")]
+
+[node name="XR_RightHand" type="XRController3D" parent="."]
+tracker = &"right_hand"
+
+[node name="FunctionPointer2" parent="XR_RightHand" instance=ExtResource("1_sxbc5")]
+show_laser = 2
+laser_length = 1
+show_target = true
+
+[node name="Hand_low_R" parent="XR_RightHand" instance=ExtResource("3_ka53w")]
