@@ -1,6 +1,6 @@
 [gd_scene load_steps=8 format=3 uid="uid://cjrprjm3cxqed"]
 
-[ext_resource type="Script" uid="uid://dct45ose7sxqi" path="res://Levels/GD_main_menu.gd" id="1_6ucrw"]
+[ext_resource type="Script" uid="uid://dct45ose7sxqi" path="res://Scripts/GD_main_menu.gd" id="1_6ucrw"]
 [ext_resource type="PackedScene" uid="uid://ohc5g4ss6tlg" path="res://GLOBAL/Player.tscn" id="2_8md67"]
 [ext_resource type="PackedScene" uid="uid://clujaf3u776a3" path="res://addons/godot-xr-tools/objects/viewport_2d_in_3d.tscn" id="5_5qvx8"]
 [ext_resource type="PackedScene" uid="uid://b6yc3nymf7b2k" path="res://UI/Main Menu/UI_MainMenu.tscn" id="6_hllw6"]

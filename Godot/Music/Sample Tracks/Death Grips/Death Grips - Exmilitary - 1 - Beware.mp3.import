@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://1qpvwc75dg73"
+path="res://.godot/imported/Death Grips - Exmilitary - 1 - Beware.mp3-c4fe333910ba17cbb13cfdfe33393287.mp3str"
+
+[deps]
+
+source_file="res://Music/Sample Tracks/Death Grips/Death Grips - Exmilitary - 1 - Beware.mp3"
+dest_files=["res://.godot/imported/Death Grips - Exmilitary - 1 - Beware.mp3-c4fe333910ba17cbb13cfdfe33393287.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

@@ -1,0 +1,19 @@
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rave Spin", "Rave Spin.csproj", "{4EB10597-AE51-45F1-8A38-970DF0D4F8CE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+	Debug|Any CPU = Debug|Any CPU
+	ExportDebug|Any CPU = ExportDebug|Any CPU
+	ExportRelease|Any CPU = ExportRelease|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4EB10597-AE51-45F1-8A38-970DF0D4F8CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4EB10597-AE51-45F1-8A38-970DF0D4F8CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4EB10597-AE51-45F1-8A38-970DF0D4F8CE}.ExportDebug|Any CPU.ActiveCfg = ExportDebug|Any CPU
+		{4EB10597-AE51-45F1-8A38-970DF0D4F8CE}.ExportDebug|Any CPU.Build.0 = ExportDebug|Any CPU
+		{4EB10597-AE51-45F1-8A38-970DF0D4F8CE}.ExportRelease|Any CPU.ActiveCfg = ExportRelease|Any CPU
+		{4EB10597-AE51-45F1-8A38-970DF0D4F8CE}.ExportRelease|Any CPU.Build.0 = ExportRelease|Any CPU
+	EndGlobalSection
+EndGlobal

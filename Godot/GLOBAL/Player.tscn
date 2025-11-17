@@ -1,14 +1,23 @@
-[gd_scene load_steps=4 format=3 uid="uid://ohc5g4ss6tlg"]
+[gd_scene load_steps=6 format=3 uid="uid://ohc5g4ss6tlg"]
 
+[ext_resource type="PackedScene" uid="uid://btknduttnmoxf" path="res://addons/godot-xr-tools/misc/vr_common_shader_cache.tscn" id="1_o378l"]
 [ext_resource type="PackedScene" uid="uid://cqhw276realc" path="res://addons/godot-xr-tools/functions/function_pointer.tscn" id="1_sxbc5"]
-[ext_resource type="PackedScene" uid="uid://16colgxrw27d" path="res://addons/godot-xr-tools/hands/model/Hand_low_L.gltf" id="2_o378l"]
-[ext_resource type="PackedScene" uid="uid://cjrac51wst3tu" path="res://addons/godot-xr-tools/hands/model/Hand_low_R.gltf" id="3_ka53w"]
+[ext_resource type="PackedScene" uid="uid://b4kad2kuba1yn" path="res://addons/godot-xr-tools/hands/scenes/lowpoly/left_hand_low.tscn" id="2_sxbc5"]
+[ext_resource type="PackedScene" uid="uid://l2n30mpbkdyw" path="res://addons/godot-xr-tools/hands/scenes/lowpoly/right_hand_low.tscn" id="3_o378l"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_sxbc5"]
 
 [node name="XROrigin3D" type="XROrigin3D"]
 
 [node name="XRCamera3D" type="XRCamera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7, 0)
 near = 0.001
+
+[node name="VRCommonShaderCache" parent="XRCamera3D" instance=ExtResource("1_o378l")]
+
+[node name="AudioListener3D" type="AudioListener3D" parent="XRCamera3D"]
+doppler_tracking = 2
+current = true
 
 [node name="XR_LeftHand" type="XRController3D" parent="."]
 tracker = &"left_hand"
@@ -18,14 +27,26 @@ show_laser = 2
 laser_length = 1
 show_target = true
 
-[node name="Hand_low_L" parent="XR_LeftHand" instance=ExtResource("2_o378l")]
+[node name="LeftHand" parent="XR_LeftHand" instance=ExtResource("2_sxbc5")]
+
+[node name="Hand" type="Area3D" parent="XR_LeftHand"]
+transform = Transform3D(0.014235127, -0.014048528, 6.1408073e-10, 0, -8.742278e-10, -0.02, 0.014048528, 0.014235127, -6.222372e-10, -0.0037858654, -0.014034652, 0.006601136)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="XR_LeftHand/Hand"]
+shape = SubResource("CapsuleShape3D_sxbc5")
 
 [node name="XR_RightHand" type="XRController3D" parent="."]
 tracker = &"right_hand"
 
-[node name="FunctionPointer2" parent="XR_RightHand" instance=ExtResource("1_sxbc5")]
+[node name="FunctionPointer" parent="XR_RightHand" instance=ExtResource("1_sxbc5")]
 show_laser = 2
 laser_length = 1
 show_target = true
 
-[node name="Hand_low_R" parent="XR_RightHand" instance=ExtResource("3_ka53w")]
+[node name="RightHand" parent="XR_RightHand" instance=ExtResource("3_o378l")]
+
+[node name="Hand" type="Area3D" parent="XR_RightHand"]
+transform = Transform3D(0.01309587, 0.015116155, -6.607482e-10, 1.1849583e-16, -8.7422786e-10, -0.02, -0.015116155, 0.01309587, -5.7243876e-10, -0.0037858654, -0.013076052, 0.004096441)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="XR_RightHand/Hand"]
+shape = SubResource("CapsuleShape3D_sxbc5")

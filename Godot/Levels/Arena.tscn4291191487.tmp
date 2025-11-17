@@ -1,0 +1,18 @@
+[gd_scene load_steps=5 format=3 uid="uid://dixosugdlls6v"]
+
+[ext_resource type="Script" uid="uid://cjw3mllds5qjs" path="res://Scripts/arena.gd" id="1_5o1c7"]
+[ext_resource type="PackedScene" uid="uid://ohc5g4ss6tlg" path="res://GLOBAL/Player.tscn" id="1_hagq7"]
+[ext_resource type="AudioStream" uid="uid://1qpvwc75dg73" path="res://Music/Sample Tracks/Death Grips/Death Grips - Exmilitary - 1 - Beware.mp3" id="2_rf8yt"]
+[ext_resource type="AudioStream" uid="uid://dc63ctah0ho33" path="res://Music/Sample Tracks/Death Grips/Death Grips - Exmilitary - 9 - 5D.mp3" id="3_dsr05"]
+
+[node name="Arena" type="Node3D"]
+script = ExtResource("1_5o1c7")
+Track_Left = ExtResource("2_rf8yt")
+Track_Right = ExtResource("3_dsr05")
+
+[node name="XROrigin3D" parent="." instance=ExtResource("1_hagq7")]
+
+[node name="Component" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1885304, -2.578701)
+
+[node name="Component Chassis" type="MeshInstance3D" parent="Component"]

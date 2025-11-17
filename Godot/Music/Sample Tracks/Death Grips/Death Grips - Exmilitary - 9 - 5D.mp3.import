@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://dc63ctah0ho33"
+path="res://.godot/imported/Death Grips - Exmilitary - 9 - 5D.mp3-987a04e975e0700925fe4c7ed952eec4.mp3str"
+
+[deps]
+
+source_file="res://Music/Sample Tracks/Death Grips/Death Grips - Exmilitary - 9 - 5D.mp3"
+dest_files=["res://.godot/imported/Death Grips - Exmilitary - 9 - 5D.mp3-987a04e975e0700925fe4c7ed952eec4.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

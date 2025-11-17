@@ -1,0 +1,29 @@
+[gd_scene load_steps=6 format=3 uid="uid://c3iykg71k0su4"]
+
+[ext_resource type="PackedScene" uid="uid://bb8lupdk0mptj" path="res://Components/DDJ-FLX4/FLX4.glb" id="1_mrnpa"]
+[ext_resource type="Script" uid="uid://bdfwweu7ushwp" path="res://Scripts/Controller.gd" id="2_3ugcv"]
+[ext_resource type="PackedScene" uid="uid://d285r2gvp2mjg" path="res://GLOBAL/CTRL_Slider.tscn" id="3_ic1ra"]
+[ext_resource type="PackedScene" uid="uid://dg8kwgbyu3vcf" path="res://GLOBAL/CTRL_Button.tscn" id="3_pj43g"]
+[ext_resource type="PackedScene" uid="uid://b0r6edl74ddo7" path="res://addons/godot-xr-tools/interactables/interactable_slider.tscn" id="5_eg1xv"]
+
+[node name="FLX4" instance=ExtResource("1_mrnpa")]
+script = ExtResource("2_3ugcv")
+
+[node name="Crossfade Slider" parent="." index="6"]
+transform = Transform3D(1.4190836e-07, 0, -1, 0, 1, 0, 0.7288296, 0, 1.9470718e-07, 0.2408275, 0.042000003, 0.2543439)
+
+[node name="Crossfade" parent="Crossfade Slider" index="0" node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("3_ic1ra")]
+transform = Transform3D(1, 0, -9.648858e-15, 0, 1, 0, 9.648858e-15, 0, 1, 0, 0, 0)
+Target_Mesh = NodePath("..")
+
+[node name="Left_Play" parent="L_Play Left Track" index="0" node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("3_pj43g")]
+Target_Mesh = NodePath("..")
+
+[node name="Right_Play" parent="R_Play Right Track" index="0" node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("3_pj43g")]
+Target_Mesh = NodePath("..")
+
+[node name="InteractableSlider" parent="." index="44" instance=ExtResource("5_eg1xv")]
+default_on_release = true
+
+[connection signal="on_activated" from="L_Play Left Track/Left_Play" to="." method="_on_left_play_on_activated"]
+[connection signal="on_activated" from="R_Play Right Track/Right_Play" to="." method="_on_right_play_on_activated"]

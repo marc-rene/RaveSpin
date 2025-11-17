@@ -1,0 +1,30 @@
+[gd_scene load_steps=4 format=3 uid="uid://dg8kwgbyu3vcf"]
+
+[ext_resource type="Script" uid="uid://bu5tu22wknf5o" path="res://Scripts/Highlight_Mesh.gd" id="1_esj75"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_6k6p3"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_kmxif"]
+
+[node name="CtrlButton" type="Area3D"]
+script = ExtResource("1_esj75")
+
+[node name="Activation" type="Area3D" parent="."]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0)
+priority = 1
+
+[node name="Activation_CollisionShape" type="CollisionShape3D" parent="Activation"]
+shape = SubResource("CapsuleShape3D_6k6p3")
+debug_color = Color(18.258297, 0, 9.665961, 1)
+
+[node name="Highlight" type="Area3D" parent="."]
+transform = Transform3D(0.1, 0, 0, 0, 0.2, 0, 0, 0, 0.1, 0, 0.1, 0)
+
+[node name="Highlight_CollisionShape" type="CollisionShape3D" parent="Highlight"]
+shape = SubResource("CylinderShape3D_kmxif")
+debug_color = Color(18.892157, 0, 3.116065, 0.9607843)
+
+[connection signal="area_entered" from="Activation" to="." method="_on_activation_area_entered"]
+[connection signal="area_exited" from="Activation" to="." method="_on_activation_area_exited"]
+[connection signal="area_entered" from="Highlight" to="." method="_on_highlight_area_entered"]
+[connection signal="area_exited" from="Highlight" to="." method="_on_highlight_area_exited"]

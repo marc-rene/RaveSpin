@@ -40,81 +40,81 @@ signal slider_moved(position)
 
 # Add support for is_xr_class on XRTools classes
 func is_xr_class(name : String) -> bool:
-	return name == "XRToolsInteractableSlider" or super(name)
+    return name == "XRToolsInteractableSlider" or super(name)
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	# In Godot 4 we must now manually call our super class ready function
-	super()
+    # In Godot 4 we must now manually call our super class ready function
+    super()
 
-	# Set the initial position to match the initial slider position value
-	transform = Transform3D(
-		Basis.IDENTITY,
-		Vector3(slider_position, 0.0, 0.0)
-	)
+    # Set the initial position to match the initial slider position value
+    transform = Transform3D(
+        Basis.IDENTITY,
+        Vector3(slider_position, 0.0, 0.0)
+    )
 
-	# Connect signals
-	if released.connect(_on_slider_released):
-		push_error("Cannot connect slider released signal")
+    # Connect signals
+    if released.connect(_on_slider_released):
+        push_error("Cannot connect slider released signal")
 
 
 # Called every frame when one or more handles are held by the player
 func _process(_delta: float) -> void:
-	# Get the total handle offsets
-	var offset_sum := Vector3.ZERO
-	for item in grabbed_handles:
-		var handle := item as XRToolsInteractableHandle
-		offset_sum += handle.global_transform.origin - handle.handle_origin.global_transform.origin
+    # Get the total handle offsets
+    var offset_sum := Vector3.ZERO
+    for item in grabbed_handles:
+        var handle := item as XRToolsInteractableHandle
+        offset_sum += handle.global_transform.origin - handle.handle_origin.global_transform.origin
 
-	# Rotate the offset sum vector from global into local coordinate space
-	offset_sum = offset_sum * global_transform.basis
+    # Rotate the offset sum vector from global into local coordinate space
+    offset_sum = offset_sum * global_transform.basis
 
-	# Get the average displacement in the X axis
-	var offset := offset_sum.x / grabbed_handles.size()
+    # Get the average displacement in the X axis
+    var offset := offset_sum.x / grabbed_handles.size()
 
-	# Move the slider by the requested offset
-	move_slider(slider_position + offset)
+    # Move the slider by the requested offset
+    move_slider(slider_position + offset)
 
 
 # Move the slider to the specified position
 func move_slider(position: float) -> void:
-	# Do the slider move
-	position = _do_move_slider(position)
-	if position == slider_position:
-		return
+    # Do the slider move
+    position = _do_move_slider(position)
+    if position == slider_position:
+        return
 
-	# Update the current position
-	slider_position = position
+    # Update the current position
+    slider_position = position
 
-	# Emit the moved signal
-	emit_signal("slider_moved", position)
+    # Emit the moved signal
+    emit_signal("slider_moved", position)
 
 
 # Handle release of slider
 func _on_slider_released(_interactable: XRToolsInteractableSlider):
-	if default_on_release:
-		move_slider(default_position)
+    if default_on_release:
+        move_slider(default_position)
 
 
 # Called when the slider position is set externally
 func _set_slider_position(position: float) -> void:
-	position = _do_move_slider(position)
-	slider_position = position
+    position = _do_move_slider(position)
+    slider_position = position
 
 
 # Do the slider move
 func _do_move_slider(position: float) -> float:
-	# Apply slider step-quantization
-	if slider_steps:
-		position = round(position / slider_steps) * slider_steps
+    # Apply slider step-quantization
+    if slider_steps:
+        position = round(position / slider_steps) * slider_steps
 
-	# Apply slider limits
-	position = clamp(position, slider_limit_min, slider_limit_max)
+    # Apply slider limits
+    position = clamp(position, slider_limit_min, slider_limit_max)
 
-	# Move if necessary
-	if position != slider_position:
-		transform.origin.x = position
+    # Move if necessary
+    if position != slider_position:
+        transform.origin.x = position
 
-	# Return the updated position
-	return position
+    # Return the updated position
+    return position

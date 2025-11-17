@@ -10,18 +10,32 @@ config_version=5
 
 [application]
 
-config/name="Rave Spin"
-run/main_scene="uid://cjrprjm3cxqed"
-config/features=PackedStringArray("4.5", "Mobile")
+config/name="RaveSpin"
+run/main_scene="uid://dixosugdlls6v"
+config/features=PackedStringArray("4.5", "C#", "Mobile")
 config/icon="res://icon.svg"
+
+[audio]
+
+buses/default_bus_layout="uid://couo6fmbphjlc"
+
+[autoload]
+
+XRToolsUserSettings="*res://addons/godot-xr-tools/user_settings/user_settings.gd"
+XRToolsRumbleManager="*res://addons/godot-xr-tools/rumble/rumble_manager.gd"
 
 [dotnet]
 
 project/assembly_name="Rave Spin"
 
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/godot-xr-tools/plugin.cfg")
+
 [rendering]
 
 renderer/rendering_method="mobile"
+textures/vram_compression/import_etc2_astc=true
 textures/default_filters/anisotropic_filtering_level=1
 
 [shader_globals]
@@ -71,6 +85,9 @@ META_ENVIRONMENT_DEPTH_TO_CAMERA_PROJECTION_RIGHT={
 
 openxr/enabled=true
 openxr/environment_blend_mode=2
+openxr/startup_alert=false
+openxr/extensions/debug_utils=2
 openxr/extensions/hand_tracking=true
 shaders/enabled=true
 openxr/extensions/meta/passthrough=true
+openxr/extensions/meta/color_space/starting_color_space=3

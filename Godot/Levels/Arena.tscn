@@ -1,9 +1,66 @@
-[gd_scene load_steps=3 format=3 uid="uid://dixosugdlls6v"]
+[gd_scene load_steps=7 format=3 uid="uid://dixosugdlls6v"]
 
-[ext_resource type="Script" uid="uid://cjw3mllds5qjs" path="res://Scripts/arena.gd" id="1_5o1c7"]
 [ext_resource type="PackedScene" uid="uid://ohc5g4ss6tlg" path="res://GLOBAL/Player.tscn" id="1_hagq7"]
+[ext_resource type="Script" uid="uid://cjw3mllds5qjs" path="res://Scripts/arena.gd" id="1_lr07p"]
+[ext_resource type="PackedScene" uid="uid://c3iykg71k0su4" path="res://Components/DDJ-FLX4/DDJ-FLX4.tscn" id="3_lr07p"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_dsr05"]
+sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+ground_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+
+[sub_resource type="Sky" id="Sky_7t5kf"]
+sky_material = SubResource("ProceduralSkyMaterial_dsr05")
+
+[sub_resource type="Environment" id="Environment_3sm0n"]
+background_mode = 1
+background_color = Color(0, 0, 0, 0)
+sky = SubResource("Sky_7t5kf")
+ambient_light_source = 3
+ambient_light_color = Color(1, 1, 1, 1)
+tonemap_mode = 2
+glow_enabled = true
 
 [node name="Arena" type="Node3D"]
-script = ExtResource("1_5o1c7")
+script = ExtResource("1_lr07p")
 
-[node name="XROrigin3D" parent="." instance=ExtResource("1_hagq7")]
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
+shadow_enabled = true
+directional_shadow_mode = 0
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_3sm0n")
+
+[node name="Player" parent="." instance=ExtResource("1_hagq7")]
+
+[node name="XR_LeftHand" parent="Player" index="1"]
+show_when_tracked = true
+
+[node name="XR_RightHand" parent="Player" index="2"]
+show_when_tracked = true
+
+[node name="DDJ-FLX4" parent="." instance=ExtResource("3_lr07p")]
+transform = Transform3D(0.039277297, 0.97372407, 0.22431864, 4.950908e-10, 0.22449188, -0.9744761, -0.9992284, 0.03827478, 0.008817432, -0.55075693, 1.0875056, 0.713109)
+
+[node name="Track Stream Player Left" type="AudioStreamPlayer" parent="."]
+bus = &"Track 1 (Left)"
+
+[node name="Track Stream Player Right" type="AudioStreamPlayer" parent="."]
+bus = &"Track 2 (Right)"
+
+[node name="Track Stream Player Left ALT" type="AudioStreamPlayer" parent="."]
+bus = &"Track 3 (Left Alt)"
+
+[node name="Track Stream Player Right ALT" type="AudioStreamPlayer" parent="."]
+bus = &"Track 4 (Right Alt)"
+
+[node name="Label3D" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.55075693, 1.2285062, 0.713109)
+billboard = 2
+alpha_cut = 1
+texture_filter = 5
+text = "Hand Pos: "
+font_size = 10
+outline_size = 0
+
+[editable path="Player"]
