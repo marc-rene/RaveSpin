@@ -1,8 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://dixosugdlls6v"]
+[gd_scene load_steps=8 format=3 uid="uid://dixosugdlls6v"]
 
 [ext_resource type="PackedScene" uid="uid://ohc5g4ss6tlg" path="res://GLOBAL/Player.tscn" id="1_hagq7"]
 [ext_resource type="Script" uid="uid://cjw3mllds5qjs" path="res://Scripts/arena.gd" id="1_lr07p"]
 [ext_resource type="PackedScene" uid="uid://c3iykg71k0su4" path="res://Components/DDJ-FLX4/DDJ-FLX4.tscn" id="3_lr07p"]
+[ext_resource type="AudioStream" uid="uid://dc63ctah0ho33" path="res://Music/Sample Tracks/Death Grips/Death Grips - Exmilitary - 9 - 5D.mp3" id="4_rf8yt"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_dsr05"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -40,7 +41,8 @@ show_when_tracked = true
 show_when_tracked = true
 
 [node name="DDJ-FLX4" parent="." instance=ExtResource("3_lr07p")]
-transform = Transform3D(0.039277297, 0.97372407, 0.22431864, 4.950908e-10, 0.22449188, -0.9744761, -0.9992284, 0.03827478, 0.008817432, -0.55075693, 1.0875056, 0.713109)
+transform = Transform3D(0.75163263, 0.6427468, 0.1480708, 4.9509075e-10, 0.22449186, -0.97447604, -0.6595819, 0.732448, 0.16873543, -0.2951591, 1.4978297, -0.3790186)
+Track_1_AudioSource = ExtResource("4_rf8yt")
 
 [node name="Track Stream Player Left" type="AudioStreamPlayer" parent="."]
 bus = &"Track 1 (Left)"
