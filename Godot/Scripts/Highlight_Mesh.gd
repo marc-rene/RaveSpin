@@ -11,56 +11,56 @@ var fully_exited = true
 @onready var activated_mat : StandardMaterial3D
 
 enum E_ActivationStates {
-    Exited,
-    Hoovered,
-    Pressed
+	Exited,
+	Hoovered,
+	Pressed
 }
 
 func Load_Mats():
-    highlight_mat = load("res://Art/Materials/M_Item_Hovered.tres")
-    activated_mat = load("res://Art/Materials/M_Item_Activated.tres")
-    
+	highlight_mat = load("res://Art/Materials/M_Item_Hovered.tres")
+	activated_mat = load("res://Art/Materials/M_Item_Activated.tres")
+	
 
 func _on_ready():
-    Load_Mats()
-    
-    
+	Load_Mats()
+	
+	
 func HighLight(p_state = E_ActivationStates.Hoovered):
-    if (highlight_mat == null or activated_mat == null):
-        Load_Mats()
-    match p_state:
-        E_ActivationStates.Exited:
-            Target_Mesh.material_overlay = null
-            on_unhovered.emit()
-        E_ActivationStates.Hoovered:
-            Target_Mesh.material_overlay = highlight_mat
-            on_hovered.emit()
-        E_ActivationStates.Pressed:
-            Target_Mesh.material_overlay = activated_mat
-            on_activated.emit()
-            
+	if (highlight_mat == null or activated_mat == null):
+		Load_Mats()
+	match p_state:
+		E_ActivationStates.Exited:
+			Target_Mesh.material_overlay = null
+			on_unhovered.emit()
+		E_ActivationStates.Hoovered:
+			Target_Mesh.material_overlay = highlight_mat
+			on_hovered.emit()
+		E_ActivationStates.Pressed:
+			Target_Mesh.material_overlay = activated_mat
+			on_activated.emit()
+			
 
 
 func _on_highlight_area_entered(area: Area3D) -> void:
-    HighLight(E_ActivationStates.Hoovered)
-    fully_exited = false
-    
+	HighLight(E_ActivationStates.Hoovered)
+	fully_exited = false
+	
 
 
 func _on_highlight_area_exited(area: Area3D) -> void:
-    HighLight(E_ActivationStates.Exited)
-    fully_exited = false
-    
+	HighLight(E_ActivationStates.Exited)
+	fully_exited = false
+	
 
 
 
 func _on_activation_area_entered(area: Area3D) -> void:
-    HighLight(E_ActivationStates.Pressed)
-    
+	HighLight(E_ActivationStates.Pressed)
+	
 
 
 func _on_activation_area_exited(area: Area3D) -> void:
-    if (fully_exited):
-        HighLight(E_ActivationStates.Exited)
-    else:
-        HighLight(E_ActivationStates.Hoovered)
+	if (fully_exited):
+		HighLight(E_ActivationStates.Exited)
+	else:
+		HighLight(E_ActivationStates.Hoovered)
