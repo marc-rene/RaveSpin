@@ -1,0 +1,45 @@
+[gd_resource type="AudioBusLayout" format=3 uid="uid://do2sobl7v0sos"]
+
+[resource]
+bus/1/name = &"Main Mixer"
+bus/1/solo = false
+bus/1/mute = false
+bus/1/bypass_fx = false
+bus/1/volume_db = 0.0
+bus/1/send = &"Master"
+bus/2/name = &"Microphone FX"
+bus/2/solo = false
+bus/2/mute = false
+bus/2/bypass_fx = false
+bus/2/volume_db = 0.0
+bus/2/send = &"Main Mixer"
+bus/3/name = &"Microphone Input"
+bus/3/solo = false
+bus/3/mute = true
+bus/3/bypass_fx = false
+bus/3/volume_db = 0.0
+bus/3/send = &"Microphone FX"
+bus/4/name = &"Channel 1 FX"
+bus/4/solo = false
+bus/4/mute = false
+bus/4/bypass_fx = false
+bus/4/volume_db = 0.0
+bus/4/send = &"Main Mixer"
+bus/5/name = &"Channel 1 Input"
+bus/5/solo = false
+bus/5/mute = false
+bus/5/bypass_fx = false
+bus/5/volume_db = 0.0
+bus/5/send = &"Channel 1 FX"
+bus/6/name = &"Channel 2 FX"
+bus/6/solo = false
+bus/6/mute = false
+bus/6/bypass_fx = false
+bus/6/volume_db = 0.0
+bus/6/send = &"Main Mixer"
+bus/7/name = &"Channel 2 Input"
+bus/7/solo = false
+bus/7/mute = false
+bus/7/bypass_fx = false
+bus/7/volume_db = 0.0
+bus/7/send = &"Channel 2 FX"

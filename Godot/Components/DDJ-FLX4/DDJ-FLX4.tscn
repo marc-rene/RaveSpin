@@ -11,15 +11,19 @@ script = ExtResource("2_3ugcv")
 [node name="Crossfade Slider" parent="." index="6"]
 transform = Transform3D(1.4190836e-07, 0, -1, 0, 1, 0, 0.7288296, 0, 1.9470718e-07, 0.2408275, 0.042000003, 0.2543439)
 
-[node name="Left_Play" parent="L_Play Left Track" index="0" node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("3_pj43g")]
-Target_Mesh = NodePath("..")
+[node name="Controls" type="Node3D" parent="." index="44"]
 
-[node name="Right_Play" parent="R_Play Right Track" index="0" node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("3_pj43g")]
-Target_Mesh = NodePath("..")
-
-[node name="Crossfade" parent="." index="44" node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("3_ic1ra")]
+[node name="Crossfade" parent="Controls" index="0" node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("3_ic1ra")]
 transform = Transform3D(1.9470718e-08, 0, -0.135, 0, 0.135, 0, 0.1, 0, 2.6285472e-08, 0.2408275, 0.042000003, 0.2543439)
-Target_Mesh = NodePath("../Crossfade Slider")
+Target_Mesh = NodePath("../../Crossfade Slider")
 
-[connection signal="on_activated" from="L_Play Left Track/Left_Play" to="." method="_on_left_play_on_activated"]
-[connection signal="on_activated" from="R_Play Right Track/Right_Play" to="." method="_on_right_play_on_activated"]
+[node name="Left_Play" parent="Controls" index="1" node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("3_pj43g")]
+transform = Transform3D(0.24558693, 0, 0, 0, 0.24558693, 0, 0, 0, 0.24558693, 0.022395024, 0.038957693, 0.24160244)
+Target_Mesh = NodePath("../../L_Play Left Track")
+
+[node name="Right_Play" parent="Controls" index="2" node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("3_pj43g")]
+transform = Transform3D(0.24558696, 0, 0, 0, 0.24558696, 0, 0, 0, 0.24558696, 0.33739507, 0.038957693, 0.24160244)
+Target_Mesh = NodePath("../../R_Play Right Track")
+
+[connection signal="on_activated" from="Controls/Left_Play" to="." method="_on_left_play_on_activated"]
+[connection signal="on_activated" from="Controls/Right_Play" to="." method="_on_right_play_on_activated"]

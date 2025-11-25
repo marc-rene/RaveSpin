@@ -1,0 +1,66 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36" version="29.1.1">
+  <diagram name="Page-1" id="ajIfZMZ86cjiDP29FEXb">
+    <mxGraphModel dx="653" dy="658" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="zKqsH5iyY_O3fWMAb5UF-13" edge="1" parent="1" source="zKqsH5iyY_O3fWMAb5UF-1" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;endArrow=none;endFill=0;fillColor=#fa6800;strokeColor=#C73500;" target="zKqsH5iyY_O3fWMAb5UF-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="QW4OxnDogNeObBmd88H2-14" edge="1" parent="1" source="zKqsH5iyY_O3fWMAb5UF-1" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;endArrow=none;endFill=0;fillColor=#fa6800;strokeColor=#C73500;" target="zKqsH5iyY_O3fWMAb5UF-10">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="F2LfjoyeVEtTJjvnIPjm-4" edge="1" parent="1" source="zKqsH5iyY_O3fWMAb5UF-1" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fillColor=#fa6800;strokeColor=#C73500;endArrow=none;endFill=0;" target="zKqsH5iyY_O3fWMAb5UF-9">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="F2LfjoyeVEtTJjvnIPjm-8" edge="1" parent="1" source="zKqsH5iyY_O3fWMAb5UF-1" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fillColor=#fa6800;strokeColor=#C73500;endArrow=none;endFill=0;startArrow=classic;startFill=1;" target="QW4OxnDogNeObBmd88H2-13">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="zKqsH5iyY_O3fWMAb5UF-1" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fillColor=#fa6800;fontColor=#000000;strokeColor=#C73500;" value="Host User" vertex="1">
+          <mxGeometry height="60" width="30" x="270" y="280" as="geometry" />
+        </mxCell>
+        <mxCell id="zKqsH5iyY_O3fWMAb5UF-2" parent="1" style="swimlane;whiteSpace=wrap;html=1;" value="Performing together using Rave-Spin Multiplayer" vertex="1">
+          <mxGeometry height="460" width="340" x="420" y="130" as="geometry" />
+        </mxCell>
+        <mxCell id="zKqsH5iyY_O3fWMAb5UF-5" parent="zKqsH5iyY_O3fWMAb5UF-2" style="ellipse;whiteSpace=wrap;html=1;" value="1. Chooses new song from local disk." vertex="1">
+          <mxGeometry height="70" width="140" x="40" y="50" as="geometry" />
+        </mxCell>
+        <mxCell id="zKqsH5iyY_O3fWMAb5UF-6" parent="zKqsH5iyY_O3fWMAb5UF-2" style="ellipse;whiteSpace=wrap;html=1;fillColor=#1ba1e2;fontColor=#ffffff;strokeColor=#006EAF;" value="2. Check if everyone has that same song downloaded" vertex="1">
+          <mxGeometry height="75" width="130" x="180" y="105" as="geometry" />
+        </mxCell>
+        <mxCell id="zKqsH5iyY_O3fWMAb5UF-9" parent="zKqsH5iyY_O3fWMAb5UF-2" style="ellipse;whiteSpace=wrap;html=1;" value="3. Downloads song via Peer-to-Peer if don&#39;t have already&amp;nbsp;&amp;nbsp;" vertex="1">
+          <mxGeometry height="70" width="150" x="58.75" y="180" as="geometry" />
+        </mxCell>
+        <mxCell id="zKqsH5iyY_O3fWMAb5UF-10" parent="zKqsH5iyY_O3fWMAb5UF-2" style="ellipse;whiteSpace=wrap;html=1;fillColor=#fa6800;fontColor=#000000;strokeColor=#C73500;" value="4. Starts recording.&lt;div&gt;Record to host device.&lt;/div&gt;" vertex="1">
+          <mxGeometry height="60" width="140" x="100" y="270" as="geometry" />
+        </mxCell>
+        <mxCell id="QW4OxnDogNeObBmd88H2-13" parent="zKqsH5iyY_O3fWMAb5UF-2" style="ellipse;whiteSpace=wrap;html=1;fillColor=#1ba1e2;strokeColor=#006EAF;fontColor=#ffffff;" value="Listen for any events, like pressing a button, interacting with a slider.&lt;div&gt;Replicate to other User&lt;/div&gt;" vertex="1">
+          <mxGeometry height="80" width="222.5" x="58.75" y="350" as="geometry" />
+        </mxCell>
+        <mxCell id="zKqsH5iyY_O3fWMAb5UF-16" edge="1" parent="1" source="QW4OxnDogNeObBmd88H2-20" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;endArrow=none;endFill=0;" target="zKqsH5iyY_O3fWMAb5UF-6">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="810" y="240" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="QW4OxnDogNeObBmd88H2-12" edge="1" parent="1" source="QW4OxnDogNeObBmd88H2-7" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;endArrow=none;endFill=0;fillColor=#008a00;strokeColor=#005700;" target="zKqsH5iyY_O3fWMAb5UF-9">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="F2LfjoyeVEtTJjvnIPjm-2" edge="1" parent="1" source="QW4OxnDogNeObBmd88H2-7" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fillColor=#008a00;strokeColor=#005700;endArrow=none;endFill=0;" target="zKqsH5iyY_O3fWMAb5UF-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="F2LfjoyeVEtTJjvnIPjm-9" edge="1" parent="1" source="QW4OxnDogNeObBmd88H2-7" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fillColor=#008a00;strokeColor=#005700;startArrow=classic;startFill=1;endArrow=none;endFill=0;" target="QW4OxnDogNeObBmd88H2-13">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="QW4OxnDogNeObBmd88H2-7" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fillColor=light-dark(#009900,#009900);fontColor=#000000;strokeColor=light-dark(#000000,#009900);fillStyle=auto;" value="Invitee User" vertex="1">
+          <mxGeometry height="60" width="30" x="270" y="441.25" as="geometry" />
+        </mxCell>
+        <mxCell id="QW4OxnDogNeObBmd88H2-15" edge="1" parent="1" source="QW4OxnDogNeObBmd88H2-20" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;endArrow=none;endFill=0;exitX=0.028;exitY=0.592;exitDx=0;exitDy=0;exitPerimeter=0;" target="QW4OxnDogNeObBmd88H2-13">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="QW4OxnDogNeObBmd88H2-20" parent="1" style="verticalLabelPosition=bottom;sketch=0;html=1;fillColor=#1ba1e2;strokeColor=#006EAF;verticalAlign=top;pointerEvents=1;align=center;shape=mxgraph.cisco_safe.people_places_things_icons.icon9;fontColor=#ffffff;" value="&lt;span style=&quot;background-color: light-dark(rgb(255, 255, 255), rgb(255, 255, 255));&quot;&gt;&lt;font style=&quot;color: light-dark(rgb(0, 0, 0), rgb(0, 0, 0));&quot;&gt;Rave-Spin&lt;br style=&quot;padding: 0px; margin: 0px;&quot;&gt;Multiplayer&amp;nbsp;&lt;br style=&quot;padding: 0px; margin: 0px;&quot;&gt;Sub-System&lt;/font&gt;&lt;/span&gt;" vertex="1">
+          <mxGeometry height="62.5" width="69.44" x="827.56" y="440" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
