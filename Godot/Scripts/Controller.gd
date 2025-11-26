@@ -15,6 +15,13 @@ var Bus_Layout : AudioBusLayout
     $"../Track Stream Player Right", 
     $"../Track Stream Player Left ALT", 
     $"../Track Stream Player Right ALT"]; 
+    
+@onready var Channel_1_Left_Bus_Index = AudioServer.get_bus_index("Channel 1 Input")
+@onready var Channel_2_Right_Bus_Index = AudioServer.get_bus_index("Channel 2 Input")
+@onready var Channel_3_LeftALT_Bus_Index = AudioServer.get_bus_index("Channel 3 Input")
+@onready var Channel_4_RightALT_Bus_Index = AudioServer.get_bus_index("Channel 4 Input")
+var Channel_Faders = [1.0, 1.0, 1.0, 1.0]
+var Crossfade_Alpha = 0.5
 
 
 
@@ -52,14 +59,13 @@ func LoadTrackIntoMemory(p_which_track : int):
 func Play_Pause(p_which_track : int):
     if(CheckRange(0, 3, p_which_track, "Play_Pause")):
         var current_player = AudioPlayerList[p_which_track]
-        if(current_player.playing):
-            print("Pausing Track ", p_which_track)
-            current_player.stream_paused = true
-        else:
+        if(current_player.playing == false):
             print("Playing Track ", p_which_track, " now @ ", current_player.get_playback_position())
             current_player.stream_paused = false
             current_player.play(current_player.get_playback_position())
-
+        else:
+            print("Pausing Track ", p_which_track)
+            current_player.stream_paused = true
 
 
                        
@@ -80,3 +86,50 @@ func _on_left_play_on_activated() -> void:
 
 func _on_right_play_on_activated() -> void:
      Play_Pause(1)
+
+var In_Crossfade = false
+
+func _on_crossfade_on_activated() -> void:
+    In_Crossfade = true
+    
+func _on_crossfade_on_unhovered() -> void:
+    In_Crossfade = false
+        
+
+@export var Crossfader_Curve_Left : Curve = preload("res://Components/Controls/Crossfade Curve Left.tres")
+@export var Crossfader_Curve_Right : Curve = preload("res://Components/Controls/Crossfade Curve Right.tres")
+
+
+
+func Update_Channel_DBs():
+    # Apply Crossfade
+    Crossfade_Alpha = clampf($Controls/Crossfade.Value, 0, 1) # 0 = Left 1 = right
+    Channel_Faders[0] = clampf($"Controls/L Channel Fader".Value, 0, 1)
+    Channel_Faders[1] = clampf($"Controls/R Channel Fader".Value, 0, 1)
+    var left_alpha = (Crossfader_Curve_Left.sample_baked(Crossfade_Alpha) * Channel_Faders[0])
+    var right_alpha = (Crossfader_Curve_Right.sample_baked(Crossfade_Alpha) * Channel_Faders[1])
+    AudioServer.set_bus_volume_db(Channel_1_Left_Bus_Index, remap(left_alpha, 0, 1, -80, 0))
+    AudioServer.set_bus_volume_db(Channel_2_Right_Bus_Index, remap(right_alpha, 0, 1, -80, 0))
+    
+
+var In_Channel_Fader = false
+
+func _process(delta: float) -> void:
+    if(In_Crossfade or In_Channel_Fader):
+        Update_Channel_DBs()
+    
+
+
+func _on_LEFT_channel_fader_on_activated() -> void:
+    In_Channel_Fader = true
+
+func _on_LEFT_channel_fader_on_unhovered() -> void:
+    In_Channel_Fader = false
+
+
+func _on_RIGHT_channel_fader_on_activated() -> void:
+    In_Channel_Fader = true
+
+
+func _on_RIGHT_channel_fader_on_unhovered() -> void:
+    In_Channel_Fader = false

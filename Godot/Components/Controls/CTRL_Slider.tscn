@@ -1,0 +1,98 @@
+[gd_scene load_steps=15 format=3 uid="uid://ckxylfcgmm2n6"]
+
+[ext_resource type="Script" uid="uid://bu5tu22wknf5o" path="res://Scripts/Highlight_Mesh.gd" id="1_iubda"]
+[ext_resource type="Script" uid="uid://c3yu3prl7miw3" path="res://addons/godot-xr-tools/interactables/interactable_slider.gd" id="1_l3pej"]
+[ext_resource type="Script" uid="uid://ol23feuxek0e" path="res://addons/godot-xr-tools/objects/grab_points/grab_point_hand.gd" id="2_5ylfp"]
+[ext_resource type="Animation" uid="uid://db62hs5s4n2b3" path="res://addons/godot-xr-tools/hands/animations/left/Grip 4.res" id="3_10gax"]
+[ext_resource type="Script" uid="uid://7t35gnubys3i" path="res://addons/godot-xr-tools/hands/poses/hand_pose_settings.gd" id="4_25deg"]
+[ext_resource type="Animation" uid="uid://d1xnpyc08njjx" path="res://addons/godot-xr-tools/hands/animations/right/Grip 4.res" id="5_iubda"]
+[ext_resource type="Script" uid="uid://cxgrdq7hbbwmy" path="res://addons/godot-xr-tools/interactables/interactable_handle.gd" id="7_pdbi5"]
+[ext_resource type="Script" uid="uid://dmpcsvy7fnfwt" path="res://addons/godot-xr-tools/objects/grab_points/grab_point_redirect.gd" id="8_bq5o4"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_pdbi5"]
+size = Vector3(0.02, 0.02, 0.04)
+
+[sub_resource type="SphereMesh" id="SphereMesh_d46j0"]
+radius = 0.01
+height = 0.02
+radial_segments = 8
+rings = 4
+
+[sub_resource type="Resource" id="Resource_bq5o4"]
+script = ExtResource("4_25deg")
+open_pose = ExtResource("3_10gax")
+closed_pose = ExtResource("3_10gax")
+metadata/_custom_type_script = "uid://7t35gnubys3i"
+
+[sub_resource type="Resource" id="Resource_iubda"]
+script = ExtResource("4_25deg")
+open_pose = ExtResource("5_iubda")
+closed_pose = ExtResource("5_iubda")
+metadata/_custom_type_script = "uid://7t35gnubys3i"
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_0a0b0"]
+margin = 0.12
+radius = 0.02
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_hpypq"]
+size = Vector3(0.1, 0.05, 0.2)
+
+[node name="Ctrl_Slider" type="Node3D" node_paths=PackedStringArray("Replace_Mesh")]
+script = ExtResource("1_iubda")
+Replace_Mesh = NodePath("Slider_Origin/Interactable_Slider/Slider_Body/MeshInstance3D")
+
+[node name="Slider_Origin" type="Node3D" parent="."]
+
+[node name="Interactable_Slider" type="Node3D" parent="Slider_Origin"]
+script = ExtResource("1_l3pej")
+slider_limit_min = -0.05
+slider_limit_max = 0.05
+
+[node name="Slider_Body" type="StaticBody3D" parent="Slider_Origin/Interactable_Slider"]
+
+[node name="Handle_Collision" type="CollisionShape3D" parent="Slider_Origin/Interactable_Slider/Slider_Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.0027431473)
+shape = SubResource("BoxShape3D_pdbi5")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Slider_Origin/Interactable_Slider/Slider_Body"]
+mesh = SubResource("SphereMesh_d46j0")
+
+[node name="Grab Point Left" type="Marker3D" parent="Slider_Origin/Interactable_Slider/Slider_Body/MeshInstance3D"]
+script = ExtResource("2_5ylfp")
+hand_pose = SubResource("Resource_bq5o4")
+metadata/_custom_type_script = "uid://ol23feuxek0e"
+
+[node name="Grab Point Right" type="Marker3D" parent="Slider_Origin/Interactable_Slider/Slider_Body/MeshInstance3D"]
+script = ExtResource("2_5ylfp")
+hand = 1
+hand_pose = SubResource("Resource_iubda")
+metadata/_custom_type_script = "uid://ol23feuxek0e"
+
+[node name="Handle Origin" type="Node3D" parent="Slider_Origin/Interactable_Slider"]
+
+[node name="Interactable Handle" type="RigidBody3D" parent="Slider_Origin/Interactable_Slider/Handle Origin"]
+freeze = true
+script = ExtResource("7_pdbi5")
+metadata/_custom_type_script = "uid://cxgrdq7hbbwmy"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Slider_Origin/Interactable_Slider/Handle Origin/Interactable Handle"]
+shape = SubResource("SphereShape3D_0a0b0")
+
+[node name="Grab Point Redirect Left" type="Marker3D" parent="Slider_Origin/Interactable_Slider/Handle Origin/Interactable Handle/CollisionShape3D" node_paths=PackedStringArray("target")]
+script = ExtResource("8_bq5o4")
+target = NodePath("../../../../Slider_Body/MeshInstance3D/Grab Point Left")
+metadata/_custom_type_script = "uid://dmpcsvy7fnfwt"
+
+[node name="Grab Point Redirect Right" type="Marker3D" parent="Slider_Origin/Interactable_Slider/Handle Origin/Interactable Handle/CollisionShape3D" node_paths=PackedStringArray("target")]
+script = ExtResource("8_bq5o4")
+target = NodePath("../../../../Slider_Body/MeshInstance3D/Grab Point Right")
+metadata/_custom_type_script = "uid://dmpcsvy7fnfwt"
+
+[node name="Highlight" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Highlight"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.1)
+shape = SubResource("BoxShape3D_hpypq")
+
+[connection signal="area_entered" from="Highlight" to="." method="_on_highlight_area_entered"]
+[connection signal="area_exited" from="Highlight" to="." method="_on_highlight_area_exited"]

@@ -11,13 +11,21 @@ config_version=5
 [application]
 
 config/name="RaveSpin"
+config/description="César Hannin C21415142 
+Fourth Year Final Project 2025 - 2026
+TU Dublin - Grangegorman
+
+"
 run/main_scene="uid://dixosugdlls6v"
 config/features=PackedStringArray("4.5", "C#", "Mobile")
-config/icon="res://icon.svg"
+boot_splash/bg_color=Color(0.0627451, 0.09411765, 0.11764706, 1)
+boot_splash/image="uid://bo5b3mjv07m82"
+config/icon="uid://dhtm2bn2keywa"
+boot_splash/minimum_display_time=2000
 
 [audio]
 
-buses/default_bus_layout="uid://couo6fmbphjlc"
+buses/default_bus_layout="uid://do2sobl7v0sos"
 
 [autoload]
 
@@ -91,3 +99,6 @@ openxr/extensions/hand_tracking=true
 shaders/enabled=true
 openxr/extensions/meta/passthrough=true
 openxr/extensions/meta/color_space/starting_color_space=3
+openxr/default_bus_layout="uid://couo6fmbphjlc"
+openxr/bg_color=Color(0, 0.14436346, 0.2759842, 1)
+openxr/minimum_display_time=0

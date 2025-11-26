@@ -1,6 +1,11 @@
-[gd_resource type="AudioBusLayout" format=3 uid="uid://do2sobl7v0sos"]
+[gd_resource type="AudioBusLayout" load_steps=2 format=3 uid="uid://do2sobl7v0sos"]
+
+[sub_resource type="AudioEffectRecord" id="AudioEffectRecord_hv4lm"]
+resource_name = "Record"
 
 [resource]
+bus/0/effect/0/effect = SubResource("AudioEffectRecord_hv4lm")
+bus/0/effect/0/enabled = true
 bus/1/name = &"Main Mixer"
 bus/1/solo = false
 bus/1/mute = false
@@ -41,5 +46,29 @@ bus/7/name = &"Channel 2 Input"
 bus/7/solo = false
 bus/7/mute = false
 bus/7/bypass_fx = false
-bus/7/volume_db = 0.0
+bus/7/volume_db = 0.46499825
 bus/7/send = &"Channel 2 FX"
+bus/8/name = &"Channel 3 FX"
+bus/8/solo = false
+bus/8/mute = false
+bus/8/bypass_fx = false
+bus/8/volume_db = 0.0
+bus/8/send = &"Main Mixer"
+bus/9/name = &"Channel 3 Input"
+bus/9/solo = false
+bus/9/mute = false
+bus/9/bypass_fx = false
+bus/9/volume_db = 0.0
+bus/9/send = &"Channel 3 FX"
+bus/10/name = &"Channel 4 FX"
+bus/10/solo = false
+bus/10/mute = false
+bus/10/bypass_fx = false
+bus/10/volume_db = 0.0
+bus/10/send = &"Main Mixer"
+bus/11/name = &"Channel 4 Input"
+bus/11/solo = false
+bus/11/mute = false
+bus/11/bypass_fx = false
+bus/11/volume_db = 0.0
+bus/11/send = &"Channel 4 FX"

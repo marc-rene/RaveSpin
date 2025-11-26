@@ -8,7 +8,7 @@ var starting_pos : Vector3
 
 func _on_activation_area_entered(area: Area3D) -> void:
     if (area.name == "Hand"):
-        print("Slider Activated")
+        #print("Slider Activated")
         active = true
         hand_ref = area
         starting_pos = Target_Mesh.position
@@ -28,25 +28,26 @@ func _process(delta: float) -> void:
     var max_pos = $"Highlight/Max point".position.z
     var min_pos = $"Highlight/Min point".position.z
     
-    var hand_pos = $"../../Player/XR_RightHand".position
-    if (active == false):
-        var format_string = "Rhand pos: X: %f, Y: %f, Z: %f"
-        var actual_string = format_string % [hand_pos.x, hand_pos.y, hand_pos.z]
+    var hand_pos:Vector3
+    if ($"../../../Player/XR_RightHand" == null):
+        hand_pos = Vector3.ZERO
+    else:
+        hand_pos = $"../../../Player/XR_RightHand".position
 
+    if ($Highlight/Activation.position.z < min_pos):
+        $Highlight/Activation.position.z = min_pos
+        
+    elif ($Highlight/Activation.position.z > max_pos):
+        $Highlight/Activation.position.z = max_pos
         
     if (active):
-        
-        if ($Highlight/Activation.position.z <= min_pos):
-            $Highlight/Activation.position.z = min_pos * 0.9
-         
-        elif ($Highlight/Activation.position.z >= max_pos):
-            $Highlight/Activation.position.z = max_pos * 0.9
-        else:
-            $Highlight/Activation.position = to_local($"../../Player/XR_RightHand".position)
-            $Highlight/Activation.position.y = 0.1
-            $Highlight/Activation.position.x = 0
-            
-            Target_Mesh.global_position = $Highlight/Activation.global_position
-            var alpha = ($Highlight/Activation.position.z ) + 0.5
-            print("Moving Slider, min_pos: ", min_pos * 0.9, " max_pos: ", max_pos * 0.9, " Alpha = ", alpha)
+        $Highlight/Activation.position = to_local($"../../../Player/XR_RightHand".position)
+        $Highlight/Activation.position.x = 0
+        $Highlight/Activation.position.y = -0.025
+                
+    Target_Mesh.global_position = $Highlight/Activation.global_position
+    var alpha = remap($Highlight/Activation.position.z, min_pos, max_pos, 0, 1)
+    print("New_ALPHA is ", alpha)
+    Value = clampf(alpha, 0, 1)
+        #print("Moving Slider, min_pos: ", min_pos * 0.9, " max_pos: ", max_pos * 0.9, " Alpha = ", alpha)
         #$Highlight/Activation.global_position = Target_Mesh.global_position

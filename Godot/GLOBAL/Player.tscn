@@ -21,6 +21,8 @@ current = true
 
 [node name="XR_LeftHand" type="XRController3D" parent="."]
 tracker = &"left_hand"
+pose = &"grip"
+show_when_tracked = true
 
 [node name="FunctionPointer" parent="XR_LeftHand" instance=ExtResource("1_sxbc5")]
 show_laser = 2
@@ -28,15 +30,18 @@ laser_length = 1
 show_target = true
 
 [node name="LeftHand" parent="XR_LeftHand" instance=ExtResource("2_sxbc5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.04)
 
 [node name="Hand" type="Area3D" parent="XR_LeftHand"]
-transform = Transform3D(0.014235127, -0.014048528, 6.1408073e-10, 0, -8.742278e-10, -0.02, 0.014048528, 0.014235127, -6.222372e-10, -0.0037858654, -0.014034652, 0.006601136)
+transform = Transform3D(0.014235127, -0.014048528, 6.1408073e-10, 0, -8.742278e-10, -0.02, 0.014048528, 0.014235127, -6.222372e-10, -0.004, -0.011, -0.03)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="XR_LeftHand/Hand"]
 shape = SubResource("CapsuleShape3D_sxbc5")
 
 [node name="XR_RightHand" type="XRController3D" parent="."]
 tracker = &"right_hand"
+pose = &"grip"
+show_when_tracked = true
 
 [node name="FunctionPointer" parent="XR_RightHand" instance=ExtResource("1_sxbc5")]
 show_laser = 2
@@ -44,9 +49,10 @@ laser_length = 1
 show_target = true
 
 [node name="RightHand" parent="XR_RightHand" instance=ExtResource("3_o378l")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.04)
 
 [node name="Hand" type="Area3D" parent="XR_RightHand"]
-transform = Transform3D(0.01309587, 0.015116155, -6.607482e-10, 1.1849583e-16, -8.7422786e-10, -0.02, -0.015116155, 0.01309587, -5.7243876e-10, -0.0037858654, -0.013076052, 0.004096441)
+transform = Transform3D(0.01309587, 0.015116155, -6.607482e-10, 1.1849583e-16, -8.7422786e-10, -0.02, -0.015116155, 0.01309587, -5.7243876e-10, 0.005, -0.011, -0.03)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="XR_RightHand/Hand"]
 shape = SubResource("CapsuleShape3D_sxbc5")

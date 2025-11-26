@@ -36,27 +36,27 @@ environment = SubResource("Environment_3sm0n")
 [node name="Player" parent="." instance=ExtResource("1_hagq7")]
 
 [node name="XR_LeftHand" parent="Player" index="1"]
-show_when_tracked = true
+pose = &"aim"
 
 [node name="XR_RightHand" parent="Player" index="2"]
-show_when_tracked = true
+pose = &"aim"
 
 [node name="DDJ-FLX4" parent="." instance=ExtResource("3_lr07p")]
-transform = Transform3D(0.75163263, 0.6427468, 0.1480708, 4.9509075e-10, 0.22449186, -0.97447604, -0.6595819, 0.732448, 0.16873543, -0.2951591, 1.4978297, -0.3790186)
+transform = Transform3D(-0.10862392, 0.96870995, 0.2231635, 1.0323627e-08, 0.22449188, -0.97447616, -0.99408287, -0.10585144, -0.024385184, -0.6182742, 1.1594249, 0.77227646)
 Track_1_AudioSource = ExtResource("4_rf8yt")
 Track_2_AudioSource = ExtResource("5_dsr05")
 
 [node name="Track Stream Player Left" type="AudioStreamPlayer" parent="."]
-bus = &"Track 1 (Left)"
+bus = &"Channel 1 Input"
 
 [node name="Track Stream Player Right" type="AudioStreamPlayer" parent="."]
-bus = &"Track 2 (Right)"
+bus = &"Channel 2 Input"
 
 [node name="Track Stream Player Left ALT" type="AudioStreamPlayer" parent="."]
-bus = &"Track 3 (Left Alt)"
+bus = &"Channel 3 Input"
 
 [node name="Track Stream Player Right ALT" type="AudioStreamPlayer" parent="."]
-bus = &"Track 4 (Right Alt)"
+bus = &"Channel 4 Input"
 
 [node name="Label3D" type="Label3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.55075693, 1.2285062, 0.713109)

@@ -1,6 +1,7 @@
 extends Node3D
 
 @export var Target_Mesh : MeshInstance3D
+@export var Replace_Mesh : MeshInstance3D
 
 signal on_hovered
 signal on_unhovered
@@ -23,6 +24,10 @@ func Load_Mats():
 
 func _on_ready():
     Load_Mats()
+    
+    if (Replace_Mesh != null):
+        Replace_Mesh = Target_Mesh
+    
     
     
 func HighLight(p_state = E_ActivationStates.Hoovered):
