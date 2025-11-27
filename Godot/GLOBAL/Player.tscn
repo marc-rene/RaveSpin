@@ -25,6 +25,7 @@ pose = &"grip"
 show_when_tracked = true
 
 [node name="FunctionPointer" parent="XR_LeftHand" instance=ExtResource("1_sxbc5")]
+visible = false
 show_laser = 2
 laser_length = 1
 show_target = true
@@ -37,6 +38,7 @@ transform = Transform3D(0.014235127, -0.014048528, 6.1408073e-10, 0, -8.742278e-
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="XR_LeftHand/Hand"]
 shape = SubResource("CapsuleShape3D_sxbc5")
+debug_color = Color(0, 11.708403, 18.892157, 1)
 
 [node name="XR_RightHand" type="XRController3D" parent="."]
 tracker = &"right_hand"
@@ -44,6 +46,7 @@ pose = &"grip"
 show_when_tracked = true
 
 [node name="FunctionPointer" parent="XR_RightHand" instance=ExtResource("1_sxbc5")]
+visible = false
 show_laser = 2
 laser_length = 1
 show_target = true
@@ -56,3 +59,4 @@ transform = Transform3D(0.01309587, 0.015116155, -6.607482e-10, 1.1849583e-16, -
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="XR_RightHand/Hand"]
 shape = SubResource("CapsuleShape3D_sxbc5")
+debug_color = Color(0, 11.708403, 18.892157, 1)

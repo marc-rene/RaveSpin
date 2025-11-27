@@ -46,25 +46,25 @@ func HighLight(p_state = E_ActivationStates.Hoovered):
             
 
 
-func _on_highlight_area_entered(area: Area3D) -> void:
+func _on_BASE_highlight_area_entered(area: Area3D) -> void:
     HighLight(E_ActivationStates.Hoovered)
     fully_exited = false
     
 
 
-func _on_highlight_area_exited(area: Area3D) -> void:
+func _on_BASE_highlight_area_exited(area: Area3D) -> void:
     HighLight(E_ActivationStates.Exited)
-    fully_exited = false
+    fully_exited = true
     
 
 
 
-func _on_activation_area_entered(area: Area3D) -> void:
+func _on_BASE_activation_area_entered(area: Area3D) -> void:
     HighLight(E_ActivationStates.Pressed)
     
 
 
-func _on_activation_area_exited(area: Area3D) -> void:
+func _on_BASE_activation_area_exited(area: Area3D) -> void:
     if (fully_exited):
         HighLight(E_ActivationStates.Exited)
     else:

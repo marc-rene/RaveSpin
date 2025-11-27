@@ -15,7 +15,7 @@ priority = 1
 
 [node name="Activation_CollisionShape" type="CollisionShape3D" parent="Activation"]
 shape = SubResource("CapsuleShape3D_6k6p3")
-debug_color = Color(18.258297, 0, 9.665961, 1)
+debug_color = Color(0.0006358688, 12.4083605, 7.4637413, 1)
 
 [node name="Highlight" type="Area3D" parent="."]
 transform = Transform3D(0.1, 0, 0, 0, 0.2, 0, 0, 0, 0.1, 0, 0.1, 0)

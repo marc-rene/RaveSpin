@@ -1,0 +1,54 @@
+[gd_scene load_steps=6 format=3 uid="uid://c0e0trme6fmbs"]
+
+[ext_resource type="Script" uid="uid://bipqrqt7kgspn" path="res://Scripts/Highlight_Mesh_Knob.gd" id="1_2lspa"]
+[ext_resource type="Material" uid="uid://d18y5golid0sq" path="res://Art/Materials/M_Item_Hovered.tres" id="2_nx18d"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_minsn"]
+height = 0.075
+radius = 0.015
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_2lspa"]
+height = 0.025
+radius = 0.015
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_2lspa"]
+material = ExtResource("2_nx18d")
+size = Vector2(0.005, 0.02)
+
+[node name="CtrlKnob" type="Area3D"]
+script = ExtResource("1_2lspa")
+
+[node name="Highlight" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Highlight"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.038, 0)
+shape = SubResource("CylinderShape3D_minsn")
+debug_color = Color(5.2993636, 18.892157, 0, 1)
+
+[node name="Activation" type="Area3D" parent="Highlight"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.025, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Highlight/Activation"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.012, 0)
+shape = SubResource("CylinderShape3D_2lspa")
+debug_color = Color(0, 0.6, 0.69803923, 1)
+
+[node name="Pointing" type="MeshInstance3D" parent="Highlight/Activation/CollisionShape3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.01)
+mesh = SubResource("PlaneMesh_2lspa")
+skeleton = NodePath("../..")
+
+[node name="Min Rot" type="MeshInstance3D" parent="Highlight"]
+transform = Transform3D(-0.8660254, 0, 0.49999997, 0, 1, 0, -0.49999997, 0, -0.8660254, 0.01, 0, -0.015)
+mesh = SubResource("PlaneMesh_2lspa")
+skeleton = NodePath("../Activation")
+
+[node name="Max Rot" type="MeshInstance3D" parent="Highlight"]
+transform = Transform3D(-0.8660253, 0, -0.49999994, 0, 1, 0, 0.49999994, 0, -0.8660253, -0.01018607, 0, -0.0152538195)
+mesh = SubResource("PlaneMesh_2lspa")
+skeleton = NodePath("../Activation")
+
+[connection signal="area_entered" from="Highlight" to="." method="_on_BASE_highlight_area_entered"]
+[connection signal="area_exited" from="Highlight" to="." method="_on_BASE_highlight_area_exited"]
+[connection signal="area_entered" from="Highlight/Activation" to="." method="_on_activation_area_entered"]
+[connection signal="area_exited" from="Highlight/Activation" to="." method="_on_activation_area_exited"]
