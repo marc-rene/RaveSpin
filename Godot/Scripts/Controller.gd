@@ -132,7 +132,7 @@ func Update_Channel_Tempo_Adjusts():
     
     
     
-func _physics_process(delta: float) -> void:
+func _process(delta: float) -> void:
     if(In_Crossfade or In_Channel_Fader):
         Update_Channel_DBs()
     if(Dirty_Tempos):

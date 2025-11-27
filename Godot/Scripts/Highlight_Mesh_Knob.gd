@@ -42,7 +42,7 @@ func _on_activation_area_exited(area: Area3D) -> void:
             HighLight(E_ActivationStates.Hoovered)
 
 
-func _physics_process(_delta: float) -> void:
+func _process(_delta: float) -> void:
     if not active:
         return
 
@@ -85,11 +85,11 @@ func alpha_from_quat(q: Quaternion, q_min: Quaternion, q_max: Quaternion) -> flo
     return clamp(t, 0.0, 1.0)
 
 func _on_highlight_area_entered(area: Area3D) -> void:
-    HighLight(E_ActivationStates.Hoovered)
+    #HighLight(E_ActivationStates.Hoovered)
     fully_exited = false
     
 
 
 func _on_highlight_area_exited(area: Area3D) -> void:
-    HighLight(E_ActivationStates.Exited)
+    #HighLight(E_ActivationStates.Exited)
     fully_exited = true

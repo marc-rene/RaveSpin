@@ -28,7 +28,7 @@ func _on_activation_area_exited(area: Area3D) -> void:
     else:
         HighLight(E_ActivationStates.Hoovered)
 
-func _physics_process(delta: float) -> void:
+func _process(delta: float) -> void:
     var max_pos = $"Highlight/Max point".position.z
     var min_pos = $"Highlight/Min point".position.z
     

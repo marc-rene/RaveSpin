@@ -24,7 +24,7 @@ transform = Transform3D(0.1, 0, 0, 0, 0.2, 0, 0, 0, 0.1, 0, 0.1, 0)
 shape = SubResource("CylinderShape3D_kmxif")
 debug_color = Color(18.892157, 0, 3.116065, 0.9607843)
 
-[connection signal="area_entered" from="Activation" to="." method="_on_activation_area_entered"]
-[connection signal="area_exited" from="Activation" to="." method="_on_activation_area_exited"]
-[connection signal="area_entered" from="Highlight" to="." method="_on_highlight_area_entered"]
-[connection signal="area_exited" from="Highlight" to="." method="_on_highlight_area_exited"]
+[connection signal="area_entered" from="Activation" to="." method="_on_BASE_activation_area_entered"]
+[connection signal="area_exited" from="Activation" to="." method="_on_BASE_activation_area_exited"]
+[connection signal="area_entered" from="Highlight" to="." method="_on_BASE_highlight_area_entered"]
+[connection signal="area_exited" from="Highlight" to="." method="_on_BASE_highlight_area_exited"]

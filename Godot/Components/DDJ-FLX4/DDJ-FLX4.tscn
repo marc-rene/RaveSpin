@@ -21,7 +21,6 @@ Target_Mesh = NodePath("../../Crossfade Slider")
 
 [node name="L Channel Fader" parent="Controls" index="1" node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("3_ic1ra")]
 transform = Transform3D(-1, 0, 1.6609539e-07, 0, 1, 0, -1.509958e-07, 0, -1.1, 0.22063504, 0.042000003, 0.20519964)
-Value = 1.0
 Target_Mesh = NodePath("../../L_Channel Fader")
 
 [node name="L Tempo Adjust" parent="Controls" index="2" node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("3_ic1ra")]
@@ -34,7 +33,6 @@ Target_Mesh = NodePath("../../R_Tempo Adjust")
 
 [node name="R Channel Fader" parent="Controls" index="4" node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("3_ic1ra")]
 transform = Transform3D(-1, 0, 1.6609539e-07, 0, 1, 0, -1.509958e-07, 0, -1.1, 0.26073557, 0.042000003, 0.20519964)
-Value = 1.0
 Target_Mesh = NodePath("../../R_Channel Fader")
 
 [node name="Left_Play" parent="Controls" index="5" node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("3_pj43g")]
