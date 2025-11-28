@@ -104,24 +104,28 @@ func _on_crossfade_on_unhovered() -> void:
         
 
 
-
+# Adjust Channel Decibel output
 func Update_Channel_DBs():
     # Apply Crossfade
     Crossfade_Alpha = clampf($Controls/Crossfade.Value, 0, 1) # 0 = Left 1 = right
     Channel_Faders[0] = clampf($"Controls/L Channel Fader".Value, 0, 1)
-    Channel_Faders[1] = clampf($"Controls/R Channel Fader".Value, 0, 1)
+    Channel_Faders[1] = clampf($"Controls/R Channel Fader".Value, 0, 1) # TODO: Add [2][3] for Alt decks
     var left_alpha = (Crossfader_Curve_Left.sample_baked(Crossfade_Alpha) * Channel_Faders[0])
     var right_alpha = (Crossfader_Curve_Right.sample_baked(Crossfade_Alpha) * Channel_Faders[1])
+    # Update Channel DB based on Crossfader and channel fader
     AudioServer.set_bus_volume_db(Channel_1_Left_Bus_Index, remap(left_alpha, 0, 1, -80, 0))
     AudioServer.set_bus_volume_db(Channel_2_Right_Bus_Index, remap(right_alpha, 0, 1, -80, 0))
     
 
+
+# Adjust BPM of Playbacks in range of +-BPM_Adjust_Range 
 func Update_Channel_Tempo_Adjusts():
     var Left_adj = $"Controls/L Tempo Adjust".Value
     var Right_adj = $"Controls/R Tempo Adjust".Value
     var tolerance = 0.05
+    # meh, it's close enough to snap to middle, assume 1
     if (abs(0.5 - Left_adj) < tolerance):
-        AudioPlayerList[0].pitch_scale = 1
+        AudioPlayerList[0].pitch_scale = 1 
     else:
         AudioPlayerList[0].pitch_scale = remap(Left_adj, 0, 1, (1.0 - BPM_Adjust_Range), (1.0 + BPM_Adjust_Range))
     
@@ -130,6 +134,7 @@ func Update_Channel_Tempo_Adjusts():
     else:
         AudioPlayerList[1].pitch_scale = remap(Right_adj, 0, 1, (1.0 - BPM_Adjust_Range), (1.0 + BPM_Adjust_Range))
     
+    # TODO: Do AudioPlayerList[2] + [3]
     
     
 func _process(delta: float) -> void:
