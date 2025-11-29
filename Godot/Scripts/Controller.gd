@@ -118,15 +118,19 @@ func Update_Channel_DBs():
     
 
 
-# Adjust BPM of Playbacks in range of +-BPM_Adjust_Range 
+# Adjust BPM/Tempo of our Tracks in range of +-BPM_Adjust_Range 
 func Update_Channel_Tempo_Adjusts():
-    var Left_adj = $"Controls/L Tempo Adjust".Value
-    var Right_adj = $"Controls/R Tempo Adjust".Value
+    # Where are our Sliders set right now?
+    var Left_adj = $"Controls/L Tempo Adjust".Value # between 0...1
+    var Right_adj = $"Controls/R Tempo Adjust".Value # between 0...1
     var tolerance = 0.05
-    # meh, it's close enough to snap to middle, assume 1
+    # meh, it's close enough to snap to middle (0.5), assume no change in tempo
     if (abs(0.5 - Left_adj) < tolerance):
         AudioPlayerList[0].pitch_scale = 1 
     else:
+        # BPM Adjust range is 0.16, 
+        # so our tempo multiplier will be between 0.84...1.16
+        # Remap our sliders (0...1) to (0.84...1.16) 
         AudioPlayerList[0].pitch_scale = remap(Left_adj, 0, 1, (1.0 - BPM_Adjust_Range), (1.0 + BPM_Adjust_Range))
     
     if (abs(0.5 - Right_adj) < tolerance):
