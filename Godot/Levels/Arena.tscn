@@ -3,8 +3,8 @@
 [ext_resource type="PackedScene" uid="uid://ohc5g4ss6tlg" path="res://GLOBAL/Player.tscn" id="1_hagq7"]
 [ext_resource type="Script" uid="uid://cjw3mllds5qjs" path="res://Scripts/arena.gd" id="1_lr07p"]
 [ext_resource type="PackedScene" uid="uid://c3iykg71k0su4" path="res://Components/DDJ-FLX4/DDJ-FLX4.tscn" id="3_lr07p"]
-[ext_resource type="AudioStream" uid="uid://dc63ctah0ho33" path="res://Music/Sample Tracks/Death Grips/Death Grips - Exmilitary - 9 - 5D.mp3" id="4_rf8yt"]
-[ext_resource type="AudioStream" uid="uid://1qpvwc75dg73" path="res://Music/Sample Tracks/Death Grips/Death Grips - Exmilitary - 1 - Beware.mp3" id="5_dsr05"]
+[ext_resource type="AudioStream" uid="uid://byrbpqqwwknmt" path="res://Music/Sample Tracks/Crusy/Crusy - Love Is The Answer - 126bpm.mp3" id="4_dsr05"]
+[ext_resource type="AudioStream" uid="uid://yxq4jhvwh3o8" path="res://Music/Sample Tracks/Fake Blood/Fake Blood - I Think I Like It - 126bpm.wav" id="5_7t5kf"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_dsr05"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -42,14 +42,16 @@ pose = &"aim"
 pose = &"aim"
 
 [node name="DDJ-FLX4" parent="." instance=ExtResource("3_lr07p")]
-transform = Transform3D(-0.10862392, 0.96870995, 0.2231635, 1.0323627e-08, 0.22449188, -0.97447616, -0.99408287, -0.10585144, -0.024385184, -0.6182742, 1.1594249, 0.77227646)
-Track_1_AudioSource = ExtResource("4_rf8yt")
-Track_2_AudioSource = ExtResource("5_dsr05")
+transform = Transform3D(-0.21724784, 1.9374198, 0.4463275, 2.0647276e-08, 0.44898418, -1.9489518, -1.9881659, -0.2117028, -0.048770443, -0.6182742, 1.324246, 1.1975795)
+Track_1_AudioSource = ExtResource("4_dsr05")
+Track_2_AudioSource = ExtResource("5_7t5kf")
 
 [node name="Track Stream Player Left" type="AudioStreamPlayer" parent="."]
+autoplay = true
 bus = &"Channel 1 Input"
 
 [node name="Track Stream Player Right" type="AudioStreamPlayer" parent="."]
+autoplay = true
 bus = &"Channel 2 Input"
 
 [node name="Track Stream Player Left ALT" type="AudioStreamPlayer" parent="."]
@@ -57,14 +59,5 @@ bus = &"Channel 3 Input"
 
 [node name="Track Stream Player Right ALT" type="AudioStreamPlayer" parent="."]
 bus = &"Channel 4 Input"
-
-[node name="Label3D" type="Label3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.55075693, 1.2285062, 0.713109)
-billboard = 2
-alpha_cut = 1
-texture_filter = 5
-text = "Hand Pos: "
-font_size = 10
-outline_size = 0
 
 [editable path="Player"]

@@ -28,7 +28,9 @@ func _on_ready():
     if (Replace_Mesh != null):
         Replace_Mesh = Target_Mesh
     
-    
+func reset_highlight():
+    HighLight(E_ActivationStates.Exited)
+    return true
     
 func HighLight(p_state = E_ActivationStates.Hoovered):
     if (highlight_mat == null or activated_mat == null):

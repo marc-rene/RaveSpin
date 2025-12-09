@@ -5,7 +5,13 @@ var hand_ref : Area3D
 var starting_pos : Vector3
 @export var Value = 0.5
 
-
+func UpdateAlpha(new_value: float):
+    var max_pos = $"Highlight/Max point".position.z
+    var min_pos = $"Highlight/Min point".position.z
+    $Highlight/Activation.position.z = remap(new_value, 0, 1, min_pos, max_pos)
+    reset_highlight()
+    
+    
 func _on_activation_area_entered(area: Area3D) -> void:
     if (area.name == "Hand"):
         #print("Slider Activated")
@@ -13,11 +19,12 @@ func _on_activation_area_entered(area: Area3D) -> void:
         hand_ref = area
         starting_pos = Target_Mesh.position
         HighLight(E_ActivationStates.Pressed)
+    if fully_exited:
+        HighLight(E_ActivationStates.Exited)
+    elif active == false:
+        HighLight(E_ActivationStates.Hoovered)
     else:
-        if(fully_exited):
-            HighLight(E_ActivationStates.Exited)
-        else:
-            HighLight(E_ActivationStates.Hoovered)
+        pass
     
 
 func _on_activation_area_exited(area: Area3D) -> void:
@@ -48,12 +55,19 @@ func _process(delta: float) -> void:
         $Highlight/Activation.position = to_local(hand_pos)
         $Highlight/Activation.position.x = 0
         $Highlight/Activation.position.y = -0.025
-    else:
-        HighLight(E_ActivationStates.Exited)
+    #else:
+        #HighLight(E_ActivationStates.Exited)
     Target_Mesh.global_position = $Highlight/Activation.global_position
     var alpha = remap($Highlight/Activation.position.z, min_pos, max_pos, 0, 1)
-    print("New_ALPHA is ", alpha)
+    #print("New_ALPHA is ", alpha)
     Value = clampf(alpha, 0, 1)
         #print("Moving Slider, min_pos: ", min_pos * 0.9, " max_pos: ", max_pos * 0.9, " Alpha = ", alpha)
         #$Highlight/Activation.global_position = Target_Mesh.global_position
-        
+
+func _on_NEW_Highlight_Entered(area: Area3D):
+    HighLight(E_ActivationStates.Hoovered)
+    fully_exited = false
+
+func _on_NEW_Highlight_Exited(area: Area3D):
+    HighLight(E_ActivationStates.Exited)
+    fully_exited = true

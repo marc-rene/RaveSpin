@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://yxq4jhvwh3o8"
+path="res://.godot/imported/Fake Blood - I Think I Like It - 126bpm.wav-43a4a8d0b6b3253d32fe4d4daa989830.sample"
+
+[deps]
+
+source_file="res://Music/Sample Tracks/Fake Blood/Fake Blood - I Think I Like It - 126bpm.wav"
+dest_files=["res://.godot/imported/Fake Blood - I Think I Like It - 126bpm.wav-43a4a8d0b6b3253d32fe4d4daa989830.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

@@ -1,61 +1,237 @@
-[gd_scene load_steps=6 format=3 uid="uid://c3iykg71k0su4"]
+[gd_scene load_steps=11 format=4 uid="uid://c3iykg71k0su4"]
 
 [ext_resource type="PackedScene" uid="uid://bb8lupdk0mptj" path="res://Components/DDJ-FLX4/FLX4.glb" id="1_mrnpa"]
 [ext_resource type="Script" uid="uid://bdfwweu7ushwp" path="res://Scripts/Controller.gd" id="2_3ugcv"]
+[ext_resource type="Texture2D" uid="uid://bvwqdpqvloojh" path="res://Components/DDJ-FLX4/FLX4_T_FLX4_Top.png" id="3_e848e"]
 [ext_resource type="PackedScene" uid="uid://d285r2gvp2mjg" path="res://GLOBAL/CTRL_Slider.tscn" id="3_ic1ra"]
 [ext_resource type="PackedScene" uid="uid://dg8kwgbyu3vcf" path="res://GLOBAL/CTRL_Button.tscn" id="3_pj43g"]
 [ext_resource type="PackedScene" uid="uid://c0e0trme6fmbs" path="res://GLOBAL/CTRL_Knob.tscn" id="5_eg1xv"]
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_165vo"]
+resource_name = "Top"
+cull_mode = 2
+albedo_texture = ExtResource("3_e848e")
+roughness = 0.8
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_hkvxy"]
+_surfaces = [{
+"aabb": AABB(-0.0069487584, -0.005, -0.008023739, 0.013897521, 0.01, 0.016047476),
+"format": 34896613377,
+"index_count": 60,
+"index_data": PackedByteArray("AAABAAIAAAADAAEABAACAAEAAwAEAAEABQAAAAIABQADAAAABQACAAYAAwAHAAQACAAFAAYAAwAFAAkACQAFAAgAAwAJAAcABwAKAAQABwAJAAoAAgAEAAsAAgALAAYACwAEAAoACAAGAAsACQALAAoACQAIAAsA"),
+"name": "Top",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 12,
+"vertex_data": PackedByteArray("/38AAAAAAACl3P//rFEAAP9///9ZIwAA//8AAP8/AACl3P//Uq4AAAAAAAD/PwAAWSP//6xRAAD//wAA/78AAAAAAAD/vwAA/38AAP//AAD/f///pdwAAFkj//9SrgAA")
+}]
+blend_shape_mode = 0
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_1udr5"]
+resource_name = "FLX4_Knob"
+_surfaces = [{
+"aabb": AABB(-0.0069487584, -0.005, -0.008023739, 0.013897521, 0.01, 0.016047476),
+"attribute_data": PackedByteArray("JGVE2EduvcMkZb3DR25E2GtqRNjdX73Da2q9w91fRNhHbkTYJGW9w0duvcMkZUTYJGVE2ABcvcMkZb3DAFxE2PB54HVednRt8HlDcMxy4HVedq94zHJDcN1fRNhrar3D3V+9w2tqRNgAXETYJGW9wwBcvcMkZUTYly7/P2fR/z//fwAA/3///5cu/79n0f+/"),
+"format": 34896613399,
+"index_count": 60,
+"index_data": PackedByteArray("AAABAAIAAAADAAEABAAFAAYABAAHAAUACAAJAAoACAALAAkADAANAA4ADAAPAA0AEAARABIAEQAQABMAEwAQABQAEQATABUAFgAXABgAFgAZABcAGgAbABwAGgAdABsAHgAfACAAHwAeACEAIQAeACIAHwAhACMA"),
+"material": SubResource("StandardMaterial3D_165vo"),
+"name": "Top",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 36,
+"vertex_data": PackedByteArray("/38AAAAAdgel3P//rFF2B/9///9ZI3YH//8AAP8/dgf//wAA/z9cwKXc//9SrlzApdz//6xRXMD//wAA/79cwP//AAD/v6eW/3///6Xcp5al3P//Uq6nlv9/AAD//6eW/38AAP//p5ZZI///Uq6nlv9///+l3KeWAAAAAP+/p5al3P//Uq7/v/9///9ZI/+/pdz//6xR/79ZI///Uq7/v/9///+l3P+/WSP//6xR/78AAAAA/791BVkj//+sUXUFWSP//1KudQUAAAAA/z91BQAAAAD/P3YH/3///1kjdgdZI///rFF2B/9/AAAAAHYHAAAAAP8//z///wAA/z//P/9/AAAAAP8//38AAP///z8AAAAA/7//P///AAD/v/8/9eKFgvXihYL14oWC9eKFgnOUOgpzlDoKc5Q6CnOUOgq5p1QfuadUH7mnVB+5p1QfVJ9E2FSfRNhUn0TYVJ9E2P7//3////9//v//f/7//3////9//v//fy/6GD0v+hg9L/oYPS/6GD15/fZief32Ynn99mJ5/fZiAAD/fwAA/38AAP9/AAD/fwAA/38AAP9/")
+}]
+blend_shape_mode = 0
+shadow_mesh = SubResource("ArrayMesh_hkvxy")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_eg1xv"]
+size = Vector3(0.1, 0.1, 0.1)
+
 [node name="FLX4" instance=ExtResource("1_mrnpa")]
+transform = Transform3D(1.2, 0, 0, 0, 1.2, 0, 0, 0, 1.2, 0, 0, 0)
 script = ExtResource("2_3ugcv")
 BPM_Adjust_Range = 0.2
 
 [node name="Crossfade Slider" parent="." index="6"]
 transform = Transform3D(1.4190836e-07, 0, -1, 0, 1, 0, 0.7288296, 0, 1.9470718e-07, 0.2408275, 0.042000003, 0.2543439)
 
-[node name="Controls" type="Node3D" parent="." index="44"]
+[node name="R_Trim2" type="MeshInstance3D" parent="." index="32"]
+transform = Transform3D(0.85095304, 0, 0, 0, 1.1853964, 0, 0, 0, 0.85095304, 0.2606784, 0.041, 0.038615495)
+mesh = SubResource("ArrayMesh_1udr5")
+skeleton = NodePath("")
 
-[node name="Crossfade" parent="Controls" index="0" node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("3_ic1ra")]
-transform = Transform3D(-4.371139e-08, 0, 1.2, 0, 1, 0, -1, 0, -5.2453668e-08, 0.2408275, 0.042000003, 0.2543439)
-Target_Mesh = NodePath("../../Crossfade Slider")
+[node name="Controls" type="Node3D" parent="." index="45"]
 
-[node name="L Channel Fader" parent="Controls" index="1" node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("3_ic1ra")]
-transform = Transform3D(-1, 0, 1.6609539e-07, 0, 1, 0, -1.509958e-07, 0, -1.1, 0.22063504, 0.042000003, 0.20519964)
+[node name="L Channel Fader" parent="Controls" index="0" node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("3_ic1ra")]
+transform = Transform3D(-1, 0, 1.4344602e-07, 0, 1, 0, -1.509958e-07, 0, -0.95, 0.22063504, 0.042000003, 0.20519964)
 Target_Mesh = NodePath("../../L_Channel Fader")
 
-[node name="L Tempo Adjust" parent="Controls" index="2" node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("3_ic1ra")]
+[node name="L Tempo Adjust" parent="Controls" index="1" node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("3_ic1ra")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1.3, 0.14376481, 0.042000003, 0.21629128)
 Target_Mesh = NodePath("../../L_Tempo Adjust")
+
+[node name="Left_Play" parent="Controls" index="2" node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("3_pj43g")]
+transform = Transform3D(0.2455869, 0, 0, 0, 0.2455869, 0, 0, 0, 0.2455869, 0.022395022, 0.038957693, 0.2416024)
+Target_Mesh = NodePath("../../L_Play Left Track")
 
 [node name="R Tempo Adjust" parent="Controls" index="3" node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("3_ic1ra")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1.3, 0.4590193, 0.042000003, 0.21629128)
 Target_Mesh = NodePath("../../R_Tempo Adjust")
 
 [node name="R Channel Fader" parent="Controls" index="4" node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("3_ic1ra")]
-transform = Transform3D(-1, 0, 1.6609539e-07, 0, 1, 0, -1.509958e-07, 0, -1.1, 0.26073557, 0.042000003, 0.20519964)
+transform = Transform3D(-1, 0, 1.4344602e-07, 0, 1, 0, -1.509958e-07, 0, -0.95, 0.26073557, 0.042000003, 0.20519964)
 Target_Mesh = NodePath("../../R_Channel Fader")
 
-[node name="Left_Play" parent="Controls" index="5" node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("3_pj43g")]
-transform = Transform3D(0.24558693, 0, 0, 0, 0.24558693, 0, 0, 0, 0.24558693, 0.022395024, 0.038957693, 0.24160244)
-Target_Mesh = NodePath("../../L_Play Left Track")
-
-[node name="Right_Play" parent="Controls" index="6" node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("3_pj43g")]
-transform = Transform3D(0.24558696, 0, 0, 0, 0.24558696, 0, 0, 0, 0.24558696, 0.33739507, 0.038957693, 0.24160244)
+[node name="Right_Play" parent="Controls" index="5" node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("3_pj43g")]
+transform = Transform3D(0.24558696, 0, 0, 0, 0.24558696, 0, 0, 0, 0.24558696, 0.33739507, 0.038957693, 0.2416024)
 Target_Mesh = NodePath("../../R_Play Right Track")
 
-[node name="Master Volume" parent="Controls" index="7" node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("5_eg1xv")]
-transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0.29716617, 0.038605846, 0.038488712)
+[node name="Right Trim" parent="Controls" index="6" node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("5_eg1xv")]
+transform = Transform3D(-0.8, 0, -1.2079664e-07, 0, 0.99999976, 0, 1.2079664e-07, 0, -0.8, 0.26064044, 0.038605843, 0.0384887)
+Target_Mesh = NodePath("../../R_Trim")
+
+[node name="Left Trim" parent="Controls" index="7" node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("5_eg1xv")]
+transform = Transform3D(-0.8, 0, -1.2079664e-07, 0, 0.99999976, 0, 1.2079664e-07, 0, -0.8, 0.22071466, 0.038605843, 0.0384887)
+Target_Mesh = NodePath("../../L_Trim")
+
+[node name="Left High Gain" parent="Controls" index="8" node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("5_eg1xv")]
+transform = Transform3D(-0.7, 0, -1.0569706e-07, 0, 0.7, 0, 1.0569706e-07, 0, -0.7, 0.22071464, 0.038605843, 0.063578665)
+Target_Mesh = NodePath("../../L_High Gain")
+
+[node name="Left Medium Gain" parent="Controls" index="9" node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("5_eg1xv")]
+transform = Transform3D(-0.7, 0, -1.0569706e-07, 0, 0.7, 0, 1.0569706e-07, 0, -0.7, 0.22071464, 0.038605843, 0.08877772)
+Target_Mesh = NodePath("../../L_Mid Gain")
+
+[node name="Mic Level" parent="Controls" index="10" node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("5_eg1xv")]
+transform = Transform3D(-0.85, 0, -1.2834644e-07, 0, 0.85, 0, 1.2834644e-07, 0, -0.85, 0.18364324, 0.038605843, 0.088777706)
+Target_Mesh = NodePath("../../Microphone Level")
+
+[node name="Left Low Gain" parent="Controls" index="11" node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("5_eg1xv")]
+transform = Transform3D(-0.7, 0, -1.0569706e-07, 0, 0.7, 0, 1.0569706e-07, 0, -0.7, 0.22071464, 0.038605843, 0.11397676)
+Target_Mesh = NodePath("../../L_Low Gain")
+
+[node name="Right High Gain" parent="Controls" index="12" node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("5_eg1xv")]
+transform = Transform3D(-0.7, 0, -1.0569706e-07, 0, 0.7, 0, 1.0569706e-07, 0, -0.7, 0.2607247, 0.038605843, 0.06357866)
+Target_Mesh = NodePath("../../R_High Gain")
+
+[node name="Right Medium Gain" parent="Controls" index="13" node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("5_eg1xv")]
+transform = Transform3D(-0.7, 0, -1.0569706e-07, 0, 0.7, 0, 1.0569706e-07, 0, -0.7, 0.2607247, 0.038605843, 0.08877771)
+Target_Mesh = NodePath("../../R_Mid Gain")
+
+[node name="Right Low Gain" parent="Controls" index="14" node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("5_eg1xv")]
+transform = Transform3D(-0.7, 0, -1.0569706e-07, 0, 0.7, 0, 1.0569706e-07, 0, -0.7, 0.2607247, 0.038605843, 0.11397676)
+Target_Mesh = NodePath("../../R_Low Gain")
+
+[node name="Left Colour FX" parent="Controls" index="15" node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("5_eg1xv")]
+transform = Transform3D(-0.85, 0, -1.2834644e-07, 0, 0.85, 0, 1.2834644e-07, 0, -0.85, 0.22071464, 0.038605843, 0.13982153)
+Target_Mesh = NodePath("../../L_Sound Colour FX (Smart CFX)")
+
+[node name="Right Colour FX" parent="Controls" index="16" node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("5_eg1xv")]
+transform = Transform3D(-0.7, 0, -1.0569706e-07, 0, 0.7, 0, 1.0569706e-07, 0, -0.7, 0.26072466, 0.038605843, 0.13982153)
+Target_Mesh = NodePath("../../R_Sound Colour FX (Smart CFX)")
+
+[node name="Beat FX" parent="Controls" index="17" node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("5_eg1xv")]
+transform = Transform3D(-0.7, 0, -1.0569706e-07, 0, 0.7, 0, 1.0569706e-07, 0, -0.7, 0.2979233, 0.038605843, 0.19556488)
+Target_Mesh = NodePath("../../Beat FX Parameter")
+
+[node name="Crossfade" parent="Controls" index="18" node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("3_ic1ra")]
+transform = Transform3D(-4.3711385e-08, 0, 1.1999998, 0, 0.99999994, 0, -0.99999994, 0, -5.2453657e-08, 0.24082747, 0.042, 0.25434384)
+Target_Mesh = NodePath("../../Crossfade Slider")
+
+[node name="Master Volume" parent="Controls" index="19" node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("5_eg1xv")]
+transform = Transform3D(-0.99999994, 0, -8.742277e-08, 0, 0.99999994, 0, 8.742277e-08, 0, -0.99999994, 0.2977116, 0.038605843, 0.03848871)
 Target_Mesh = NodePath("../../Master Volume")
 
-[connection signal="on_activated" from="Controls/Crossfade" to="." method="_on_crossfade_on_activated"]
-[connection signal="on_unhovered" from="Controls/Crossfade" to="." method="_on_crossfade_on_unhovered"]
+[node name="Scroll Track" parent="Controls" index="20" node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("5_eg1xv")]
+transform = Transform3D(-0.9999998, 0, -8.742276e-08, 0, 0.9999998, 0, 8.742276e-08, 0, -0.9999998, 0.24087735, 0.038605843, 0.014162338)
+Target_Mesh = NodePath("../../Scroll track List")
+
+[node name="LEFT Status Text" type="Label3D" parent="." index="46"]
+transform = Transform3D(0.96592563, -1.4894287e-09, 0.258819, -0.258819, -1.1313339e-08, 0.96592563, 1.4894288e-09, -0.99999976, -1.131334e-08, -0.15, 0.05, -0.1)
+alpha_cut = 1
+alpha_scissor_threshold = 0.4
+texture_filter = 1
+text = "Song file path: 
+Volume:
+BPM Multiplier: "
+font_size = 14
+outline_size = 0
+horizontal_alignment = 2
+uppercase = true
+
+[node name="General Status" type="Label3D" parent="." index="47"]
+transform = Transform3D(0.99999976, 0, 0, 0, -0.3275147, 0.94484586, 0, -0.94484586, -0.3275147, 0.24095315, -4.967053e-08, 0.41366056)
+alpha_cut = 1
+alpha_scissor_threshold = 0.4
+texture_filter = 1
+text = "Crossfade: "
+font_size = 12
+outline_size = 0
+uppercase = true
+
+[node name="RIGHT Status Text" type="Label3D" parent="." index="48"]
+transform = Transform3D(0.9396924, 2.63612e-09, -0.34202006, 0.34202006, -1.4950173e-08, 0.9396924, -2.63612e-09, -0.99999976, -1.4950173e-08, 0.59, 0, -0.1)
+alpha_cut = 1
+alpha_scissor_threshold = 0.4
+texture_filter = 1
+text = "Song file path: 
+Volume:
+BPM Multiplier: "
+font_size = 14
+outline_size = 0
+horizontal_alignment = 0
+uppercase = true
+
+[node name="Node3D" type="Node3D" parent="." index="49"]
+transform = Transform3D(0.99999976, 0, 0, 0, 0.99999976, 0, 0, 0, 0.99999976, 0, 0.13219996, 0.7037578)
+
+[node name="ResetArea" type="Area3D" parent="Node3D" index="0"]
+transform = Transform3D(0.9999999, 0, 0, 0, 0.9999999, 0, 0, 0, 0.9999999, 0, 0.14722902, -0.24263602)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Node3D/ResetArea" index="0"]
+shape = SubResource("BoxShape3D_eg1xv")
+
+[node name="Label3D" type="Label3D" parent="Node3D/ResetArea" index="1"]
+billboard = 1
+alpha_cut = 1
+alpha_scissor_threshold = 0.515
+alpha_antialiasing_edge = 1.0
+texture_filter = 1
+modulate = Color(1, 0.5647059, 1, 1)
+text = "Reset"
+font_size = 12
+outline_size = 0
+
+[node name="DisableDebigShapes" type="Area3D" parent="Node3D" index="1"]
+transform = Transform3D(0.9999999, 0, 0, 0, 0.9999999, 0, 0, 0, 0.9999999, 0.5882827, 0.14722902, -0.242636)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Node3D/DisableDebigShapes" index="0"]
+shape = SubResource("BoxShape3D_eg1xv")
+
+[node name="Label3D" type="Label3D" parent="Node3D/DisableDebigShapes" index="1"]
+billboard = 1
+alpha_cut = 1
+alpha_scissor_threshold = 0.515
+alpha_antialiasing_edge = 1.0
+texture_filter = 1
+modulate = Color(1, 0.5647059, 1, 1)
+text = "Toggle Debug
+Shapes"
+font_size = 12
+outline_size = 0
+
 [connection signal="on_activated" from="Controls/L Channel Fader" to="." method="_on_LEFT_channel_fader_on_activated"]
 [connection signal="on_unhovered" from="Controls/L Channel Fader" to="." method="_on_LEFT_channel_fader_on_unhovered"]
 [connection signal="on_activated" from="Controls/L Tempo Adjust" to="." method="_on_LEFT_tempo_adjust_on_activated"]
 [connection signal="on_unhovered" from="Controls/L Tempo Adjust" to="." method="_on_LEFT_tempo_adjust_on_unhovered"]
+[connection signal="on_activated" from="Controls/Left_Play" to="." method="_on_left_play_on_activated"]
 [connection signal="on_activated" from="Controls/R Tempo Adjust" to="." method="_on_RIGHT_tempo_adjust_on_activated"]
 [connection signal="on_unhovered" from="Controls/R Tempo Adjust" to="." method="_on_RIGHT_tempo_adjust_on_unhovered"]
 [connection signal="on_activated" from="Controls/R Channel Fader" to="." method="_on_RIGHT_channel_fader_on_activated"]
 [connection signal="on_unhovered" from="Controls/R Channel Fader" to="." method="_on_RIGHT_channel_fader_on_unhovered"]
-[connection signal="on_activated" from="Controls/Left_Play" to="." method="_on_left_play_on_activated"]
 [connection signal="on_activated" from="Controls/Right_Play" to="." method="_on_right_play_on_activated"]
+[connection signal="on_activated" from="Controls/Crossfade" to="." method="_on_crossfade_on_activated"]
+[connection signal="on_unhovered" from="Controls/Crossfade" to="." method="_on_crossfade_on_unhovered"]
+[connection signal="area_entered" from="Node3D/ResetArea" to="." method="_on_reset_area_area_entered"]
+[connection signal="area_entered" from="Node3D/DisableDebigShapes" to="." method="_on_disable_debig_shapes_area_entered"]

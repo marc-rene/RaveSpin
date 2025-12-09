@@ -60,6 +60,7 @@ func LoadTrackIntoMemory(p_which_track : int):
                 
         AudioPlayerList[p_which_track].stream = current_stream
         print("Loading Track ", p_which_track, " into memory now")
+        AudioPlayerList[p_which_track].stream_paused = true
     
     
       
@@ -83,6 +84,10 @@ func _ready() -> void:
     if (Use_2_Track_Bus_Layout == false):
         LoadTrackIntoMemory(2)
         LoadTrackIntoMemory(3)
+    AudioPlayerList[0].stream_paused = true
+    AudioPlayerList[1].stream_paused = true
+    AudioPlayerList[2].stream_paused = true
+    AudioPlayerList[3].stream_paused = true
     #CreateInteractableControl(btn_PausePlay_ref, E_CONTROLTYPE.BUTTON)
     
 
@@ -113,8 +118,8 @@ func Update_Channel_DBs():
     var left_alpha = (Crossfader_Curve_Left.sample_baked(Crossfade_Alpha) * Channel_Faders[0])
     var right_alpha = (Crossfader_Curve_Right.sample_baked(Crossfade_Alpha) * Channel_Faders[1])
     # Update Channel DB based on Crossfader and channel fader
-    AudioServer.set_bus_volume_db(Channel_1_Left_Bus_Index, remap(left_alpha, 0, 1, -80, 0))
-    AudioServer.set_bus_volume_db(Channel_2_Right_Bus_Index, remap(right_alpha, 0, 1, -80, 0))
+    AudioServer.set_bus_volume_linear(Channel_1_Left_Bus_Index, left_alpha)
+    AudioServer.set_bus_volume_linear(Channel_2_Right_Bus_Index, right_alpha)
     
 
 
@@ -142,10 +147,22 @@ func Update_Channel_Tempo_Adjusts():
     
     
 func _process(delta: float) -> void:
-    if(In_Crossfade or In_Channel_Fader):
-        Update_Channel_DBs()
-    if(Dirty_Tempos):
-        Update_Channel_Tempo_Adjusts()
+    #if(In_Crossfade or In_Channel_Fader):
+    Update_Channel_DBs()
+    #if(Dirty_Tempos):
+    Update_Channel_Tempo_Adjusts()
+    
+    # TODO: Change this to a proper UI  
+    var left_status_text = "Song file path: %s\n" % AudioPlayerList[0].stream.resource_path.get_file()
+    var right_status_text = "Song file path: %s\n" % AudioPlayerList[1].stream.resource_path.get_file()
+    left_status_text += "Volume: %.1fdb\n"   % [AudioServer.get_bus_volume_db(Channel_1_Left_Bus_Index)]
+    right_status_text += "Volume: %.1fdb\n"  % [AudioServer.get_bus_volume_db(Channel_2_Right_Bus_Index)]
+    left_status_text += "BPM Multiplier: %.2f\n"  % AudioPlayerList[0].pitch_scale
+    right_status_text += "BPM Multiplier: %.2f\n" % AudioPlayerList[1].pitch_scale
+    
+    $"LEFT Status Text".text = left_status_text
+    $"RIGHT Status Text".text = right_status_text
+    $"General Status".text = "Crossfade: %.3f" % remap(Crossfade_Alpha, 0.0, 1.0, -1.0, 1.0)
     
 
 
@@ -179,3 +196,47 @@ func _on_RIGHT_tempo_adjust_on_activated() -> void:
 
 func _on_RIGHT_tempo_adjust_on_unhovered() -> void:
     Dirty_Tempos = false
+
+
+func _on_reset_area_area_entered(area: Area3D) -> void:
+    LoadTrackIntoMemory(0)
+    LoadTrackIntoMemory(1)
+    if (Use_2_Track_Bus_Layout == false):
+        LoadTrackIntoMemory(2)
+        LoadTrackIntoMemory(3)
+    AudioPlayerList[0].stream_paused = true
+    AudioPlayerList[1].stream_paused = true
+    AudioPlayerList[2].stream_paused = true
+    AudioPlayerList[3].stream_paused = true
+    $"Controls/Crossfade".UpdateAlpha(0.5)
+    $"Controls/L Channel Fader".UpdateAlpha(0.5)
+    $"Controls/L Tempo Adjust".UpdateAlpha(0.5)
+    $"Controls/R Tempo Adjust".UpdateAlpha(0.5)
+    $"Controls/R Channel Fader".UpdateAlpha(0.5)
+    
+    for child in $Controls.get_children():
+        child.reset_highlight()
+    
+    Update_Channel_DBs()
+    Update_Channel_Tempo_Adjusts()
+
+
+
+
+
+
+var debug_visable = true
+
+func _set_collision_shapes_visible_recursive(node: Node, visible: bool) -> void:
+    if node is CollisionShape3D and node not in [$Node3D/ResetArea/CollisionShape3D, $Node3D/DisableDebigShapes/CollisionShape3D]:
+        node.visible = visible
+        node.debug_color = Color(node.debug_color.r, node.debug_color.g, node.debug_color.b, 1.0 if visible else 0.0)
+        node.debug_fill = visible
+    for child in node.get_children():
+        _set_collision_shapes_visible_recursive(child, visible)
+        
+func _on_disable_debig_shapes_area_entered(area: Area3D) -> void:
+    debug_visable = !debug_visable
+    _set_collision_shapes_visible_recursive(get_tree().current_scene, debug_visable)
+    
+    

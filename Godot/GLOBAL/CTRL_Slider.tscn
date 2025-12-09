@@ -1,19 +1,18 @@
-[gd_scene load_steps=5 format=3 uid="uid://d285r2gvp2mjg"]
+[gd_scene load_steps=6 format=3 uid="uid://d285r2gvp2mjg"]
 
 [ext_resource type="Script" uid="uid://c0630mg08fmut" path="res://Scripts/Highlight_Mesh_Slider.gd" id="1_esrk0"]
-[ext_resource type="Material" uid="uid://d18y5golid0sq" path="res://Art/Materials/M_Item_Hovered.tres" id="2_nx18d"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_l43oc"]
 size = Vector3(0.025, 0.075, 0.05)
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_pcqki"]
+size = Vector3(0.01, 0.1, 0.005)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_65liy"]
+size = Vector3(0.01, 0.1, 0.01)
+
 [sub_resource type="BoxShape3D" id="BoxShape3D_esrk0"]
 size = Vector3(0.025, 0.02, 0.015)
-
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_qpcwr"]
-radius = 0.001
-height = 0.1
-radial_segments = 4
-rings = 2
 
 [node name="CtrlSlider" type="Area3D"]
 script = ExtResource("1_esrk0")
@@ -23,26 +22,29 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.025, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Highlight"]
 shape = SubResource("BoxShape3D_l43oc")
-debug_color = Color(0, 18.892157, 18.892157, 1)
-
-[node name="Activation" type="Area3D" parent="Highlight"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.025, 0)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Highlight/Activation"]
-shape = SubResource("BoxShape3D_esrk0")
-debug_color = Color(12.130976, 0, 0, 1)
+debug_color = Color(0, 0.5, 1.15, 1)
 
 [node name="Min point" type="Node3D" parent="Highlight"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 0.1, 0, 0, -0.025)
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Highlight/Min point"]
-mesh = SubResource("CapsuleMesh_qpcwr")
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Highlight/Min point"]
+shape = SubResource("BoxShape3D_pcqki")
+debug_color = Color(0.96862745, 0, 0.47843137, 1)
 
 [node name="Max point" type="Node3D" parent="Highlight"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 0.1, 0, 0, 0.025)
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Highlight/Max point"]
-mesh = SubResource("CapsuleMesh_qpcwr")
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Highlight/Max point"]
+shape = SubResource("BoxShape3D_65liy")
+debug_color = Color(0.74509805, 1, 0, 1)
+
+[node name="Activation" type="Area3D" parent="Highlight"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.025, 0)
+priority = 1
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Highlight/Activation"]
+shape = SubResource("BoxShape3D_esrk0")
+debug_color = Color(12.130976, 0, 0, 1)
 
 [connection signal="area_entered" from="Highlight" to="." method="_on_BASE_highlight_area_entered"]
 [connection signal="area_exited" from="Highlight" to="." method="_on_BASE_highlight_area_exited"]
