@@ -41,9 +41,8 @@ func CheckRange(minimum, maximum, value, function_name = "") -> bool:
         return false
     else:
         return true
+   
 
-       
-            
 func LoadTrackIntoMemory(p_which_track : int):
     if(CheckRange(0, 3, p_which_track, "LoadTrackIntoMemory")):
         print("Spawned Player for Track ", p_which_track)
@@ -97,7 +96,7 @@ func _on_left_play_on_activated() -> void:
 
 
 func _on_right_play_on_activated() -> void:
-     Play_Pause(1)
+    Play_Pause(1)
 
 var In_Crossfade = true
 

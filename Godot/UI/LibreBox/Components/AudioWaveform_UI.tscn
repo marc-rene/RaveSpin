@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://cie7ywhggijqp"]
+
+[ext_resource type="Script" uid="uid://d1ofyrkvobx3e" path="res://Scripts/Audio_Waveform_Preview.gd" id="1_auyfm"]
+[ext_resource type="AudioStream" uid="uid://dc63ctah0ho33" path="res://Music/Sample Tracks/Death Grips/Death Grips - Exmilitary - 9 - 5D.mp3" id="2_vn51j"]
+
+[node name="AudioWaveformUi" type="Container" unique_id=67245846]
+script = ExtResource("1_auyfm")
+Audio_File = ExtResource("2_vn51j")

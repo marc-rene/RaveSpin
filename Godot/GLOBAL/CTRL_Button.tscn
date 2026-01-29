@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=3 uid="uid://dg8kwgbyu3vcf"]
+[gd_scene format=3 uid="uid://dg8kwgbyu3vcf"]
 
 [ext_resource type="Script" uid="uid://bu5tu22wknf5o" path="res://Scripts/Highlight_Mesh.gd" id="1_esj75"]
 
@@ -6,21 +6,21 @@
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_kmxif"]
 
-[node name="CtrlButton" type="Area3D"]
+[node name="CtrlButton" type="Area3D" unique_id=2116356022]
 script = ExtResource("1_esj75")
 
-[node name="Activation" type="Area3D" parent="."]
+[node name="Activation" type="Area3D" parent="." unique_id=1000656652]
 transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0)
 priority = 1
 
-[node name="Activation_CollisionShape" type="CollisionShape3D" parent="Activation"]
+[node name="Activation_CollisionShape" type="CollisionShape3D" parent="Activation" unique_id=1131857117]
 shape = SubResource("CapsuleShape3D_6k6p3")
 debug_color = Color(0.0006358688, 12.4083605, 7.4637413, 1)
 
-[node name="Highlight" type="Area3D" parent="."]
+[node name="Highlight" type="Area3D" parent="." unique_id=222116917]
 transform = Transform3D(0.1, 0, 0, 0, 0.2, 0, 0, 0, 0.1, 0, 0.1, 0)
 
-[node name="Highlight_CollisionShape" type="CollisionShape3D" parent="Highlight"]
+[node name="Highlight_CollisionShape" type="CollisionShape3D" parent="Highlight" unique_id=797842035]
 shape = SubResource("CylinderShape3D_kmxif")
 debug_color = Color(18.892157, 0, 3.116065, 0.9607843)
 
