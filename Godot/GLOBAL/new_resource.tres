@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="AudioTrack" format=3 uid="uid://b7mkh7sl1ew4i"]
+
+[ext_resource type="AudioStream" uid="uid://yxq4jhvwh3o8" path="res://Music/Sample Tracks/Fake Blood/Fake Blood - I Think I Like It - 126bpm.wav" id="1_6ts61"]
+[ext_resource type="Script" uid="uid://dgtxja17rl6x2" path="res://GLOBAL/AudioTrack.gd" id="2_hrua7"]
+
+[resource]
+script = ExtResource("2_hrua7")
+Audio_File = ExtResource("1_6ts61")
+Track_Runtime_ms = 341133

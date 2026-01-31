@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://ohc5g4ss6tlg"]
+[gd_scene format=3 uid="uid://ohc5g4ss6tlg"]
 
 [ext_resource type="PackedScene" uid="uid://btknduttnmoxf" path="res://addons/godot-xr-tools/misc/vr_common_shader_cache.tscn" id="1_o378l"]
 [ext_resource type="PackedScene" uid="uid://cqhw276realc" path="res://addons/godot-xr-tools/functions/function_pointer.tscn" id="1_sxbc5"]
@@ -7,56 +7,56 @@
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_sxbc5"]
 
-[node name="XROrigin3D" type="XROrigin3D"]
+[node name="XROrigin3D" type="XROrigin3D" unique_id=557953966]
 
-[node name="XRCamera3D" type="XRCamera3D" parent="."]
+[node name="XRCamera3D" type="XRCamera3D" parent="." unique_id=1747871428]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7, 0)
 near = 0.001
 
-[node name="VRCommonShaderCache" parent="XRCamera3D" instance=ExtResource("1_o378l")]
+[node name="VRCommonShaderCache" parent="XRCamera3D" unique_id=1781700278 instance=ExtResource("1_o378l")]
 
-[node name="AudioListener3D" type="AudioListener3D" parent="XRCamera3D"]
+[node name="AudioListener3D" type="AudioListener3D" parent="XRCamera3D" unique_id=1648518893]
 doppler_tracking = 2
 current = true
 
-[node name="XR_LeftHand" type="XRController3D" parent="."]
+[node name="XR_LeftHand" type="XRController3D" parent="." unique_id=1337053157]
 tracker = &"left_hand"
 pose = &"grip"
 show_when_tracked = true
 
-[node name="FunctionPointer" parent="XR_LeftHand" instance=ExtResource("1_sxbc5")]
+[node name="FunctionPointer" parent="XR_LeftHand" unique_id=94479602 instance=ExtResource("1_sxbc5")]
 visible = false
 show_laser = 2
 laser_length = 1
 show_target = true
 
-[node name="LeftHand" parent="XR_LeftHand" instance=ExtResource("2_sxbc5")]
+[node name="LeftHand" parent="XR_LeftHand" unique_id=1597382249 instance=ExtResource("2_sxbc5")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.04)
 
-[node name="Hand" type="Area3D" parent="XR_LeftHand"]
+[node name="Hand" type="Area3D" parent="XR_LeftHand" unique_id=205210765]
 transform = Transform3D(0.014235127, -0.014048528, 6.1408073e-10, 0, -8.742278e-10, -0.02, 0.014048528, 0.014235127, -6.222372e-10, -0.004, -0.011, -0.03)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="XR_LeftHand/Hand"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="XR_LeftHand/Hand" unique_id=823996315]
 shape = SubResource("CapsuleShape3D_sxbc5")
 debug_color = Color(0, 11.708403, 18.892157, 1)
 
-[node name="XR_RightHand" type="XRController3D" parent="."]
+[node name="XR_RightHand" type="XRController3D" parent="." unique_id=104228000]
 tracker = &"right_hand"
 pose = &"grip"
 show_when_tracked = true
 
-[node name="FunctionPointer" parent="XR_RightHand" instance=ExtResource("1_sxbc5")]
+[node name="FunctionPointer" parent="XR_RightHand" unique_id=1132708435 instance=ExtResource("1_sxbc5")]
 visible = false
 show_laser = 2
 laser_length = 1
 show_target = true
 
-[node name="RightHand" parent="XR_RightHand" instance=ExtResource("3_o378l")]
+[node name="RightHand" parent="XR_RightHand" unique_id=1402758153 instance=ExtResource("3_o378l")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.04)
 
-[node name="Hand" type="Area3D" parent="XR_RightHand"]
+[node name="Hand" type="Area3D" parent="XR_RightHand" unique_id=27707692]
 transform = Transform3D(0.01309587, 0.015116155, -6.607482e-10, 1.1849583e-16, -8.7422786e-10, -0.02, -0.015116155, 0.01309587, -5.7243876e-10, 0.005, -0.011, -0.03)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="XR_RightHand/Hand"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="XR_RightHand/Hand" unique_id=898221463]
 shape = SubResource("CapsuleShape3D_sxbc5")
 debug_color = Color(0, 11.708403, 18.892157, 1)

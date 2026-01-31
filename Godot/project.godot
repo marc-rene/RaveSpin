@@ -33,8 +33,6 @@ buses/default_bus_layout="uid://do2sobl7v0sos"
 
 [autoload]
 
-EMusicKeys="*uid://dexbapvd412au"
-IsValidKey="*uid://dexbapvd412au"
 XRToolsUserSettings="*uid://dj7ac5oc0ja3f"
 XRToolsRumbleManager="*uid://cld4y0tvk1qfc"
 
