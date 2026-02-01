@@ -1,0 +1,7 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://c0yo4nmoxvy32"]
+
+[ext_resource type="Shader" uid="uid://u205hdpwxqlp" path="res://Art/Materials/UI/Emissive/Simple_Emissive.gdshader" id="1_1qr8n"]
+
+[resource]
+shader = ExtResource("1_1qr8n")
+shader_parameter/Unlit_Colour = Color(1, 1, 1, 1)

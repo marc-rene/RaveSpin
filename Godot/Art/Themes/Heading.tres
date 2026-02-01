@@ -1,0 +1,10 @@
+[gd_resource type="LabelSettings" format=3 uid="uid://bl11km7ja4u0h"]
+
+[ext_resource type="FontFile" uid="uid://di6oaehdwb84i" path="res://Art/Fonts/FONT_Roboto.ttf" id="1_p71xf"]
+
+[resource]
+line_spacing = 12.0
+paragraph_spacing = 12.0
+font = ExtResource("1_p71xf")
+font_size = 44
+font_color = Color(0.92941177, 0.68235296, 0.28627452, 1)

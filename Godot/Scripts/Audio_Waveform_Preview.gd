@@ -54,19 +54,19 @@ var redraw = _draw
         #draw_line(start_point, end_point, Color.WEB_GREEN, width)
         
         
-func _draw():
-    width = $".".custom_minimum_size.x / (TEST_Audio.data.size() / 4)
-    var max_height = $".".custom_minimum_size.y
-    
-    for i in range(TEST_Audio.data.size() / 4):
-        var start_point = Vector2((width * i) + ( width / 2), 0)
-        
-        var sound_byte = TEST_Audio.data[(4 * i)]
-        var end_point = Vector2((width * i) + ( width / 2), remap(sound_byte, 0, 255, 0, max_height))        
-        draw_line(start_point, end_point, Color.WEB_GREEN, width)
+#func _draw():
+    #width = $".".custom_minimum_size.x / (TEST_Audio.data.size() / 44100)
+    #var max_height = $".".custom_minimum_size.y
+    #
+    #for i in range(TEST_Audio.data.size() / 44100):
+        #var start_point = Vector2((width * i) + ( width / 2), 0)
+        #
+        #var sound_byte = TEST_Audio.data[(4 * i)]
+        #var end_point = Vector2((width * i) + ( width / 2), remap(sound_byte, 0, 255, 0, max_height))        
+        #draw_line(start_point, end_point, Color.WEB_GREEN, width)
 
-#func _process(_delta):
-    #queue_redraw()
+func _process(_delta):
+    queue_redraw()
     
 
 func Update_Track(new_track : AudioTrack):

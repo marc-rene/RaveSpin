@@ -1,6 +1,7 @@
 @tool
 class_name AudioTrack extends Object
  
+enum E_Track_Origin_Type {LOCAL_STORAGE, SPOTIFY, APPLE_MUSIC, DEEZER, YT_MUISC, SOUNDCLOUD, ONEDRIVE, }
 
 static var All_Track_UID : Array[int]
 static var Next_Available_UID = 7
@@ -34,6 +35,9 @@ static var All_Track_BPMs : Dictionary[int, float]
 var Track_Key : MusicKey
 
 static var All_Track_Keys : Dictionary[int, MusicKey]
+
+@export var Origin_Platform : E_Track_Origin_Type
+static var All_Track_Origin_Platforms : Dictionary[int, E_Track_Origin_Type]
 
 @export var Favourite : bool
 static var All_Favourites : Array[int]
@@ -87,7 +91,7 @@ func _init( p_audio_file : AudioStream = null,
         # is unique? 
         if not Track_Genres.has(genre.to_upper().strip_escapes().strip_edges()):
             Track_Genres.append(genre.to_upper().strip_escapes().strip_edges())
-    
+
     Track_BPM = p_track_bpm
     Track_Runtime_ms = int(p_audio_file.get_length() * 1000) 
     Track_Key = p_track_key
@@ -112,7 +116,10 @@ func Set_Favourite(We_Like = true):
         All_Favourites.erase(UID)
         
 
-func _exit_tree() -> void:
+func Get_Album_Art() -> Texture2D:
+    return Album_Arts[Track_Album] 
+
+func delete_track() -> void:
     All_Audio_Files.erase(UID)
     All_Track_Titles.erase(UID)
     All_Track_Artists.erase(UID)

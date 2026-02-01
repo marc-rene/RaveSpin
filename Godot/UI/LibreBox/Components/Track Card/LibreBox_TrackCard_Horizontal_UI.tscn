@@ -1,0 +1,296 @@
+[gd_scene format=3 uid="uid://tjmox2whgvci"]
+
+[ext_resource type="Texture2D" uid="uid://bsnjnses15lfb" path="res://Art/Icon/T_RaveSpinHeader_Light.png" id="1_5c33f"]
+[ext_resource type="Script" uid="uid://cweqa5ap3hk62" path="res://UI/LibreBox/Components/Track Card/Track_Card_Manager.gd" id="2_3g84n"]
+[ext_resource type="Theme" uid="uid://ds0dxmwlq5niw" path="res://Art/Themes/Default_Theme.tres" id="2_sjwx3"]
+[ext_resource type="LabelSettings" uid="uid://bl11km7ja4u0h" path="res://Art/Themes/Heading.tres" id="3_wd6pi"]
+[ext_resource type="LabelSettings" uid="uid://du4olf7ix8h0m" path="res://Art/Themes/Heading_2.tres" id="4_ce06q"]
+[ext_resource type="LabelSettings" uid="uid://ba1a888r0ljce" path="res://Art/Themes/Heading_3.tres" id="5_sjwx3"]
+[ext_resource type="Shader" uid="uid://u205hdpwxqlp" path="res://Art/Materials/UI/Emissive/Simple_Emissive.gdshader" id="6_ce06q"]
+[ext_resource type="Texture2D" uid="uid://cb8uviw5y27m8" path="res://Art/Icon/T_Clock_Dark.png" id="7_d62xh"]
+[ext_resource type="LabelSettings" uid="uid://c6r16al1fyqxr" path="res://Art/Themes/Heading_4.tres" id="8_d62xh"]
+[ext_resource type="Texture2D" uid="uid://bhwwtlbs4tlw4" path="res://Art/Icon/T_Metronome_Dark.png" id="9_ektni"]
+[ext_resource type="Texture2D" uid="uid://cqsv28mg6a6hs" path="res://Art/Icon/T_MusicNote_Dark.png" id="10_dn3r0"]
+[ext_resource type="Texture2D" uid="uid://2cy2nto57l4j" path="res://Art/Icon/T_Idea_Dark.png" id="11_sk0yf"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_sk0yf"]
+shader = ExtResource("6_ce06q")
+shader_parameter/Unlit_Colour = Color(0.9137255, 0.30980393, 0.21568628, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_dn3r0"]
+shader = ExtResource("6_ce06q")
+shader_parameter/Unlit_Colour = Color(0.26666668, 0.73333335, 0.6431373, 1)
+
+[sub_resource type="Shader" id="Shader_sk0yf"]
+code = "shader_type canvas_item;
+
+uniform vec4 Unlit_Colour : source_color = vec4(1.0);
+
+void fragment() {
+	COLOR.r = Unlit_Colour.r;
+	COLOR.g = Unlit_Colour.g;
+	COLOR.b = Unlit_Colour.b;
+    COLOR.a = texture(TEXTURE, UV).a * Unlit_Colour.a;
+}
+
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_d62xh"]
+shader = SubResource("Shader_sk0yf")
+shader_parameter/Unlit_Colour = Color(0.92941177, 0.68235296, 0.28627452, 1)
+
+[node name="LibreBoxTrackCardHorizontalUi" type="Button" unique_id=1906176276 node_paths=PackedStringArray("Album_Art_Texture_Holder")]
+anchors_preset = -1
+anchor_right = 1.4250001
+anchor_bottom = 0.34100002
+grow_horizontal = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource("2_sjwx3")
+icon_alignment = 1
+script = ExtResource("2_3g84n")
+Album_Art_Texture_Holder = NodePath("VBoxContainer/Main Container/Album_Thumbnail")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=353847103]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -5.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="Padding2" type="Control" parent="VBoxContainer" unique_id=1125223033]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Main Container" type="HBoxContainer" parent="VBoxContainer" unique_id=493159548]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Album_Thumbnail" type="TextureRect" parent="VBoxContainer/Main Container" unique_id=1212709508]
+custom_minimum_size = Vector2(200, 200)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource("1_5c33f")
+expand_mode = 3
+stretch_mode = 6
+
+[node name="Name Container" type="VBoxContainer" parent="VBoxContainer/Main Container" unique_id=173803116]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+alignment = 1
+
+[node name="Title" type="Label" parent="VBoxContainer/Main Container/Name Container" unique_id=468923406]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 2.0
+theme = ExtResource("2_sjwx3")
+theme_override_font_sizes/font_size = 18
+text = "Track Title"
+label_settings = ExtResource("3_wd6pi")
+vertical_alignment = 1
+uppercase = true
+
+[node name="Artist" type="Label" parent="VBoxContainer/Main Container/Name Container" unique_id=2120999134]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+text = "Artist"
+label_settings = ExtResource("4_ce06q")
+vertical_alignment = 1
+text_overrun_behavior = 5
+ellipsis_char = "-"
+
+[node name="Album" type="Label" parent="VBoxContainer/Main Container/Name Container" unique_id=1893249322]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource("2_sjwx3")
+text = "Album"
+label_settings = ExtResource("5_sjwx3")
+
+[node name="VSeparator" type="VSeparator" parent="VBoxContainer/Main Container" unique_id=2123995937]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Time Container" type="VBoxContainer" parent="VBoxContainer/Main Container" unique_id=900231582]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/Main Container/Time Container" unique_id=936662950]
+layout_mode = 2
+
+[node name="Time Icon" type="TextureRect" parent="VBoxContainer/Main Container/Time Container/HBoxContainer" unique_id=1662011515]
+material = SubResource("ShaderMaterial_sk0yf")
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+size_flags_horizontal = 3
+texture = ExtResource("7_d62xh")
+expand_mode = 2
+stretch_mode = 5
+
+[node name="Time Label" type="Label" parent="VBoxContainer/Main Container/Time Container/HBoxContainer" unique_id=603793930]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_sjwx3")
+text = "Duration"
+label_settings = ExtResource("8_d62xh")
+horizontal_alignment = 1
+
+[node name="Time var Label" type="Label" parent="VBoxContainer/Main Container/Time Container" unique_id=1123985816]
+layout_mode = 2
+text = "8m 50s"
+label_settings = ExtResource("3_wd6pi")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BPM Container" type="VBoxContainer" parent="VBoxContainer/Main Container" unique_id=1657318703]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/Main Container/BPM Container" unique_id=2010511003]
+layout_mode = 2
+
+[node name="BPM Icon" type="TextureRect" parent="VBoxContainer/Main Container/BPM Container/HBoxContainer" unique_id=982564044]
+material = SubResource("ShaderMaterial_dn3r0")
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+size_flags_horizontal = 3
+texture = ExtResource("9_ektni")
+expand_mode = 2
+stretch_mode = 5
+
+[node name="BPM Label" type="Label" parent="VBoxContainer/Main Container/BPM Container/HBoxContainer" unique_id=344269704]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_sjwx3")
+text = "BPM"
+label_settings = ExtResource("8_d62xh")
+horizontal_alignment = 1
+
+[node name="BPM var Label" type="Label" parent="VBoxContainer/Main Container/BPM Container" unique_id=333574605]
+layout_mode = 2
+text = "128"
+label_settings = ExtResource("3_wd6pi")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Key Container" type="VBoxContainer" parent="VBoxContainer/Main Container" unique_id=2060624589]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/Main Container/Key Container" unique_id=56210479]
+layout_mode = 2
+
+[node name="Time Icon" type="TextureRect" parent="VBoxContainer/Main Container/Key Container/HBoxContainer" unique_id=1806656450]
+material = SubResource("ShaderMaterial_d62xh")
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+size_flags_horizontal = 3
+texture = ExtResource("10_dn3r0")
+expand_mode = 2
+stretch_mode = 5
+
+[node name="Key Label" type="Label" parent="VBoxContainer/Main Container/Key Container/HBoxContainer" unique_id=906957559]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_sjwx3")
+text = "Key"
+label_settings = ExtResource("8_d62xh")
+horizontal_alignment = 1
+
+[node name="Key var Label" type="Label" parent="VBoxContainer/Main Container/Key Container" unique_id=865418704]
+layout_mode = 2
+text = "8m 50s"
+label_settings = ExtResource("3_wd6pi")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="VSeparator2" type="VSeparator" parent="VBoxContainer/Main Container" unique_id=2002599015]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.25
+
+[node name="Genres Container" type="HFlowContainer" parent="VBoxContainer/Main Container" unique_id=46872494]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_constants/h_separation = 10
+theme_override_constants/v_separation = 10
+alignment = 1
+
+[node name="Genre" type="Button" parent="VBoxContainer/Main Container/Genres Container" unique_id=509996570]
+layout_mode = 2
+text = "EDM"
+
+[node name="VSeparator3" type="VSeparator" parent="VBoxContainer/Main Container" unique_id=425708211]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.25
+
+[node name="Note Container" type="VBoxContainer" parent="VBoxContainer/Main Container" unique_id=1152063718]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 1.69
+alignment = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/Main Container/Note Container" unique_id=67316717]
+layout_mode = 2
+
+[node name="Note Icon" type="TextureRect" parent="VBoxContainer/Main Container/Note Container/HBoxContainer" unique_id=611951739]
+material = SubResource("ShaderMaterial_d62xh")
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+size_flags_vertical = 8
+texture = ExtResource("11_sk0yf")
+expand_mode = 2
+stretch_mode = 6
+
+[node name="Note Label" type="Label" parent="VBoxContainer/Main Container/Note Container/HBoxContainer" unique_id=1901926326]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+theme = ExtResource("2_sjwx3")
+text = "Personal Note"
+label_settings = ExtResource("8_d62xh")
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[node name="Note SubContainer" type="PanelContainer" parent="VBoxContainer/Main Container/Note Container" unique_id=850462938]
+custom_minimum_size = Vector2(163.1, 0)
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Note var Label" type="Label" parent="VBoxContainer/Main Container/Note Container/Note SubContainer" unique_id=1220629847]
+layout_mode = 2
+size_flags_vertical = 1
+text = "At 3:16 the bass drop is gonna start to ramp up, good time to fade in"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+text_overrun_behavior = 5
+
+[node name="Padding" type="Control" parent="VBoxContainer" unique_id=1163360951]
+layout_mode = 2
+size_flags_vertical = 3

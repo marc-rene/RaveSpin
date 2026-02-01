@@ -111,7 +111,7 @@ func Set_with_String(note = "A", scale = "Major"):
 
 
 
-func Set_with_Enum(note : m_notes_enum, scale : m_scales_enum):
+func _init(note : m_notes_enum, scale : m_scales_enum):
     m_note_index = note
     m_scale_index = scale
 
