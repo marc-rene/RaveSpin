@@ -1,7 +1,7 @@
 import re
 
 # What will we start looking for our array from? like 'const String_Array : Array[StringName] = ['
-START_SEARCH_PHRASE = "const Track_Origins_str: Array[StringName] = ["
+START_SEARCH_PHRASE = "const Track_Origins_str : Array[StringName] = ["
 ORIGINAL_VAR_NAME = "Track_Origins_str"
 
 # Where will we insert our Enum?
@@ -11,6 +11,7 @@ INJECTION_POINT_PHRASE = "### INSERT ENUM VERSION HERE ###"
 ENUM_VARIABLE_NAME = "Track_Origins_enum"
 
 TARGET_GD_FILE = "E_Track_Origins.gd"
+
 
 if __name__ == "__main__":
     with open(TARGET_GD_FILE, "r+") as gd_file:
@@ -48,7 +49,11 @@ if __name__ == "__main__":
                       skipping this one but your enum version of {ORIGINAL_VAR_NAME} wont be 1-to-1")
                 return ""
 
-            s = re.sub(r'[^A-Z0-9]+', '_', s)  # all spaces, punctuation, become '_'
+            s = re.sub(r'#', 's', s)  # all # becomes 's' becuase 'Sharp'
+            s = re.sub(r'[^A-Za-z0-9]+', '_', s)  # all spaces, punctuation, become '_'
+            
+            
+            
             return s.strip('_')
 
         enum_version = [to_const(x) for x in items]
@@ -57,20 +62,20 @@ if __name__ == "__main__":
         
         # Static function if we want to make a String -> Enum function
         translate_str_to_enum = f"""
-        static func {ORIGINAL_VAR_NAME}_to_{ENUM_VARIABLE_NAME}(string_version : String):
-        match string_version:\n"""
+static func {ORIGINAL_VAR_NAME}_to_{ENUM_VARIABLE_NAME}(string_version : String):
+    match string_version:\n"""
         
         for string_version in items:
-            translate_str_to_enum += f"\t\"{string_version}\":\n\t\treturn {ENUM_VARIABLE_NAME}.{to_const(string_version)}\n"
+            translate_str_to_enum += f"\t\t\"{string_version.upper()}\":\n\t\t\treturn {ENUM_VARIABLE_NAME}.{to_const(string_version)}\n"
         
-        translate_str_to_enum += f"\t_:\n\t\treturn {ENUM_VARIABLE_NAME}.{enum_version[0]}"
+        translate_str_to_enum += f"\t\t_:\n\t\t\treturn {ENUM_VARIABLE_NAME}.{enum_version[0]}"
         
         
         gd_file.seek(insertion_point + len(INJECTION_POINT_PHRASE))
         
         first_comment = f"\n\n# An Enum version of the {ORIGINAL_VAR_NAME} Array"
         gd_file.write(first_comment)
-        new_enum_var = f"\n{ENUM_VARIABLE_NAME} " + '{'
+        new_enum_var = f"\nenum {ENUM_VARIABLE_NAME} " + '{'
         gd_file.write(new_enum_var)
         
         index = 0
@@ -85,6 +90,8 @@ if __name__ == "__main__":
         
         gd_file.write('}\n\n')
         
+        gd_file.write(f"# A function to translate any {ORIGINAL_VAR_NAME} StringNames to {ENUM_VARIABLE_NAME} Enums\n")
+        gd_file.write(f"# NOTE: You must supply the UPPERCASE version...\n")
         gd_file.write(translate_str_to_enum)
         
         gd_file.close()

@@ -6,5 +6,5 @@
 line_spacing = 10.0
 paragraph_spacing = 10.0
 font = ExtResource("1_y7l68")
-font_size = 24
+font_size = 20
 font_color = Color(0.9647059, 0.96862745, 0.92156863, 1)

@@ -29,8 +29,6 @@ corner_radius_top_right = 10
 corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
 corner_detail = 4
-expand_margin_top = 3.0
-expand_margin_bottom = 3.0
 shadow_size = 5
 shadow_offset = Vector2(3, 3)
 
@@ -46,8 +44,6 @@ corner_radius_top_right = 5
 corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
 corner_detail = 4
-expand_margin_top = 3.0
-expand_margin_bottom = 3.0
 shadow_size = 10
 shadow_offset = Vector2(5, 5)
 
@@ -68,8 +64,6 @@ corner_radius_top_right = 15
 corner_radius_bottom_right = 15
 corner_radius_bottom_left = 15
 corner_detail = 4
-expand_margin_top = 3.0
-expand_margin_bottom = 3.0
 shadow_size = 5
 shadow_offset = Vector2(5, 5)
 
@@ -85,8 +79,6 @@ corner_radius_top_left = 12
 corner_radius_top_right = 12
 corner_radius_bottom_right = 12
 corner_radius_bottom_left = 12
-expand_margin_top = 3.0
-expand_margin_bottom = 3.0
 shadow_size = 5
 shadow_offset = Vector2(5, 5)
 

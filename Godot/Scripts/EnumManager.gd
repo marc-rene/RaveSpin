@@ -2,6 +2,7 @@ extends Object
 
 # use_music_rules just means will '#' become an 's' instead
 # Convert String from "7 digital music" to "DIGITAL_MUSIC_7"
+# DEPRECATED
 static func Convert_String_to_Enum(string_version : String, use_music_rules = true) -> String:
     var enum_str = string_version.to_upper().strip_edges()
     var is_letter = RegEx.new()

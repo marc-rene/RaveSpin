@@ -1,9 +1,8 @@
 @tool
 class_name AudioTrack extends Object
  
-enum E_Track_Origin_Type {LOCAL_STORAGE, SPOTIFY, APPLE_MUSIC, DEEZER, YT_MUISC, SOUNDCLOUD, ONEDRIVE, }
 
-static var All_Track_UID : Array[int]
+static var All_Track_UIDs : Array[int]
 static var Next_Available_UID = 7
 
 var UID : int
@@ -22,7 +21,8 @@ static var All_Track_Albums : Dictionary[int, StringName]
 static var Album_Arts : Dictionary[StringName, Texture2D]
 
 @export var Track_Genres : Array[StringName]
-static var All_Track_Genres : Dictionary[int, Array]
+# {Name of the Genre : [All various tracks UID's that are this genre] }
+static var All_Track_Genres : Dictionary[StringName, Array]
 
 @export var Track_BPM : float
 static var All_Track_BPMs : Dictionary[int, float]
@@ -36,11 +36,14 @@ var Track_Key : MusicKey
 
 static var All_Track_Keys : Dictionary[int, MusicKey]
 
-@export var Origin_Platform : E_Track_Origin_Type
-static var All_Track_Origin_Platforms : Dictionary[int, E_Track_Origin_Type]
+@export var Track_Origin_Platform : ETrackOrigins.Track_Origins_enum
+static var All_Track_Origin_Platforms : Dictionary[int, ETrackOrigins.Track_Origins_enum]
 
 @export var Favourite : bool
 static var All_Favourites : Array[int]
+
+@export var User_Sidenote : String
+static var All_User_Sidenotes : Dictionary[int, String]
 
 @export_tool_button("Set Details from AudioStream file", "Callable") 
 var attempt_populate = Attempt_Automatic_Data_Fill_From_Audio_File
@@ -81,7 +84,9 @@ func _init( p_audio_file : AudioStream = null,
             p_track_album : StringName = "NA",
             p_track_genres : Array[StringName] = [],
             p_track_bpm : float = 0,
-            p_track_key : MusicKey = MusicKey.Make_with_Enum(0,0)):
+            p_track_key : MusicKey = MusicKey.new(),
+            p_user_note : String = "N/A",
+            p_track_origin : ETrackOrigins.Track_Origins_enum = ETrackOrigins.Track_Origins_enum.OTHER):
     Audio_File = p_audio_file
     Track_Title = p_track_title.to_upper().strip_escapes().strip_edges()
     Track_Artist = p_track_artist.to_upper().strip_escapes().strip_edges()
@@ -89,25 +94,36 @@ func _init( p_audio_file : AudioStream = null,
     
     for genre in p_track_genres:
         # is unique? 
-        if not Track_Genres.has(genre.to_upper().strip_escapes().strip_edges()):
-            Track_Genres.append(genre.to_upper().strip_escapes().strip_edges())
-
+        if not Track_Genres.has(genre.strip_edges()):
+            Track_Genres.append(genre.strip_edges())
+            
     Track_BPM = p_track_bpm
     Track_Runtime_ms = int(p_audio_file.get_length() * 1000) 
     Track_Key = p_track_key
     Favourite = false
-
+    Track_Origin_Platform = p_track_origin
+    
+    if Utility.is_Valid(p_user_note) or p_user_note != "N/A":
+        User_Sidenote = p_user_note
+        
     UID = Next_Available_UID
     Next_Available_UID += 1
     
+    All_Track_UIDs.append(UID)
     All_Audio_Files[UID] = Audio_File
     All_Track_Titles[UID] = Track_Title
     All_Track_Artists[UID] = Track_Artist
     All_Track_Albums[UID] = Track_Album
-    All_Track_Genres[UID] = Track_Genres
+    
+    for genre in Track_Genres:
+        if All_Track_Genres[genre].has(UID) == false:
+             All_Track_Genres[genre].append(UID)
+            
     All_Track_BPMs[UID] = Track_BPM
     All_Track_Keys[UID] = Track_Key
-
+    
+    if Utility.is_Valid(p_user_note) or p_user_note != "N/A":
+        All_User_Sidenotes[UID] = User_Sidenote
 
 func Set_Favourite(We_Like = true):
     if We_Like and (All_Favourites.has(UID) == false):   
@@ -119,6 +135,7 @@ func Set_Favourite(We_Like = true):
 func Get_Album_Art() -> Texture2D:
     return Album_Arts[Track_Album] 
 
+
 func delete_track() -> void:
     All_Audio_Files.erase(UID)
     All_Track_Titles.erase(UID)
@@ -128,3 +145,5 @@ func delete_track() -> void:
     All_Track_BPMs.erase(UID)
     All_Track_Keys.erase(UID)
     All_Favourites.erase(UID)
+    All_User_Sidenotes.erase(UID)
+    All_Track_Origin_Platforms.erase(UID)
