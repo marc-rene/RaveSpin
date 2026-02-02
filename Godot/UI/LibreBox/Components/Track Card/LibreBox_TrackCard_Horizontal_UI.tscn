@@ -12,6 +12,7 @@
 [ext_resource type="Texture2D" uid="uid://bhwwtlbs4tlw4" path="res://Art/Icon/T_Metronome_Dark.png" id="9_ektni"]
 [ext_resource type="Texture2D" uid="uid://cqsv28mg6a6hs" path="res://Art/Icon/T_MusicNote_Dark.png" id="10_dn3r0"]
 [ext_resource type="Texture2D" uid="uid://2cy2nto57l4j" path="res://Art/Icon/T_Idea_Dark.png" id="11_sk0yf"]
+[ext_resource type="Texture2D" uid="uid://8s03ra8tp0hr" path="res://addons/godot-xr-tools/images/ring.png" id="13_vr170"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_sk0yf"]
 shader = ExtResource("6_ce06q")
@@ -39,24 +40,44 @@ void fragment() {
 shader = SubResource("Shader_sk0yf")
 shader_parameter/Unlit_Colour = Color(0.92941177, 0.68235296, 0.28627452, 1)
 
-[node name="LibreBoxTrackCardHorizontalUi" type="Button" unique_id=1906176276 node_paths=PackedStringArray("Album_Art_Texture_Holder")]
-anchors_preset = -1
-anchor_right = 1.4250001
-anchor_bottom = 0.34100002
+[node name="LibreBoxTrackCardHorizontalUi" type="Button" unique_id=1906176276 node_paths=PackedStringArray("Origin_Platform_Logo", "Album_Art_Texture_Holder", "Track_Name_Label", "Artist_Name_Label", "Album_Name_Label", "Track_Duration_Label", "Track_BPM_Label", "Track_Key_Label", "Track_Genres_Containers", "Note_Text_Container_Parent", "Note_Text_Label")]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
+grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme = ExtResource("2_sjwx3")
 icon_alignment = 1
 script = ExtResource("2_3g84n")
+Origin_Platform_Logo = NodePath("TextureRect")
 Album_Art_Texture_Holder = NodePath("VBoxContainer/Main Container/Album_Thumbnail")
+Track_Name_Label = NodePath("VBoxContainer/Main Container/Name Container/Title")
+Artist_Name_Label = NodePath("VBoxContainer/Main Container/Name Container/Artist")
+Album_Name_Label = NodePath("VBoxContainer/Main Container/Name Container/Album")
+Track_Duration_Label = NodePath("VBoxContainer/Main Container/Time Container/Time var Label")
+Track_BPM_Label = NodePath("VBoxContainer/Main Container/BPM Container/BPM var Label")
+Track_Key_Label = NodePath("VBoxContainer/Main Container/Key Container/Key var Label")
+Track_Genres_Containers = NodePath("VBoxContainer/Main Container/Genres Container")
+Note_Text_Container_Parent = NodePath("VBoxContainer/Main Container/Note Container")
+Note_Text_Label = NodePath("VBoxContainer/Main Container/Note Container/Note SubContainer/Note var Label")
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=131876838]
+z_index = 1
+layout_mode = 0
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("13_vr170")
+expand_mode = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=353847103]
 layout_mode = 1
-anchors_preset = -1
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_right = -5.0
 grow_horizontal = 2
 grow_vertical = 2
 alignment = 1
@@ -67,7 +88,6 @@ size_flags_vertical = 3
 
 [node name="Main Container" type="HBoxContainer" parent="VBoxContainer" unique_id=493159548]
 layout_mode = 2
-size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="Album_Thumbnail" type="TextureRect" parent="VBoxContainer/Main Container" unique_id=1212709508]
@@ -125,7 +145,7 @@ size_flags_vertical = 3
 
 [node name="Time Container" type="VBoxContainer" parent="VBoxContainer/Main Container" unique_id=900231582]
 layout_mode = 2
-size_flags_horizontal = 3
+size_flags_horizontal = 4
 size_flags_vertical = 3
 alignment = 1
 
@@ -144,7 +164,7 @@ stretch_mode = 5
 [node name="Time Label" type="Label" parent="VBoxContainer/Main Container/Time Container/HBoxContainer" unique_id=603793930]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
-size_flags_horizontal = 3
+size_flags_horizontal = 4
 theme = ExtResource("2_sjwx3")
 text = "Duration"
 label_settings = ExtResource("8_d62xh")
@@ -152,6 +172,7 @@ horizontal_alignment = 1
 
 [node name="Time var Label" type="Label" parent="VBoxContainer/Main Container/Time Container" unique_id=1123985816]
 layout_mode = 2
+size_flags_horizontal = 4
 text = "8m 50s"
 label_settings = ExtResource("3_wd6pi")
 horizontal_alignment = 1

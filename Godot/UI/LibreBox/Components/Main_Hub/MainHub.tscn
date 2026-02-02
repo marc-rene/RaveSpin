@@ -1,5 +1,7 @@
 [gd_scene format=3 uid="uid://dcbkr50uhlp42"]
 
+[ext_resource type="PackedScene" uid="uid://tjmox2whgvci" path="res://UI/LibreBox/Components/Track Card/LibreBox_TrackCard_Horizontal_UI.tscn" id="1_uhl31"]
+
 [node name="MainHub" type="Control" unique_id=15880144]
 layout_mode = 3
 anchors_preset = 15
@@ -7,6 +9,8 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 
 [node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=715879387]
 layout_mode = 1
@@ -18,17 +22,40 @@ grow_vertical = 2
 
 [node name="Label" type="Label" parent="VBoxContainer" unique_id=159718642]
 layout_mode = 2
+text = "HUB"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="Track 1 Container" type="HBoxContainer" parent="VBoxContainer" unique_id=1443123779]
 layout_mode = 2
+size_flags_vertical = 3
 
 [node name="Track 1 Label" type="Label" parent="VBoxContainer/Track 1 Container" unique_id=1508323206]
 layout_mode = 2
 text = "Track 1:"
 
+[node name="LibreBoxTrackCardHorizontalUi" parent="VBoxContainer/Track 1 Container" unique_id=1906176276 instance=ExtResource("1_uhl31")]
+layout_mode = 2
+
+[node name="TEMP Track 1 Waveform preview" type="Label" parent="VBoxContainer" unique_id=1169610779]
+layout_mode = 2
+text = "TEMP Track 1 Waveform preview
+[Imagine a big huge waveform of the audio here for this track]"
+horizontal_alignment = 1
+
+[node name="TEMP Track 2 Waveform preview" type="Label" parent="VBoxContainer" unique_id=1604904635]
+layout_mode = 2
+text = "Waveform preview
+[Imagine a big huge waveform of the audio here for this track]"
+horizontal_alignment = 1
+
 [node name="Track 2 Container" type="HBoxContainer" parent="VBoxContainer" unique_id=1873238329]
 layout_mode = 2
+size_flags_vertical = 3
 
 [node name="Track 2 Label" type="Label" parent="VBoxContainer/Track 2 Container" unique_id=1096811934]
 layout_mode = 2
 text = "Track 2:"
+
+[node name="LibreBoxTrackCardHorizontalUi" parent="VBoxContainer/Track 2 Container" unique_id=1400231825 instance=ExtResource("1_uhl31")]
+layout_mode = 2
