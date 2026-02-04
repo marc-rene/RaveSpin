@@ -1,5 +1,7 @@
 [gd_scene format=3 uid="uid://d3vfyxnqa8u8p"]
 
+[ext_resource type="PackedScene" uid="uid://tjmox2whgvci" path="res://UI/LibreBox/Components/Track Card/LibreBox_TrackCard_Horizontal_UI.tscn" id="1_o126k"]
+
 [node name="MainHub" type="Control" unique_id=15880144]
 layout_mode = 3
 anchors_preset = 15
@@ -15,3 +17,40 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="Track Selection Label" type="Label" parent="VBoxContainer" unique_id=845195395]
+layout_mode = 2
+text = "Track Select"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer" unique_id=664327245]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 4.0
+draw_focus_border = true
+horizontal_scroll_mode = 0
+vertical_scroll_mode = 2
+scroll_hint_mode = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/ScrollContainer" unique_id=812854021]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="LibreBoxTrackCardHorizontalUi" parent="VBoxContainer/ScrollContainer/VBoxContainer" unique_id=1906176276 instance=ExtResource("1_o126k")]
+layout_mode = 2
+
+[node name="LibreBoxTrackCardHorizontalUi2" parent="VBoxContainer/ScrollContainer/VBoxContainer" unique_id=39552997 instance=ExtResource("1_o126k")]
+layout_mode = 2
+
+[node name="LibreBoxTrackCardHorizontalUi3" parent="VBoxContainer/ScrollContainer/VBoxContainer" unique_id=135447770 instance=ExtResource("1_o126k")]
+layout_mode = 2
+
+[node name="LibreBoxTrackCardHorizontalUi4" parent="VBoxContainer/ScrollContainer/VBoxContainer" unique_id=619695612 instance=ExtResource("1_o126k")]
+layout_mode = 2
+
+[node name="LibreBoxTrackCardHorizontalUi5" parent="VBoxContainer/ScrollContainer/VBoxContainer" unique_id=1107582211 instance=ExtResource("1_o126k")]
+layout_mode = 2
+
+[node name="ADD ZE TRACK" type="Button" parent="VBoxContainer" unique_id=86367898]
+layout_mode = 2
+size_flags_vertical = 3
+text = "+ Add New Track"

@@ -59,3 +59,4 @@ text = "Track 2:"
 
 [node name="LibreBoxTrackCardHorizontalUi" parent="VBoxContainer/Track 2 Container" unique_id=1400231825 instance=ExtResource("1_uhl31")]
 layout_mode = 2
+size_flags_vertical = 1
