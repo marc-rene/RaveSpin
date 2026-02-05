@@ -3,8 +3,8 @@
 [ext_resource type="PackedScene" uid="uid://ohc5g4ss6tlg" path="res://GLOBAL/Player.tscn" id="1_hagq7"]
 [ext_resource type="Script" uid="uid://cjw3mllds5qjs" path="res://Scripts/arena.gd" id="1_lr07p"]
 [ext_resource type="PackedScene" uid="uid://c3iykg71k0su4" path="res://Components/DDJ-FLX4/DDJ-FLX4.tscn" id="3_lr07p"]
-[ext_resource type="AudioStream" uid="uid://byrbpqqwwknmt" path="res://Music/Sample Tracks/Crusy/Crusy - Love Is The Answer - 126bpm.mp3" id="4_dsr05"]
-[ext_resource type="AudioStream" uid="uid://yxq4jhvwh3o8" path="res://Music/Sample Tracks/Fake Blood/Fake Blood - I Think I Like It - 126bpm.wav" id="5_7t5kf"]
+[ext_resource type="AudioStream" uid="uid://byrbpqqwwknmt" path="res://Music/Sample Tracks (RAW)/Crusy/Crusy - Love Is The Answer - 126bpm.mp3" id="4_dsr05"]
+[ext_resource type="AudioStream" uid="uid://yxq4jhvwh3o8" path="res://Music/Sample Tracks (RAW)/Fake Blood/Fix your Accent/Audio/Fake Blood - I Think I Like It - 126bpm.wav" id="5_7t5kf"]
 [ext_resource type="PackedScene" uid="uid://dh8cyr4ti48fi" path="res://UI/LibreBox/Librebox_Scene.tscn" id="6_7t5kf"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_dsr05"]

@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="AudioTrackResource" format=3 uid="uid://bs2s2xeo6xmkj"]
+
+[ext_resource type="AudioStream" uid="uid://yxq4jhvwh3o8" path="res://Music/Sample Tracks (RAW)/Fake Blood/Fix your Accent/Audio/Fake Blood - I Think I Like It - 126bpm.wav" id="1_5u6vi"]
+[ext_resource type="Script" uid="uid://mpb1qv55cpw2" path="res://GLOBAL/AudioTrack_Resource.gd" id="1_tvt3o"]
+[ext_resource type="Texture2D" uid="uid://b1sfljn7itdyx" path="res://Music/Sample Tracks (RAW)/Fake Blood/Fix your Accent/Album Art/T_FakeBlood_FixYourAccent_AlbumArt.jpg" id="2_xsxme"]
+
+[resource]
+script = ExtResource("1_tvt3o")
+Audio_File = ExtResource("1_5u6vi")
+Track_Title = "I Think I Like it"
+Track_Artist = &"Fake Blood"
+Track_Album = &"Fix Your Accent"
+Track_Album_Art = ExtResource("2_xsxme")
+Track_Genres = Array[StringName]([&"electronic", &"house", &"progressive house"])
+Track_BPM = 126.0
+Track_Key_Note = 1
+Track_Scale = 2
+Track_Origin_Platform = 1
+metadata/_custom_type_script = "uid://mpb1qv55cpw2"

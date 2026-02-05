@@ -1,5 +1,6 @@
 @tool
-class_name MusicKey extends Object
+class_name EMusicKey 
+extends Object
 
 var m_note_index : m_notes_enum
 var m_scale_index : m_scales_enum
@@ -71,7 +72,7 @@ func GetScale(capitalise = false) -> StringName:
     return m_scales_str[m_scale_index] if capitalise else m_scales_str[m_scale_index]
 
 
-func Equals(other_music_key : MusicKey):
+func Equals(other_music_key : EMusicKey):
     return  (other_music_key.m_note_index == m_note_index) \
     and     (other_music_key.m_scale_index == m_scale_index) 
 
@@ -118,20 +119,20 @@ func _init(note : m_notes_enum = m_notes_enum.C, scale : m_scales_enum = m_scale
     m_scale_index = scale
 
 
-static func Make_with_Enum(note : m_notes_enum, scale : m_scales_enum) -> MusicKey:
-    var key = MusicKey
+static func Make_with_Enum(note : m_notes_enum, scale : m_scales_enum) -> EMusicKey:
+    var key = EMusicKey
     key.m_note_index = note
     key.m_scale_index = scale
     
     return key
 
 
-static func String_to_MusicKey(music_key_string : String) -> MusicKey:
+static func String_to_MusicKey(music_key_string : String) -> EMusicKey:
     var split_point = music_key_string.find(" ")
     var note = music_key_string.substr(0, (split_point + 1))
     var scale = music_key_string.substr(split_point)
     
-    var NewKey = MusicKey.new()
+    var NewKey = EMusicKey.new()
     NewKey.Set_with_String(note, scale)
     
     return NewKey

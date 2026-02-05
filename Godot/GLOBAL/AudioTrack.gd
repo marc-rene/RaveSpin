@@ -1,5 +1,5 @@
 @tool
-class_name AudioTrack extends Object
+class_name AudioTrack extends Resource
  
 
 static var All_Track_UIDs : Array[int]
@@ -30,11 +30,11 @@ static var All_Track_BPMs : Dictionary[int, float]
 @export var Track_Runtime_ms : int
 # Dont need a tracker for this because we can defer this from All_Audio_Files.length()
 
-@export var Track_Key_Note : MusicKey.m_notes_enum
-@export var Track_Scale : MusicKey.m_scales_enum
-var Track_Key : MusicKey
+@export var Track_Key_Note : EMusicKey.m_notes_enum
+@export var Track_Scale : EMusicKey.m_scales_enum
+var Track_Key : EMusicKey
 
-static var All_Track_Keys : Dictionary[int, MusicKey]
+static var All_Track_Keys : Dictionary[int, EMusicKey]
 
 @export var Track_Origin_Platform : ETrackOrigins.Track_Origins_enum
 static var All_Track_Origin_Platforms : Dictionary[int, ETrackOrigins.Track_Origins_enum]
@@ -84,7 +84,7 @@ func _init( p_audio_file : AudioStream = null,
             p_track_album : StringName = "NA",
             p_track_genres : Array[StringName] = [],
             p_track_bpm : float = 0,
-            p_track_key : MusicKey = MusicKey.new(),
+            p_track_key : EMusicKey = EMusicKey.new(),
             p_user_note : String = "N/A",
             p_track_origin : ETrackOrigins.Track_Origins_enum = ETrackOrigins.Track_Origins_enum.OTHER):
     Audio_File = p_audio_file
@@ -134,6 +134,8 @@ func Set_Favourite(We_Like = true):
 
 func Get_Album_Art() -> Texture2D:
     return Album_Arts[Track_Album] 
+
+
 
 
 func delete_track() -> void:

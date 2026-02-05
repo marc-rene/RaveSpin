@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://d3vfyxnqa8u8p"]
 
 [ext_resource type="PackedScene" uid="uid://tjmox2whgvci" path="res://UI/LibreBox/Components/Track Card/LibreBox_TrackCard_Horizontal_UI.tscn" id="1_o126k"]
+[ext_resource type="Theme" uid="uid://ds0dxmwlq5niw" path="res://Art/Themes/Default_Theme.tres" id="2_hu467"]
 
 [node name="MainHub" type="Control" unique_id=15880144]
 layout_mode = 3
@@ -11,6 +12,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=715879387]
+clip_contents = true
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -20,10 +22,15 @@ grow_vertical = 2
 
 [node name="Track Selection Label" type="Label" parent="VBoxContainer" unique_id=845195395]
 layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.4
 text = "Track Select"
 
 [node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer" unique_id=664327245]
+clip_contents = false
+custom_minimum_size = Vector2(1125, 0)
 layout_mode = 2
+size_flags_horizontal = 4
 size_flags_vertical = 3
 size_flags_stretch_ratio = 4.0
 draw_focus_border = true
@@ -34,6 +41,7 @@ scroll_hint_mode = 1
 [node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/ScrollContainer" unique_id=812854021]
 layout_mode = 2
 size_flags_horizontal = 3
+alignment = 1
 
 [node name="LibreBoxTrackCardHorizontalUi" parent="VBoxContainer/ScrollContainer/VBoxContainer" unique_id=1906176276 instance=ExtResource("1_o126k")]
 layout_mode = 2
@@ -51,6 +59,9 @@ layout_mode = 2
 layout_mode = 2
 
 [node name="ADD ZE TRACK" type="Button" parent="VBoxContainer" unique_id=86367898]
+z_index = 2
 layout_mode = 2
 size_flags_vertical = 3
+theme = ExtResource("2_hu467")
+theme_override_font_sizes/font_size = 44
 text = "+ Add New Track"
