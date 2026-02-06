@@ -10,4 +10,3 @@ extends Resource
 @export var Album_Artwork : CompressedTexture2D
 
 @export var MusicBrainz_ID : StringName
-

@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="Song" format=3 uid="uid://c6lxgtataduv2"]
+
+[ext_resource type="Script" uid="uid://djtjflwqyy3me" path="res://GLOBAL/Audio/Artist.gd" id="1_jbxs4"]
+[ext_resource type="Script" uid="uid://b5ydxvk0vbgsi" path="res://GLOBAL/Audio/Song.gd" id="2_frt83"]
+[ext_resource type="Resource" uid="uid://b3igw5ny5uf5e" path="res://Music/Artists/FakeBlood_Artist.tres" id="2_s6g5e"]
+[ext_resource type="Resource" uid="uid://cfe83hqyxqcqh" path="res://Music/Albums/FixYourAccent_FakeBlood_Album.tres" id="3_51gvo"]
+
+[resource]
+script = ExtResource("2_frt83")
+Main_Artist = ExtResource("2_s6g5e")
+Song_Album = ExtResource("3_51gvo")
+Song_Genres = Array[int]([203, 212, 215])
+metadata/_custom_type_script = "uid://b5ydxvk0vbgsi"
