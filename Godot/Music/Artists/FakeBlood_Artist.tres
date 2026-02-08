@@ -7,4 +7,5 @@
 script = ExtResource("1_5b84q")
 Artist_Name = &"Fake Blood"
 Artist_Profile_Picture = ExtResource("1_b00ir")
+MusicBrainz_ID = &"b5232ddf-8e3c-4bde-a63f-47e88cb8ae11"
 metadata/_custom_type_script = "uid://djtjflwqyy3me"

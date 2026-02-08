@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="Album" format=3 uid="uid://bvsg4jn7223sy"]
+
+[ext_resource type="Resource" uid="uid://c6oyn7t16g1a5" path="res://Music/Artists/Kino_Artist.tres" id="1_lxs52"]
+[ext_resource type="Texture2D" uid="uid://c7w0so2co3i7m" path="res://Music/Sample Tracks (RAW)/Kino/МОЛНИИ ИНДРЫ/Album Art/T_Kino_МОЛНИИИНДРЫ.jpg" id="1_qu854"]
+[ext_resource type="Script" uid="uid://dypxvnjocgur7" path="res://GLOBAL/Audio/Album.gd" id="3_lvybp"]
+
+[resource]
+script = ExtResource("3_lvybp")
+Album_Name = &"Indra\'s Lightning"
+Album_Artist = ExtResource("1_lxs52")
+Album_Artwork = ExtResource("1_qu854")
+MusicBrainz_ID = &"671b39a5-b38b-4081-9326-7100bbbc7ad3"
+metadata/_custom_type_script = "uid://dypxvnjocgur7"

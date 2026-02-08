@@ -56,6 +56,10 @@ var Track_Key: EMusicKey
 @export var User_Sidenote : String
 
 
+# This will make future Metadata retrieval easier
+@export var MusicBrainz_ID: StringName
+
+
 func Attempt_Automatic_Data_Fill_From_Audio_File():
     print("Attempting grab data from file")
     if Audio_File == null:
@@ -94,7 +98,9 @@ func _init( p_audio_file : AudioStream = null,
             p_track_bpm : float = 0,
             p_track_key : EMusicKey = EMusicKey.new(),
             p_user_note : String = "N/A",
-            p_track_origin : ETrackOrigins.Track_Origins_enum = ETrackOrigins.Track_Origins_enum.OTHER):
+            p_track_origin : ETrackOrigins.Track_Origins_enum = ETrackOrigins.Track_Origins_enum.OTHER,
+            p_MusicBrainz_ID = "N/A"
+            ):
     Audio_File = p_audio_file
     Song_Title = p_track_title.to_upper().strip_escapes().strip_edges()
     Main_Artist = p_track_artist.to_upper().strip_escapes().strip_edges()

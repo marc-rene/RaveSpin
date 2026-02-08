@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="Song" format=3 uid="uid://xxcilj35qitb"]
+
+[ext_resource type="AudioStream" uid="uid://d4k1rk6uybehl" path="res://Music/Sample Tracks (RAW)/Kino/МОЛНИИ ИНДРЫ/Audio/Звезда (2025) - Kino.mp3" id="1_g51ak"]
+[ext_resource type="Script" uid="uid://djtjflwqyy3me" path="res://GLOBAL/Audio/Artist.gd" id="1_w7qjf"]
+[ext_resource type="Script" uid="uid://b5ydxvk0vbgsi" path="res://GLOBAL/Audio/Song.gd" id="2_1pg2a"]
+[ext_resource type="Resource" uid="uid://c6oyn7t16g1a5" path="res://Music/Artists/Kino_Artist.tres" id="3_t64b7"]
+[ext_resource type="Resource" uid="uid://bvsg4jn7223sy" path="res://Music/Albums/МолнииИндры_Kino_Album.tres" id="4_yjh2p"]
+
+[resource]
+script = ExtResource("2_1pg2a")
+Song_Title = &"Star (Звезда)"
+Main_Artist = ExtResource("3_t64b7")
+Song_Album = ExtResource("4_yjh2p")
+Audio_File = ExtResource("1_g51ak")
+Track_BPM = 81.0
+Track_Scale = 2
+Song_Origin_Platform = 1
+metadata/_custom_type_script = "uid://b5ydxvk0vbgsi"

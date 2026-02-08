@@ -17,5 +17,6 @@ Track_BPM = 126.0
 Track_Key_Note = 1
 Track_Scale = 2
 Song_Origin_Platform = 1
+Favourite = true
 User_Sidenote = "Build up from 46s -> 61s"
 metadata/_custom_type_script = "uid://b5ydxvk0vbgsi"

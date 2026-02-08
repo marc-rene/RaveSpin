@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="Song" format=3 uid="uid://bheopdi2l1chy"]
+
+[ext_resource type="Script" uid="uid://djtjflwqyy3me" path="res://GLOBAL/Audio/Artist.gd" id="1_4j6oa"]
+[ext_resource type="AudioStream" uid="uid://lnuxp12i0kjs" path="res://Music/Sample Tracks (RAW)/Kino/МОЛНИИ ИНДРЫ/Audio/Ты мог быть героем (2025).mp3" id="1_rw8lu"]
+[ext_resource type="Script" uid="uid://b5ydxvk0vbgsi" path="res://GLOBAL/Audio/Song.gd" id="2_256oj"]
+[ext_resource type="Resource" uid="uid://c6oyn7t16g1a5" path="res://Music/Artists/Kino_Artist.tres" id="3_2qbvd"]
+[ext_resource type="Resource" uid="uid://bvsg4jn7223sy" path="res://Music/Albums/МолнииИндры_Kino_Album.tres" id="4_qhdlv"]
+
+[resource]
+script = ExtResource("2_256oj")
+Song_Title = &"You could\'ve been a Hero (Ты Мог Быть Героем)"
+Main_Artist = ExtResource("3_2qbvd")
+Song_Album = ExtResource("4_qhdlv")
+Audio_File = ExtResource("1_rw8lu")
+Track_BPM = 141.0
+Track_Key_Note = 4
+Track_Scale = 3
+Song_Origin_Platform = 1
+Favourite = true
+metadata/_custom_type_script = "uid://b5ydxvk0vbgsi"

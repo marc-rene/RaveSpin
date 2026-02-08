@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="Song" format=3 uid="uid://mg5sqohmss3k"]
+
+[ext_resource type="AudioStream" uid="uid://4y1awqoreqhm" path="res://Music/Sample Tracks (RAW)/Daft Punk/Homework/Audio/Daft Punk - Around the World (Official Audio).mp3" id="1_f7gwa"]
+[ext_resource type="Script" uid="uid://djtjflwqyy3me" path="res://GLOBAL/Audio/Artist.gd" id="2_rysw4"]
+[ext_resource type="Resource" uid="uid://gj2xf04y1cap" path="res://Music/Artists/DaftPunk_Artist.tres" id="3_yjsrm"]
+[ext_resource type="Resource" uid="uid://n6phdwswuwe0" path="res://Music/Albums/Homework_DaftPunk_Album.tres" id="4_ggejx"]
+[ext_resource type="Script" uid="uid://b5ydxvk0vbgsi" path="res://GLOBAL/Audio/Song.gd" id="5_f4j4j"]
+
+[resource]
+script = ExtResource("5_f4j4j")
+Song_Title = &"Around The World"
+Main_Artist = ExtResource("3_yjsrm")
+Song_Album = ExtResource("4_ggejx")
+Audio_File = ExtResource("1_f7gwa")
+Track_BPM = 121.0
+Track_Key_Note = 7
+Track_Scale = 2
+Song_Origin_Platform = 1
+Favourite = true
+metadata/_custom_type_script = "uid://b5ydxvk0vbgsi"

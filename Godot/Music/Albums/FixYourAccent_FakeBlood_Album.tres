@@ -9,4 +9,5 @@ script = ExtResource("1_ew0ov")
 Album_Name = &"Fix Your Accent"
 Album_Artist = ExtResource("1_42d48")
 Album_Artwork = ExtResource("2_fuple")
+MusicBrainz_ID = &"cad5560a-849a-4505-a44b-0b4b0c38ba5a"
 metadata/_custom_type_script = "uid://dypxvnjocgur7"

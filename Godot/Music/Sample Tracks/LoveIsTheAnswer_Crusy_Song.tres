@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="Song" format=3 uid="uid://d1ljxjynpwsnm"]
+
+[ext_resource type="AudioStream" uid="uid://byrbpqqwwknmt" path="res://Music/Sample Tracks (RAW)/Crusy/Love is the Answer/Audio/Crusy - Love Is The Answer - 126bpm.mp3" id="1_3v82r"]
+[ext_resource type="Script" uid="uid://djtjflwqyy3me" path="res://GLOBAL/Audio/Artist.gd" id="1_d1fjh"]
+[ext_resource type="Script" uid="uid://b5ydxvk0vbgsi" path="res://GLOBAL/Audio/Song.gd" id="2_hdasb"]
+[ext_resource type="Resource" uid="uid://mebk8tpbkv3y" path="res://Music/Artists/Crusy_Artist.tres" id="2_vgiis"]
+[ext_resource type="Resource" uid="uid://dqt4po2bguh75" path="res://Music/Albums/LoveIsTheAnswer_Crusy_Album.tres" id="3_3v82r"]
+
+[resource]
+script = ExtResource("2_hdasb")
+Song_Title = &"Love is the Answer"
+Main_Artist = ExtResource("2_vgiis")
+Song_Album = ExtResource("3_3v82r")
+Audio_File = ExtResource("1_3v82r")
+Track_BPM = 126.0
+Track_Key_Note = 8
+Track_Scale = 3
+Song_Origin_Platform = 1
+metadata/_custom_type_script = "uid://b5ydxvk0vbgsi"

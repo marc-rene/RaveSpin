@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="Artist" format=3 uid="uid://gj2xf04y1cap"]
+
+[ext_resource type="Texture2D" uid="uid://ii2kf6ewbo05" path="res://Music/Sample Tracks (RAW)/Daft Punk/T_DaftPunk_Logo.jpg" id="1_bbyxg"]
+[ext_resource type="Script" uid="uid://djtjflwqyy3me" path="res://GLOBAL/Audio/Artist.gd" id="2_0sxsk"]
+
+[resource]
+script = ExtResource("2_0sxsk")
+Artist_Name = &"Daft Punk"
+Artist_Profile_Picture = ExtResource("1_bbyxg")
+MusicBrainz_ID = &"056e4f3e-d505-4dad-8ec1-d04f521cbb56"
+metadata/_custom_type_script = "uid://djtjflwqyy3me"

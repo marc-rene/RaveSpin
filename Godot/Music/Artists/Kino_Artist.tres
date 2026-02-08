@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="Artist" format=3 uid="uid://c6oyn7t16g1a5"]
+
+[ext_resource type="Texture2D" uid="uid://dxwajcnn30hmf" path="res://Music/Sample Tracks (RAW)/Kino/T_Kino_Logo.png" id="1_u143i"]
+[ext_resource type="Script" uid="uid://djtjflwqyy3me" path="res://GLOBAL/Audio/Artist.gd" id="2_io57s"]
+
+[resource]
+script = ExtResource("2_io57s")
+Artist_Name = &"Kino"
+Artist_Profile_Picture = ExtResource("1_u143i")
+MusicBrainz_ID = &"064db6e8-fdfb-4acb-a327-fc2de75b37de"
+metadata/_custom_type_script = "uid://djtjflwqyy3me"

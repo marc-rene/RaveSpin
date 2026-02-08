@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="Song" format=3 uid="uid://d2cvgfe8thes1"]
+
+[ext_resource type="AudioStream" uid="uid://djkyqj81mlyy4" path="res://Music/Sample Tracks (RAW)/Kino/МОЛНИИ ИНДРЫ/Audio/Фильмы (2025) - Kino.mp3" id="1_nnp21"]
+[ext_resource type="Script" uid="uid://djtjflwqyy3me" path="res://GLOBAL/Audio/Artist.gd" id="1_prg8r"]
+[ext_resource type="Script" uid="uid://b5ydxvk0vbgsi" path="res://GLOBAL/Audio/Song.gd" id="2_lfgqt"]
+[ext_resource type="Resource" uid="uid://c6oyn7t16g1a5" path="res://Music/Artists/Kino_Artist.tres" id="3_3a375"]
+[ext_resource type="Resource" uid="uid://bvsg4jn7223sy" path="res://Music/Albums/МолнииИндры_Kino_Album.tres" id="4_jdaij"]
+
+[resource]
+script = ExtResource("2_lfgqt")
+Song_Title = &"The Movies"
+Main_Artist = ExtResource("3_3a375")
+Song_Album = ExtResource("4_jdaij")
+Audio_File = ExtResource("1_nnp21")
+Track_BPM = 110.0
+Track_Key_Note = 11
+Track_Scale = 3
+Song_Origin_Platform = 1
+metadata/_custom_type_script = "uid://b5ydxvk0vbgsi"

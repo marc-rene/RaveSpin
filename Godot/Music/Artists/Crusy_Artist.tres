@@ -1,11 +1,11 @@
 [gd_resource type="Resource" script_class="Artist" format=3 uid="uid://mebk8tpbkv3y"]
 
-[ext_resource type="Texture2D" uid="uid://bsnjnses15lfb" path="res://Art/Icon/T_RaveSpinHeader_Light.png" id="1_42so7"]
+[ext_resource type="Texture2D" uid="uid://wecwoh64mipi" path="res://Music/Sample Tracks (RAW)/Crusy/Love is the Answer/Album Art/T_Crusy_LoveIsTheAnswer_AlbumArt.jpg" id="1_42so7"]
 [ext_resource type="Script" uid="uid://djtjflwqyy3me" path="res://GLOBAL/Audio/Artist.gd" id="2_hg32f"]
 
 [resource]
 script = ExtResource("2_hg32f")
 Artist_Name = &"Crusy"
 Artist_Profile_Picture = ExtResource("1_42so7")
-MusicBrainz_ID = null
+MusicBrainz_ID = &"063a13b1-e4fd-4315-83d8-bf0ff495d55f"
 metadata/_custom_type_script = "uid://djtjflwqyy3me"

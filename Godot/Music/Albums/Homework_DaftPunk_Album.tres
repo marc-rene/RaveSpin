@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="Album" format=3 uid="uid://n6phdwswuwe0"]
+
+[ext_resource type="Resource" uid="uid://gj2xf04y1cap" path="res://Music/Artists/DaftPunk_Artist.tres" id="1_3j50l"]
+[ext_resource type="Texture2D" uid="uid://dy1evprevu6f8" path="res://Music/Sample Tracks (RAW)/Daft Punk/Homework/Album Art/T_DaftPunk_Homework_AlbumArt.jpg" id="2_3j50l"]
+[ext_resource type="Script" uid="uid://dypxvnjocgur7" path="res://GLOBAL/Audio/Album.gd" id="3_gfmeh"]
+
+[resource]
+script = ExtResource("3_gfmeh")
+Album_Name = &"Homework"
+Album_Artist = ExtResource("1_3j50l")
+Album_Artwork = ExtResource("2_3j50l")
+MusicBrainz_ID = &"00054665-89fa-33d5-a8f0-1728ea8c32c3"
+metadata/_custom_type_script = "uid://dypxvnjocgur7"

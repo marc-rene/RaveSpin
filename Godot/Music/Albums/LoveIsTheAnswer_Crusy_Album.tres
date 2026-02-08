@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="Album" format=3 uid="uid://dqt4po2bguh75"]
+
+[ext_resource type="Resource" uid="uid://mebk8tpbkv3y" path="res://Music/Artists/Crusy_Artist.tres" id="1_csolh"]
+[ext_resource type="Texture2D" uid="uid://wecwoh64mipi" path="res://Music/Sample Tracks (RAW)/Crusy/Love is the Answer/Album Art/T_Crusy_LoveIsTheAnswer_AlbumArt.jpg" id="2_5btvy"]
+[ext_resource type="Script" uid="uid://dypxvnjocgur7" path="res://GLOBAL/Audio/Album.gd" id="3_0xu1r"]
+
+[resource]
+script = ExtResource("3_0xu1r")
+Album_Name = &"Love is the Answer (Single)"
+Album_Artist = ExtResource("1_csolh")
+Album_Artwork = ExtResource("2_5btvy")
+metadata/_custom_type_script = "uid://dypxvnjocgur7"

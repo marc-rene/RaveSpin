@@ -7,4 +7,5 @@
 script = ExtResource("1_nexwv")
 Artist_Name = &"Death Grips"
 Artist_Profile_Picture = ExtResource("1_b1xah")
+MusicBrainz_ID = &"f9133036-ab3d-4e97-bd11-7a2c98ad148a"
 metadata/_custom_type_script = "uid://djtjflwqyy3me"
