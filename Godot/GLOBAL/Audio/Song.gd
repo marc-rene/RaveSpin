@@ -2,6 +2,8 @@
 class_name Song
 extends Resource
 
+# Where will all of our Music Metadatas be saved to?
+const ROOT_MUSIC_DIR = "res://Music/Song Metadatas/"
 
 # Name??
 @export var Song_Title: StringName
@@ -41,8 +43,11 @@ extends Resource
 
 
 # Derived from Track_Key_Note & Track_Scale
-var Track_Key: EMusicKey
+var Track_Key: EMusicKey = EMusicKey.new(Track_Key_Note, Track_Scale)
 
+# Sometimes Track_Key doesn't updated properly with Track_Key_Note & Track_Scale
+func Refresh_Music_Key():
+    Track_Key = EMusicKey.new(Track_Key_Note, Track_Scale)
 
 # Where did you get this song from? (ONLY LOCAL IS SUPPORTED FOR NOW)
 @export var Song_Origin_Platform: ETrackOrigins.Track_Origins_enum
@@ -58,6 +63,13 @@ var Track_Key: EMusicKey
 
 # This will make future Metadata retrieval easier
 @export var MusicBrainz_ID: StringName
+
+
+
+
+func _ready():
+    if Track_Key == null and Track_Key_Note != null and Track_Scale == null:
+        Track_Key = EMusicKey.new(Track_Key_Note, Track_Scale)
 
 
 func Attempt_Automatic_Data_Fill_From_Audio_File():
@@ -90,29 +102,38 @@ func Attempt_Automatic_Data_Fill_From_Audio_File():
 var attempt_populate = Attempt_Automatic_Data_Fill_From_Audio_File
 
 
-func _init( p_audio_file : AudioStream = null,
-            p_track_title : String = "N/A",
-            p_track_artist : Artist = null,
-            p_track_album : Album = null,
-            p_track_genres : Array[EGenre.m_MusicGenres_enum] = [],
-            p_track_bpm : float = 0,
-            p_track_key : EMusicKey = EMusicKey.new(),
-            p_user_note : String = "N/A",
-            p_track_origin : ETrackOrigins.Track_Origins_enum = ETrackOrigins.Track_Origins_enum.OTHER,
-            p_MusicBrainz_ID = "N/A"
-            ):
-    Audio_File = p_audio_file
-    Song_Title = p_track_title.to_upper().strip_escapes().strip_edges()
-    Main_Artist = p_track_artist.to_upper().strip_escapes().strip_edges()
-    Song_Album = p_track_album
-    
-    for genre in p_track_genres:
-        # is unique? 
-        if not Song_Genres.has(genre):
-            Song_Genres.append(genre)
-            
-    Track_BPM = p_track_bpm
-    Track_Key = p_track_key
-    Favourite = false
-    User_Sidenote = p_user_note
-    Song_Origin_Platform = p_track_origin
+#func _init( p_audio_file : AudioStream = null,
+            #p_track_title : String = "N/A",
+            #p_track_artist : Artist = null,
+            #p_track_album : Album = null,
+            #p_track_genres : Array[EGenre.m_MusicGenres_enum] = [],
+            #p_track_bpm : float = 0,
+            #p_track_key : EMusicKey = EMusicKey.new(),
+            #p_user_note : String = "N/A",
+            #p_track_origin : ETrackOrigins.Track_Origins_enum = ETrackOrigins.Track_Origins_enum.OTHER,
+            #p_MusicBrainz_ID = "N/A"
+            #):
+    #Audio_File = p_audio_file
+    #Song_Title = p_track_title.to_upper().strip_escapes().strip_edges()
+    #Main_Artist = p_track_artist.to_upper().strip_escapes().strip_edges()
+    #Song_Album = p_track_album
+    #
+    #for genre in p_track_genres:
+        ## is unique? 
+        #if not Song_Genres.has(genre):
+            #Song_Genres.append(genre)
+            #
+    #Track_BPM = p_track_bpm
+    #Track_Key = p_track_key
+    #Track_Key_Note = p_track_key.m_note_index
+    #Track_Scale = p_track_key.m_scale_index
+    #
+    #Favourite = false
+    #User_Sidenote = p_user_note
+    #Song_Origin_Platform = p_track_origin
+
+        
+        
+# Get the "Res://..." path to all songs
+static func Get_All_Song_Paths() -> PackedStringArray :
+    return ResourceLoader.list_directory("res://Music/Song Metadatas/")

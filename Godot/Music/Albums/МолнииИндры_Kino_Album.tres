@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="Album" format=3 uid="uid://bvsg4jn7223sy"]
 
 [ext_resource type="Resource" uid="uid://c6oyn7t16g1a5" path="res://Music/Artists/Kino_Artist.tres" id="1_lxs52"]
-[ext_resource type="Texture2D" uid="uid://c7w0so2co3i7m" path="res://Music/Sample Tracks (RAW)/Kino/МОЛНИИ ИНДРЫ/Album Art/T_Kino_МОЛНИИИНДРЫ.jpg" id="1_qu854"]
+[ext_resource type="Texture2D" uid="uid://c7w0so2co3i7m" path="res://Music/Song Data/Kino/МОЛНИИ ИНДРЫ/Album Art/T_Kino_МОЛНИИИНДРЫ.jpg" id="1_qu854"]
 [ext_resource type="Script" uid="uid://dypxvnjocgur7" path="res://GLOBAL/Audio/Album.gd" id="3_lvybp"]
 
 [resource]

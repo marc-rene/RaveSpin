@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="Artist" format=3 uid="uid://gj2xf04y1cap"]
 
-[ext_resource type="Texture2D" uid="uid://ii2kf6ewbo05" path="res://Music/Sample Tracks (RAW)/Daft Punk/T_DaftPunk_Logo.jpg" id="1_bbyxg"]
+[ext_resource type="Texture2D" uid="uid://ii2kf6ewbo05" path="res://Music/Song Data/Daft Punk/T_DaftPunk_Logo.jpg" id="1_bbyxg"]
 [ext_resource type="Script" uid="uid://djtjflwqyy3me" path="res://GLOBAL/Audio/Artist.gd" id="2_0sxsk"]
 
 [resource]

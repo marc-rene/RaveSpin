@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="Album" format=3 uid="uid://n6phdwswuwe0"]
 
 [ext_resource type="Resource" uid="uid://gj2xf04y1cap" path="res://Music/Artists/DaftPunk_Artist.tres" id="1_3j50l"]
-[ext_resource type="Texture2D" uid="uid://dy1evprevu6f8" path="res://Music/Sample Tracks (RAW)/Daft Punk/Homework/Album Art/T_DaftPunk_Homework_AlbumArt.jpg" id="2_3j50l"]
+[ext_resource type="Texture2D" uid="uid://dy1evprevu6f8" path="res://Music/Song Data/Daft Punk/Homework/Album Art/T_DaftPunk_Homework_AlbumArt.jpg" id="2_3j50l"]
 [ext_resource type="Script" uid="uid://dypxvnjocgur7" path="res://GLOBAL/Audio/Album.gd" id="3_gfmeh"]
 
 [resource]

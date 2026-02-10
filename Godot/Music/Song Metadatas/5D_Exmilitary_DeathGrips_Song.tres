@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="Song" format=3 uid="uid://bo2cc3nokf6qd"]
+
+[ext_resource type="AudioStream" uid="uid://dc63ctah0ho33" path="res://Music/Song Data/Death Grips/Exmilitary/Audio/Death Grips - Exmilitary - 9 - 5D.mp3" id="1_0tyea"]
+[ext_resource type="Script" uid="uid://djtjflwqyy3me" path="res://GLOBAL/Audio/Artist.gd" id="2_yqkxs"]
+[ext_resource type="Resource" uid="uid://60crt6v1xddt" path="res://Music/Artists/DeathGrips_Artist.tres" id="3_v1nt2"]
+[ext_resource type="Resource" uid="uid://mjuhnagbq0y7" path="res://Music/Albums/Exmilitary_DeathGrips_Album.tres" id="4_3xq31"]
+[ext_resource type="Script" uid="uid://b5ydxvk0vbgsi" path="res://GLOBAL/Audio/Song.gd" id="5_e4k4r"]
+
+[resource]
+script = ExtResource("5_e4k4r")
+Song_Title = &"5D"
+Main_Artist = ExtResource("3_v1nt2")
+Song_Album = ExtResource("4_3xq31")
+Song_Genres = Array[int]([286, 244, 203, 234, 291])
+Audio_File = ExtResource("1_0tyea")
+Track_BPM = 104.0
+Track_Key_Note = 10
+Track_Scale = 2
+Song_Origin_Platform = 1
+metadata/_custom_type_script = "uid://b5ydxvk0vbgsi"

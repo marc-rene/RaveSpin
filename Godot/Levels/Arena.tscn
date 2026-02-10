@@ -3,9 +3,11 @@
 [ext_resource type="PackedScene" uid="uid://ohc5g4ss6tlg" path="res://GLOBAL/Player.tscn" id="1_hagq7"]
 [ext_resource type="Script" uid="uid://cjw3mllds5qjs" path="res://Scripts/arena.gd" id="1_lr07p"]
 [ext_resource type="PackedScene" uid="uid://c3iykg71k0su4" path="res://Components/DDJ-FLX4/DDJ-FLX4.tscn" id="3_lr07p"]
-[ext_resource type="AudioStream" uid="uid://byrbpqqwwknmt" path="res://Music/Sample Tracks (RAW)/Crusy/Love is the Answer/Audio/Crusy - Love Is The Answer - 126bpm.mp3" id="4_dsr05"]
-[ext_resource type="AudioStream" uid="uid://yxq4jhvwh3o8" path="res://Music/Sample Tracks (RAW)/Fake Blood/Fix your Accent/Audio/Fake Blood - I Think I Like It - 126bpm.wav" id="5_7t5kf"]
 [ext_resource type="PackedScene" uid="uid://dh8cyr4ti48fi" path="res://UI/LibreBox/Librebox_Scene.tscn" id="6_7t5kf"]
+[ext_resource type="Curve" uid="uid://olapaclqq7du" path="res://Components/Controls/Crossfade Curve Left.tres" id="6_f8rhi"]
+[ext_resource type="Curve" uid="uid://ceyfy3hj4jqwo" path="res://Components/Controls/Crossfade Curve Right.tres" id="7_4yh7d"]
+[ext_resource type="Resource" uid="uid://d1ljxjynpwsnm" path="res://Music/Song Metadatas/LoveIsTheAnswer_Crusy_Song.tres" id="7_f8rhi"]
+[ext_resource type="Resource" uid="uid://c6lxgtataduv2" path="res://Music/Song Metadatas/IThinkILikeIt_FixYourAccent_FakeBlood_Song.tres" id="8_4yh7d"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_dsr05"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -44,11 +46,14 @@ pose = &"aim"
 
 [node name="DDJ-FLX4" parent="." unique_id=2092251129 instance=ExtResource("3_lr07p")]
 transform = Transform3D(-0.21724784, 1.9374198, 0.4463275, 2.0647276e-08, 0.44898418, -1.9489518, -1.9881659, -0.2117028, -0.048770443, -0.6182742, 1.324246, 1.1975795)
-Track_1_AudioSource = ExtResource("4_dsr05")
-Track_2_AudioSource = ExtResource("5_7t5kf")
+Use_2_Track_Bus_Layout = true
+Crossfader_Curve_Left = ExtResource("6_f8rhi")
+Crossfader_Curve_Right = ExtResource("7_4yh7d")
 
 [node name="LibreboxScene" parent="DDJ-FLX4" unique_id=889702823 instance=ExtResource("6_7t5kf")]
 transform = Transform3D(0.5, 0, 0, 0, 0.12940954, 0.4829629, 0, -0.4829629, 0.12940954, 0.234604, -0.020323109, -0.1751073)
+Track_1 = ExtResource("7_f8rhi")
+Track_2 = ExtResource("8_4yh7d")
 
 [node name="Track Stream Player Left" type="AudioStreamPlayer" parent="." unique_id=1328970906]
 autoplay = true

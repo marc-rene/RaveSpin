@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://byrbpqqwwknmt"
+path="res://.godot/imported/Crusy - Love Is The Answer - 126bpm.mp3-6e87e4bec3085dd90c4204249912be24.mp3str"
+
+[deps]
+
+source_file="res://Music/Song Data/Crusy/Love is the Answer/Audio/Crusy - Love Is The Answer - 126bpm.mp3"
+dest_files=["res://.godot/imported/Crusy - Love Is The Answer - 126bpm.mp3-6e87e4bec3085dd90c4204249912be24.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

@@ -1,9 +1,7 @@
 extends Node3D
+class_name Controller
 
-@export var Track_1_AudioSource : AudioStream;
-@export var Track_2_AudioSource : AudioStream;
-@export var Track_3_AudioSource : AudioStream; # Only Tracks 1 & 2 are priority
-@export var Track_4_AudioSource : AudioStream;
+@onready var LibreBox_ref : LibreBox = $LibreboxScene
 # Too many issues with Init'ing
 #var AudioSourceList : Array[AudioStream] = [Track_1_AudioSource, Track_2_AudioSource, Track_3_AudioSource, Track_4_AudioSource]
 
@@ -30,49 +28,41 @@ var In_Channel_Fader = true
 # Default is 10% Tempo Adjust Range
 @export var BPM_Adjust_Range = 0.1
 var Dirty_Tempos = true
-
-
-func CheckRange(minimum, maximum, value, function_name = "") -> bool:
-    if (value < minimum or value > maximum):
-        if (function_name != ""):
-            print(function_name, " was given an invalid int, it's only between ", minimum, " and ", maximum)
-        else:
-            print("Incorrect int given, it's only between ", minimum, " and ", maximum)
-        return false
-    else:
-        return true
    
 
 func LoadTrackIntoMemory(p_which_track : int):
-    if(CheckRange(0, 3, p_which_track, "LoadTrackIntoMemory")):
-        print("Spawned Player for Track ", p_which_track)
-        var current_stream : AudioStream;
-        match p_which_track:
-            0:
-                current_stream = Track_1_AudioSource
-            1:
-                current_stream = Track_2_AudioSource
-            2:
-                current_stream = Track_3_AudioSource
-            3:
-                current_stream = Track_4_AudioSource
-                
-        AudioPlayerList[p_which_track].stream = current_stream
-        print("Loading Track ", p_which_track, " into memory now")
-        AudioPlayerList[p_which_track].stream_paused = true
+    p_which_track = clamp(p_which_track, 0, 4)
+    print("Spawned Player for Track ", p_which_track)
+    var current_stream : AudioStream;
+    match p_which_track:
+        0:
+            current_stream = LibreBox_ref.Track_1.Audio_File
+        1:
+            current_stream = LibreBox_ref.Track_2.Audio_File
+        2:
+            current_stream = LibreBox_ref.Track_3.Audio_File
+        3:
+            current_stream = LibreBox_ref.Track_4.Audio_File
+            
+    AudioPlayerList[p_which_track].stream = current_stream
+    print("Loading Track ", p_which_track, " into memory now")
+    AudioPlayerList[p_which_track].stream_paused = true
     
     
       
 func Play_Pause(p_which_track : int):
-    if(CheckRange(0, 3, p_which_track, "Play_Pause")):
-        var current_player = AudioPlayerList[p_which_track]
-        if(current_player.playing == false):
-            print("Playing Track ", p_which_track, " now @ ", current_player.get_playback_position())
-            current_player.stream_paused = false
-            current_player.play(current_player.get_playback_position())
-        else:
-            print("Pausing Track ", p_which_track)
-            current_player.stream_paused = true
+    p_which_track = clamp(p_which_track, 0, 3)
+    
+    var current_player = AudioPlayerList[p_which_track]
+    
+    if(current_player.playing == false):
+        print("Playing Track ", p_which_track, " now @ ", current_player.get_playback_position())
+        current_player.stream_paused = false
+        current_player.play(current_player.get_playback_position())
+    
+    else:
+        print("Pausing Track ", p_which_track)
+        current_player.stream_paused = true
 
 
                        
@@ -83,6 +73,7 @@ func _ready() -> void:
     if (Use_2_Track_Bus_Layout == false):
         LoadTrackIntoMemory(2)
         LoadTrackIntoMemory(3)
+    
     AudioPlayerList[0].stream_paused = true
     AudioPlayerList[1].stream_paused = true
     AudioPlayerList[2].stream_paused = true

@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="Song" format=3 uid="uid://dnhfd66re2mc8"]
+
+[ext_resource type="Script" uid="uid://djtjflwqyy3me" path="res://GLOBAL/Audio/Artist.gd" id="1_2lr7v"]
+[ext_resource type="AudioStream" uid="uid://1qpvwc75dg73" path="res://Music/Song Data/Death Grips/Exmilitary/Audio/Death Grips - Exmilitary - 1 - Beware.mp3" id="1_on8fq"]
+[ext_resource type="Script" uid="uid://b5ydxvk0vbgsi" path="res://GLOBAL/Audio/Song.gd" id="2_1qh3o"]
+[ext_resource type="Resource" uid="uid://60crt6v1xddt" path="res://Music/Artists/DeathGrips_Artist.tres" id="3_a2hmg"]
+[ext_resource type="Resource" uid="uid://mjuhnagbq0y7" path="res://Music/Albums/Exmilitary_DeathGrips_Album.tres" id="4_508gc"]
+
+[resource]
+script = ExtResource("2_1qh3o")
+Song_Title = &"Beware"
+Main_Artist = ExtResource("3_a2hmg")
+Song_Album = ExtResource("4_508gc")
+Audio_File = ExtResource("1_on8fq")
+Track_BPM = 114.0
+Track_Key_Note = 2
+Track_Scale = 2
+Song_Origin_Platform = 1
+metadata/_custom_type_script = "uid://b5ydxvk0vbgsi"

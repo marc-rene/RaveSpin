@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="Album" format=3 uid="uid://c0j8m3m4kntrm"]
 
 [ext_resource type="Resource" uid="uid://b1mjetc6ucb8" path="res://Music/Artists/AllaPugacheva_Artist.tres" id="1_bvlaq"]
-[ext_resource type="Texture2D" uid="uid://bw2i8l4xgpfd3" path="res://Music/Sample Tracks (RAW)/Alla Pugacheva/Поднимись над суетой/Album Art/T_AllaPugacheva_Поднимисьнадсуетой.png" id="2_560oh"]
+[ext_resource type="Texture2D" uid="uid://bw2i8l4xgpfd3" path="res://Music/Song Data/Alla Pugacheva/Поднимись над суетой/Album Art/T_AllaPugacheva_Поднимисьнадсуетой.png" id="2_560oh"]
 [ext_resource type="Script" uid="uid://dypxvnjocgur7" path="res://GLOBAL/Audio/Album.gd" id="3_plm7l"]
 
 [resource]

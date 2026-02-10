@@ -2,7 +2,7 @@
 
 [ext_resource type="Resource" uid="uid://60crt6v1xddt" path="res://Music/Artists/DeathGrips_Artist.tres" id="1_rkcbc"]
 [ext_resource type="Script" uid="uid://dypxvnjocgur7" path="res://GLOBAL/Audio/Album.gd" id="1_uamse"]
-[ext_resource type="Texture2D" uid="uid://bagraq2oavomv" path="res://Music/Sample Tracks (RAW)/Death Grips/Exmilitary/Album Art/T_DeathGrips_Exmilitary_AlbumArt.jpg" id="2_2ynuf"]
+[ext_resource type="Texture2D" uid="uid://bagraq2oavomv" path="res://Music/Song Data/Death Grips/Exmilitary/Album Art/T_DeathGrips_Exmilitary_AlbumArt.jpg" id="2_2ynuf"]
 
 [resource]
 script = ExtResource("1_uamse")

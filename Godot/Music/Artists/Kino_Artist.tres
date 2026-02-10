@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="Artist" format=3 uid="uid://c6oyn7t16g1a5"]
 
-[ext_resource type="Texture2D" uid="uid://dxwajcnn30hmf" path="res://Music/Sample Tracks (RAW)/Kino/T_Kino_Logo.png" id="1_u143i"]
+[ext_resource type="Texture2D" uid="uid://dxwajcnn30hmf" path="res://Music/Song Data/Kino/T_Kino_Logo.png" id="1_u143i"]
 [ext_resource type="Script" uid="uid://djtjflwqyy3me" path="res://GLOBAL/Audio/Artist.gd" id="2_io57s"]
 
 [resource]

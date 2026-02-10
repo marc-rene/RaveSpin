@@ -11,4 +11,10 @@ static func Return_Valid(object, backup):
 
 
 static func is_Valid(object) -> bool:
-    return object == null
+    match typeof(object):
+        TYPE_STRING:
+            return object != null and object != "" and object != " "
+        TYPE_ARRAY:
+            return object != null and object.size() >= 1
+    
+    return object != null

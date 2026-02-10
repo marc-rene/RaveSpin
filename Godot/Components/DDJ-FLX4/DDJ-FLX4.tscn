@@ -52,6 +52,9 @@ size = Vector3(0.1, 0.1, 0.1)
 [node name="FLX4" unique_id=111272397 instance=ExtResource("1_mrnpa")]
 transform = Transform3D(1.2, 0, 0, 0, 1.2, 0, 0, 0, 1.2, 0, 0, 0)
 script = ExtResource("2_3ugcv")
+Use_2_Track_Bus_Layout = null
+Crossfader_Curve_Left = null
+Crossfader_Curve_Right = null
 BPM_Adjust_Range = 0.2
 
 [node name="Crossfade Slider" parent="." index="6"]

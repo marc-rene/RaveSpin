@@ -1,11 +1,13 @@
 [gd_scene format=3 uid="uid://dh8cyr4ti48fi"]
 
+[ext_resource type="Script" uid="uid://cu88cv23bkqfq" path="res://UI/LibreBox/LibreBox_Manager.gd" id="1_al4tx"]
 [ext_resource type="PackedScene" uid="uid://clujaf3u776a3" path="res://addons/godot-xr-tools/objects/viewport_2d_in_3d.tscn" id="1_ebwc8"]
 [ext_resource type="PackedScene" uid="uid://dcbkr50uhlp42" path="res://UI/LibreBox/Components/Main_Hub/MainHub_UI.tscn" id="2_bg1lp"]
 [ext_resource type="FontFile" uid="uid://di6oaehdwb84i" path="res://Art/Fonts/FONT_Roboto.ttf" id="2_yb6eh"]
 [ext_resource type="PackedScene" uid="uid://d3vfyxnqa8u8p" path="res://UI/LibreBox/Components/Track Selection/Track_Selection.tscn" id="4_vnbwf"]
 
 [node name="LibreboxScene" type="Node3D" unique_id=889702823]
+script = ExtResource("1_al4tx")
 
 [node name="HUB" parent="." unique_id=1761191025 instance=ExtResource("1_ebwc8")]
 screen_size = Vector2(1.6, 0.9)

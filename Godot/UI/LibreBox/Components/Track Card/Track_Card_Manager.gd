@@ -1,6 +1,7 @@
 extends Node
+class_name Track_Card
 
-@onready var Track_UID : int
+@export var Song_Resource : Song
 
 @export var Origin_Platform_Logo : TextureRect
 
@@ -22,35 +23,84 @@ extends Node
 
 
 
-func _ready() -> void:
+
+
+    
+func Refresh_Details() -> bool:
+    if Song_Resource == null:
+        return false
+    
+    print("Song Platform: " + str(Song_Resource.Song_Origin_Platform) + " == " + ETrackOrigins.Track_Origin_toString(Song_Resource.Song_Origin_Platform))        
     Origin_Platform_Logo.texture = load(Utility.Return_Valid(
-        ETrackOrigins.Get_Origin_Platform_Logo(AudioTrack.All_Track_Origin_Platforms[Track_UID]), # Try get the Origin of this track
+        ETrackOrigins.Get_Origin_Platform_Logo(Song_Resource.Song_Origin_Platform),
         ETrackOrigins.Get_Origin_Platform_Logo(ETrackOrigins.Track_Origins_enum.OTHER))) # If we can't find it, just say "Other"
     
-    Album_Art_Texture_Holder.texture = Utility.Return_Valid(AudioTrack.Album_Arts[AudioTrack.All_Track_Albums[Track_UID]], "res://Art/Icon/T_RaveSpinHeader_Light.png")
+    Album_Art_Texture_Holder.texture = Utility.Return_Valid(Song_Resource.Song_Album.Album_Artwork, 
+    "res://Art/Icon/T_RaveSpinHeader_Light.png")
     
-    Track_Name_Label.text = Utility.Return_Valid(AudioTrack.All_Track_Titles[Track_UID], "Untitled")
-    Artist_Name_Label.text = Utility.Return_Valid(AudioTrack.All_Track_Artists[Track_UID], "Untitled")
-    Album_Name_Label.text = Utility.Return_Valid(AudioTrack.All_Track_Albums[Track_UID], "Untitled")
+    Track_Name_Label.text = Utility.Return_Valid(Song_Resource.Song_Title, "Untitled")
+    Artist_Name_Label.text = Utility.Return_Valid(Song_Resource.Main_Artist.Artist_Name, "Untitled")
+    Album_Name_Label.text = Utility.Return_Valid(Song_Resource.Song_Album.Album_Name, "Untitled")
     
-    var duration_text = "%02dm %02ds" % [AudioTrack.All_Audio_Files[Track_UID].get_length() / 60, int((AudioTrack.All_Audio_Files[Track_UID].get_length() / 60)) % 60 ]
+    print("Total: " + str(Song_Resource.Audio_File.get_length()))
+    print("Minutes: " + str(int(Song_Resource.Audio_File.get_length() / 60)))
+    print("Seconds: " + str(int(Song_Resource.Audio_File.get_length()) % 60))
+    var mins = int(Song_Resource.Audio_File.get_length() / 60)
+    var secs = int(Song_Resource.Audio_File.get_length()) % 60
+    var duration_text = ""
+    if mins >= 1:
+        duration_text += str(mins) + "m "
+
+    duration_text += str(secs) + "s "   
     Track_Duration_Label.text = Utility.Return_Valid(duration_text, "N/A")
     
-    Track_BPM_Label.text = Utility.Return_Valid(int(AudioTrack.All_Track_BPMs[Track_UID]), "N/A")
+    Track_BPM_Label.text = Utility.Return_Valid(str(int(Song_Resource.Track_BPM)), "N/A")
     
-    Track_Key_Label.text = Utility.Return_Valid(AudioTrack.All_Track_Keys[Track_UID].to_string(), "N/A")
+    # Safety measure because Music Key wont get updated sometimes
+    if Song_Resource.Track_Key.to_string() == "C Unknown":
+        Song_Resource.Refresh_Music_Key()
     
-    if Utility.is_Valid(AudioTrack.All_Track_Genres):
-        for genre in AudioTrack.All_Track_Genres:
-            if Track_UID in AudioTrack.All_Track_Genres[genre]:
-                var new_genre = Button.new()
-                new_genre.text = genre
-                Track_Genres_Containers.add_child(new_genre)
+    print("Song key is " + Song_Resource.Track_Key.to_string())
+    Track_Key_Label.text = Utility.Return_Valid(Song_Resource.Track_Key.to_string(), "N/A")
     
-    if Utility.is_Valid(AudioTrack.All_User_Sidenotes[Track_UID]) and AudioTrack.All_User_Sidenotes[Track_UID] != "N/A":
-        Note_Text_Label.text = AudioTrack.All_User_Sidenotes[Track_UID]
+    var expand_others = true
     
+    if Utility.is_Valid(Song_Resource.Song_Genres):
+        for genre in Song_Resource.Song_Genres:
+            var new_genre = Button.new()
+            new_genre.text = EGenre.m_MusicGenres_str[genre]
+            Track_Genres_Containers.add_child(new_genre)
+            expand_others = false
     else:
+        $"VBoxContainer/Main Container/Separator Info-Genre".free()
+        Track_Genres_Containers.queue_free()
+        print("NO GENRES")
+    
+    if Utility.is_Valid(Song_Resource.User_Sidenote) and Song_Resource.User_Sidenote != "N/A":
+        Note_Text_Label.text = Song_Resource.User_Sidenote
+        expand_others = false
+        print("Track " + Song_Resource.Song_Title + " has a sidenote: " + Song_Resource.User_Sidenote)
+        
+    else:
+        $"VBoxContainer/Main Container/Separator Genre-Note".free()
         Note_Text_Label.free()
-        Note_Text_Container_Parent.queue_free()
+        Note_Text_Container_Parent.free()
+        print("Track " + Song_Resource.Song_Title + " NO SIDENOTE!")
+    
+    if expand_others:
+        print("GET BIGGIE WITH IT")
+        $"VBoxContainer/Main Container/Name Container".size_flags_horizontal = Control.SIZE_EXPAND_FILL
+        #$"VBoxContainer/Main Container/Time Container".size_flags_horizontal = Control.SIZE_EXPAND_FILL
+        #$"VBoxContainer/Main Container/BPM Container".size_flags_horizontal = Control.SIZE_EXPAND_FILL
+        #$"VBoxContainer/Main Container/Key Container".size_flags_horizontal = Control.SIZE_EXPAND_FILL
+    
+    return true
+            
+            
+func _ready() -> void:
+    #print("Song Resource: " + Utility.Return_Valid(Song_Resource.resource_path, "null"))        
+    print("Song details are valid?: " + str(Song_Resource == null))
+    if Song_Resource != null:
+        Refresh_Details()
+    
     

@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="Artist" format=3 uid="uid://60crt6v1xddt"]
 
-[ext_resource type="Texture2D" uid="uid://bagraq2oavomv" path="res://Music/Sample Tracks (RAW)/Death Grips/Exmilitary/Album Art/T_DeathGrips_Exmilitary_AlbumArt.jpg" id="1_b1xah"]
+[ext_resource type="Texture2D" uid="uid://bagraq2oavomv" path="res://Music/Song Data/Death Grips/Exmilitary/Album Art/T_DeathGrips_Exmilitary_AlbumArt.jpg" id="1_b1xah"]
 [ext_resource type="Script" uid="uid://djtjflwqyy3me" path="res://GLOBAL/Audio/Artist.gd" id="1_nexwv"]
 
 [resource]

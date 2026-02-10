@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="Album" format=3 uid="uid://bwj6im84t15g1"]
 
 [ext_resource type="Resource" uid="uid://gj2xf04y1cap" path="res://Music/Artists/DaftPunk_Artist.tres" id="1_8tp5d"]
-[ext_resource type="Texture2D" uid="uid://bg8dxugrbiq4v" path="res://Music/Sample Tracks (RAW)/Daft Punk/Discovery/Album Art/T_DaftPunk_Discovery_AlbumArt.jpg" id="2_baggb"]
+[ext_resource type="Texture2D" uid="uid://bg8dxugrbiq4v" path="res://Music/Song Data/Daft Punk/Discovery/Album Art/T_DaftPunk_Discovery_AlbumArt.jpg" id="2_baggb"]
 [ext_resource type="Script" uid="uid://dypxvnjocgur7" path="res://GLOBAL/Audio/Album.gd" id="3_qfiv4"]
 
 [resource]
