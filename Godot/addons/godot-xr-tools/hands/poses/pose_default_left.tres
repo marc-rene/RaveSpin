@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="XRToolsHandPoseSettings" load_steps=2 format=3 uid="uid://dertgu7k8alls"]
+[gd_resource type="Resource" script_class="XRToolsHandPoseSettings" format=3 uid="uid://dertgu7k8alls"]
 
 [ext_resource type="Script" uid="uid://7t35gnubys3i" path="res://addons/godot-xr-tools/hands/poses/hand_pose_settings.gd" id="1"]
 

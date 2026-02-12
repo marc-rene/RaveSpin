@@ -1,0 +1,5 @@
+[gd_scene format=3 uid="uid://ctcduicgd4f8d"]
+
+[node name="SceneAnchor" type="StaticBody3D" unique_id=938777728]
+
+[node name="Label3D" type="Label3D" parent="." unique_id=1178564422]

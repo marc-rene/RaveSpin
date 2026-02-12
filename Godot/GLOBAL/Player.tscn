@@ -1,11 +1,19 @@
 [gd_scene format=3 uid="uid://ohc5g4ss6tlg"]
 
 [ext_resource type="PackedScene" uid="uid://btknduttnmoxf" path="res://addons/godot-xr-tools/misc/vr_common_shader_cache.tscn" id="1_o378l"]
-[ext_resource type="PackedScene" uid="uid://cqhw276realc" path="res://addons/godot-xr-tools/functions/function_pointer.tscn" id="1_sxbc5"]
-[ext_resource type="PackedScene" uid="uid://b4kad2kuba1yn" path="res://addons/godot-xr-tools/hands/scenes/lowpoly/left_hand_low.tscn" id="2_sxbc5"]
+[ext_resource type="PackedScene" uid="uid://df5hynbooj1uj" path="res://addons/hand_pose_detector/hand_pose_detector.tscn" id="2_qk0ov"]
+[ext_resource type="Resource" uid="uid://ckjd0xa2a240p" path="res://addons/hand_pose_detector/poses/standard_pose_set.tres" id="3_bt0ox"]
 [ext_resource type="PackedScene" uid="uid://l2n30mpbkdyw" path="res://addons/godot-xr-tools/hands/scenes/lowpoly/right_hand_low.tscn" id="3_o378l"]
+[ext_resource type="PackedScene" uid="uid://cjcehqrfoxav3" path="res://addons/hand_pose_detector/hands/LeftHandHumanoid.gltf" id="5_u77ky"]
+[ext_resource type="Material" uid="uid://cfgvkix2cdqss" path="res://Art/Materials/M_Hand_Transy.tres" id="6_lyv0n"]
+[ext_resource type="PackedScene" uid="uid://ctcduicgd4f8d" path="res://GLOBAL/Scene/Scene_Anchor.tscn" id="7_qk0ov"]
+[ext_resource type="PackedScene" uid="uid://cfqsk4hregxb6" path="res://GLOBAL/Scene/Scene_Global_Mesh.tscn" id="8_bt0ox"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_sxbc5"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_bt0ox"]
+radius = 0.05
+height = 0.2
 
 [node name="XROrigin3D" type="XROrigin3D" unique_id=557953966]
 
@@ -19,37 +27,37 @@ near = 0.001
 doppler_tracking = 2
 current = true
 
-[node name="XR_LeftHand" type="XRController3D" parent="." unique_id=1337053157]
-tracker = &"left_hand"
-pose = &"grip"
+[node name="XR_LeftHand" type="XRNode3D" parent="." unique_id=400046674]
+tracker = &"/user/hand_tracker/left"
 show_when_tracked = true
 
-[node name="FunctionPointer" parent="XR_LeftHand" unique_id=94479602 instance=ExtResource("1_sxbc5")]
-visible = false
-show_laser = 2
-laser_length = 1
-show_target = true
+[node name="HandPoseDetector" parent="XR_LeftHand" unique_id=1091465459 instance=ExtResource("2_qk0ov")]
+hand_pose_set = ExtResource("3_bt0ox")
 
-[node name="LeftHand" parent="XR_LeftHand" unique_id=1597382249 instance=ExtResource("2_sxbc5")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.04)
+[node name="LeftHandMesh" parent="XR_LeftHand" unique_id=1076283010 instance=ExtResource("5_u77ky")]
 
-[node name="Hand" type="Area3D" parent="XR_LeftHand" unique_id=205210765]
-transform = Transform3D(0.014235127, -0.014048528, 6.1408073e-10, 0, -8.742278e-10, -0.02, 0.014048528, 0.014235127, -6.222372e-10, -0.004, -0.011, -0.03)
+[node name="Hand_AreaCol" type="Area3D" parent="XR_LeftHand/LeftHandMesh/LeftHandHumanoid/Skeleton3D" parent_id_path=PackedInt32Array(1076283010, 1166264523) index="0" unique_id=205210765]
+transform = Transform3D(0.01951902, 0.004319358, -0.0005924465, 0, 0.00271777, 0.019814486, 0.0043597994, -0.019337969, 0.0026524104, -0.012165777, 0.039161082, -0.15834631)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="XR_LeftHand/Hand" unique_id=823996315]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="XR_LeftHand/LeftHandMesh/LeftHandHumanoid/Skeleton3D/Hand_AreaCol" unique_id=823996315]
 shape = SubResource("CapsuleShape3D_sxbc5")
 debug_color = Color(0, 11.708403, 18.892157, 1)
 
-[node name="XR_RightHand" type="XRController3D" parent="." unique_id=104228000]
+[node name="LeftHandHumanoidMesh" parent="XR_LeftHand/LeftHandMesh/LeftHandHumanoid/Skeleton3D" parent_id_path=PackedInt32Array(1076283010, 1166264523) index="1" unique_id=375779960]
+surface_material_override/0 = ExtResource("6_lyv0n")
+
+[node name="XRHandModifier3D" type="XRHandModifier3D" parent="XR_LeftHand/LeftHandMesh/LeftHandHumanoid/Skeleton3D" parent_id_path=PackedInt32Array(1076283010, 1166264523) index="2" unique_id=364111967]
+
+[node name="CharacterBody3D" type="CharacterBody3D" parent="XR_LeftHand" unique_id=1126600972]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="XR_LeftHand/CharacterBody3D" unique_id=1050354257]
+shape = SubResource("CapsuleShape3D_bt0ox")
+
+[node name="XR_RightHand" type="XRNode3D" parent="." unique_id=847437319]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.43492123, 0, 0)
 tracker = &"right_hand"
 pose = &"grip"
 show_when_tracked = true
-
-[node name="FunctionPointer" parent="XR_RightHand" unique_id=1132708435 instance=ExtResource("1_sxbc5")]
-visible = false
-show_laser = 2
-laser_length = 1
-show_target = true
 
 [node name="RightHand" parent="XR_RightHand" unique_id=1402758153 instance=ExtResource("3_o378l")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.04)
@@ -60,3 +68,9 @@ transform = Transform3D(0.01309587, 0.015116155, -6.607482e-10, 1.1849583e-16, -
 [node name="CollisionShape3D" type="CollisionShape3D" parent="XR_RightHand/Hand" unique_id=898221463]
 shape = SubResource("CapsuleShape3D_sxbc5")
 debug_color = Color(0, 11.708403, 18.892157, 1)
+
+[node name="OpenXRFbSceneManager" type="OpenXRFbSceneManager" parent="." unique_id=900066731]
+default_scene = ExtResource("7_qk0ov")
+scenes/global_mesh = ExtResource("8_bt0ox")
+
+[editable path="XR_LeftHand/LeftHandMesh"]

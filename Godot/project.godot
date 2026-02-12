@@ -8,10 +8,6 @@
 
 config_version=5
 
-[animation]
-
-compatibility/default_parent_skeleton_in_mesh_instance_3d=true
-
 [application]
 
 config/name="RaveSpin"
@@ -21,8 +17,8 @@ TU Dublin - Grangegorman
 
 "
 run/main_scene="uid://dixosugdlls6v"
-config/features=PackedStringArray("4.6", "C#", "Mobile")
-boot_splash/bg_color=Color(0.0627451, 0.09411765, 0.11764706, 1)
+config/features=PackedStringArray("4.6", "Mobile")
+boot_splash/bg_color=Color(0.92941177, 0.68235296, 0.28627452, 1)
 boot_splash/image="uid://bo5b3mjv07m82"
 config/icon="uid://dhtm2bn2keywa"
 boot_splash/minimum_display_time=2000
@@ -48,11 +44,22 @@ enabled=PackedStringArray("res://addons/godot-xr-tools/plugin.cfg")
 
 Utility="Global functions to just help"
 
+[godot_xr_tools]
+
+player/standard_height=1.75
+
 [rendering]
 
 renderer/rendering_method="mobile"
 textures/vram_compression/import_etc2_astc=true
+lights_and_shadows/directional_shadow/size.mobile=256
+lights_and_shadows/directional_shadow/soft_shadow_filter_quality=0
+lights_and_shadows/directional_shadow/16_bits=false
 textures/default_filters/anisotropic_filtering_level=1
+environment/ssao/quality=0
+shader_compiler/directional_shadow/size.mobile=2048
+shader_compiler/directional_shadow/soft_shadow_filter_quality=2
+shader_compiler/directional_shadow/16_bits=true
 
 [shader_globals]
 
@@ -108,5 +115,11 @@ shaders/enabled=true
 openxr/extensions/meta/passthrough=true
 openxr/extensions/meta/color_space/starting_color_space=3
 openxr/default_bus_layout="uid://couo6fmbphjlc"
-openxr/bg_color=Color(0, 0.14436346, 0.2759842, 1)
+openxr/bg_color=Color(0.92941177, 0.68235296, 0.28627452, 1)
 openxr/minimum_display_time=0
+openxr/extensions/htc/passthrough=true
+openxr/extensions/meta/anchor_api=true
+openxr/extensions/meta/anchor_sharing=true
+openxr/extensions/meta/scene_api=true
+openxr/extensions/meta/application_space_warp=true
+openxr/extensions/meta/environment_depth=true

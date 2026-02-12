@@ -65,8 +65,8 @@ var redraw = _draw
         #var end_point = Vector2((width * i) + ( width / 2), remap(sound_byte, 0, 255, 0, max_height))        
         #draw_line(start_point, end_point, Color.WEB_GREEN, width)
 
-func _process(_delta):
-    queue_redraw()
+#func _process(_delta):
+    #queue_redraw()
     
 
 func Update_Track(new_track : AudioTrack):

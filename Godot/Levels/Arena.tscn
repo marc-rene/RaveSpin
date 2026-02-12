@@ -8,6 +8,7 @@
 [ext_resource type="Curve" uid="uid://ceyfy3hj4jqwo" path="res://Components/Controls/Crossfade Curve Right.tres" id="7_4yh7d"]
 [ext_resource type="Resource" uid="uid://d1ljxjynpwsnm" path="res://Music/Song Metadatas/LoveIsTheAnswer_Crusy_Song.tres" id="7_f8rhi"]
 [ext_resource type="Resource" uid="uid://c6lxgtataduv2" path="res://Music/Song Metadatas/IThinkILikeIt_FixYourAccent_FakeBlood_Song.tres" id="8_4yh7d"]
+[ext_resource type="Script" uid="uid://dvxittvfvayif" path="res://GLOBAL/Scene/start_xr.gd" id="9_4yh7d"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_dsr05"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -17,31 +18,24 @@ ground_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
 sky_material = SubResource("ProceduralSkyMaterial_dsr05")
 
 [sub_resource type="Environment" id="Environment_3sm0n"]
-background_mode = 1
-background_color = Color(0, 0, 0, 0)
+background_energy_multiplier = 0.0
 sky = SubResource("Sky_7t5kf")
-ambient_light_source = 3
+ambient_light_source = 2
 ambient_light_color = Color(1, 1, 1, 1)
-tonemap_mode = 2
-glow_enabled = true
+reflected_light_source = 1
 
 [node name="Arena" type="Node3D" unique_id=1145637546]
 script = ExtResource("1_lr07p")
-
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=169091682]
-transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
-shadow_enabled = true
-directional_shadow_mode = 0
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=667713396]
 environment = SubResource("Environment_3sm0n")
 
 [node name="Player" parent="." unique_id=1063771176 instance=ExtResource("1_hagq7")]
 
-[node name="XR_LeftHand" parent="Player" index="1" unique_id=1337053157]
+[node name="XR_LeftHand" parent="Player" index="1" unique_id=400046674]
 pose = &"aim"
 
-[node name="XR_RightHand" parent="Player" index="2" unique_id=104228000]
+[node name="XR_RightHand" parent="Player" index="2" unique_id=847437319]
 pose = &"aim"
 
 [node name="DDJ-FLX4" parent="." unique_id=2092251129 instance=ExtResource("3_lr07p")]
@@ -69,4 +63,9 @@ bus = &"Channel 3 Input"
 [node name="Track Stream Player Right ALT" type="AudioStreamPlayer" parent="." unique_id=462492308]
 bus = &"Channel 4 Input"
 
+[node name="StartXR" type="Node" parent="." unique_id=934317415]
+script = ExtResource("9_4yh7d")
+metadata/_custom_type_script = "uid://dvxittvfvayif"
+
 [editable path="Player"]
+[editable path="Player/XR_LeftHand/LeftHandMesh"]

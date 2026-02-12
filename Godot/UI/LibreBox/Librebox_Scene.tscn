@@ -14,7 +14,9 @@ screen_size = Vector2(1.6, 0.9)
 scene = ExtResource("2_bg1lp")
 viewport_size = Vector2(1920, 1080)
 unshaded = true
-scene_properties_keys = PackedStringArray()
+scene_properties_keys = PackedStringArray("LibreBox_HUB_Manager.gd", "Track_1", "Track_2")
+Track_1 = null
+Track_2 = null
 
 [node name="HUB Label" type="Label3D" parent="HUB" unique_id=1127725628]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6143331, 0)
@@ -30,7 +32,7 @@ transform = Transform3D(0.8201419, 0, 0.5721602, 0, 1, 0, -0.5721602, 0, 0.82014
 screen_size = Vector2(1.6, 1.6)
 scene = ExtResource("4_vnbwf")
 viewport_size = Vector2(1280, 1280)
-scene_properties_keys = PackedStringArray()
+scene_properties_keys = PackedStringArray("Track_Selection.gd", "Tracks_Holder")
 
 [node name="Track Select Label" type="Label3D" parent="Track Selection" unique_id=61489553]
 transform = Transform3D(0.8201419, 0, -0.5721602, 0, 1, 0, 0.5721602, 0, 0.8201419, 0, 0.9393393, 0)

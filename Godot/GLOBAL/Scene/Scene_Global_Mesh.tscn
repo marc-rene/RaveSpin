@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://cfqsk4hregxb6"]
+
+[ext_resource type="Script" uid="uid://gq020crv7bug" path="res://GLOBAL/Scene/scene_global_mesh.gd" id="1_kp8by"]
+
+[node name="SceneGlobalMesh" type="Node3D" unique_id=1839649171]
+script = ExtResource("1_kp8by")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=1826819562]

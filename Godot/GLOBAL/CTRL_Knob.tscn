@@ -49,6 +49,6 @@ mesh = SubResource("PlaneMesh_2lspa")
 skeleton = NodePath("../Activation")
 
 [connection signal="area_entered" from="Highlight" to="." method="_on_BASE_highlight_area_entered"]
-[connection signal="area_exited" from="Highlight" to="." method="_on_BASE_highlight_area_exited"]
+[connection signal="area_exited" from="Highlight" to="." method="_on_BASE_highlight_area_entered"]
 [connection signal="area_entered" from="Highlight/Activation" to="." method="_on_activation_area_entered"]
 [connection signal="area_exited" from="Highlight/Activation" to="." method="_on_activation_area_exited"]
