@@ -3,6 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://btknduttnmoxf" path="res://addons/godot-xr-tools/misc/vr_common_shader_cache.tscn" id="1_o378l"]
 [ext_resource type="PackedScene" uid="uid://df5hynbooj1uj" path="res://addons/hand_pose_detector/hand_pose_detector.tscn" id="2_qk0ov"]
 [ext_resource type="Resource" uid="uid://ckjd0xa2a240p" path="res://addons/hand_pose_detector/poses/standard_pose_set.tres" id="3_bt0ox"]
+[ext_resource type="PackedScene" uid="uid://cqhw276realc" path="res://addons/godot-xr-tools/functions/function_pointer.tscn" id="4_lyv0n"]
 [ext_resource type="Script" uid="uid://dtnv4swtb6h2p" path="res://GLOBAL/Scene/Finger.gd" id="5_lyv0n"]
 [ext_resource type="PackedScene" uid="uid://cjcehqrfoxav3" path="res://addons/hand_pose_detector/hands/LeftHandHumanoid.gltf" id="5_u77ky"]
 [ext_resource type="Material" uid="uid://cfgvkix2cdqss" path="res://Art/Materials/M_Hand_Transy.tres" id="6_lyv0n"]
@@ -25,10 +26,6 @@ margin = 0.02
 radius = 0.01
 height = 0.02
 
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_bt0ox"]
-radius = 0.05
-height = 0.2
-
 [node name="XROrigin3D" type="XROrigin3D" unique_id=557953966]
 
 [node name="XRCamera3D" type="XRCamera3D" parent="." unique_id=1747871428]
@@ -41,12 +38,12 @@ near = 0.001
 doppler_tracking = 2
 current = true
 
-[node name="XR_LeftHand" type="XRNode3D" parent="." unique_id=400046674]
+[node name="XR_LeftHand" type="XRController3D" parent="." unique_id=827619095]
 transform = Transform3D(0.99999994, 0, 0, 0, 0.99999994, 0, 0, 0, 1, 0, 0, 0)
 tracker = &"/user/hand_tracker/left"
 show_when_tracked = true
 
-[node name="HandPoseDetector" parent="XR_LeftHand" unique_id=1091465459 instance=ExtResource("2_qk0ov")]
+[node name="HandPoseDetector_LEFT" parent="XR_LeftHand" unique_id=1091465459 instance=ExtResource("2_qk0ov")]
 hand_pose_set = ExtResource("3_bt0ox")
 
 [node name="LeftHandMesh" parent="XR_LeftHand" unique_id=1076283010 instance=ExtResource("5_u77ky")]
@@ -141,17 +138,19 @@ Which_Finger = 1
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.3283064e-10, -0.004968002, 0)
 shape = SubResource("CapsuleShape3D_lyv0n")
 
-[node name="CharacterBody3D" type="CharacterBody3D" parent="XR_LeftHand" unique_id=1126600972]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="XR_LeftHand/CharacterBody3D" unique_id=1050354257]
-shape = SubResource("CapsuleShape3D_bt0ox")
+[node name="MainFuctionPointer" parent="XR_LeftHand/LeftHandMesh" unique_id=1536462354 instance=ExtResource("4_lyv0n")]
+unique_name_in_owner = true
+transform = Transform3D(0.9999996, 0, 0, 0, -0.17364821, -0.9848072, 0, 0.98480785, -0.1736481, 0, 0, 0)
+y_offset = 0.0
+show_laser = 0
+laser_length = 1
 
 [node name="XR_RightHand" type="XRNode3D" parent="." unique_id=847437319]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.43492123, 0, 0)
 tracker = &"/user/hand_tracker/right"
 show_when_tracked = true
 
-[node name="HandPoseDetector" parent="XR_RightHand" unique_id=675907160 instance=ExtResource("2_qk0ov")]
+[node name="HandPoseDetector_RIGHT" parent="XR_RightHand" unique_id=675907160 instance=ExtResource("2_qk0ov")]
 hand_tracker_name = "/user/hand_tracker/right"
 hand_pose_set = ExtResource("3_bt0ox")
 
