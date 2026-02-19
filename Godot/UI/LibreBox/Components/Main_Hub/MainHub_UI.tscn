@@ -1,9 +1,11 @@
 [gd_scene format=3 uid="uid://dcbkr50uhlp42"]
 
-[ext_resource type="Script" uid="uid://d2rcrtt56bc36" path="res://UI/LibreBox/Components/Main_Hub/LibreBox_HUB_Manager.gd" id="1_rytid"]
+[ext_resource type="Script" uid="uid://d2rcrtt56bc36" path="res://UI/LibreBox/Components/Main_Hub/LibreBox_HUB.gd" id="1_rytid"]
 [ext_resource type="PackedScene" uid="uid://tjmox2whgvci" path="res://UI/LibreBox/Components/Track Card/LibreBox_TrackCard_Horizontal_UI.tscn" id="1_uhl31"]
 [ext_resource type="Resource" uid="uid://c6lxgtataduv2" path="res://Music/Song Metadatas/IThinkILikeIt_FixYourAccent_FakeBlood_Song.tres" id="2_ic2kq"]
+[ext_resource type="Resource" uid="uid://dpalh4ahjx2gs" path="res://Music/Song Metadatas/OneMoreTime_Discovery_DaftPunk_Song.tres" id="2_ke47i"]
 [ext_resource type="Resource" uid="uid://d1ljxjynpwsnm" path="res://Music/Song Metadatas/LoveIsTheAnswer_Crusy_Song.tres" id="3_ev2jm"]
+[ext_resource type="Resource" uid="uid://ibnu3cve8d6k" path="res://Music/Song Metadatas/HarderBetterFasterStronger_Discovery_DaftPunk_Song.tres" id="3_x3jbt"]
 
 [node name="MainHub" type="Control" unique_id=15880144]
 layout_mode = 3
@@ -15,6 +17,8 @@ grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("1_rytid")
+Track_1 = ExtResource("2_ke47i")
+Track_2 = ExtResource("3_x3jbt")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=715879387]
 layout_mode = 1

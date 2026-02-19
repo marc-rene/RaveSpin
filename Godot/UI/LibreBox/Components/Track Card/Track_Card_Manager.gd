@@ -3,28 +3,31 @@ class_name Track_Card
 
 @export var Song_Resource : Song
 
-@export var Origin_Platform_Logo : TextureRect
+@onready var Origin_Platform_Logo : TextureRect = %"Origin Platform Logo"
 
-@export var Album_Art_Texture_Holder : TextureRect
+@onready var Album_Art_Texture_Holder : TextureRect = %Album_Thumbnail
 
-@export var Track_Name_Label : Label
-@export var Artist_Name_Label : Label
-@export var Album_Name_Label : Label
+@onready var Track_Name_Label : Label = %Title
+@onready var Artist_Name_Label : Label = %Artist
+@onready var Album_Name_Label : Label = %Album
 
-@export var Track_Duration_Label : Label
+@onready var Track_Duration_Label : Label = %"Time var Label"
 
-@export var Track_BPM_Label : Label
-@export var Track_Key_Label : Label
+@onready var Track_BPM_Label : Label = %"BPM var Label"
+@onready var Track_Key_Label : Label = %"Key var Label"
 
-@export var Track_Genres_Containers : FlowContainer
+@onready var Track_Genres_Containers : FlowContainer = %"Genres Container"
 
-@export var Note_Text_Container_Parent : Container  # Delete this if we dont have a note
-@export var Note_Text_Label : Label 
+@onready var Note_Text_Container_Parent : Container = %"Note Container"
+@onready var Note_Text_Label : Label = %"Note var Label"
+
+@onready var Info_Genre_Seperator : VSeparator = %"Separator Info-Genre"
+@onready var Genre_Note_Seperator : VSeparator = %"Separator Genre-Note"
 
 
+signal Card_Clicked(Song_Resource)
 
-
-
+@onready var Card_Button_ref : Button = $"."
     
 func Refresh_Details() -> bool:
     if Song_Resource == null:
@@ -72,8 +75,9 @@ func Refresh_Details() -> bool:
             Track_Genres_Containers.add_child(new_genre)
             expand_others = false
     else:
-        $"VBoxContainer/Main Container/Separator Info-Genre".free()
-        Track_Genres_Containers.queue_free()
+        if Info_Genre_Seperator != null:
+            Info_Genre_Seperator.free()
+            Track_Genres_Containers.queue_free()
         #print("NO GENRES")
     
     if Utility.is_Valid(Song_Resource.User_Sidenote) and Song_Resource.User_Sidenote != "N/A":
@@ -82,25 +86,31 @@ func Refresh_Details() -> bool:
         #print("Track " + Song_Resource.Song_Title + " has a sidenote: " + Song_Resource.User_Sidenote)
         
     else:
-        $"VBoxContainer/Main Container/Separator Genre-Note".free()
-        Note_Text_Label.free()
-        Note_Text_Container_Parent.free()
+        if Genre_Note_Seperator != null:
+            Genre_Note_Seperator.free()
+            Note_Text_Label.free()
+            Note_Text_Container_Parent.free()
         #print("Track " + Song_Resource.Song_Title + " NO SIDENOTE!")
     
-    if expand_others:
-        #print("GET BIGGIE WITH IT")
-        $"VBoxContainer/Main Container/Name Container".size_flags_horizontal = Control.SIZE_EXPAND_FILL
-        #$"VBoxContainer/Main Container/Time Container".size_flags_horizontal = Control.SIZE_EXPAND_FILL
-        #$"VBoxContainer/Main Container/BPM Container".size_flags_horizontal = Control.SIZE_EXPAND_FILL
-        #$"VBoxContainer/Main Container/Key Container".size_flags_horizontal = Control.SIZE_EXPAND_FILL
+    if expand_others and %"Name Container" != null:
+        %"Name Container".size_flags_horizontal = Control.SIZE_EXPAND_FILL
+        
+    
+    
     
     return true
-            
-            
+        
+
+
 func _ready() -> void:
     #print("Song Resource: " + Utility.Return_Valid(Song_Resource.resource_path, "null"))        
     #print("Song details are valid?: " + str(Song_Resource == null))
     if Song_Resource != null:
         Refresh_Details()
     
+    
+
+
+func _on_pressed() -> void:
+    Card_Clicked.emit(Song_Resource)
     

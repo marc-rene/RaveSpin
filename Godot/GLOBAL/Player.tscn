@@ -39,16 +39,19 @@ doppler_tracking = 2
 current = true
 
 [node name="XR_LeftHand" type="XRController3D" parent="." unique_id=827619095]
+unique_name_in_owner = true
 transform = Transform3D(0.99999994, 0, 0, 0, 0.99999994, 0, 0, 0, 1, 0, 0, 0)
 tracker = &"/user/hand_tracker/left"
 show_when_tracked = true
 
 [node name="HandPoseDetector_LEFT" parent="XR_LeftHand" unique_id=1091465459 instance=ExtResource("2_qk0ov")]
+unique_name_in_owner = true
 hand_pose_set = ExtResource("3_bt0ox")
 
 [node name="LeftHandMesh" parent="XR_LeftHand" unique_id=1076283010 instance=ExtResource("5_u77ky")]
 
-[node name="Label3D" type="Label3D" parent="XR_LeftHand/LeftHandMesh/LeftHandHumanoid/Skeleton3D" parent_id_path=PackedInt32Array(1076283010, 442796614) index="0" unique_id=699070044]
+[node name="Left_Label3D" type="Label3D" parent="XR_LeftHand/LeftHandMesh/LeftHandHumanoid/Skeleton3D" parent_id_path=PackedInt32Array(1076283010, 442796614) index="0" unique_id=699070044]
+unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.007993251, -0.019674644, -0.07545796)
 billboard = 2
 alpha_cut = 1
@@ -138,25 +141,28 @@ Which_Finger = 1
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.3283064e-10, -0.004968002, 0)
 shape = SubResource("CapsuleShape3D_lyv0n")
 
-[node name="MainFuctionPointer" parent="XR_LeftHand/LeftHandMesh" unique_id=1536462354 instance=ExtResource("4_lyv0n")]
+[node name="Left_MainFuctionPointer" parent="XR_LeftHand/LeftHandMesh" unique_id=1536462354 instance=ExtResource("4_lyv0n")]
 unique_name_in_owner = true
 transform = Transform3D(0.9999996, 0, 0, 0, -0.17364821, -0.9848072, 0, 0.98480785, -0.1736481, 0, 0, 0)
 y_offset = 0.0
 show_laser = 0
 laser_length = 1
 
-[node name="XR_RightHand" type="XRNode3D" parent="." unique_id=847437319]
+[node name="XR_RightHand" type="XRController3D" parent="." unique_id=1830580472]
+unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.43492123, 0, 0)
 tracker = &"/user/hand_tracker/right"
 show_when_tracked = true
 
 [node name="HandPoseDetector_RIGHT" parent="XR_RightHand" unique_id=675907160 instance=ExtResource("2_qk0ov")]
+unique_name_in_owner = true
 hand_tracker_name = "/user/hand_tracker/right"
 hand_pose_set = ExtResource("3_bt0ox")
 
-[node name="RightHandHumanoid2" parent="XR_RightHand" unique_id=594923881 instance=ExtResource("7_u77ky")]
+[node name="RightHandMesh" parent="XR_RightHand" unique_id=594923881 instance=ExtResource("7_u77ky")]
 
-[node name="Label3D" type="Label3D" parent="XR_RightHand/RightHandHumanoid2/RightHandHumanoid/Skeleton3D" parent_id_path=PackedInt32Array(594923881, 1563965009) index="0" unique_id=769796289]
+[node name="Right_Label3D" type="Label3D" parent="XR_RightHand/RightHandMesh/RightHandHumanoid/Skeleton3D" parent_id_path=PackedInt32Array(594923881, 1563965009) index="0" unique_id=769796289]
+unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.007993251, -0.019674644, -0.07545796)
 billboard = 2
 alpha_cut = 1
@@ -165,94 +171,101 @@ text = "Test"
 font_size = 12
 outline_size = 0
 
-[node name="XRHandModifier3D" type="XRHandModifier3D" parent="XR_RightHand/RightHandHumanoid2/RightHandHumanoid/Skeleton3D" parent_id_path=PackedInt32Array(594923881, 1563965009) index="2" unique_id=929880382]
+[node name="XRHandModifier3D" type="XRHandModifier3D" parent="XR_RightHand/RightHandMesh/RightHandHumanoid/Skeleton3D" parent_id_path=PackedInt32Array(594923881, 1563965009) index="2" unique_id=929880382]
 transform = Transform3D(0.99999994, 0, 0, 0, 0.99999994, 0, 0, 0, 1, -0.43492123, 0, 0)
 hand_tracker = &"/user/hand_tracker/right"
 
-[node name="Right_First_Finger" type="BoneAttachment3D" parent="XR_RightHand/RightHandHumanoid2/RightHandHumanoid/Skeleton3D" parent_id_path=PackedInt32Array(594923881, 1563965009) index="3" unique_id=680260189]
+[node name="Right_First_Finger" type="BoneAttachment3D" parent="XR_RightHand/RightHandMesh/RightHandHumanoid/Skeleton3D" parent_id_path=PackedInt32Array(594923881, 1563965009) index="3" unique_id=680260189]
 transform = Transform3D(-0.65286154, -0.23387459, -0.720468, 0.50814277, 0.570149, -0.6455391, 0.5617492, -0.7875485, -0.25338653, -0.020923605, 0.07000125, -0.06999639)
 bone_name = "RightThumbDistal"
 bone_idx = 3
 
-[node name="FingerPivot" type="Node3D" parent="XR_RightHand/RightHandHumanoid2/RightHandHumanoid/Skeleton3D/Right_First_Finger" unique_id=1210777991]
+[node name="FingerPivot" type="Node3D" parent="XR_RightHand/RightHandMesh/RightHandHumanoid/Skeleton3D/Right_First_Finger" unique_id=1210777991]
 
-[node name="Right_First_Finger" type="Area3D" parent="XR_RightHand/RightHandHumanoid2/RightHandHumanoid/Skeleton3D/Right_First_Finger/FingerPivot" unique_id=1135546385]
+[node name="Right_First_Finger" type="Area3D" parent="XR_RightHand/RightHandMesh/RightHandHumanoid/Skeleton3D/Right_First_Finger/FingerPivot" unique_id=1135546385]
 transform = Transform3D(0.99999994, -1.4901161e-08, 3.7252903e-09, 1.4901161e-08, 1, -1.4901161e-08, 3.7252903e-09, 2.9802322e-08, 1, -2.3090901e-10, 0.015496042, 6.9464867e-10)
 script = ExtResource("5_lyv0n")
 is_right_hand = true
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="XR_RightHand/RightHandHumanoid2/RightHandHumanoid/Skeleton3D/Right_First_Finger/FingerPivot/Right_First_Finger" unique_id=741647070]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="XR_RightHand/RightHandMesh/RightHandHumanoid/Skeleton3D/Right_First_Finger/FingerPivot/Right_First_Finger" unique_id=741647070]
 shape = SubResource("CapsuleShape3D_sxbc5")
 
-[node name="Right_Index_Finger" type="BoneAttachment3D" parent="XR_RightHand/RightHandHumanoid2/RightHandHumanoid/Skeleton3D" parent_id_path=PackedInt32Array(594923881, 1563965009) index="4" unique_id=1828012557]
+[node name="Right_Index_Finger" type="BoneAttachment3D" parent="XR_RightHand/RightHandMesh/RightHandHumanoid/Skeleton3D" parent_id_path=PackedInt32Array(594923881, 1563965009) index="4" unique_id=1828012557]
 transform = Transform3D(0.051410556, -0.18790838, -0.9808402, 0.97499365, 0.22206675, 0.008560741, 0.21620327, -0.9567527, 0.19462611, 0.016196424, 0.036920153, -0.14566463)
 bone_name = "RightIndexDistal"
 bone_idx = 8
 
-[node name="FingerPivot" type="Node3D" parent="XR_RightHand/RightHandHumanoid2/RightHandHumanoid/Skeleton3D/Right_Index_Finger" unique_id=91980802]
+[node name="FingerPivot" type="Node3D" parent="XR_RightHand/RightHandMesh/RightHandHumanoid/Skeleton3D/Right_Index_Finger" unique_id=91980802]
 
-[node name="Right_Index_Finger" type="Area3D" parent="XR_RightHand/RightHandHumanoid2/RightHandHumanoid/Skeleton3D/Right_Index_Finger/FingerPivot" unique_id=1291332066]
+[node name="Right_Index_Finger" type="Area3D" parent="XR_RightHand/RightHandMesh/RightHandHumanoid/Skeleton3D/Right_Index_Finger/FingerPivot" unique_id=1291332066]
 transform = Transform3D(0.99999994, -1.4901161e-08, 3.7252903e-09, 1.4901161e-08, 1, -1.4901161e-08, 3.7252903e-09, 2.9802322e-08, 1, -2.3090901e-10, 0.015496042, 6.9464867e-10)
 script = ExtResource("5_lyv0n")
 Which_Finger = 1
 is_right_hand = true
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="XR_RightHand/RightHandHumanoid2/RightHandHumanoid/Skeleton3D/Right_Index_Finger/FingerPivot/Right_Index_Finger" unique_id=647384726]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="XR_RightHand/RightHandMesh/RightHandHumanoid/Skeleton3D/Right_Index_Finger/FingerPivot/Right_Index_Finger" unique_id=647384726]
 shape = SubResource("CapsuleShape3D_sxbc5")
 
-[node name="Right_Middle_Finger" type="BoneAttachment3D" parent="XR_RightHand/RightHandHumanoid2/RightHandHumanoid/Skeleton3D" parent_id_path=PackedInt32Array(594923881, 1563965009) index="5" unique_id=1565990726]
+[node name="Right_Middle_Finger" type="BoneAttachment3D" parent="XR_RightHand/RightHandMesh/RightHandHumanoid/Skeleton3D" parent_id_path=PackedInt32Array(594923881, 1563965009) index="5" unique_id=1565990726]
 transform = Transform3D(-0.009916338, -0.102648355, -0.99466807, 0.9992827, -0.037374273, -0.0061054025, -0.036548406, -0.99401486, 0.10294528, 0.012456022, -0.0067640967, -0.15593962)
 bone_name = "RightMiddleDistal"
 bone_idx = 13
 
-[node name="FingerPivot" type="Node3D" parent="XR_RightHand/RightHandHumanoid2/RightHandHumanoid/Skeleton3D/Right_Middle_Finger" unique_id=752976842]
+[node name="FingerPivot" type="Node3D" parent="XR_RightHand/RightHandMesh/RightHandHumanoid/Skeleton3D/Right_Middle_Finger" unique_id=752976842]
 
-[node name="Right_Middle_Finger" type="Area3D" parent="XR_RightHand/RightHandHumanoid2/RightHandHumanoid/Skeleton3D/Right_Middle_Finger/FingerPivot" unique_id=936929892]
+[node name="Right_Middle_Finger" type="Area3D" parent="XR_RightHand/RightHandMesh/RightHandHumanoid/Skeleton3D/Right_Middle_Finger/FingerPivot" unique_id=936929892]
 transform = Transform3D(0.99999994, -1.4901161e-08, 3.7252903e-09, 1.4901161e-08, 1, -1.4901161e-08, 3.7252903e-09, 2.9802322e-08, 1, -2.3090901e-10, 0.015496042, 6.9464867e-10)
 script = ExtResource("5_lyv0n")
 Which_Finger = 2
 is_right_hand = true
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="XR_RightHand/RightHandHumanoid2/RightHandHumanoid/Skeleton3D/Right_Middle_Finger/FingerPivot/Right_Middle_Finger" unique_id=988941120]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="XR_RightHand/RightHandMesh/RightHandHumanoid/Skeleton3D/Right_Middle_Finger/FingerPivot/Right_Middle_Finger" unique_id=988941120]
 shape = SubResource("CapsuleShape3D_sxbc5")
 
-[node name="Right_Ring_Finger" type="BoneAttachment3D" parent="XR_RightHand/RightHandHumanoid2/RightHandHumanoid/Skeleton3D" parent_id_path=PackedInt32Array(594923881, 1563965009) index="6" unique_id=796298821]
+[node name="Right_Ring_Finger" type="BoneAttachment3D" parent="XR_RightHand/RightHandMesh/RightHandHumanoid/Skeleton3D" parent_id_path=PackedInt32Array(594923881, 1563965009) index="6" unique_id=796298821]
 transform = Transform3D(-0.049408674, -0.14326712, -0.9884499, 0.9768475, -0.21318337, -0.01792968, -0.20815244, -0.9664506, 0.15048324, 0.009453233, -0.038760167, -0.13811809)
 bone_name = "RightRingDistal"
 bone_idx = 18
 
-[node name="FingerPivot" type="Node3D" parent="XR_RightHand/RightHandHumanoid2/RightHandHumanoid/Skeleton3D/Right_Ring_Finger" unique_id=347189796]
+[node name="FingerPivot" type="Node3D" parent="XR_RightHand/RightHandMesh/RightHandHumanoid/Skeleton3D/Right_Ring_Finger" unique_id=347189796]
 
-[node name="Right_Ring_Finger" type="Area3D" parent="XR_RightHand/RightHandHumanoid2/RightHandHumanoid/Skeleton3D/Right_Ring_Finger/FingerPivot" unique_id=1256930025]
+[node name="Right_Ring_Finger" type="Area3D" parent="XR_RightHand/RightHandMesh/RightHandHumanoid/Skeleton3D/Right_Ring_Finger/FingerPivot" unique_id=1256930025]
 transform = Transform3D(0.99999994, -1.4901161e-08, 3.7252903e-09, 1.4901161e-08, 1, -1.4901161e-08, 3.7252903e-09, 2.9802322e-08, 1, -2.3090901e-10, 0.015496042, 6.9464867e-10)
 script = ExtResource("5_lyv0n")
 Which_Finger = 3
 is_right_hand = true
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="XR_RightHand/RightHandHumanoid2/RightHandHumanoid/Skeleton3D/Right_Ring_Finger/FingerPivot/Right_Ring_Finger" unique_id=1754622003]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="XR_RightHand/RightHandMesh/RightHandHumanoid/Skeleton3D/Right_Ring_Finger/FingerPivot/Right_Ring_Finger" unique_id=1754622003]
 transform = Transform3D(0.9999988, 0, 0, -1.4603138e-06, 1, 0, 1.7136335e-07, 0, 1, -5.820759e-11, 0.0024058605, -2.910384e-11)
 shape = SubResource("CapsuleShape3D_u77ky")
 
-[node name="Right_Pinky_Finger" type="BoneAttachment3D" parent="XR_RightHand/RightHandHumanoid2/RightHandHumanoid/Skeleton3D" parent_id_path=PackedInt32Array(594923881, 1563965009) index="7" unique_id=574510205]
+[node name="Right_Pinky_Finger" type="BoneAttachment3D" parent="XR_RightHand/RightHandMesh/RightHandHumanoid/Skeleton3D" parent_id_path=PackedInt32Array(594923881, 1563965009) index="7" unique_id=574510205]
 transform = Transform3D(-0.08107855, -0.28973517, -0.95366627, 0.95574737, -0.29407662, 0.008088471, -0.28279454, -0.9108083, 0.300757, -0.002238233, -0.0582203, -0.111492544)
 bone_name = "RightLittleDistal"
 bone_idx = 23
 
-[node name="FingerPivot" type="Node3D" parent="XR_RightHand/RightHandHumanoid2/RightHandHumanoid/Skeleton3D/Right_Pinky_Finger" unique_id=1987183831]
+[node name="FingerPivot" type="Node3D" parent="XR_RightHand/RightHandMesh/RightHandHumanoid/Skeleton3D/Right_Pinky_Finger" unique_id=1987183831]
 
-[node name="Right_Pinky_Finger" type="Area3D" parent="XR_RightHand/RightHandHumanoid2/RightHandHumanoid/Skeleton3D/Right_Pinky_Finger/FingerPivot" unique_id=2068048338]
+[node name="Right_Pinky_Finger" type="Area3D" parent="XR_RightHand/RightHandMesh/RightHandHumanoid/Skeleton3D/Right_Pinky_Finger/FingerPivot" unique_id=2068048338]
 transform = Transform3D(0.99999994, -1.4901161e-08, 3.7252903e-09, 1.4901161e-08, 1, -1.4901161e-08, 3.7252903e-09, 2.9802322e-08, 1, -2.3090901e-10, 0.015496042, 6.9464867e-10)
 script = ExtResource("5_lyv0n")
 Which_Finger = 1
 is_right_hand = true
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="XR_RightHand/RightHandHumanoid2/RightHandHumanoid/Skeleton3D/Right_Pinky_Finger/FingerPivot/Right_Pinky_Finger" unique_id=1890541875]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="XR_RightHand/RightHandMesh/RightHandHumanoid/Skeleton3D/Right_Pinky_Finger/FingerPivot/Right_Pinky_Finger" unique_id=1890541875]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.3283064e-10, -0.004968002, 0)
 shape = SubResource("CapsuleShape3D_lyv0n")
+
+[node name="Right_MainFuctionPointer" parent="XR_RightHand/RightHandMesh" unique_id=1823235420 instance=ExtResource("4_lyv0n")]
+unique_name_in_owner = true
+transform = Transform3D(0.9999995, 0, 0, 0, -0.1736482, -0.98480713, 0, 0.98480785, -0.1736481, 0, 0, 0)
+y_offset = 0.0
+show_laser = 0
+laser_length = 1
 
 [node name="OpenXRFbSceneManager" type="OpenXRFbSceneManager" parent="." unique_id=900066731]
 default_scene = ExtResource("7_qk0ov")
 scenes/global_mesh = ExtResource("8_bt0ox")
 
 [editable path="XR_LeftHand/LeftHandMesh"]
-[editable path="XR_RightHand/RightHandHumanoid2"]
+[editable path="XR_RightHand/RightHandMesh"]

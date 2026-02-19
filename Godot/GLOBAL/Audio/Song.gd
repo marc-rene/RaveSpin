@@ -102,6 +102,9 @@ func Attempt_Automatic_Data_Fill_From_Audio_File():
 var attempt_populate = Attempt_Automatic_Data_Fill_From_Audio_File
 
 
+func _to_string() -> String:
+    return Song_Title + " - " + Song_Album.Album_Name + " - " + Main_Artist.Artist_Name
+
 #func _init( p_audio_file : AudioStream = null,
             #p_track_title : String = "N/A",
             #p_track_artist : Artist = null,

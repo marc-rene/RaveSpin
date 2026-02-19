@@ -49,7 +49,7 @@ void fragment() {
 shader = SubResource("Shader_sk0yf")
 shader_parameter/Unlit_Colour = Color(0.92941177, 0.68235296, 0.28627452, 1)
 
-[node name="LibreBoxTrackCardHorizontalUi" type="Button" unique_id=1906176276 node_paths=PackedStringArray("Origin_Platform_Logo", "Album_Art_Texture_Holder", "Track_Name_Label", "Artist_Name_Label", "Album_Name_Label", "Track_Duration_Label", "Track_BPM_Label", "Track_Key_Label", "Track_Genres_Containers", "Note_Text_Container_Parent", "Note_Text_Label")]
+[node name="LibreBoxTrackCardHorizontalUi" type="Button" unique_id=1906176276]
 custom_minimum_size = Vector2(0, 180)
 anchors_preset = 10
 anchor_right = 1.0
@@ -60,17 +60,6 @@ size_flags_vertical = 3
 theme = ExtResource("2_sjwx3")
 icon_alignment = 1
 script = ExtResource("2_3g84n")
-Origin_Platform_Logo = NodePath("CenterContainer/Origin Platform Logo")
-Album_Art_Texture_Holder = NodePath("VBoxContainer/Main Container/AspectRatioContainer/Album_Thumbnail")
-Track_Name_Label = NodePath("VBoxContainer/Main Container/Name Container/Title")
-Artist_Name_Label = NodePath("VBoxContainer/Main Container/Name Container/Artist")
-Album_Name_Label = NodePath("VBoxContainer/Main Container/Name Container/Album")
-Track_Duration_Label = NodePath("VBoxContainer/Main Container/Time Container/Time var Label")
-Track_BPM_Label = NodePath("VBoxContainer/Main Container/BPM Container/BPM var Label")
-Track_Key_Label = NodePath("VBoxContainer/Main Container/Key Container/Key var Label")
-Track_Genres_Containers = NodePath("VBoxContainer/Main Container/Genres Container")
-Note_Text_Container_Parent = NodePath("VBoxContainer/Main Container/Note Container")
-Note_Text_Label = NodePath("VBoxContainer/Main Container/Note Container/Note SubContainer/Note var Label")
 
 [node name="CenterContainer" type="CenterContainer" parent="." unique_id=135081498]
 z_index = 1
@@ -82,6 +71,7 @@ offset_right = 40.0
 offset_bottom = 40.0
 
 [node name="Origin Platform Logo" type="TextureRect" parent="CenterContainer" unique_id=131876838]
+unique_name_in_owner = true
 z_index = 1
 material = ExtResource("3_e7omt")
 custom_minimum_size = Vector2(60, 60)
@@ -117,6 +107,7 @@ size_flags_vertical = 4
 stretch_mode = 3
 
 [node name="Album_Thumbnail" type="TextureRect" parent="VBoxContainer/Main Container/AspectRatioContainer" unique_id=1212709508]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(120, 120)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -126,12 +117,14 @@ expand_mode = 5
 stretch_mode = 5
 
 [node name="Name Container" type="VBoxContainer" parent="VBoxContainer/Main Container" unique_id=173803116]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 alignment = 1
 
 [node name="Title" type="Label" parent="VBoxContainer/Main Container/Name Container" unique_id=468923406]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -147,6 +140,7 @@ text_overrun_behavior = 3
 uppercase = true
 
 [node name="Artist" type="Label" parent="VBoxContainer/Main Container/Name Container" unique_id=2120999134]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -158,6 +152,7 @@ text_overrun_behavior = 5
 ellipsis_char = "-"
 
 [node name="Album" type="Label" parent="VBoxContainer/Main Container/Name Container" unique_id=1893249322]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -197,6 +192,7 @@ label_settings = ExtResource("5_sjwx3")
 horizontal_alignment = 1
 
 [node name="Time var Label" type="Label" parent="VBoxContainer/Main Container/Time Container" unique_id=1123985816]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 text = "8m 50s"
@@ -232,6 +228,7 @@ label_settings = ExtResource("5_sjwx3")
 horizontal_alignment = 1
 
 [node name="BPM var Label" type="Label" parent="VBoxContainer/Main Container/BPM Container" unique_id=333574605]
+unique_name_in_owner = true
 layout_mode = 2
 text = "128"
 label_settings = ExtResource("3_wd6pi")
@@ -266,6 +263,7 @@ label_settings = ExtResource("5_sjwx3")
 horizontal_alignment = 1
 
 [node name="Key var Label" type="Label" parent="VBoxContainer/Main Container/Key Container" unique_id=865418704]
+unique_name_in_owner = true
 layout_mode = 2
 text = "8m 50s"
 label_settings = ExtResource("3_wd6pi")
@@ -273,11 +271,13 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Separator Info-Genre" type="VSeparator" parent="VBoxContainer/Main Container" unique_id=2002599015]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 3
 
 [node name="Genres Container" type="HFlowContainer" parent="VBoxContainer/Main Container" unique_id=46872494]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -290,11 +290,13 @@ layout_mode = 2
 text = "EDM"
 
 [node name="Separator Genre-Note" type="VSeparator" parent="VBoxContainer/Main Container" unique_id=425708211]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 3
 
 [node name="Note Container" type="VBoxContainer" parent="VBoxContainer/Main Container" unique_id=1152063718]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 alignment = 2
@@ -327,6 +329,7 @@ layout_mode = 2
 size_flags_vertical = 3
 
 [node name="Note var Label" type="Label" parent="VBoxContainer/Main Container/Note Container/Note SubContainer" unique_id=1220629847]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 1
 text = "At 3:16 the bass drop is gonna start to ramp up, good time to fade in"
@@ -342,3 +345,5 @@ layout_mode = 2
 [node name="Padding" type="Control" parent="VBoxContainer" unique_id=1163360951]
 layout_mode = 2
 size_flags_vertical = 3
+
+[connection signal="pressed" from="." to="." method="_on_pressed"]

@@ -4,8 +4,6 @@
 [ext_resource type="Script" uid="uid://cjw3mllds5qjs" path="res://Scripts/arena.gd" id="1_lr07p"]
 [ext_resource type="PackedScene" uid="uid://c3iykg71k0su4" path="res://Components/DDJ-FLX4/DDJ-FLX4.tscn" id="3_lr07p"]
 [ext_resource type="PackedScene" uid="uid://dh8cyr4ti48fi" path="res://UI/LibreBox/Librebox_Scene.tscn" id="6_7t5kf"]
-[ext_resource type="Curve" uid="uid://olapaclqq7du" path="res://Components/Controls/Crossfade Curve Left.tres" id="6_f8rhi"]
-[ext_resource type="Curve" uid="uid://ceyfy3hj4jqwo" path="res://Components/Controls/Crossfade Curve Right.tres" id="7_4yh7d"]
 [ext_resource type="Resource" uid="uid://d1ljxjynpwsnm" path="res://Music/Song Metadatas/LoveIsTheAnswer_Crusy_Song.tres" id="7_f8rhi"]
 [ext_resource type="Resource" uid="uid://c6lxgtataduv2" path="res://Music/Song Metadatas/IThinkILikeIt_FixYourAccent_FakeBlood_Song.tres" id="8_4yh7d"]
 [ext_resource type="Script" uid="uid://dvxittvfvayif" path="res://GLOBAL/Scene/start_xr.gd" id="9_4yh7d"]
@@ -33,13 +31,10 @@ environment = SubResource("Environment_3sm0n")
 [node name="Player" parent="." unique_id=1063771176 instance=ExtResource("1_hagq7")]
 
 [node name="DDJ-FLX4" parent="." unique_id=2092251129 instance=ExtResource("3_lr07p")]
-transform = Transform3D(-0.21724784, 1.9374198, 0.4463275, 2.0647276e-08, 0.44898418, -1.9489518, -1.9881659, -0.2117028, -0.048770443, -0.6182742, 1.1884408, 1.1975795)
-Use_2_Track_Bus_Layout = true
-Crossfader_Curve_Left = ExtResource("6_f8rhi")
-Crossfader_Curve_Right = ExtResource("7_4yh7d")
+transform = Transform3D(-0.21724784, 1.9374198, 0.4463275, 2.0647276e-08, 0.44898418, -1.9489518, -1.9881659, -0.2117028, -0.048770443, -0.7043208, 1.1884408, 1.1975795)
 
 [node name="LibreboxScene" parent="DDJ-FLX4" unique_id=889702823 instance=ExtResource("6_7t5kf")]
-transform = Transform3D(0.5, 0, 0, 0, 0.12940954, 0.4829629, 0, -0.4829629, 0.12940954, 0.234604, -0.020323109, -0.1751073)
+transform = Transform3D(0.5, 2.2118911e-09, -1.8626451e-08, 0, 0.12940954, 0.48296303, -1.8626451e-09, -0.4829629, 0.12940954, 0.22498688, 0.08764118, -0.25170845)
 Track_1 = ExtResource("7_f8rhi")
 Track_2 = ExtResource("8_4yh7d")
 

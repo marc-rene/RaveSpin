@@ -1,11 +1,15 @@
 extends Node3D
-class_name Controller
+class_name DJ_Controller
 
-@onready var LibreBox_ref : LibreBox = $LibreboxScene
+#@onready var LibreBox_ref : LibreBox = $LibreboxScene
 # Too many issues with Init'ing
 #var AudioSourceList : Array[AudioStream] = [Track_1_AudioSource, Track_2_AudioSource, Track_3_AudioSource, Track_4_AudioSource]
 
 
+static var Controller_Instance : DJ_Controller
+static func Get_Instance() -> DJ_Controller:
+    return Controller_Instance
+    
 
 @export var Use_2_Track_Bus_Layout = true
 var Bus_Layout : AudioBusLayout
@@ -30,23 +34,14 @@ var In_Channel_Fader = true
 var Dirty_Tempos = true
    
 
-func LoadTrackIntoMemory(p_which_track : int):
-    p_which_track = clamp(p_which_track, 0, 4)
-    print("Spawned Player for Track ", p_which_track)
-    var current_stream : AudioStream;
-    match p_which_track:
-        0:
-            current_stream = LibreBox_ref.Track_1.Audio_File
-        1:
-            current_stream = LibreBox_ref.Track_2.Audio_File
-        2:
-            current_stream = LibreBox_ref.Track_3.Audio_File
-        3:
-            current_stream = LibreBox_ref.Track_4.Audio_File
-            
-    AudioPlayerList[p_which_track].stream = current_stream
-    print("Loading Track ", p_which_track, " into memory now")
-    AudioPlayerList[p_which_track].stream_paused = true
+func LoadTrackIntoMemory(which_track : int, which_song : Song):
+    which_track = clamp(which_track, 0, 4)
+    print("Spawned Player for Track ", which_track)
+    
+    AudioPlayerList[which_track].stream = which_song.Audio_File
+    print("Loading Track ", which_track, " into memory now")
+    
+    AudioPlayerList[which_track].stream_paused = true
     
     
       
@@ -68,11 +63,11 @@ func Play_Pause(p_which_track : int):
                        
 
 func _ready() -> void:
-    LoadTrackIntoMemory(0)
-    LoadTrackIntoMemory(1)
-    if (Use_2_Track_Bus_Layout == false):
-        LoadTrackIntoMemory(2)
-        LoadTrackIntoMemory(3)
+    #LoadTrackIntoMemory(0)
+    #LoadTrackIntoMemory(1)
+    #if (Use_2_Track_Bus_Layout == false):
+        #LoadTrackIntoMemory(2)
+        #LoadTrackIntoMemory(3)
     
     AudioPlayerList[0].stream_paused = true
     AudioPlayerList[1].stream_paused = true
@@ -143,15 +138,15 @@ func _process(delta: float) -> void:
     Update_Channel_Tempo_Adjusts()
     
     # TODO: Change this to a proper UI  
-    var left_status_text = "Song file path: %s\n" % AudioPlayerList[0].stream.resource_path.get_file()
-    var right_status_text = "Song file path: %s\n" % AudioPlayerList[1].stream.resource_path.get_file()
-    left_status_text += "Volume: %.1fdb\n"   % [AudioServer.get_bus_volume_db(Channel_1_Left_Bus_Index)]
-    right_status_text += "Volume: %.1fdb\n"  % [AudioServer.get_bus_volume_db(Channel_2_Right_Bus_Index)]
-    left_status_text += "BPM Multiplier: %.2f\n"  % AudioPlayerList[0].pitch_scale
-    right_status_text += "BPM Multiplier: %.2f\n" % AudioPlayerList[1].pitch_scale
-    
-    $"LEFT Status Text".text = left_status_text
-    $"RIGHT Status Text".text = right_status_text
+    #var left_status_text = "Song file path: %s\n" % AudioPlayerList[0].stream.resource_path.get_file()
+    #var right_status_text = "Song file path: %s\n" % AudioPlayerList[1].stream.resource_path.get_file()
+    #left_status_text += "Volume: %.1fdb\n"   % [AudioServer.get_bus_volume_db(Channel_1_Left_Bus_Index)]
+    #right_status_text += "Volume: %.1fdb\n"  % [AudioServer.get_bus_volume_db(Channel_2_Right_Bus_Index)]
+    #left_status_text += "BPM Multiplier: %.2f\n"  % AudioPlayerList[0].pitch_scale
+    #right_status_text += "BPM Multiplier: %.2f\n" % AudioPlayerList[1].pitch_scale
+    #
+    #$"LEFT Status Text".text = left_status_text
+    #$"RIGHT Status Text".text = right_status_text
     $"General Status".text = "Crossfade: %.3f" % remap(Crossfade_Alpha, 0.0, 1.0, -1.0, 1.0)
     
 
@@ -189,11 +184,11 @@ func _on_RIGHT_tempo_adjust_on_unhovered() -> void:
 
 
 func _on_reset_area_area_entered(area: Area3D) -> void:
-    LoadTrackIntoMemory(0)
-    LoadTrackIntoMemory(1)
-    if (Use_2_Track_Bus_Layout == false):
-        LoadTrackIntoMemory(2)
-        LoadTrackIntoMemory(3)
+    #LoadTrackIntoMemory(0)
+    #LoadTrackIntoMemory(1)
+    #if (Use_2_Track_Bus_Layout == false):
+        #LoadTrackIntoMemory(2)
+        #LoadTrackIntoMemory(3)
     AudioPlayerList[0].stream_paused = true
     AudioPlayerList[1].stream_paused = true
     AudioPlayerList[2].stream_paused = true
