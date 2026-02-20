@@ -2,7 +2,7 @@ extends Control
 class_name LibreBox_TrackSelection
 
 @onready var Tracks_Holder : Container = $"VBoxContainer/ScrollContainer/Song Cards Container"
-@export_range(1, 4, 1, "prefer_slider") var Target_Track_Slot : int
+
 
 const track_card = preload("res://UI/LibreBox/Components/Track Card/LibreBox_TrackCard_Horizontal_UI.tscn")
 
@@ -25,6 +25,7 @@ func Refresh():
             print("Card for " + new_track.Song_Resource.Song_Title + " created and hooked up successfully")
     
 func New_Track_Selected(New_Song : Song):
+    print("NEW TRACK SELECTED CALLED WITH SONG: " + New_Song.Song_Title + " for track #" + str(Which_Track_Responcible_For))
     track_selected.emit(Which_Track_Responcible_For, New_Song)
     
 

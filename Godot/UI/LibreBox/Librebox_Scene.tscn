@@ -22,7 +22,6 @@ Track_2 = null
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6143331, 0)
 billboard = 1
 alpha_cut = 1
-texture_filter = 0
 text = "HUB"
 font = ExtResource("2_yb6eh")
 outline_size = 0
@@ -32,15 +31,14 @@ transform = Transform3D(0.70710677, 0, 0.70710677, 0, 1, 0, -0.70710677, 0, 0.70
 screen_size = Vector2(1.6, 1.6)
 scene = ExtResource("4_vnbwf")
 viewport_size = Vector2(1280, 1280)
-scene_properties_keys = PackedStringArray("Track_Selection.gd", "Target_Track_Slot", "Which_Track_Responcible_For")
-Target_Track_Slot = 0
+unshaded = true
+scene_properties_keys = PackedStringArray("Track_Selection.gd", "Which_Track_Responcible_For")
 Which_Track_Responcible_For = 0
 
 [node name="Track Select Label" type="Label3D" parent="Track 1 Selection" unique_id=61489553]
 transform = Transform3D(0.8201419, 0, -0.5721602, 0, 1, 0, 0.5721602, 0, 0.8201419, 0, 0.9393393, 0)
 billboard = 1
 alpha_cut = 1
-texture_filter = 0
 text = "Track 1 Selection"
 font = ExtResource("2_yb6eh")
 outline_size = 0
@@ -50,15 +48,14 @@ transform = Transform3D(0.70710677, 0, -0.70710677, 0, 1, 0, 0.70710677, 0, 0.70
 screen_size = Vector2(1.6, 1.6)
 scene = ExtResource("4_vnbwf")
 viewport_size = Vector2(1280, 1280)
-scene_properties_keys = PackedStringArray("Track_Selection.gd", "Target_Track_Slot", "Which_Track_Responcible_For")
-Target_Track_Slot = 0
-Which_Track_Responcible_For = 0
+unshaded = true
+scene_properties_keys = PackedStringArray("Track_Selection.gd", "Which_Track_Responcible_For")
+Which_Track_Responcible_For = 2
 
 [node name="Track Select Label" type="Label3D" parent="Track 2 Selection" unique_id=1008893548]
 transform = Transform3D(0.8201419, 0, -0.5721602, 0, 1, 0, 0.5721602, 0, 0.8201419, 0, 0.9393393, 0)
 billboard = 1
 alpha_cut = 1
-texture_filter = 0
 text = "Track 2 Selection"
 font = ExtResource("2_yb6eh")
 outline_size = 0

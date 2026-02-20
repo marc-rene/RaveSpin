@@ -17,6 +17,7 @@ static var LibreBox_instance : LibreBox
 
 func On_Song_Change(Which_Track: int, New_Song: Song):
     Which_Track = clamp(Which_Track, 1, 2)
+    print("MAIN MANAGER CALLED TO CHANGE TRACK #" + str(Which_Track) + " TO SONG: " + New_Song.Song_Title)
     #if DJ_Controller.Get_Instance().Use_2_Track_Bus_Layout:
         #Which_Track = clamp(Which_Track, 1, 2)
     #else:

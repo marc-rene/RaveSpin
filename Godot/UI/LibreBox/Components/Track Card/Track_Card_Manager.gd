@@ -105,5 +105,6 @@ func _ready() -> void:
     
 
 func _on_pressed() -> void:
+    print("CARD was pressed with song: " + Song_Resource.Song_Title)
     Card_Clicked.emit(Song_Resource)
     
