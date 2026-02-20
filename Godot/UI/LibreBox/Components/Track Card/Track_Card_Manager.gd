@@ -95,21 +95,14 @@ func Refresh_Details() -> bool:
     if expand_others and %"Name Container" != null:
         %"Name Container".size_flags_horizontal = Control.SIZE_EXPAND_FILL
         
-    
-    
-    
     return true
         
 
 
 func _ready() -> void:
-    #print("Song Resource: " + Utility.Return_Valid(Song_Resource.resource_path, "null"))        
-    #print("Song details are valid?: " + str(Song_Resource == null))
     if Song_Resource != null:
         Refresh_Details()
     
-    
-
 
 func _on_pressed() -> void:
     Card_Clicked.emit(Song_Resource)

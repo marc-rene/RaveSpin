@@ -28,7 +28,7 @@ font = ExtResource("2_yb6eh")
 outline_size = 0
 
 [node name="Track 1 Selection" parent="." unique_id=900064892 instance=ExtResource("1_ebwc8")]
-transform = Transform3D(0.8660254, 0, 0.5, 0, 1, 0, -0.5, 0, 0.8660254, -1.6, 0, 0.4)
+transform = Transform3D(0.70710677, 0, 0.70710677, 0, 1, 0, -0.70710677, 0, 0.70710677, -1.6, 0, 0.65)
 screen_size = Vector2(1.6, 1.6)
 scene = ExtResource("4_vnbwf")
 viewport_size = Vector2(1280, 1280)
@@ -46,7 +46,7 @@ font = ExtResource("2_yb6eh")
 outline_size = 0
 
 [node name="Track 2 Selection" parent="." unique_id=187553533 instance=ExtResource("1_ebwc8")]
-transform = Transform3D(0.8660254, 0, -0.5, 0, 1, 0, 0.5, 0, 0.8660254, 1.6, 0, 0.4)
+transform = Transform3D(0.70710677, 0, -0.70710677, 0, 1, 0, 0.70710677, 0, 0.70710677, 1.6, 0, 0.65)
 screen_size = Vector2(1.6, 1.6)
 scene = ExtResource("4_vnbwf")
 viewport_size = Vector2(1280, 1280)
