@@ -28,7 +28,15 @@ class_name Track_Card
 signal Card_Clicked(Song_Resource)
 
 @onready var Card_Button_ref : Button = $"."
-    
+
+func Set_New_Song(New_Song: Song) -> bool:
+    if New_Song == null or New_Song == Song_Resource:
+        return false
+    else:
+        Song_Resource = New_Song
+        Refresh_Details()
+        return true
+
 func Refresh_Details() -> bool:
     if Song_Resource == null:
         return false
@@ -69,6 +77,8 @@ func Refresh_Details() -> bool:
     var expand_others = true
     
     if Utility.is_Valid(Song_Resource.Song_Genres):
+        Info_Genre_Seperator.show()
+        Track_Genres_Containers.show()
         for genre in Song_Resource.Song_Genres:
             var new_genre = Button.new()
             new_genre.text = EGenre.m_MusicGenres_str[genre]
@@ -76,20 +86,23 @@ func Refresh_Details() -> bool:
             expand_others = false
     else:
         if Info_Genre_Seperator != null:
-            Info_Genre_Seperator.free()
-            Track_Genres_Containers.queue_free()
+            Info_Genre_Seperator.hide()
+            Track_Genres_Containers.hide()
         #print("NO GENRES")
     
-    if Utility.is_Valid(Song_Resource.User_Sidenote) and Song_Resource.User_Sidenote != "N/A":
+    if Utility.is_Valid(Song_Resource.User_Sidenote) and Utility.is_Valid(Note_Text_Label) and Song_Resource.User_Sidenote != "N/A":
+        Genre_Note_Seperator.show()
+        Note_Text_Label.show()
+        Note_Text_Container_Parent.show()
         Note_Text_Label.text = Song_Resource.User_Sidenote
         expand_others = false
         #print("Track " + Song_Resource.Song_Title + " has a sidenote: " + Song_Resource.User_Sidenote)
         
     else:
         if Genre_Note_Seperator != null:
-            Genre_Note_Seperator.free()
-            Note_Text_Label.free()
-            Note_Text_Container_Parent.free()
+            Genre_Note_Seperator.hide()
+            Note_Text_Label.hide()
+            Note_Text_Container_Parent.hide()
         #print("Track " + Song_Resource.Song_Title + " NO SIDENOTE!")
     
     if expand_others and %"Name Container" != null:

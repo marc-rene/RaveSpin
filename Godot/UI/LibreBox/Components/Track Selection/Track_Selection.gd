@@ -6,9 +6,9 @@ class_name LibreBox_TrackSelection
 
 const track_card = preload("res://UI/LibreBox/Components/Track Card/LibreBox_TrackCard_Horizontal_UI.tscn")
 
-@export_range(1,2,1) var Which_Track_Responcible_For : int 
+#@export_range(0,4,1) var Which_Track_Responcible_For : int 
 
-signal track_selected(Which_track : int, Song_Resource : Song)
+signal track_selected(Song_Resource : Song)
 
 
 func Refresh():
@@ -21,13 +21,14 @@ func Refresh():
         Tracks_Holder.add_child(new_track)
         new_track.Song_Resource = load(Song.ROOT_MUSIC_DIR+track_path)
         if new_track.Refresh_Details():
-            new_track.Card_Clicked.connect(New_Track_Selected.bind(new_track.Song_Resource))
+            new_track.Card_Clicked.connect(New_Track_Selected)
             print("Card for " + new_track.Song_Resource.Song_Title + " created and hooked up successfully")
     
 func New_Track_Selected(New_Song : Song):
-    print("NEW TRACK SELECTED CALLED WITH SONG: " + New_Song.Song_Title + " for track #" + str(Which_Track_Responcible_For))
-    track_selected.emit(Which_Track_Responcible_For, New_Song)
+    #print("NEW TRACK SELECTED CALLED WITH SONG: " + New_Song.Song_Title + " for track #" + str(Which_Track_Responcible_For))
+    track_selected.emit(New_Song)
     
 
 func _ready():
+    #print("Track Selection Made for Track #" + str(Which_Track_Responcible_For))
     Refresh()    

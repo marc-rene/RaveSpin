@@ -7,11 +7,11 @@ class_name LibreBox_HUB
 
 
 
-func Refresh(Track_1 : bool):
-    if Track_1:
-        $"VBoxContainer/Track 1 Container/Track 1 Card".Refresh_Details()
+func Refresh(Set_Track_1 : bool):
+    if Set_Track_1:
+        $"VBoxContainer/Track 1 Container/Track 1 Card".Set_New_Song(Track_1)
     else:
-        $"VBoxContainer/Track 2 Container/Track 2 Card".Refresh_Details()
+        $"VBoxContainer/Track 2 Container/Track 2 Card".Set_New_Song(Track_2)
     
 func _ready():
     $"VBoxContainer/Track 1 Container/Track 1 Card".Song_Resource = Track_1

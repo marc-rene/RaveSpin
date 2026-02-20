@@ -34,15 +34,19 @@ environment = SubResource("Environment_3sm0n")
 [node name="Player" parent="." unique_id=1063771176 instance=ExtResource("1_hagq7")]
 
 [node name="DDJ-FLX4" parent="." unique_id=2092251129 instance=ExtResource("3_lr07p")]
-transform = Transform3D(-0.21724784, 1.9374198, 0.4463275, 2.0647276e-08, 0.44898418, -1.9489518, -1.9881659, -0.2117028, -0.048770443, -0.7043208, 1.1884408, 1.1975795)
+unique_name_in_owner = true
+transform = Transform3D(-7.888416e-08, 0.86209327, 1.8046594, 3.7683293e-08, 1.8046594, -0.86209327, -2, 0, -8.742278e-08, -0.94150686, 1.6440163, 0.96281934)
 
-[node name="LibreboxScene" parent="DDJ-FLX4" unique_id=889702823 instance=ExtResource("6_7t5kf")]
-transform = Transform3D(0.5, 3.1432137e-09, -2.2351742e-08, 0, 0.12940954, 0.48296306, -2.7939677e-09, -0.4829629, 0.12940954, 0.22498688, 0.08764118, -0.25170845)
+[node name="LibreboxScene" parent="." unique_id=889702823 instance=ExtResource("6_7t5kf")]
+transform = Transform3D(-4.371139e-08, 0, 1.0000005, 0, 1, 0, -1, 0, -4.371141e-08, -1, 2, 0.5)
 Track_1 = ExtResource("7_f8rhi")
 Track_2 = ExtResource("8_4yh7d")
 
-[node name="Track 2 Selection" parent="DDJ-FLX4/LibreboxScene" index="2" unique_id=187553533]
-Target_Track_Slot = 1
+[node name="Track 1 Selection" parent="LibreboxScene" index="1" unique_id=900064892]
+scene_properties_keys = PackedStringArray("Track_Selection.gd")
+
+[node name="Track 2 Selection" parent="LibreboxScene" index="2" unique_id=187553533]
+scene_properties_keys = PackedStringArray("Track_Selection.gd")
 
 [node name="Track Stream Player Left" type="AudioStreamPlayer" parent="." unique_id=1328970906]
 autoplay = true
@@ -67,4 +71,4 @@ metadata/_custom_type_script = "uid://dvxittvfvayif"
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=1223925268]
 shape = SubResource("BoxShape3D_3sm0n")
 
-[editable path="DDJ-FLX4/LibreboxScene"]
+[editable path="LibreboxScene"]

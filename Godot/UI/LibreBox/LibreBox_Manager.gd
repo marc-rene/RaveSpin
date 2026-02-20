@@ -14,23 +14,22 @@ class_name LibreBox
 
 static var LibreBox_instance : LibreBox
 
-
-func On_Song_Change(Which_Track: int, New_Song: Song):
-    Which_Track = clamp(Which_Track, 1, 2)
-    print("MAIN MANAGER CALLED TO CHANGE TRACK #" + str(Which_Track) + " TO SONG: " + New_Song.Song_Title)
-    #if DJ_Controller.Get_Instance().Use_2_Track_Bus_Layout:
-        #Which_Track = clamp(Which_Track, 1, 2)
-    #else:
-        #Which_Track = clamp(Which_Track, 1, 4)
-        
+func Update_Controller_and_Hub(Which_Track: int, New_Song: Song):
+    print("MAIN MANAGER CALLED TO CHANGE TRACK #" + str(Which_Track) + " TO SONG: " + New_Song.Song_Title)       
     DJ_Controller.Get_Instance().LoadTrackIntoMemory(Which_Track, New_Song)
     match Which_Track:
-        1:
+        0:
             HUB_Menu_ref.Track_1 = New_Song
             HUB_Menu_ref.Refresh(true)
-        2:
+        1:
             HUB_Menu_ref.Track_2 = New_Song
             HUB_Menu_ref.Refresh(false)
+
+func On_Song_Change_Track_1(New_Song: Song):
+    Update_Controller_and_Hub(0, New_Song)
+
+func On_Song_Change_Track_2(New_Song: Song):
+    Update_Controller_and_Hub(1, New_Song)
 
 
 
@@ -41,8 +40,11 @@ func Refresh():
 func _ready() -> void:
     HUB_Menu_ref.Track_1 = Track_1
     HUB_Menu_ref.Track_2 = Track_2
-    
-    Track_1_Selection_ref.track_selected.connect(On_Song_Change)
-    Track_2_Selection_ref.track_selected.connect(On_Song_Change)
+    Track_1_Selection_ref.track_selected.connect(On_Song_Change_Track_1)
+    Track_2_Selection_ref.track_selected.connect(On_Song_Change_Track_2)
     LibreBox_instance = self
     Refresh()
+    await get_node("/root/Arena/DDJ-FLX4").ready
+    
+    DJ_Controller.Get_Instance().LoadTrackIntoMemory(0, Track_1)
+    DJ_Controller.Get_Instance().LoadTrackIntoMemory(1, Track_2)

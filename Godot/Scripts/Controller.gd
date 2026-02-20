@@ -9,7 +9,10 @@ class_name DJ_Controller
 static var Controller_Instance : DJ_Controller
 static func Get_Instance() -> DJ_Controller:
     return Controller_Instance
+
+
     
+
 
 @export var Use_2_Track_Bus_Layout = true
 var Bus_Layout : AudioBusLayout
@@ -35,7 +38,7 @@ var Dirty_Tempos = true
    
 
 func LoadTrackIntoMemory(which_track : int, which_song : Song):
-    which_track = clamp(which_track, 0, 4)
+    which_track = clamp(which_track, 0, 3)
     print("Spawned Player for Track ", which_track)
     
     AudioPlayerList[which_track].stream = which_song.Audio_File
@@ -68,7 +71,7 @@ func _ready() -> void:
     #if (Use_2_Track_Bus_Layout == false):
         #LoadTrackIntoMemory(2)
         #LoadTrackIntoMemory(3)
-    
+    Controller_Instance = self
     AudioPlayerList[0].stream_paused = true
     AudioPlayerList[1].stream_paused = true
     AudioPlayerList[2].stream_paused = true

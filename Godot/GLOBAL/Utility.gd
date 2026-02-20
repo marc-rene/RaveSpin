@@ -16,5 +16,6 @@ static func is_Valid(object) -> bool:
             return object != null and object != "" and object != " "
         TYPE_ARRAY:
             return object != null and object.size() >= 1
+        
     
-    return object != null
+    return object != null and is_instance_valid(object)

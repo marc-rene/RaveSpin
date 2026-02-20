@@ -1,7 +1,9 @@
 [gd_scene format=3 uid="uid://d3vfyxnqa8u8p"]
 
 [ext_resource type="Script" uid="uid://bxwlbcbdbs555" path="res://UI/LibreBox/Components/Track Selection/Track_Selection.gd" id="1_1m280"]
+[ext_resource type="LabelSettings" uid="uid://bl11km7ja4u0h" path="res://Art/Themes/Heading.tres" id="2_1m280"]
 [ext_resource type="Theme" uid="uid://ds0dxmwlq5niw" path="res://Art/Themes/Default_Theme.tres" id="2_hu467"]
+[ext_resource type="LabelSettings" uid="uid://du4olf7ix8h0m" path="res://Art/Themes/Heading_2.tres" id="4_khk6l"]
 
 [node name="MainHub" type="Control" unique_id=15880144]
 layout_mode = 3
@@ -21,11 +23,38 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Track Selection Label" type="Label" parent="VBoxContainer" unique_id=845195395]
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer" unique_id=1061895039]
+layout_mode = 2
+
+[node name="Track Selection Label" type="Label" parent="VBoxContainer/HBoxContainer" unique_id=845195395]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Track Select"
+label_settings = ExtResource("2_1m280")
+
+[node name="ADD ZE TRACK" type="Button" parent="VBoxContainer/HBoxContainer" unique_id=86367898]
+z_index = 2
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.6
+theme = ExtResource("2_hu467")
+theme_override_font_sizes/font_size = 44
+text = "+ Add New Track"
+
+[node name="Scroll Up" type="HBoxContainer" parent="VBoxContainer" unique_id=228435478]
 layout_mode = 2
 size_flags_vertical = 3
-size_flags_stretch_ratio = 0.4
-text = "Track Select"
+
+[node name="Label" type="Label" parent="VBoxContainer/Scroll Up" unique_id=44387498]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "Scroll Up ↑"
+label_settings = ExtResource("4_khk6l")
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer" unique_id=664327245]
 clip_contents = false
@@ -44,10 +73,15 @@ layout_mode = 2
 size_flags_horizontal = 3
 alignment = 1
 
-[node name="ADD ZE TRACK" type="Button" parent="VBoxContainer" unique_id=86367898]
-z_index = 2
+[node name="Scroll Down" type="HBoxContainer" parent="VBoxContainer" unique_id=798471584]
 layout_mode = 2
 size_flags_vertical = 3
-theme = ExtResource("2_hu467")
-theme_override_font_sizes/font_size = 44
-text = "+ Add New Track"
+
+[node name="Label" type="Label" parent="VBoxContainer/Scroll Down" unique_id=872832941]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "Scroll Down↓"
+label_settings = ExtResource("4_khk6l")
+horizontal_alignment = 1
+vertical_alignment = 1

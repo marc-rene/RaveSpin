@@ -21,7 +21,7 @@ enum E_POSES
     SPOCK,  # Index & Middle jointed together away from Ring & Pinky
     METAL,  # Devil horns - Eminem
     INDEX_THUMB_PINCH,
-    NONE    # Open Hand
+    NONE    # Open Hand # Nevermind this NEVER triggers
 }
 
 const Acceptable_Selection_Poses : Array[E_POSES] = [E_POSES.THUMBS_UP, E_POSES.POINT_AND_THUMBS_UP, E_POSES.INDEX_THUMB_PINCH]
@@ -103,19 +103,30 @@ func Set_Pointer_Enabled(use_right_hand: bool, Is_Enabled: bool):
         XR_Hand_Ref_FP_L.set_distance(5 if Is_Enabled else 0)
         DEBUG_Left_Label.modulate = Color("44bba4ff") if Is_Enabled else Color("e94f37ff")
         XR_Hand_Ref_FP_L.set_show_laser(XRToolsFunctionPointer.LaserShow.SHOW if Is_Enabled else XRToolsFunctionPointer.LaserShow.HIDE)
+
         
         
 func Do_Pointer_Click(use_right_hand: bool):
     if use_right_hand and is_main_signaller:
-        XR_Hand_Ref_FP_R._on_button_pressed("trigger_click", XR_Hand_Ref_R)    
+        #XR_Hand_Ref_FP_R._on_button_pressed("trigger_click", XR_Hand_Ref_R)
+        await _simulate_pointer_click(XR_Hand_Ref_FP_R, XR_Hand_Ref_R)    
         DEBUG_Right_Label.modulate = Color("edae49ff")
         print("WE DID A R CLICK")
     elif is_main_signaller:
-        XR_Hand_Ref_FP_L._on_button_pressed("trigger_click", XR_Hand_Ref_L)    
+        #XR_Hand_Ref_FP_L._on_button_pressed("trigger_click", XR_Hand_Ref_L)    
+        await _simulate_pointer_click(XR_Hand_Ref_FP_L, XR_Hand_Ref_L)
         DEBUG_Left_Label.modulate = Color("edae49ff")
         print("WE DID A L CLICK")
 
 
+
+func _simulate_pointer_click(pointer: XRToolsFunctionPointer, hand: XRController3D) -> void:
+    if pointer == null or hand == null or !pointer.enabled:
+        return
+    pointer._on_button_pressed("trigger_click", hand)
+    await get_tree().process_frame # must wait otherwise tomfoolery
+    
+    pointer._on_button_released("trigger_click", hand)
     
 func Set_Finger_Active_Status(New_Pose : E_POSES):
     var is_ok_to_activate = false
@@ -181,23 +192,22 @@ func _on_hand_pose_detector_pose_started_L(p_name: String) -> void:
         var primed : bool = CURRENT_LEFT_HAND_POSE == E_POSES.FIST
         CURRENT_LEFT_HAND_POSE = translate_pose_name_to_enum(p_name)
         if CURRENT_LEFT_HAND_POSE == E_POSES.FIST:
-            #print("Left Hand started doing Fist")
             Fist_Pose_Start_L.emit()
         elif CURRENT_LEFT_HAND_POSE in Acceptable_Selection_Poses and primed:
-            #print("Left Hand started doing Selection")
             ThumbsUp_Pose_Start_L.emit()
-        elif primed:
+        else:
             Fist_Pose_End_L.emit()
+            ThumbsUp_Pose_End_L.emit()
     Set_Finger_Active_Status(CURRENT_LEFT_HAND_POSE)
         
 func _on_hand_pose_detector_pose_ended_L(p_name: String) -> void:
     if is_main_signaller:
-        DEBUG_Left_Label.text = "N/A"
-        if translate_pose_name_to_enum(p_name) == E_POSES.FIST :
-            #print("Left Hand stopped doing Fist")
+        if translate_pose_name_to_enum(p_name) == E_POSES.FIST:
             pass
         elif translate_pose_name_to_enum(p_name) in Acceptable_Selection_Poses :
-            #print("Left Hand stopped doing Thumbs Up")
+            ThumbsUp_Pose_End_L.emit()
+        else:
+            Fist_Pose_End_L.emit()
             ThumbsUp_Pose_End_L.emit()
     Set_Finger_Active_Status(CURRENT_LEFT_HAND_POSE)
 # ------------------------------------------ 
@@ -211,24 +221,23 @@ func _on_hand_pose_detector_pose_started_R(p_name: String) -> void:
         var primed : bool = CURRENT_RIGHT_HAND_POSE == E_POSES.FIST
         CURRENT_RIGHT_HAND_POSE = translate_pose_name_to_enum(p_name)
         if CURRENT_RIGHT_HAND_POSE == E_POSES.FIST:
-            #print("Right Hand started doing Fist")
             Fist_Pose_Start_R.emit()
         elif CURRENT_RIGHT_HAND_POSE in Acceptable_Selection_Poses and primed:
-            #print("Right Hand started doing Selection")
             ThumbsUp_Pose_Start_R.emit()
-        elif primed:
+        else:
             Fist_Pose_End_R.emit()
+            ThumbsUp_Pose_End_R.emit()
     Set_Finger_Active_Status(CURRENT_RIGHT_HAND_POSE)
         
 func _on_hand_pose_detector_pose_ended_R(p_name: String) -> void:
     if is_main_signaller:
-        DEBUG_Right_Label.text = "N/A"
-        if translate_pose_name_to_enum(p_name) == E_POSES.FIST :
-            #print("Right Hand stopped doing Fist")
-            #Fist_Pose_End_R.emit()
-            pass            
+        print("STOPPED DOING A " + p_name)
+        if translate_pose_name_to_enum(p_name) == E_POSES.FIST:
+            pass
         elif translate_pose_name_to_enum(p_name) in Acceptable_Selection_Poses :
-            #print("Right Hand stopped doing Thumbs Up")
+            ThumbsUp_Pose_End_R.emit()
+        else:
+            Fist_Pose_End_R.emit()
             ThumbsUp_Pose_End_R.emit()
     Set_Finger_Active_Status(CURRENT_RIGHT_HAND_POSE)
 # ------------------------------------------ 

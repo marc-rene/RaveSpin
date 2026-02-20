@@ -13,12 +13,12 @@ func UpdateAlpha(new_value: float):
     
     
 func _on_activation_area_entered(area: Area3D) -> void:
-    if (area.name == "Hand"):
+    #if (area.name == "Hand"):
         #print("Slider Activated")
-        active = true
-        hand_ref = area
-        starting_pos = Target_Mesh.position
-        HighLight(E_ActivationStates.Pressed)
+    active = true
+    hand_ref = area
+    starting_pos = Target_Mesh.position
+    HighLight(E_ActivationStates.Pressed)
     if fully_exited:
         HighLight(E_ActivationStates.Exited)
     elif active == false:

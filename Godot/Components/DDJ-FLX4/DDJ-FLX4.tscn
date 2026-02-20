@@ -149,6 +149,7 @@ Target_Mesh = NodePath("../../Scroll track List")
 
 [node name="LEFT Status Text" type="Label3D" parent="." index="46" unique_id=636863678]
 transform = Transform3D(0.96592563, -1.4894287e-09, 0.258819, -0.258819, -1.1313339e-08, 0.96592563, 1.4894288e-09, -0.99999976, -1.131334e-08, -0.027975254, 0.017303567, 0.2733776)
+visible = false
 alpha_cut = 1
 alpha_scissor_threshold = 0.4
 texture_filter = 0
@@ -174,6 +175,7 @@ uppercase = true
 
 [node name="RIGHT Status Text" type="Label3D" parent="." index="48" unique_id=524970056]
 transform = Transform3D(0.9396924, 2.63612e-09, -0.34202006, 0.34202006, -1.4950173e-08, 0.9396924, -2.63612e-09, -0.99999976, -1.4950173e-08, 0.5276511, -0.022693146, 0.28922108)
+visible = false
 alpha_cut = 1
 alpha_scissor_threshold = 0.4
 texture_filter = 0
@@ -186,7 +188,7 @@ horizontal_alignment = 0
 uppercase = true
 
 [node name="Node3D" type="Node3D" parent="." index="49" unique_id=1407980680]
-transform = Transform3D(0.99999976, 0, 0, 0, 0.99999976, 0, 0, 0, 0.99999976, 0, 0.13219996, 0.7037578)
+transform = Transform3D(0.99999976, 0, 0, 0, 0.99999976, 0, 0, 0, 0.99999976, 0, 0.13219996, 1.3341887)
 
 [node name="ResetArea" type="Area3D" parent="Node3D" index="0" unique_id=1489515822]
 transform = Transform3D(0.9999999, 0, 0, 0, 0.9999999, 0, 0, 0, 0.9999999, 0, 0.14722902, -0.24263602)

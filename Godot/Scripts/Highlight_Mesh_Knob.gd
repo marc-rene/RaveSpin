@@ -24,21 +24,21 @@ func _ready() -> void:
 
 
 func _on_activation_area_entered(area: Area3D) -> void:
-    if area.name == "Hand":
-        active = true
-        HighLight(E_ActivationStates.Pressed)
+    #if area.name == "Hand":
+    active = true
+    HighLight(E_ActivationStates.Pressed)
     
 
 
 func _on_activation_area_exited(area: Area3D) -> void:
-    if (area.name == "Hand"):
-        print("Slider Deactivated")
-        active = false
-        
-        if(fully_exited):
-            HighLight(E_ActivationStates.Exited)
-        else:
-            HighLight(E_ActivationStates.Hoovered)
+    #if (area.name == "Hand"):
+    print("Slider Deactivated")
+    active = false
+    
+    if(fully_exited):
+        HighLight(E_ActivationStates.Exited)
+    else:
+        HighLight(E_ActivationStates.Hoovered)
 
 
 func _process(_delta: float) -> void:
