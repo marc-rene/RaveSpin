@@ -3,7 +3,22 @@
 [ext_resource type="Script" uid="uid://bxwlbcbdbs555" path="res://UI/LibreBox/Components/Track Selection/Track_Selection.gd" id="1_1m280"]
 [ext_resource type="LabelSettings" uid="uid://bl11km7ja4u0h" path="res://Art/Themes/Heading.tres" id="2_1m280"]
 [ext_resource type="Theme" uid="uid://ds0dxmwlq5niw" path="res://Art/Themes/Default_Theme.tres" id="2_hu467"]
+[ext_resource type="Shader" uid="uid://dxmts8h2f8ena" path="res://Art/Materials/UI/Alpha_Gradient.gdshader" id="4_ebun8"]
 [ext_resource type="LabelSettings" uid="uid://du4olf7ix8h0m" path="res://Art/Themes/Heading_2.tres" id="4_khk6l"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_lea38"]
+shader = ExtResource("4_ebun8")
+shader_parameter/start_colour = Color(0, 0.23921569, 0.35686275, 1)
+shader_parameter/fade_start = 0.0
+shader_parameter/fade_end = 1.0
+shader_parameter/flip = false
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ebun8"]
+shader = ExtResource("4_ebun8")
+shader_parameter/start_colour = Color(0, 0.23921569, 0.35686275, 1)
+shader_parameter/fade_start = 0.0
+shader_parameter/fade_end = 1.0
+shader_parameter/flip = true
 
 [node name="MainHub" type="Control" unique_id=15880144]
 layout_mode = 3
@@ -25,6 +40,8 @@ grow_vertical = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer" unique_id=1061895039]
 layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 2.0
 
 [node name="Track Selection Label" type="Label" parent="VBoxContainer/HBoxContainer" unique_id=845195395]
 layout_mode = 2
@@ -32,6 +49,8 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 text = "Track Select"
 label_settings = ExtResource("2_1m280")
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="ADD ZE TRACK" type="Button" parent="VBoxContainer/HBoxContainer" unique_id=86367898]
 z_index = 2
@@ -43,26 +62,31 @@ theme = ExtResource("2_hu467")
 theme_override_font_sizes/font_size = 44
 text = "+ Add New Track"
 
-[node name="Scroll Up" type="HBoxContainer" parent="VBoxContainer" unique_id=228435478]
+[node name="Scroll Up" type="Panel" parent="VBoxContainer" unique_id=485159804]
+z_index = 5
+material = SubResource("ShaderMaterial_lea38")
 layout_mode = 2
 size_flags_vertical = 3
 
 [node name="Label" type="Label" parent="VBoxContainer/Scroll Up" unique_id=44387498]
-layout_mode = 2
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
+size_flags_stretch_ratio = 0.8
 text = "Scroll Up ↑"
 label_settings = ExtResource("4_khk6l")
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer" unique_id=664327245]
-clip_contents = false
-custom_minimum_size = Vector2(1125, 0)
 layout_mode = 2
-size_flags_horizontal = 4
 size_flags_vertical = 3
-size_flags_stretch_ratio = 4.0
+size_flags_stretch_ratio = 14.0
 draw_focus_border = true
 horizontal_scroll_mode = 0
 vertical_scroll_mode = 2
@@ -73,14 +97,22 @@ layout_mode = 2
 size_flags_horizontal = 3
 alignment = 1
 
-[node name="Scroll Down" type="HBoxContainer" parent="VBoxContainer" unique_id=798471584]
+[node name="Scroll Down" type="Panel" parent="VBoxContainer" unique_id=79113291]
+z_index = 5
+material = SubResource("ShaderMaterial_ebun8")
 layout_mode = 2
 size_flags_vertical = 3
 
 [node name="Label" type="Label" parent="VBoxContainer/Scroll Down" unique_id=872832941]
-layout_mode = 2
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
+size_flags_stretch_ratio = 0.8
 text = "Scroll Down↓"
 label_settings = ExtResource("4_khk6l")
 horizontal_alignment = 1

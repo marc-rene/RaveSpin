@@ -2,15 +2,47 @@ extends Control
 class_name LibreBox_TrackSelection
 
 @onready var Tracks_Holder : Container = $"VBoxContainer/ScrollContainer/Song Cards Container"
+@onready var root_node : Control = $"."
+@onready var Scroll_Container : ScrollContainer = $"VBoxContainer/ScrollContainer"
+@onready var Scroll_Up_Node : Control = $"VBoxContainer/Scroll Up"
+@onready var Scroll_Down_Node : Control = $"VBoxContainer/Scroll Down"
 
 
 const track_card = preload("res://UI/LibreBox/Components/Track Card/LibreBox_TrackCard_Horizontal_UI.tscn")
+@export_range(50.0, 500.0, 10.0) var hover_scroll_speed : float = 200.0 #100 is lowkey painfully slow
 
-#@export_range(0,4,1) var Which_Track_Responcible_For : int 
+enum E_SCROLL_DIRECTION
+{
+    NONE,
+    UP,
+    DOWN
+}
+
+var Current_Scroll_Direction : E_SCROLL_DIRECTION = E_SCROLL_DIRECTION.NONE
 
 signal track_selected(Song_Resource : Song)
 
+func _process(delta: float) -> void:
+    if Current_Scroll_Direction == E_SCROLL_DIRECTION.NONE:
+        return
+    var hov_direction : float = -1.0 if Current_Scroll_Direction == E_SCROLL_DIRECTION.UP else 1.0
+    var max_scroll : int = max(0, Scroll_Container.get_v_scroll_bar().max_value)
+    var next_hov_scroll : float = Scroll_Container.scroll_vertical + (hov_direction * hover_scroll_speed * delta)
+    Scroll_Container.scroll_vertical = clampi(roundi(next_hov_scroll), 0, roundi(max_scroll))
 
+
+func _on_scroll_up_hovered() -> void:
+    Current_Scroll_Direction = E_SCROLL_DIRECTION.UP
+
+
+func _on_scroll_down_hovered() -> void:
+    Current_Scroll_Direction = E_SCROLL_DIRECTION.DOWN
+
+
+func _on_scroll_hover_ended() -> void:
+    Current_Scroll_Direction = E_SCROLL_DIRECTION.NONE
+        
+        
 func Refresh():
     for kid in Tracks_Holder.get_children():
         kid.free()
@@ -30,5 +62,12 @@ func New_Track_Selected(New_Song : Song):
     
 
 func _ready():
+    root_node.mouse_exited.connect(_on_scroll_hover_ended)
+    #up
+    Scroll_Up_Node.mouse_entered.connect(_on_scroll_up_hovered)
+    Scroll_Up_Node.mouse_exited.connect(_on_scroll_hover_ended)
+    #down
+    Scroll_Down_Node.mouse_entered.connect(_on_scroll_down_hovered)
+    Scroll_Down_Node.mouse_exited.connect(_on_scroll_hover_ended)
     #print("Track Selection Made for Track #" + str(Which_Track_Responcible_For))
     Refresh()    
