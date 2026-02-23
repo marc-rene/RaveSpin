@@ -5,6 +5,7 @@
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_6k6p3"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_kmxif"]
+height = 1.5
 
 [node name="CtrlButton" type="Area3D" unique_id=2116356022]
 script = ExtResource("1_esj75")
@@ -21,6 +22,7 @@ debug_color = Color(0.0006358688, 12.4083605, 7.4637413, 1)
 transform = Transform3D(0.1, 0, 0, 0, 0.2, 0, 0, 0, 0.1, 0, 0.1, 0)
 
 [node name="Highlight_CollisionShape" type="CollisionShape3D" parent="Highlight" unique_id=797842035]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25905108, 0)
 shape = SubResource("CylinderShape3D_kmxif")
 debug_color = Color(18.892157, 0, 3.116065, 0.9607843)
 

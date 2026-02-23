@@ -6,9 +6,22 @@ class_name DJ_Controller
 #var AudioSourceList : Array[AudioStream] = [Track_1_AudioSource, Track_2_AudioSource, Track_3_AudioSource, Track_4_AudioSource]
 
 
-static var Controller_Instance : DJ_Controller
+signal all_ready
+
+
+static var Controller_Instance : DJ_Controller = null
+
+static func Get_Instance_await() -> DJ_Controller:
+    if Controller_Instance == null:
+        await Controller_Instance.all_ready
+    
+    return Controller_Instance
+    
+
 static func Get_Instance() -> DJ_Controller:
     return Controller_Instance
+    
+                
 
 
     
@@ -16,6 +29,7 @@ static func Get_Instance() -> DJ_Controller:
 
 @export var Use_2_Track_Bus_Layout = true
 var Bus_Layout : AudioBusLayout
+
 @onready var AudioPlayerList : Array[AudioStreamPlayer] = [$"../Track Stream Player Left", 
     $"../Track Stream Player Right", 
     $"../Track Stream Player Left ALT", 
@@ -50,17 +64,15 @@ func LoadTrackIntoMemory(which_track : int, which_song : Song):
       
 func Play_Pause(p_which_track : int):
     p_which_track = clamp(p_which_track, 0, 3)
-    
-    var current_player = AudioPlayerList[p_which_track]
-    
-    if(current_player.playing == false):
-        print("Playing Track ", p_which_track, " now @ ", current_player.get_playback_position())
-        current_player.stream_paused = false
-        current_player.play(current_player.get_playback_position())
+        
+    if(AudioPlayerList[p_which_track].playing == false):
+        print("Playing Track ", p_which_track, " now @ ", AudioPlayerList[p_which_track].get_playback_position())
+        AudioPlayerList[p_which_track].stream_paused = false
+        AudioPlayerList[p_which_track].play(AudioPlayerList[p_which_track].get_playback_position())
     
     else:
         print("Pausing Track ", p_which_track)
-        current_player.stream_paused = true
+        AudioPlayerList[p_which_track].stream_paused = true
 
 
                        
@@ -76,6 +88,9 @@ func _ready() -> void:
     AudioPlayerList[1].stream_paused = true
     AudioPlayerList[2].stream_paused = true
     AudioPlayerList[3].stream_paused = true
+    
+    _on_reset_area_area_entered(null)
+    all_ready.emit()
     #CreateInteractableControl(btn_PausePlay_ref, E_CONTROLTYPE.BUTTON)
     
 

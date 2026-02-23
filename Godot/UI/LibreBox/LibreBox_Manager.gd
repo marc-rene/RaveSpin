@@ -16,7 +16,9 @@ static var LibreBox_instance : LibreBox
 
 func Update_Controller_and_Hub(Which_Track: int, New_Song: Song):
     print("MAIN MANAGER CALLED TO CHANGE TRACK #" + str(Which_Track) + " TO SONG: " + New_Song.Song_Title)       
+    
     DJ_Controller.Get_Instance().LoadTrackIntoMemory(Which_Track, New_Song)
+    
     match Which_Track:
         0:
             HUB_Menu_ref.Track_1 = New_Song
@@ -44,7 +46,8 @@ func _ready() -> void:
     Track_2_Selection_ref.track_selected.connect(On_Song_Change_Track_2)
     LibreBox_instance = self
     Refresh()
-    await get_node("/root/Arena/DDJ-FLX4").ready
     
+    await DJ_Controller.Get_Instance_await()
     DJ_Controller.Get_Instance().LoadTrackIntoMemory(0, Track_1)
     DJ_Controller.Get_Instance().LoadTrackIntoMemory(1, Track_2)
+    
