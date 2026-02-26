@@ -46,8 +46,9 @@ func HighLight(p_state = E_ActivationStates.Hoovered):
 
 
 func _on_BASE_highlight_area_entered(area: Area3D) -> void:
-    HighLight(E_ActivationStates.Hoovered)
-    fully_exited = false
+    if (LibreBox.LibreBox_instance != null):
+        HighLight(E_ActivationStates.Hoovered)
+        fully_exited = false
     
 
 
@@ -59,7 +60,8 @@ func _on_BASE_highlight_area_exited(area: Area3D) -> void:
 
 
 func _on_BASE_activation_area_entered(area: Area3D) -> void:
-    HighLight(E_ActivationStates.Pressed)
+    if (LibreBox.LibreBox_instance != null):
+        HighLight(E_ActivationStates.Pressed)
     
 
 

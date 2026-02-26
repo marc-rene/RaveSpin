@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://djtjflwqyy3me" path="res://GLOBAL/Audio/Artist.gd" id="1_jbxs4"]
 [ext_resource type="AudioStream" uid="uid://yxq4jhvwh3o8" path="res://Music/Song Data/Fake Blood/Fix your Accent/Audio/Fake Blood - I Think I Like It - 126bpm.wav" id="1_ximqp"]
 [ext_resource type="Script" uid="uid://b5ydxvk0vbgsi" path="res://GLOBAL/Audio/Song.gd" id="2_frt83"]
+[ext_resource type="Texture2D" uid="uid://bnurexj5778ma" path="res://Music/Song Data/Fake Blood/Fix your Accent/Audio/Fake Blood - I Think I Like It - 126bpm_WAVEFORM.png" id="2_malqr"]
 [ext_resource type="Resource" uid="uid://b3igw5ny5uf5e" path="res://Music/Artists/FakeBlood_Artist.tres" id="2_s6g5e"]
 [ext_resource type="Resource" uid="uid://cfe83hqyxqcqh" path="res://Music/Albums/FixYourAccent_FakeBlood_Album.tres" id="3_51gvo"]
 
@@ -13,6 +14,7 @@ Main_Artist = ExtResource("2_s6g5e")
 Song_Album = ExtResource("3_51gvo")
 Song_Genres = Array[int]([203, 212, 215])
 Audio_File = ExtResource("1_ximqp")
+Audio_File_Waveform = ExtResource("2_malqr")
 Track_BPM = 126.0
 Track_Key_Note = 1
 Track_Scale = 2

@@ -10,6 +10,9 @@ var active = false
 
 @onready var hand_ref: Area3D 
 @onready var activation: Node3D   = $Highlight/Activation
+@onready var slider_global_spawn_node : Node3D = $"Slider Spawn Point"
+@onready var slider_global_spawn_node_col_box : BoxShape3D = $"Slider Spawn Point/CollisionShape3D".shape
+
 
 # Shared popup slider support
 const SLIDER_SCENE : Resource = preload("res://GLOBAL/CTRL_Slider.tscn")
@@ -31,23 +34,23 @@ func _ready() -> void:
 
 
 func _on_activation_area_entered(area: Area3D) -> void:
-    #if area.name == "Hand":
-    active = true
-    hand_ref = area
-    HighLight(E_ActivationStates.Pressed)
-    _show_popup_slider()
+    if (Utility.is_all_ready()):
+        active = true
+        hand_ref = area
+        HighLight(E_ActivationStates.Pressed)
+        _show_popup_slider()
     
 
 
 func _on_activation_area_exited(area: Area3D) -> void:
-    #if (area.name == "Hand"):
-    print("Slider Deactivated")
-    active = false
-    
-    if(fully_exited):
-        HighLight(E_ActivationStates.Exited)
-    else:
-        HighLight(E_ActivationStates.Hoovered)
+    if (Utility.is_all_ready()):
+        print("Slider Deactivated")
+        active = false
+        
+        if(fully_exited):
+            HighLight(E_ActivationStates.Exited)
+        else:
+            HighLight(E_ActivationStates.Hoovered)
 
 
 func _process(_delta: float) -> void:
@@ -119,12 +122,15 @@ func _show_popup_slider() -> void:
     current_knob = self
 
     # Position the slider just above the knob in world space.
-    var slider_transform : Transform3D = current_slider.global_transform
-    slider_transform.origin = global_transform.origin + (to_global($"Slider Spawn Point".position) - global_transform.origin)
-    current_slider.global_transform = slider_transform
+    #slider_transform.origin = global_transform.origin + (to_global($"Slider Spawn Point".position) - global_transform.origin)
     
-    current_slider.scale.z = 1.1 # A smidge buigger
-    current_slider.rotation.y = PI
+    #current_slider.global_transform = slider_transform
+    
+    current_slider.global_transform = slider_global_spawn_node.global_transform
+    current_slider.Set_MinMax_offset(slider_global_spawn_node_col_box.size.y)
+    
+    #current_slider.scale.z = 1.1 # A smidge buigger
+    #current_slider.rotation.y = PI
 
     # Sync the slider’s start value with this knob.
     current_slider.UpdateAlpha(Value)

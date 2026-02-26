@@ -42,11 +42,16 @@ transform = Transform3D(-4.371139e-08, 0, 1.0000005, 0, 1, 0, -1, 0, -4.371141e-
 Track_1 = ExtResource("7_f8rhi")
 Track_2 = ExtResource("8_4yh7d")
 
+[node name="HUB" parent="LibreboxScene" index="0" unique_id=1761191025]
+scene_properties_keys = PackedStringArray("LibreBox_HUB.gd")
+
 [node name="Track 1 Selection" parent="LibreboxScene" index="1" unique_id=900064892]
-scene_properties_keys = PackedStringArray("Track_Selection.gd")
+scene_properties_keys = PackedStringArray("Track_Selection.gd", "hover_scroll_speed")
+hover_scroll_speed = 200.0
 
 [node name="Track 2 Selection" parent="LibreboxScene" index="2" unique_id=187553533]
-scene_properties_keys = PackedStringArray("Track_Selection.gd")
+scene_properties_keys = PackedStringArray("Track_Selection.gd", "hover_scroll_speed")
+hover_scroll_speed = 200.0
 
 [node name="Track Stream Player Left" type="AudioStreamPlayer" parent="." unique_id=1328970906]
 autoplay = true

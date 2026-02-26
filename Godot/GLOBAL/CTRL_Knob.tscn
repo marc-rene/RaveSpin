@@ -16,7 +16,7 @@ material = ExtResource("2_nx18d")
 size = Vector2(0.005, 0.02)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_nx18d"]
-size = Vector3(0.025, 0.02, 0.005)
+size = Vector3(0.025, 0.2, 0.055)
 
 [node name="CtrlKnob" type="Area3D" unique_id=675621963]
 script = ExtResource("1_2lspa")
@@ -52,20 +52,21 @@ mesh = SubResource("PlaneMesh_2lspa")
 skeleton = NodePath("../Activation")
 
 [node name="Slider Spawn Point" type="Node3D" parent="." unique_id=1867433061]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.089530945, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.11328125, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Slider Spawn Point" unique_id=1957937713]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.031341553, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00012207031, 0.06442261, 0)
 shape = SubResource("BoxShape3D_nx18d")
 debug_color = Color(0, 0.60038817, 0.70000815, 1)
 
 [node name="Label3D" type="Label3D" parent="Slider Spawn Point" unique_id=188094012]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.058410645, 0.033729553)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.21167755, 0.033729553)
 billboard = 1
 alpha_cut = 1
 texture_filter = 0
 modulate = Color(0.9137255, 0.30980393, 0.21568628, 1)
 outline_modulate = Color(0, 0, 0, 0)
+text = "A"
 font_size = 11
 outline_size = 0
 

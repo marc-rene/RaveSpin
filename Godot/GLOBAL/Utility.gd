@@ -9,6 +9,18 @@ static func Return_Valid(object, backup):
         return backup
     return object
 
+static var all_is_ready : bool = false : set = set_all_is_ready
+
+static func set_all_is_ready(all_ready : bool):
+    if all_is_ready == false:
+        all_is_ready = all_ready
+        print("All ready to start!!!")
+
+
+static func is_all_ready() -> bool:
+    return all_is_ready
+
+
 
 static func is_Valid(object) -> bool:
     match typeof(object):

@@ -50,4 +50,7 @@ func _ready() -> void:
     await DJ_Controller.Get_Instance_await()
     DJ_Controller.Get_Instance().LoadTrackIntoMemory(0, Track_1)
     DJ_Controller.Get_Instance().LoadTrackIntoMemory(1, Track_2)
+    #JANK
+    await get_tree().create_timer(0.1).timeout
+    Utility.set_all_is_ready(true)
     

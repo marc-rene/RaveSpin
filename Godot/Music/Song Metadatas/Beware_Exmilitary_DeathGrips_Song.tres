@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://djtjflwqyy3me" path="res://GLOBAL/Audio/Artist.gd" id="1_2lr7v"]
 [ext_resource type="AudioStream" uid="uid://1qpvwc75dg73" path="res://Music/Song Data/Death Grips/Exmilitary/Audio/Death Grips - Exmilitary - 1 - Beware.mp3" id="1_on8fq"]
 [ext_resource type="Script" uid="uid://b5ydxvk0vbgsi" path="res://GLOBAL/Audio/Song.gd" id="2_1qh3o"]
+[ext_resource type="Texture2D" uid="uid://b1yhdnltxx2o3" path="res://Music/Song Data/Death Grips/Exmilitary/Audio/Death Grips - Exmilitary - 1 - Beware_WAVEFORM.png" id="2_ofx3i"]
 [ext_resource type="Resource" uid="uid://60crt6v1xddt" path="res://Music/Artists/DeathGrips_Artist.tres" id="3_a2hmg"]
 [ext_resource type="Resource" uid="uid://mjuhnagbq0y7" path="res://Music/Albums/Exmilitary_DeathGrips_Album.tres" id="4_508gc"]
 
@@ -12,6 +13,7 @@ Song_Title = &"Beware"
 Main_Artist = ExtResource("3_a2hmg")
 Song_Album = ExtResource("4_508gc")
 Audio_File = ExtResource("1_on8fq")
+Audio_File_Waveform = ExtResource("2_ofx3i")
 Track_BPM = 114.0
 Track_Key_Note = 2
 Track_Scale = 2

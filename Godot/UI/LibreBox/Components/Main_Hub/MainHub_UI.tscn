@@ -46,17 +46,15 @@ text = "Track 1:"
 layout_mode = 2
 Song_Resource = ExtResource("2_ic2kq")
 
-[node name="TEMP Track 1 Waveform preview" type="Label" parent="VBoxContainer" unique_id=1169610779]
+[node name="Track 1 Waveform preview" type="TextureRect" parent="VBoxContainer" unique_id=792870201]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 104.055)
 layout_mode = 2
-text = "TEMP Track 1 Waveform preview
-[Imagine a big huge waveform of the audio here for this track]"
-horizontal_alignment = 1
 
-[node name="TEMP Track 2 Waveform preview" type="Label" parent="VBoxContainer" unique_id=1604904635]
+[node name="Track 2 Waveform preview" type="TextureRect" parent="VBoxContainer" unique_id=86652083]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 104.055)
 layout_mode = 2
-text = "Waveform preview
-[Imagine a big huge waveform of the audio here for this track]"
-horizontal_alignment = 1
 
 [node name="Track 2 Container" type="HBoxContainer" parent="VBoxContainer" unique_id=1873238329]
 layout_mode = 2

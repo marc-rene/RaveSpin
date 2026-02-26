@@ -28,7 +28,7 @@ const ROOT_MUSIC_DIR = "res://Music/Song Metadatas/"
 
 # What's the actual data for this song? Its MP3/WAV file 
 @export var Audio_File: AudioStream
-
+@export var Audio_File_Waveform : CompressedTexture2D
 
 # How many Beats Per Minute for this song?
 @export var Track_BPM: float
@@ -65,12 +65,44 @@ func Refresh_Music_Key():
 @export var MusicBrainz_ID: StringName
 
 
+func Attempt_Find_waveform() -> bool:
+    # The waveform is expected to be the same name as our audio file
+    # but with _WAVEFORM at the end, in the same folder.
+    if Audio_File == null:
+        push_warning("Attempt_Find_waveform: Audio_File is null.")
+        return false
+
+    var audio_res_path: String = Audio_File.resource_path
+    if audio_res_path.is_empty():
+        push_warning("Attempt_Find_waveform: Audio_File has no resource_path (is it saved as a file asset?).")
+        return false
+
+    var dir := audio_res_path.get_base_dir()
+    var file_name := audio_res_path.get_file().get_basename() # without extension
+    var waveform_path := "%s/%s_WAVEFORM.png" % [dir, file_name]
+
+    if not ResourceLoader.exists(waveform_path):
+        push_warning("Attempt_Find_waveform: Could not find waveform texture at %s" % waveform_path)
+        return false
+
+    var tex := load(waveform_path)
+    if tex is CompressedTexture2D:
+        Audio_File_Waveform = tex
+        print("Attempt_Find_waveform: Set Audio_File_Waveform to ", waveform_path)
+        return true
+    else:
+        push_warning("Attempt_Find_waveform: Resource at %s is not a CompressedTexture2D." % waveform_path)
+        return false
+    
+@export_tool_button("Set Waveform from file", "Callable") 
+var attempt_find_waveform_texture = Attempt_Find_waveform
+
 
 
 func _ready():
     if Track_Key == null and Track_Key_Note != null and Track_Scale == null:
         Track_Key = EMusicKey.new(Track_Key_Note, Track_Scale)
-
+    
 
 func Attempt_Automatic_Data_Fill_From_Audio_File():
     print("Attempting grab data from file")

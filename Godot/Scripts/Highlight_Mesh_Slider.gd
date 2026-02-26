@@ -6,32 +6,39 @@ var hand_ref : Area3D
 var starting_pos : Vector3
 @export var Value = 0.5
 
+@onready var min_point_node : Node3D = $"Highlight/Min point"
+@onready var max_point_node : Node3D = $"Highlight/Max point"
+
 # we want it to auto-hide after the user lets go
-@export var auto_hide := false
+@export var auto_hide : bool = false
 signal request_close
 var _time_since_interaction : float = 0.0
 
 func UpdateAlpha(new_value: float):
     print("Alpha: %.4f" % new_value)
-    var max_pos = $"Highlight/Max point".position.z
-    var min_pos = $"Highlight/Min point".position.z
+    var max_pos = max_point_node.position.z
+    var min_pos = min_point_node.position.z
     $Highlight/Activation.position.z = remap(new_value, 0, 1, min_pos, max_pos)
     #reset_highlight()
     
     
+func Set_MinMax_offset(new_offset : float = 0.02):
+    min_point_node.position.z = new_offset * -1.0
+    max_point_node.position.z = new_offset
+    
+    
 func _on_activation_area_entered(area: Area3D) -> void:
-    #if (area.name == "Hand"):
-        #print("Slider Activated")
-    active = true
-    hand_ref = area
-    starting_pos = Target_Mesh.position
-    HighLight(E_ActivationStates.Pressed)
-    if fully_exited:
-        HighLight(E_ActivationStates.Exited)
-    elif active == false:
-        HighLight(E_ActivationStates.Hoovered)
-    else:
-        pass
+    if (Utility.is_all_ready()):
+        active = true
+        hand_ref = area
+        starting_pos = Target_Mesh.position
+        HighLight(E_ActivationStates.Pressed)
+        if fully_exited:
+            HighLight(E_ActivationStates.Exited)
+        elif active == false:
+            HighLight(E_ActivationStates.Hoovered)
+        else:
+            pass
     
 
 func _on_activation_area_exited(area: Area3D) -> void:
@@ -49,7 +56,7 @@ func _process(delta: float) -> void:
     var max_pos = $"Highlight/Max point".position.z
     var min_pos = $"Highlight/Min point".position.z
     
-    var hand_pos  :Vector3
+    var hand_pos : Vector3
     if (hand_ref == null):
         hand_pos = Vector3.ZERO
     else:
@@ -85,8 +92,9 @@ func _process(delta: float) -> void:
                 request_close.emit()
 
 func _on_NEW_Highlight_Entered(area: Area3D):
-    HighLight(E_ActivationStates.Hoovered)
-    fully_exited = false
+    if (Utility.is_all_ready()):
+        HighLight(E_ActivationStates.Hoovered)
+        fully_exited = false
 
 func _on_NEW_Highlight_Exited(area: Area3D):
     HighLight(E_ActivationStates.Exited)
