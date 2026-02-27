@@ -51,6 +51,22 @@ var In_Channel_Fader = true
 var Dirty_Tempos = true
    
 
+static func Get_Track_Playback_Position(which_track : int) -> float:
+    which_track = clampi(which_track, 0, 3)
+    return Utility.Return_Valid(Controller_Instance.AudioPlayerList[which_track].get_playback_position(), 0.0)
+
+
+static func Get_Track_Playback_Alpha(which_track : int) -> float:
+    which_track = clampi(which_track, 0, 3)
+    var total_seconds : float = Controller_Instance.AudioPlayerList[which_track].stream.get_length()
+    var played_for_seconds : float =  Controller_Instance.AudioPlayerList[which_track].get_playback_position()
+    return remap(played_for_seconds, 0.0, total_seconds, 0.0, 1.0)
+
+
+static func Get_Track_Playback_Player(which_track : int) -> AudioStreamPlayer:
+    which_track = clampi(which_track, 0, 3)
+    return Controller_Instance.AudioPlayerList[which_track]
+
 func LoadTrackIntoMemory(which_track : int, which_song : Song):
     which_track = clamp(which_track, 0, 3)
     print("Spawned Player for Track ", which_track)

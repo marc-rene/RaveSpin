@@ -1,0 +1,36 @@
+shader_type canvas_item;
+
+// 0..1: pan position — center of the rect shows this point on the texture
+uniform float alpha : hint_range(0.0, 1.0) = 0.0;
+
+//uniform sampler2D source_texture : hint_default_white;
+//uniform bool use_source_texture = false;
+
+// Skinny line down the middle (center = playhead)
+uniform vec4 line_color : source_color = vec4(1.0, 1.0, 1.0, 0.5);
+uniform float line_width : hint_range(0.0, 0.01) = 0.002; // in UV (0.5 = half the rect)
+
+void fragment() {
+    // Map rect UV so that center (0.5) == alpha on the texture
+    vec2 uv = UV;
+    uv.x = clamp(uv.x - 0.5 + alpha, 0.0, 1.0);
+
+/*
+    if (use_source_texture) 
+    {
+        COLOR = texture(source_texture, uv);
+    } 
+    else 
+    {   
+        COLOR = texture(TEXTURE, uv);
+    }
+*/
+    COLOR = texture(TEXTURE, uv);
+
+    // Draw a skinny vertical line down the middle
+    float dist_from_center = abs(UV.x - 0.5);
+    if (dist_from_center < line_width) 
+    {
+        COLOR = line_color + texture(TEXTURE, uv);
+    }
+}

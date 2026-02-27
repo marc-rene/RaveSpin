@@ -35,23 +35,12 @@ environment = SubResource("Environment_3sm0n")
 
 [node name="DDJ-FLX4" parent="." unique_id=2092251129 instance=ExtResource("3_lr07p")]
 unique_name_in_owner = true
-transform = Transform3D(-7.888416e-08, 0.86209327, 1.8046594, 3.7683293e-08, 1.8046594, -0.86209327, -2, 0, -8.742278e-08, -0.94150686, 1.6440163, 0.96281934)
+transform = Transform3D(-7.888416e-08, 0.86209327, 1.8046594, 3.7683293e-08, 1.8046594, -0.86209327, -2, 0, -8.742278e-08, -0.87554413, 1.5913118, 0.96281934)
 
 [node name="LibreboxScene" parent="." unique_id=889702823 instance=ExtResource("6_7t5kf")]
 transform = Transform3D(-4.371139e-08, 0, 1.0000005, 0, 1, 0, -1, 0, -4.371141e-08, -1, 2, 0.5)
 Track_1 = ExtResource("7_f8rhi")
 Track_2 = ExtResource("8_4yh7d")
-
-[node name="HUB" parent="LibreboxScene" index="0" unique_id=1761191025]
-scene_properties_keys = PackedStringArray("LibreBox_HUB.gd")
-
-[node name="Track 1 Selection" parent="LibreboxScene" index="1" unique_id=900064892]
-scene_properties_keys = PackedStringArray("Track_Selection.gd", "hover_scroll_speed")
-hover_scroll_speed = 200.0
-
-[node name="Track 2 Selection" parent="LibreboxScene" index="2" unique_id=187553533]
-scene_properties_keys = PackedStringArray("Track_Selection.gd", "hover_scroll_speed")
-hover_scroll_speed = 200.0
 
 [node name="Track Stream Player Left" type="AudioStreamPlayer" parent="." unique_id=1328970906]
 autoplay = true
@@ -75,5 +64,3 @@ metadata/_custom_type_script = "uid://dvxittvfvayif"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=1223925268]
 shape = SubResource("BoxShape3D_3sm0n")
-
-[editable path="LibreboxScene"]

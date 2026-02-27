@@ -9,71 +9,91 @@ var active = false
 @export var max_quat: Quaternion = Quaternion()
 
 @onready var hand_ref: Area3D 
-@onready var activation: Node3D   = $Highlight/Activation
+@onready var activation_area: Node3D   = $Highlight/Activation
 @onready var slider_global_spawn_node : Node3D = $"Slider Spawn Point"
 @onready var slider_global_spawn_node_col_box : BoxShape3D = $"Slider Spawn Point/CollisionShape3D".shape
 
 
 # Shared popup slider support
 const SLIDER_SCENE : Resource = preload("res://GLOBAL/CTRL_Slider.tscn")
-static var current_slider: Slider_Control = null
-static var current_knob : Knob_Control = null
+static var current_slider_L: Slider_Control = null
+static var current_slider_R: Slider_Control = null
+static var current_knob_L : Knob_Control = null
+static var current_knob_R : Knob_Control = null
 
 
 func _ready() -> void:
     # If you didn’t set these in the editor, default them to the current rotation
     if min_quat == Quaternion():
-        min_quat = activation.quaternion.normalized()
+        min_quat = activation_area.quaternion.normalized()
     else:
         min_quat = min_quat.normalized()
 
     if max_quat == Quaternion():
-        max_quat = activation.quaternion.normalized()
+        max_quat = activation_area.quaternion.normalized()
     else:
         max_quat = max_quat.normalized()
 
 
 func _on_activation_area_entered(area: Area3D) -> void:
     if (Utility.is_all_ready()):
-        active = true
-        hand_ref = area
-        HighLight(E_ActivationStates.Pressed)
-        _show_popup_slider()
+        if area is Player_Finger:
+            var target_finger : Player_Finger = area as Player_Finger
+            active = true
+            hand_ref = area
+            HighLight(E_ActivationStates.Pressed)
+            _show_popup_slider(target_finger.is_right_hand)
     
 
 
 func _on_activation_area_exited(area: Area3D) -> void:
     if (Utility.is_all_ready()):
         print("Slider Deactivated")
-        active = false
-        
-        if(fully_exited):
-            HighLight(E_ActivationStates.Exited)
-        else:
-            HighLight(E_ActivationStates.Hoovered)
+        if area is Player_Finger:
+            print("SUCCESS THIS WORKS")
+            active = false
+            if(fully_exited):
+                HighLight(E_ActivationStates.Exited)
+            else:
+                HighLight(E_ActivationStates.Hoovered)
+            #if area.get_script().is_right_hand:
+                
 
 
 func _process(_delta: float) -> void:
     # If a popup slider is currently controlling this knob,
     # drive our value from the slider instead of hand rotation.
-    if current_knob == self and current_slider != null:
-        
-        Value = clampf(current_slider.Value, 0.0, 1.0)
+    if current_knob_L == self and current_slider_L != null:
+        Value = clampf(current_slider_L.Value, 0.0, 1.0)
         $"Slider Spawn Point/Label3D".text = str("%.2f" % Value)
         # knob rot between min and max
         var knob_quat: Quaternion = min_quat.slerp(max_quat, Value).normalized()
         
-        activation.quaternion = knob_quat
+        activation_area.quaternion = knob_quat
         
         if Target_Mesh:
-            Target_Mesh.global_transform.basis = activation.global_transform.basis
+            Target_Mesh.global_transform.basis = activation_area.global_transform.basis
         return
 
+    elif current_knob_R == self and current_slider_R != null:
+        Value = clampf(current_slider_R.Value, 0.0, 1.0)
+        $"Slider Spawn Point/Label3D".text = str("%.2f" % Value)
+        # knob rot between min and max
+        var knob_quat: Quaternion = min_quat.slerp(max_quat, Value).normalized()
+        
+        activation_area.quaternion = knob_quat
+        
+        if Target_Mesh:
+            Target_Mesh.global_transform.basis = activation_area.global_transform.basis
+        return
+    else:
+        $"Slider Spawn Point/Label3D".text = ""
+        
     if not active:
         return
 
     # hand rotation to knob local space
-    var parent_basis: Basis = activation.get_parent().global_transform.basis
+    var parent_basis: Basis = activation_area.get_parent().global_transform.basis
     if (hand_ref == null):
         return
     var hand_basis: Basis = hand_ref.global_transform.basis
@@ -88,10 +108,10 @@ func _process(_delta: float) -> void:
     
     # do NOT go beyopnd min max
     var knob_quat2: Quaternion = min_quat.slerp(max_quat, t).normalized()
-    activation.quaternion = knob_quat2
+    activation_area.quaternion = knob_quat2
 
     if Target_Mesh:
-        Target_Mesh.global_transform.basis = activation.global_transform.basis
+        Target_Mesh.global_transform.basis = activation_area.global_transform.basis
 
 
 func alpha_from_quat(q: Quaternion, q_min: Quaternion, q_max: Quaternion) -> float:
@@ -110,36 +130,48 @@ func alpha_from_quat(q: Quaternion, q_min: Quaternion, q_max: Quaternion) -> flo
     return clamp(t, 0.0, 1.0)
 
 
-func _show_popup_slider() -> void:
+func _show_popup_slider(use_right_slider : bool) -> void:
     # THERE CAN BE ONLY ONE!
-    if current_slider == null or not is_instance_valid(current_slider):
-        current_slider = SLIDER_SCENE.instantiate()
+    if use_right_slider and (current_slider_R == null or not is_instance_valid(current_slider_R)):
+        current_slider_R = SLIDER_SCENE.instantiate()
         # Put the slider under the root so no local -> global tomfoolery
-        current_slider.Target_Mesh = Target_Mesh
-        get_tree().current_scene.add_child(current_slider)
-        current_slider.request_close.connect(_on_popup_slider_request_close)
-    
-    current_knob = self
+        current_slider_R.Target_Mesh = Target_Mesh
+        get_tree().current_scene.add_child(current_slider_R)
+        current_slider_R.request_close.connect(_on_popup_slider_request_close)
 
-    # Position the slider just above the knob in world space.
-    #slider_transform.origin = global_transform.origin + (to_global($"Slider Spawn Point".position) - global_transform.origin)
+    elif (use_right_slider == false) and (current_slider_L == null or not is_instance_valid(current_slider_L)):
+        current_slider_L = SLIDER_SCENE.instantiate()
+        # Put the slider under the root so no local -> global tomfoolery
+        current_slider_L.Target_Mesh = Target_Mesh
+        get_tree().current_scene.add_child(current_slider_L)
+        current_slider_L.request_close.connect(_on_popup_slider_request_close)
     
-    #current_slider.global_transform = slider_transform
-    
-    current_slider.global_transform = slider_global_spawn_node.global_transform
-    current_slider.Set_MinMax_offset(slider_global_spawn_node_col_box.size.y)
-    
-    #current_slider.scale.z = 1.1 # A smidge buigger
-    #current_slider.rotation.y = PI
+    if use_right_slider:
+        current_knob_R = self
+        current_slider_R.global_transform = slider_global_spawn_node.global_transform
+        current_slider_R.UpdateAlpha(Value)
+    else:
+        current_knob_L = self
+        current_slider_L.global_transform = slider_global_spawn_node.global_transform
+        current_slider_L.UpdateAlpha(Value)
+   
 
-    # Sync the slider’s start value with this knob.
-    current_slider.UpdateAlpha(Value)
 
 
-func _on_popup_slider_request_close() -> void:
-    if current_knob != self:
+func _on_popup_slider_request_close(use_right_slider : bool) -> void:
+    if use_right_slider and current_knob_R != self:
         return
-    if current_slider != null and is_instance_valid(current_slider):
-        current_slider.queue_free()
-    current_slider = null
-    current_knob = null
+    elif (use_right_slider == false) and current_knob_L != self:
+        return
+        
+    if use_right_slider and current_slider_R != null and is_instance_valid(current_slider_R):
+        current_slider_R.queue_free()
+    elif (use_right_slider == false) and current_slider_L != null and is_instance_valid(current_slider_L):
+        current_slider_L.queue_free()
+    
+    if use_right_slider:
+        current_slider_R = null
+        current_knob_R = null
+    else:
+        current_slider_L = null
+        current_knob_L = null

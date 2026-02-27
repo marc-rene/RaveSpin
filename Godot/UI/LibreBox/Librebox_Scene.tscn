@@ -10,10 +10,10 @@
 script = ExtResource("1_al4tx")
 
 [node name="HUB" parent="." unique_id=1761191025 instance=ExtResource("1_ebwc8")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1435687, 0)
-screen_size = Vector2(1.6, 0.9)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.27776587, 0)
+screen_size = Vector2(1.65, 1.4)
 scene = ExtResource("2_bg1lp")
-viewport_size = Vector2(1920, 1080)
+viewport_size = Vector2(1650, 1400)
 unshaded = true
 scene_properties_keys = PackedStringArray("LibreBox_HUB.gd", "Track_1", "Track_2")
 Track_1 = null
@@ -33,8 +33,8 @@ screen_size = Vector2(1.6, 1.6)
 scene = ExtResource("4_vnbwf")
 viewport_size = Vector2(1280, 1280)
 unshaded = true
-scene_properties_keys = PackedStringArray("Track_Selection.gd", "Which_Track_Responcible_For")
-Which_Track_Responcible_For = 0
+scene_properties_keys = PackedStringArray("Track_Selection.gd", "hover_scroll_speed")
+hover_scroll_speed = 200.0
 
 [node name="Track Select Label" type="Label3D" parent="Track 1 Selection" unique_id=61489553]
 transform = Transform3D(0.8201419, 0, -0.5721602, 0, 1, 0, 0.5721602, 0, 0.8201419, 0, 0.9393393, 0)
@@ -50,8 +50,8 @@ screen_size = Vector2(1.6, 1.6)
 scene = ExtResource("4_vnbwf")
 viewport_size = Vector2(1280, 1280)
 unshaded = true
-scene_properties_keys = PackedStringArray("Track_Selection.gd", "Which_Track_Responcible_For")
-Which_Track_Responcible_For = 2
+scene_properties_keys = PackedStringArray("Track_Selection.gd", "hover_scroll_speed")
+hover_scroll_speed = 200.0
 
 [node name="Track Select Label" type="Label3D" parent="Track 2 Selection" unique_id=1008893548]
 transform = Transform3D(0.8201419, 0, -0.5721602, 0, 1, 0, 0.5721602, 0, 0.8201419, 0, 0.9393393, 0)

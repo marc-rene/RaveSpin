@@ -14,6 +14,22 @@ class_name LibreBox
 
 static var LibreBox_instance : LibreBox
 
+
+# where is track X playback position? 
+static func Get_Track_Playback_Position(which_track : int) -> float:
+    return DJ_Controller.Get_Instance().Get_Track_Playback_Position(which_track)
+
+# How far into the song are we on Track X ?
+static func Get_Track_Playback_Alpha(which_track : int) -> float:
+    return DJ_Controller.Get_Instance().Get_Track_Playback_Alpha(which_track)
+    
+# Just get the whole bloody player
+static func Get_Track_Playback_Player(which_track : int) -> AudioStreamPlayer:
+    return DJ_Controller.Get_Instance().Get_Track_Playback_Player(which_track)
+    
+    
+    
+    
 func Update_Controller_and_Hub(Which_Track: int, New_Song: Song):
     print("MAIN MANAGER CALLED TO CHANGE TRACK #" + str(Which_Track) + " TO SONG: " + New_Song.Song_Title)       
     
