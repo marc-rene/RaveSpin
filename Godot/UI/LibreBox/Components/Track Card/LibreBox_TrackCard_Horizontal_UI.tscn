@@ -51,9 +51,10 @@ shader_parameter/Unlit_Colour = Color(0.92941177, 0.68235296, 0.28627452, 1)
 
 [node name="LibreBoxTrackCardHorizontalUi" type="Button" unique_id=1906176276]
 custom_minimum_size = Vector2(0, 180)
-anchors_preset = 10
+anchors_preset = -1
 anchor_right = 1.0
-offset_bottom = 10.0
+anchor_bottom = 0.27800003
+offset_bottom = -170.14401
 grow_horizontal = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -65,10 +66,8 @@ script = ExtResource("2_3g84n")
 z_index = 1
 custom_minimum_size = Vector2(60, 60)
 layout_mode = 0
-offset_left = -20.0
-offset_top = -20.0
-offset_right = 40.0
-offset_bottom = 40.0
+offset_right = 60.0
+offset_bottom = 60.0
 
 [node name="Origin Platform Logo" type="TextureRect" parent="CenterContainer" unique_id=131876838]
 unique_name_in_owner = true
@@ -132,7 +131,7 @@ size_flags_vertical = 3
 size_flags_stretch_ratio = 4.0
 theme = ExtResource("2_sjwx3")
 theme_override_font_sizes/font_size = 18
-text = "Track Title asdf asdfasf asdfasf asdfasd asdf dffgh sdfg"
+text = "Song Title - N/A"
 label_settings = SubResource("LabelSettings_8ykwl")
 vertical_alignment = 1
 autowrap_mode = 1
@@ -145,7 +144,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_colors/font_color = Color(1, 1, 1, 1)
-text = "Artist"
+text = "Artist - N/A"
 label_settings = ExtResource("4_ce06q")
 vertical_alignment = 2
 text_overrun_behavior = 5
@@ -157,7 +156,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme = ExtResource("2_sjwx3")
-text = "Album"
+text = "Album - N/A"
 label_settings = ExtResource("5_sjwx3")
 
 [node name="VSeparator" type="VSeparator" parent="VBoxContainer/Main Container" unique_id=2123995937]
@@ -195,7 +194,7 @@ horizontal_alignment = 1
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
-text = "8m 50s"
+text = "NaN"
 label_settings = ExtResource("3_wd6pi")
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -230,7 +229,7 @@ horizontal_alignment = 1
 [node name="BPM var Label" type="Label" parent="VBoxContainer/Main Container/BPM Container" unique_id=333574605]
 unique_name_in_owner = true
 layout_mode = 2
-text = "128"
+text = "NaN"
 label_settings = ExtResource("3_wd6pi")
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -265,7 +264,7 @@ horizontal_alignment = 1
 [node name="Key var Label" type="Label" parent="VBoxContainer/Main Container/Key Container" unique_id=865418704]
 unique_name_in_owner = true
 layout_mode = 2
-text = "8m 50s"
+text = "N/A"
 label_settings = ExtResource("3_wd6pi")
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -287,7 +286,7 @@ alignment = 1
 
 [node name="Genre" type="Button" parent="VBoxContainer/Main Container/Genres Container" unique_id=509996570]
 layout_mode = 2
-text = "EDM"
+text = "Genre - N/A"
 
 [node name="Separator Genre-Note" type="VSeparator" parent="VBoxContainer/Main Container" unique_id=425708211]
 unique_name_in_owner = true
@@ -332,7 +331,7 @@ size_flags_vertical = 3
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 1
-text = "At 3:16 the bass drop is gonna start to ramp up, good time to fade in"
+text = "Song sidenote and extra information - N/A"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2

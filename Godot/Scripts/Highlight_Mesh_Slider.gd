@@ -15,7 +15,7 @@ signal request_close
 var _time_since_interaction : float = 0.0
 
 func UpdateAlpha(new_value: float):
-    print("Alpha: %.3f" % new_value)
+    #print("Alpha: %.3f" % new_value)
     var max_pos = max_point_node.position.z
     var min_pos = min_point_node.position.z
     $Highlight/Activation.position.z = remap(new_value, 0, 1, min_pos, max_pos)

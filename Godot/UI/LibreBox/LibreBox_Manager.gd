@@ -27,6 +27,26 @@ static func Get_Track_Playback_Alpha(which_track : int) -> float:
 static func Get_Track_Playback_Player(which_track : int) -> AudioStreamPlayer:
     return DJ_Controller.Get_Instance().Get_Track_Playback_Player(which_track)
     
+    
+# Get BPM of whatever track we're on
+static func Get_Track_BPM(which_track : int) -> float:
+    which_track = Utility.Clamp_to_Valid_TrackID(which_track)
+    
+    match which_track:
+        0: 
+            if LibreBox_instance.Track_1_Song:
+                return Utility.Return_Valid(LibreBox_instance.Track_1_Song.Track_BPM, -1.0)
+        1: 
+            if LibreBox_instance.Track_2_Song:
+                return Utility.Return_Valid(LibreBox_instance.Track_2_Song.Track_BPM, -1.0)
+        2: 
+            if LibreBox_instance.Track_3_Song:
+                return Utility.Return_Valid(LibreBox_instance.Track_3_Song.Track_BPM, -1.0)
+        3: 
+            if LibreBox_instance.Track_4_Song:
+                return Utility.Return_Valid(LibreBox_instance.Track_4_Song.Track_BPM, -1.0)
+    #push_warning("HEY! Track " + str(which_track) + " hasn't been initialised yet... wtf?")
+    return -1.0
 
 # pause the song... true if pausing happened, false if it was already paused
 static func Pause_Track(p_which_track : int) -> bool:
@@ -121,18 +141,15 @@ func Sync_Track_BPMs(Track_we_want_to_Match: int, Track_we_want_change : int, ma
     var required_pitch : float = source_bpm / target_bpm
     DJ_Controller.Get_Instance().Set_Channel_Tempo(Track_we_want_change, required_pitch)
     # Sliders are updated inside Set_Channel_Tempo via Update_Channel_Tempo_Adjusts()
-    if match_beat:
-        pass  # TODO: seek target to align beats with source
+    
+    # TODO: seek target to align beats with source
     return true
 
 
-# if track 1 is 140bpm, and track 2 is 122 bpm, (un)lock track 1 bpm to 122
-func Set_Sync_Track_1_BPM_to_Track_2(enable: bool) -> void:
-    if enable:
-        Sync_Track_BPMs(1, 0, false)  # match track 1 to track 2's BPM
-    else:
-        DJ_Controller.Get_Instance().Set_Channel_Tempo(0, 1.0)  # reset track 1 to original tempo
 
+#func Set_Sync_Track_1_BPM_to_Track_2() -> void:
+    #Sync_Track_BPMs()  # match track 1 to track 2's BPM
+    
 
 func Refresh():
     HUB_Menu_ref.Refresh(true)
@@ -147,8 +164,11 @@ func _ready() -> void:
     Refresh()
     
     await DJ_Controller.Get_Instance_await()
-    DJ_Controller.Get_Instance().LoadTrackIntoMemory(0, Track_1_Song)
-    DJ_Controller.Get_Instance().LoadTrackIntoMemory(1, Track_2_Song)
+    if Track_1_Song:
+        DJ_Controller.Get_Instance().LoadTrackIntoMemory(0, Track_1_Song)
+    if Track_2_Song:
+        DJ_Controller.Get_Instance().LoadTrackIntoMemory(1, Track_2_Song)
+    #DJ_Controller.Get_Instance().Sync_LeftTrackBPM_to_RightTrackBPM.connect()
     #JANK... but works
     await get_tree().create_timer(0.1).timeout
     Utility.set_all_is_ready(true)

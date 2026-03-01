@@ -8,6 +8,15 @@ class_name DJ_Controller
 
 signal all_ready
 
+enum E_BPM_Lock_Status
+{
+    BOTH_FREE,
+    LEFT_TRACK_SYNCED_TO_RIGHT,
+    RIGHT_TRACK_SYNCED_TO_LEFT,
+}
+
+var BeatSyncState : E_BPM_Lock_Status = E_BPM_Lock_Status.BOTH_FREE
+
 
 static var Controller_Instance : DJ_Controller = null
 
@@ -39,14 +48,13 @@ var Bus_Layout : AudioBusLayout
 @export var Crossfader_Curve_Left : Curve = preload("res://Components/Controls/Crossfade Curve Left.tres")
 @export var Crossfader_Curve_Right : Curve = preload("res://Components/Controls/Crossfade Curve Right.tres")
 
-static var Channel_Faders = [1.0, 1.0, 1.0, 1.0]
-static var Crossfade_Alpha = 0.5
-static var In_Channel_Fader = true
+var Channel_Faders = [1.0, 1.0, 1.0, 1.0]
+var Crossfade_Alpha = 0.5
+
 
 
 # Default is 10% Tempo Adjust Range
 @export var BPM_Adjust_Range = 0.1
-static var Dirty_Tempos = true
    
 
 static func Get_Track_Playback_Position(which_track : int) -> float:
@@ -59,9 +67,13 @@ static func Get_Track_Playback_Position(which_track : int) -> float:
 
 static func Get_Track_Playback_Alpha(which_track : int) -> float:
     which_track = Utility.Clamp_to_Valid_TrackID(which_track)
-    var total_seconds : float = Controller_Instance.AudioPlayerList[which_track].stream.get_length()
-    var played_for_seconds : float =  Controller_Instance.AudioPlayerList[which_track].get_playback_position()
-    return remap(played_for_seconds, 0.0, total_seconds, 0.0, 1.0)
+    if Controller_Instance.AudioPlayerList[which_track].stream:
+        var total_seconds : float = Controller_Instance.AudioPlayerList[which_track].stream.get_length()
+        var played_for_seconds : float =  Controller_Instance.AudioPlayerList[which_track].get_playback_position()
+        return remap(played_for_seconds, 0.0, total_seconds, 0.0, 1.0)
+    else:
+        #push_warning("HEY! Audio Player #" + str(which_track) + " doesn't have a stream assigned to it... HOW DID THIS GET MESSED UP?")
+        return -1.0
 
 
 static func Get_Track_Playback_Player(which_track : int) -> AudioStreamPlayer:
@@ -106,7 +118,7 @@ func _ready() -> void:
     AudioPlayerList[1].stream_paused = true
     AudioPlayerList[2].stream_paused = true
     AudioPlayerList[3].stream_paused = true
-    
+     
     _on_reset_area_area_entered(null)
     all_ready.emit()
     #CreateInteractableControl(btn_PausePlay_ref, E_CONTROLTYPE.BUTTON)
@@ -120,13 +132,7 @@ func _on_left_play_on_activated() -> void:
 func _on_right_play_on_activated() -> void:
     Play_Pause(1)
 
-var In_Crossfade = true
 
-func _on_crossfade_on_activated() -> void:
-    In_Crossfade = true
-    
-func _on_crossfade_on_unhovered() -> void:
-    In_Crossfade = false
         
 
 
@@ -143,95 +149,65 @@ func Update_Channel_DBs():
     AudioServer.set_bus_volume_linear(Channel_2_Right_Bus_Index, right_alpha)
     
 
-# incase we want to set tempos without using the sliders
-func Set_Channel_Tempo(which_track: int, new_tempo: float) -> void:
-    which_track = Utility.Clamp_to_Valid_TrackID(which_track)
-    Ensure_BPM_Adjust_Range_contains(new_tempo)
-    AudioPlayerList[which_track].pitch_scale = new_tempo
-    manual_change_this_frame = true
-    Update_Channel_Tempo_Adjusts()
+## incase we want to set tempos from beatsync or something
+#func Update_Channel_Tempos() -> void:
+    ##which_track = Utility.Clamp_to_Valid_TrackID(which_track)
+    ##Ensure_BPM_Adjust_Range_contains(new_tempo)
+    #match BeatSyncState:
+        #E_BPM_Lock_Status.LEFT
+    #AudioPlayerList[which_track].pitch_scale = new_tempo
+    #manual_change_this_frame = true
+    #Update_Channel_Tempo_Adjusts()
 
 
-# Expand BPM_Adjust_Range so it encompasses the given pitch_scale (so sliders can show it)
-func Ensure_BPM_Adjust_Range_contains(pitch_value: float) -> void:
-    var margin = absf(pitch_value - 1.0)
-    if margin > BPM_Adjust_Range:
-        BPM_Adjust_Range = margin 
 
+var track_1_new_bpm : float = 0
+var track_2_new_bpm : float = 0
 
 # Adjust BPM/Tempo of our Tracks in range of +-BPM_Adjust_Range 
 func Update_Channel_Tempo_Adjusts():
-    # Slider positions are driven by current pitch_scale (not the other way around)
-    var left_pitch = AudioPlayerList[0].pitch_scale
-    var right_pitch = AudioPlayerList[1].pitch_scale
-    var tolerance = 0.05
-    # Remap pitch_scale (1-BPM_Adjust_Range .. 1+BPM_Adjust_Range) to slider position (0..1)
-    var left_min = 1.0 - BPM_Adjust_Range
-    var left_max = 1.0 + BPM_Adjust_Range
-    var right_min = 1.0 - BPM_Adjust_Range
-    var right_max = 1.0 + BPM_Adjust_Range
-    # Snap to center (0.5) when close to 1.0
-    var left_adj = remap(left_pitch, left_min, left_max, 0.0, 1.0) if abs(1.0 - left_pitch) >= tolerance else 0.5
-    var right_adj = remap(right_pitch, right_min, right_max, 0.0, 1.0) if abs(1.0 - right_pitch) >= tolerance else 0.5
-    $"Controls/L Tempo Adjust".UpdateAlpha(clampf(left_adj, 0.0, 1.0))
-    $"Controls/R Tempo Adjust".UpdateAlpha(clampf(right_adj, 0.0, 1.0))
+    const tolerance : float = 0.05
+    # Where are our Sliders set right now?
+    if BeatSyncState == E_BPM_Lock_Status.LEFT_TRACK_SYNCED_TO_RIGHT:
+        if LibreBox.Get_Track_BPM(0) > 1.0:
+            AudioPlayerList[0].pitch_scale = track_2_new_bpm / LibreBox.Get_Track_BPM(0) 
+        $"Controls/L Tempo Adjust".UpdateAlpha(0.5)
+    else:  
+        var Left_adj = $"Controls/L Tempo Adjust".Value # between 0...1
+        # meh, it's close enough to snap to middle (0.5), assume no change in tempo
+        if (abs(0.5 - Left_adj) < tolerance):
+            AudioPlayerList[0].pitch_scale = 1 
+        else:
+            # BPM Adjust range is 0.16, 
+            # so our tempo multiplier will be between 0.84...1.16
+            # Remap our sliders (0...1) to (0.84...1.16) 
+            AudioPlayerList[0].pitch_scale = remap(Left_adj, 0, 1, (1.0 - BPM_Adjust_Range), (1.0 + BPM_Adjust_Range))
+        track_1_new_bpm = LibreBox.Get_Track_BPM(0) * AudioPlayerList[0].pitch_scale
+        
+    if BeatSyncState == E_BPM_Lock_Status.RIGHT_TRACK_SYNCED_TO_LEFT:  
+        if LibreBox.Get_Track_BPM(1) > 1.0:
+            AudioPlayerList[1].pitch_scale = track_1_new_bpm / LibreBox.Get_Track_BPM(1) 
+        $"Controls/R Tempo Adjust".UpdateAlpha(0.5)
+    else:
+        var Right_adj = $"Controls/R Tempo Adjust".Value
+        if (abs(0.5 - Right_adj) < tolerance):
+            AudioPlayerList[1].pitch_scale = 1
+        else:
+            AudioPlayerList[1].pitch_scale = remap(Right_adj, 0, 1, (1.0 - BPM_Adjust_Range), (1.0 + BPM_Adjust_Range))
+        track_2_new_bpm = LibreBox.Get_Track_BPM(1) * AudioPlayerList[1].pitch_scale
+      
+    
     # TODO: Do AudioPlayerList[2] + [3]
     
-
-var manual_change_this_frame : bool = false
+    
 func _process(delta: float) -> void:
-    #if(In_Crossfade or In_Channel_Fader):
-    if manual_change_this_frame == false:
-        Update_Channel_DBs()
-        #if(Dirty_Tempos):
-        Update_Channel_Tempo_Adjusts()
-    
-    # TODO: Change this to a proper UI  
-    #var left_status_text = "Song file path: %s\n" % AudioPlayerList[0].stream.resource_path.get_file()
-    #var right_status_text = "Song file path: %s\n" % AudioPlayerList[1].stream.resource_path.get_file()
-    #left_status_text += "Volume: %.1fdb\n"   % [AudioServer.get_bus_volume_db(Channel_1_Left_Bus_Index)]
-    #right_status_text += "Volume: %.1fdb\n"  % [AudioServer.get_bus_volume_db(Channel_2_Right_Bus_Index)]
-    #left_status_text += "BPM Multiplier: %.2f\n"  % AudioPlayerList[0].pitch_scale
-    #right_status_text += "BPM Multiplier: %.2f\n" % AudioPlayerList[1].pitch_scale
-    #
-    #$"LEFT Status Text".text = left_status_text
-    #$"RIGHT Status Text".text = right_status_text
+           
+    Update_Channel_Tempo_Adjusts()    
+    Update_Channel_DBs() # crossfades and stuff
+
     $"General Status".text = "Crossfade: %.3f" % remap(Crossfade_Alpha, 0.0, 1.0, -1.0, 1.0)
-    manual_change_this_frame = false
+
     
-
-
-func _on_LEFT_channel_fader_on_activated() -> void:
-    In_Channel_Fader = true
-
-func _on_LEFT_channel_fader_on_unhovered() -> void:
-    In_Channel_Fader = false
-
-
-func _on_RIGHT_channel_fader_on_activated() -> void:
-    In_Channel_Fader = true
-
-
-func _on_RIGHT_channel_fader_on_unhovered() -> void:
-    In_Channel_Fader = false
-
-
-
-func _on_LEFT_tempo_adjust_on_activated() -> void:
-    Dirty_Tempos = true
-
-
-func _on_LEFT_tempo_adjust_on_unhovered() -> void:
-    Dirty_Tempos = false
-
-
-func _on_RIGHT_tempo_adjust_on_activated() -> void:
-    Dirty_Tempos = true
-
-
-func _on_RIGHT_tempo_adjust_on_unhovered() -> void:
-    Dirty_Tempos = false
-
 
 func _on_reset_area_area_entered(area: Area3D) -> void:
     #LoadTrackIntoMemory(0)
@@ -251,17 +227,11 @@ func _on_reset_area_area_entered(area: Area3D) -> void:
     
     for child in $Controls.get_children():
         child.reset_highlight()
-    
-    Update_Channel_DBs()
-    Update_Channel_Tempo_Adjusts()
-
-
 
 
 
 
 var debug_visable = true
-
 func _set_collision_shapes_visible_recursive(node: Node, visible: bool) -> void:
     if node is CollisionShape3D and node not in [$Node3D/ResetArea/CollisionShape3D, $Node3D/DisableDebigShapes/CollisionShape3D]:
         node.visible = visible
@@ -270,12 +240,62 @@ func _set_collision_shapes_visible_recursive(node: Node, visible: bool) -> void:
     for child in node.get_children():
         _set_collision_shapes_visible_recursive(child, visible)
         
+        
+        
 func _on_disable_debig_shapes_area_entered(area: Area3D) -> void:
     debug_visable = !debug_visable
     _set_collision_shapes_visible_recursive(get_tree().current_scene, debug_visable)
     
+
+
+signal Sync_LeftTrackBPM_to_RightTrackBPM
+func _on_left_beat_sync_on_activated():
+    if AudioPlayerList[1].stream != null:
+        if BeatSyncState == E_BPM_Lock_Status.LEFT_TRACK_SYNCED_TO_RIGHT:
+            BeatSyncState = E_BPM_Lock_Status.BOTH_FREE
+        else:
+            BeatSyncState = E_BPM_Lock_Status.LEFT_TRACK_SYNCED_TO_RIGHT
+            _seek_track_phase_to_match(0, 1)  # Track 1 seeks to match track 2's beat
+        Sync_LeftTrackBPM_to_RightTrackBPM.emit()
+
+
+signal Sync_RightTrackBPM_to_LeftTrackBPM
+func _on_right_beat_sync_on_activated():
+    if AudioPlayerList[0].stream != null:
+        if BeatSyncState == E_BPM_Lock_Status.RIGHT_TRACK_SYNCED_TO_LEFT:
+            BeatSyncState = E_BPM_Lock_Status.BOTH_FREE
+        else:
+            BeatSyncState = E_BPM_Lock_Status.RIGHT_TRACK_SYNCED_TO_LEFT
+            _seek_track_phase_to_match(1, 0)  # Track 2 seeks to match track 1's beat
+        Sync_RightTrackBPM_to_LeftTrackBPM.emit()
+
+
+# Aligns track_to_move so beat matches reference_track
+func _seek_track_phase_to_match(track_to_move: int, reference_track: int):
+    track_to_move = Utility.Clamp_to_Valid_TrackID(track_to_move)
+    reference_track = Utility.Clamp_to_Valid_TrackID(reference_track)
+    if AudioPlayerList[reference_track].stream == null or AudioPlayerList[track_to_move].stream == null:
+        return
+
+    var stream_length: float = AudioPlayerList[track_to_move].stream.get_length()
+    var ref_current_bpm : float = 0.0
+    match reference_track:
+        0:
+            ref_current_bpm = track_1_new_bpm
+        1:
+            ref_current_bpm = track_2_new_bpm
+        # TODO: Add 3,4
     
+    # After sync, the moved track will run at the reference's effective BPM, so use reference beat length for phase
+    var beat_length: float = 60.0 / ref_current_bpm
+    var ref_pos: float = Utility.Return_Valid(AudioPlayerList[reference_track].get_playback_position(), 0.0)
+    var move_pos: float = Utility.Return_Valid(AudioPlayerList[track_to_move].get_playback_position(), 0.0)
+    var phase: float = fmod(ref_pos, beat_length)
+    
+    # Place the moved track at the same phase within its current beat (nearest beat boundary)
+    var new_pos: float = floor(move_pos / beat_length) * beat_length + phase
+    # Clamp to stream and avoid negative
+    new_pos = clampf(new_pos, 0.0, maxf(0.0, stream_length - 0.001))
+    AudioPlayerList[track_to_move].play(new_pos)
 
-
-func _on_left_low_gain_on_activated() -> void:
-    pass # Replace with function body.
+    

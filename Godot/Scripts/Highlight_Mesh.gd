@@ -1,23 +1,39 @@
 extends Node3D
 class_name Base_Control
 
+# TODO: refactor and fix this awful crap mess
+# highlight.gd is doing hightlight AND activation?????
+
 @export var Target_Mesh : MeshInstance3D
 @export var Replace_Mesh : MeshInstance3D
 
 signal on_hovered
 signal on_unhovered
 signal on_activated
+signal on_flashing_start
+signal on_flashing_end
 
-var fully_exited = true
+var fully_exited : bool = true
 const highlight_mat : StandardMaterial3D = preload("res://Art/Materials/M_Item_Hovered.tres") 
 const activated_mat : StandardMaterial3D = preload("res://Art/Materials/M_Item_Activated.tres")
+var flashing : bool = false
 
 enum E_ActivationStates {
     Exited,
     Hoovered,
-    Pressed
+    Pressed,
+    Flashing
 }
     
+    
+#func Start_Flashing():
+    #flashing = true
+#
+#
+#func Stop_Flashing():
+    #flashing = false
+    
+
 
 func _on_ready():  
     if (Replace_Mesh != null):

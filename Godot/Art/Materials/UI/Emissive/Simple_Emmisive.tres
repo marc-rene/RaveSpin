@@ -4,4 +4,4 @@
 
 [resource]
 shader = ExtResource("1_1qr8n")
-shader_parameter/Force_Foreground_Colour = Color(1, 1, 1, 1)
+shader_parameter/Force_Foreground_Colour = Color(0, 1, 1, 0.22900002)

@@ -1,9 +1,7 @@
 [gd_resource type="ShaderMaterial" format=3 uid="uid://dbt7oxchx3mmd"]
 
-[ext_resource type="Shader" uid="uid://bytfer1rfnxg8" path="res://Art/Materials/UI/Emissive/Simple_Background.gdshader" id="1_cuomw"]
+[ext_resource type="Shader" uid="uid://u205hdpwxqlp" path="res://Art/Materials/UI/Emissive/Simple_Emissive.gdshader" id="1_cuomw"]
 
 [resource]
 shader = ExtResource("1_cuomw")
-shader_parameter/Force_Background_Colour = Color(0.92941177, 0.68235296, 0.28627452, 1)
-shader_parameter/Enable_Cheap_Blend = false
-shader_parameter/Alpha_Cutoff_Point = 0.0999999977648
+shader_parameter/Force_Foreground_Colour = Color(1, 1, 1, 0.75000006)

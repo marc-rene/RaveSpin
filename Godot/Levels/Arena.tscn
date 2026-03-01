@@ -4,8 +4,6 @@
 [ext_resource type="Script" uid="uid://cjw3mllds5qjs" path="res://Scripts/arena.gd" id="1_lr07p"]
 [ext_resource type="PackedScene" uid="uid://c3iykg71k0su4" path="res://Components/DDJ-FLX4/DDJ-FLX4.tscn" id="3_lr07p"]
 [ext_resource type="PackedScene" uid="uid://dh8cyr4ti48fi" path="res://UI/LibreBox/Librebox_Scene.tscn" id="6_7t5kf"]
-[ext_resource type="Resource" uid="uid://d1ljxjynpwsnm" path="res://Music/Song Metadatas/LoveIsTheAnswer_Crusy_Song.tres" id="7_f8rhi"]
-[ext_resource type="Resource" uid="uid://c6lxgtataduv2" path="res://Music/Song Metadatas/IThinkILikeIt_FixYourAccent_FakeBlood_Song.tres" id="8_4yh7d"]
 [ext_resource type="Script" uid="uid://dvxittvfvayif" path="res://GLOBAL/Scene/start_xr.gd" id="9_4yh7d"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_dsr05"]
@@ -33,14 +31,12 @@ environment = SubResource("Environment_3sm0n")
 
 [node name="Player" parent="." unique_id=1063771176 instance=ExtResource("1_hagq7")]
 
-[node name="DDJ-FLX4" parent="." unique_id=2092251129 instance=ExtResource("3_lr07p")]
+[node name="DDJ-FLX4" parent="." unique_id=111272397 instance=ExtResource("3_lr07p")]
 unique_name_in_owner = true
 transform = Transform3D(-7.888416e-08, 0.86209327, 1.8046594, 3.7683293e-08, 1.8046594, -0.86209327, -2, 0, -8.742278e-08, -0.87554413, 1.5913118, 0.96281934)
 
 [node name="LibreboxScene" parent="." unique_id=889702823 instance=ExtResource("6_7t5kf")]
 transform = Transform3D(-4.371139e-08, 0, 1.0000005, 0, 1, 0, -1, 0, -4.371141e-08, -1, 2, 0.5)
-Track_1 = ExtResource("7_f8rhi")
-Track_2 = ExtResource("8_4yh7d")
 
 [node name="Track Stream Player Left" type="AudioStreamPlayer" parent="." unique_id=1328970906]
 autoplay = true

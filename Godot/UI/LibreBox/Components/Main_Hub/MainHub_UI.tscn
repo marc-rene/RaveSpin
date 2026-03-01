@@ -2,10 +2,6 @@
 
 [ext_resource type="Script" uid="uid://d2rcrtt56bc36" path="res://UI/LibreBox/Components/Main_Hub/LibreBox_HUB.gd" id="1_rytid"]
 [ext_resource type="PackedScene" uid="uid://tjmox2whgvci" path="res://UI/LibreBox/Components/Track Card/LibreBox_TrackCard_Horizontal_UI.tscn" id="1_uhl31"]
-[ext_resource type="Resource" uid="uid://c6lxgtataduv2" path="res://Music/Song Metadatas/IThinkILikeIt_FixYourAccent_FakeBlood_Song.tres" id="2_ic2kq"]
-[ext_resource type="Resource" uid="uid://dpalh4ahjx2gs" path="res://Music/Song Metadatas/OneMoreTime_Discovery_DaftPunk_Song.tres" id="2_ke47i"]
-[ext_resource type="Resource" uid="uid://d1ljxjynpwsnm" path="res://Music/Song Metadatas/LoveIsTheAnswer_Crusy_Song.tres" id="3_ev2jm"]
-[ext_resource type="Resource" uid="uid://ibnu3cve8d6k" path="res://Music/Song Metadatas/HarderBetterFasterStronger_Discovery_DaftPunk_Song.tres" id="3_x3jbt"]
 [ext_resource type="LabelSettings" uid="uid://bl11km7ja4u0h" path="res://Art/Themes/Heading.tres" id="4_v1ksm"]
 [ext_resource type="Texture2D" uid="uid://dsa1lha4oby6t" path="res://Music/Song Data/Alla Pugacheva/Поднимись над суетой/Audio/Звёздное лето_WAVEFORM.png" id="6_x3jbt"]
 [ext_resource type="Material" uid="uid://dn7dlw5hmjop5" path="res://Art/Materials/UI/M_Horizontal_Pan.tres" id="7_8d0fx"]
@@ -23,8 +19,6 @@ grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("1_rytid")
-Track_1 = ExtResource("2_ke47i")
-Track_2 = ExtResource("3_x3jbt")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=715879387]
 custom_minimum_size = Vector2(1650, 1380)
@@ -51,7 +45,6 @@ text = "Track 1:"
 
 [node name="Track 1 Card" parent="VBoxContainer/Track 1 Container" unique_id=1906176276 instance=ExtResource("1_uhl31")]
 layout_mode = 2
-Song_Resource = ExtResource("2_ic2kq")
 
 [node name="Track 1 Waveform preview" type="TextureRect" parent="VBoxContainer" unique_id=792870201]
 unique_name_in_owner = true
@@ -84,4 +77,3 @@ text = "Track 2:"
 
 [node name="Track 2 Card" parent="VBoxContainer/Track 2 Container" unique_id=20490023 instance=ExtResource("1_uhl31")]
 layout_mode = 2
-Song_Resource = ExtResource("3_ev2jm")
