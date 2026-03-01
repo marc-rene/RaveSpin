@@ -20,11 +20,7 @@ static func Get_Instance_await() -> DJ_Controller:
 
 static func Get_Instance() -> DJ_Controller:
     return Controller_Instance
-    
-                
-
-
-    
+      
 
 
 @export var Use_2_Track_Bus_Layout = true
@@ -35,40 +31,46 @@ var Bus_Layout : AudioBusLayout
     $"../Track Stream Player Left ALT", 
     $"../Track Stream Player Right ALT"]; 
     
-@onready var Channel_1_Left_Bus_Index = AudioServer.get_bus_index("Channel 1 Input")
-@onready var Channel_2_Right_Bus_Index = AudioServer.get_bus_index("Channel 2 Input")
-@onready var Channel_3_LeftALT_Bus_Index = AudioServer.get_bus_index("Channel 3 Input")
-@onready var Channel_4_RightALT_Bus_Index = AudioServer.get_bus_index("Channel 4 Input")
+@onready var Channel_1_Left_Bus_Index = BUS_MANAGER.Get_Channel_Index(BUS_MANAGER.E_AUDIO_BUSSES.CHANNEL_ONE_INPUT)
+@onready var Channel_2_Right_Bus_Index = BUS_MANAGER.Get_Channel_Index(BUS_MANAGER.E_AUDIO_BUSSES.CHANNEL_TWO_INPUT)
+@onready var Channel_3_LeftALT_Bus_Index = BUS_MANAGER.Get_Channel_Index(BUS_MANAGER.E_AUDIO_BUSSES.CHANNEL_THREE_INPUT)
+@onready var Channel_4_RightALT_Bus_Index = BUS_MANAGER.Get_Channel_Index(BUS_MANAGER.E_AUDIO_BUSSES.CHANNEL_FOUR_INPUT)
 
 @export var Crossfader_Curve_Left : Curve = preload("res://Components/Controls/Crossfade Curve Left.tres")
 @export var Crossfader_Curve_Right : Curve = preload("res://Components/Controls/Crossfade Curve Right.tres")
-var Channel_Faders = [1.0, 1.0, 1.0, 1.0]
-var Crossfade_Alpha = 0.5
-var In_Channel_Fader = true
+
+static var Channel_Faders = [1.0, 1.0, 1.0, 1.0]
+static var Crossfade_Alpha = 0.5
+static var In_Channel_Fader = true
+
 
 # Default is 10% Tempo Adjust Range
 @export var BPM_Adjust_Range = 0.1
-var Dirty_Tempos = true
+static var Dirty_Tempos = true
    
 
 static func Get_Track_Playback_Position(which_track : int) -> float:
-    which_track = clampi(which_track, 0, 3)
+    which_track = Utility.Clamp_to_Valid_TrackID(which_track)
     return Utility.Return_Valid(Controller_Instance.AudioPlayerList[which_track].get_playback_position(), 0.0)
 
 
+    
+    
+
 static func Get_Track_Playback_Alpha(which_track : int) -> float:
-    which_track = clampi(which_track, 0, 3)
+    which_track = Utility.Clamp_to_Valid_TrackID(which_track)
     var total_seconds : float = Controller_Instance.AudioPlayerList[which_track].stream.get_length()
     var played_for_seconds : float =  Controller_Instance.AudioPlayerList[which_track].get_playback_position()
     return remap(played_for_seconds, 0.0, total_seconds, 0.0, 1.0)
 
 
 static func Get_Track_Playback_Player(which_track : int) -> AudioStreamPlayer:
-    which_track = clampi(which_track, 0, 3)
+    which_track = Utility.Clamp_to_Valid_TrackID(which_track)
     return Controller_Instance.AudioPlayerList[which_track]
 
+
 func LoadTrackIntoMemory(which_track : int, which_song : Song):
-    which_track = clamp(which_track, 0, 3)
+    which_track = Utility.Clamp_to_Valid_TrackID(which_track)
     print("Spawned Player for Track ", which_track)
     
     AudioPlayerList[which_track].stream = which_song.Audio_File
@@ -79,7 +81,7 @@ func LoadTrackIntoMemory(which_track : int, which_song : Song):
     
       
 func Play_Pause(p_which_track : int):
-    p_which_track = clamp(p_which_track, 0, 3)
+    p_which_track = Utility.Clamp_to_Valid_TrackID(p_which_track)
         
     if(AudioPlayerList[p_which_track].playing == false):
         print("Playing Track ", p_which_track, " now @ ", AudioPlayerList[p_which_track].get_playback_position())
@@ -141,35 +143,48 @@ func Update_Channel_DBs():
     AudioServer.set_bus_volume_linear(Channel_2_Right_Bus_Index, right_alpha)
     
 
+# incase we want to set tempos without using the sliders
+func Set_Channel_Tempo(which_track: int, new_tempo: float) -> void:
+    which_track = Utility.Clamp_to_Valid_TrackID(which_track)
+    Ensure_BPM_Adjust_Range_contains(new_tempo)
+    AudioPlayerList[which_track].pitch_scale = new_tempo
+    manual_change_this_frame = true
+    Update_Channel_Tempo_Adjusts()
+
+
+# Expand BPM_Adjust_Range so it encompasses the given pitch_scale (so sliders can show it)
+func Ensure_BPM_Adjust_Range_contains(pitch_value: float) -> void:
+    var margin = absf(pitch_value - 1.0)
+    if margin > BPM_Adjust_Range:
+        BPM_Adjust_Range = margin 
+
 
 # Adjust BPM/Tempo of our Tracks in range of +-BPM_Adjust_Range 
 func Update_Channel_Tempo_Adjusts():
-    # Where are our Sliders set right now?
-    var Left_adj = $"Controls/L Tempo Adjust".Value # between 0...1
-    var Right_adj = $"Controls/R Tempo Adjust".Value # between 0...1
+    # Slider positions are driven by current pitch_scale (not the other way around)
+    var left_pitch = AudioPlayerList[0].pitch_scale
+    var right_pitch = AudioPlayerList[1].pitch_scale
     var tolerance = 0.05
-    # meh, it's close enough to snap to middle (0.5), assume no change in tempo
-    if (abs(0.5 - Left_adj) < tolerance):
-        AudioPlayerList[0].pitch_scale = 1 
-    else:
-        # BPM Adjust range is 0.16, 
-        # so our tempo multiplier will be between 0.84...1.16
-        # Remap our sliders (0...1) to (0.84...1.16) 
-        AudioPlayerList[0].pitch_scale = remap(Left_adj, 0, 1, (1.0 - BPM_Adjust_Range), (1.0 + BPM_Adjust_Range))
-    
-    if (abs(0.5 - Right_adj) < tolerance):
-        AudioPlayerList[1].pitch_scale = 1
-    else:
-        AudioPlayerList[1].pitch_scale = remap(Right_adj, 0, 1, (1.0 - BPM_Adjust_Range), (1.0 + BPM_Adjust_Range))
-    
+    # Remap pitch_scale (1-BPM_Adjust_Range .. 1+BPM_Adjust_Range) to slider position (0..1)
+    var left_min = 1.0 - BPM_Adjust_Range
+    var left_max = 1.0 + BPM_Adjust_Range
+    var right_min = 1.0 - BPM_Adjust_Range
+    var right_max = 1.0 + BPM_Adjust_Range
+    # Snap to center (0.5) when close to 1.0
+    var left_adj = remap(left_pitch, left_min, left_max, 0.0, 1.0) if abs(1.0 - left_pitch) >= tolerance else 0.5
+    var right_adj = remap(right_pitch, right_min, right_max, 0.0, 1.0) if abs(1.0 - right_pitch) >= tolerance else 0.5
+    $"Controls/L Tempo Adjust".UpdateAlpha(clampf(left_adj, 0.0, 1.0))
+    $"Controls/R Tempo Adjust".UpdateAlpha(clampf(right_adj, 0.0, 1.0))
     # TODO: Do AudioPlayerList[2] + [3]
     
-    
+
+var manual_change_this_frame : bool = false
 func _process(delta: float) -> void:
     #if(In_Crossfade or In_Channel_Fader):
-    Update_Channel_DBs()
-    #if(Dirty_Tempos):
-    Update_Channel_Tempo_Adjusts()
+    if manual_change_this_frame == false:
+        Update_Channel_DBs()
+        #if(Dirty_Tempos):
+        Update_Channel_Tempo_Adjusts()
     
     # TODO: Change this to a proper UI  
     #var left_status_text = "Song file path: %s\n" % AudioPlayerList[0].stream.resource_path.get_file()
@@ -182,6 +197,7 @@ func _process(delta: float) -> void:
     #$"LEFT Status Text".text = left_status_text
     #$"RIGHT Status Text".text = right_status_text
     $"General Status".text = "Crossfade: %.3f" % remap(Crossfade_Alpha, 0.0, 1.0, -1.0, 1.0)
+    manual_change_this_frame = false
     
 
 
@@ -259,3 +275,7 @@ func _on_disable_debig_shapes_area_entered(area: Area3D) -> void:
     _set_collision_shapes_visible_recursive(get_tree().current_scene, debug_visable)
     
     
+
+
+func _on_left_low_gain_on_activated() -> void:
+    pass # Replace with function body.

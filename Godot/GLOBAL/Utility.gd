@@ -17,6 +17,11 @@ static func set_all_is_ready(all_ready : bool):
         print("All ready to start!!!")
 
 
+# instead of doing clamp(value, 0 , 3) a hundred times, just use this
+static func Clamp_to_Valid_TrackID(which_track : int) -> int:
+    return clampi(which_track , 0, 3)
+
+
 static func is_all_ready() -> bool:
     return all_is_ready
 
