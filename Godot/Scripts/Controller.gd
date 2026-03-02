@@ -291,7 +291,7 @@ func _seek_track_phase_to_match(track_to_move: int, reference_track: int):
         # TODO: Add 3,4
     
     # After sync, the moved track will run at the reference's effective BPM, so use reference beat length for phase
-    var beat_length: float = (60.0 / ref_current_bpm) * 4.0
+    var beat_length: float = (60.0 / ref_current_bpm) * 32.0 # I pray this fixes my 1/4 off time
     var ref_pos: float = Utility.Return_Valid(AudioPlayerList[reference_track].get_playback_position(), 0.0)
     var move_pos: float = Utility.Return_Valid(AudioPlayerList[track_to_move].get_playback_position(), 0.0)
     var phase: float = fmod(ref_pos, beat_length)

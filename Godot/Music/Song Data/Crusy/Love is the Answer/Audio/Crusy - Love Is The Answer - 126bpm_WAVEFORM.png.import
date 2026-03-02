@@ -5,7 +5,7 @@ type="CompressedTexture2D"
 uid="uid://c3vtbnwn3e8v0"
 path.s3tc="res://.godot/imported/Crusy - Love Is The Answer - 126bpm_WAVEFORM.png-6a250c9a43eb80a9f38dc2704ccf50dc.s3tc.ctex"
 path.etc2="res://.godot/imported/Crusy - Love Is The Answer - 126bpm_WAVEFORM.png-6a250c9a43eb80a9f38dc2704ccf50dc.etc2.ctex"
-metadata={"imported_formats": ["s3tc_bptc", "etc2_astc"], "vram_texture": true}
+metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }

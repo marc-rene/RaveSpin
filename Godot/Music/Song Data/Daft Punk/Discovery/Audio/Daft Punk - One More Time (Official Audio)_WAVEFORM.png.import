@@ -5,7 +5,7 @@ type="CompressedTexture2D"
 uid="uid://btwbwb25778yk"
 path.s3tc="res://.godot/imported/Daft Punk - One More Time (Official Audio)_WAVEFORM.png-de48149fa471acbfdcb14ef1eb782a66.s3tc.ctex"
 path.etc2="res://.godot/imported/Daft Punk - One More Time (Official Audio)_WAVEFORM.png-de48149fa471acbfdcb14ef1eb782a66.etc2.ctex"
-metadata={"imported_formats": ["s3tc_bptc", "etc2_astc"], "vram_texture": true}
+metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
