@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="Song" format=3 uid="uid://4rupyvhs1dnx"]
+
+[ext_resource type="AudioStream" uid="uid://dfbpysyim1dk0" path="res://Music/Song Data/Test/145bpm Test - Synth (C-E).wav" id="1_xcv1x"]
+[ext_resource type="Texture2D" uid="uid://bnov0o60hyflw" path="res://Music/Song Data/Test/145bpm Test - Synth (C-E)_WAVEFORM.png" id="2_3g5xo"]
+[ext_resource type="Script" uid="uid://djtjflwqyy3me" path="res://GLOBAL/Audio/Artist.gd" id="2_gjggp"]
+[ext_resource type="Resource" uid="uid://b4o2dfs0hh458" path="res://Music/Artists/Test Artist.tres" id="3_3g5xo"]
+[ext_resource type="Resource" uid="uid://cooq6amn8nyxj" path="res://Music/Albums/Test Album.tres" id="4_ibv5o"]
+[ext_resource type="Script" uid="uid://b5ydxvk0vbgsi" path="res://GLOBAL/Audio/Song.gd" id="5_6tbda"]
+
+[resource]
+script = ExtResource("5_6tbda")
+Song_Title = &"145 bpm - Synth"
+Main_Artist = ExtResource("3_3g5xo")
+Song_Album = ExtResource("4_ibv5o")
+Audio_File = ExtResource("1_xcv1x")
+Audio_File_Waveform = ExtResource("2_3g5xo")
+Track_BPM = 145.0
+metadata/_custom_type_script = "uid://b5ydxvk0vbgsi"

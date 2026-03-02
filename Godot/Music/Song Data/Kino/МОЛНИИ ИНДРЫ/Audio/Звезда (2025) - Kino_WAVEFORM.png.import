@@ -5,7 +5,7 @@ type="CompressedTexture2D"
 uid="uid://bjsoxc6lfb8ru"
 path.s3tc="res://.godot/imported/Звезда (2025) - Kino_WAVEFORM.png-36d577a2cdcb75906209f4206669f193.s3tc.ctex"
 path.etc2="res://.godot/imported/Звезда (2025) - Kino_WAVEFORM.png-36d577a2cdcb75906209f4206669f193.etc2.ctex"
-metadata={
+metadata={"imported_formats": ["s3tc_bptc", "etc2_astc"], "vram_texture": true}
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }

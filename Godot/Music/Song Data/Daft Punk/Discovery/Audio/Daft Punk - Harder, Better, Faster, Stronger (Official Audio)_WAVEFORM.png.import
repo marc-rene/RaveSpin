@@ -5,7 +5,7 @@ type="CompressedTexture2D"
 uid="uid://blejib8taaats"
 path.s3tc="res://.godot/imported/Daft Punk - Harder, Better, Faster, Stronger (Official Audio)_WAVEFORM.png-f56340c4ee106f0c7ececd9e454a23cf.s3tc.ctex"
 path.etc2="res://.godot/imported/Daft Punk - Harder, Better, Faster, Stronger (Official Audio)_WAVEFORM.png-f56340c4ee106f0c7ececd9e454a23cf.etc2.ctex"
-metadata={
+metadata={"imported_formats": ["s3tc_bptc", "etc2_astc"], "vram_texture": true}
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }

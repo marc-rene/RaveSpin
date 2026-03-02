@@ -3,9 +3,7 @@
 [ext_resource type="Script" uid="uid://d2rcrtt56bc36" path="res://UI/LibreBox/Components/Main_Hub/LibreBox_HUB.gd" id="1_rytid"]
 [ext_resource type="PackedScene" uid="uid://tjmox2whgvci" path="res://UI/LibreBox/Components/Track Card/LibreBox_TrackCard_Horizontal_UI.tscn" id="1_uhl31"]
 [ext_resource type="LabelSettings" uid="uid://bl11km7ja4u0h" path="res://Art/Themes/Heading.tres" id="4_v1ksm"]
-[ext_resource type="Texture2D" uid="uid://dsa1lha4oby6t" path="res://Music/Song Data/Alla Pugacheva/Поднимись над суетой/Audio/Звёздное лето_WAVEFORM.png" id="6_x3jbt"]
 [ext_resource type="Material" uid="uid://dn7dlw5hmjop5" path="res://Art/Materials/UI/M_Horizontal_Pan.tres" id="7_8d0fx"]
-[ext_resource type="Texture2D" uid="uid://bnurexj5778ma" path="res://Music/Song Data/Fake Blood/Fix your Accent/Audio/Fake Blood - I Think I Like It - 126bpm_WAVEFORM.png" id="9_d46s0"]
 
 [node name="MainHub" type="Control" unique_id=15880144]
 custom_minimum_size = Vector2(1650, 1400)
@@ -52,7 +50,6 @@ material = ExtResource("7_8d0fx")
 clip_contents = true
 custom_minimum_size = Vector2(0, 180)
 layout_mode = 2
-texture = ExtResource("6_x3jbt")
 expand_mode = 1
 stretch_mode = 3
 
@@ -62,7 +59,6 @@ material = ExtResource("7_8d0fx")
 clip_contents = true
 custom_minimum_size = Vector2(0, 180)
 layout_mode = 2
-texture = ExtResource("9_d46s0")
 expand_mode = 1
 stretch_mode = 3
 

@@ -5,7 +5,7 @@ type="CompressedTexture2D"
 uid="uid://dmgi5o4map1p6"
 path.s3tc="res://.godot/imported/Daft Punk - Around the World (Official Audio)_WAVEFORM.png-ed870f5c9dd15b0865af0e007d754fe9.s3tc.ctex"
 path.etc2="res://.godot/imported/Daft Punk - Around the World (Official Audio)_WAVEFORM.png-ed870f5c9dd15b0865af0e007d754fe9.etc2.ctex"
-metadata={
+metadata={"imported_formats": ["s3tc_bptc", "etc2_astc"], "vram_texture": true}
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }

@@ -99,6 +99,10 @@ func Play_Pause(p_which_track : int):
         print("Playing Track ", p_which_track, " now @ ", AudioPlayerList[p_which_track].get_playback_position())
         AudioPlayerList[p_which_track].stream_paused = false
         AudioPlayerList[p_which_track].play(AudioPlayerList[p_which_track].get_playback_position())
+        if BeatSyncState == E_BPM_Lock_Status.RIGHT_TRACK_SYNCED_TO_LEFT and p_which_track == 1:
+            _seek_track_phase_to_match(1, 0)
+        elif BeatSyncState == E_BPM_Lock_Status.LEFT_TRACK_SYNCED_TO_RIGHT and p_which_track == 0:
+            _seek_track_phase_to_match(0, 1)
     
     else:
         print("Pausing Track ", p_which_track)
@@ -287,7 +291,7 @@ func _seek_track_phase_to_match(track_to_move: int, reference_track: int):
         # TODO: Add 3,4
     
     # After sync, the moved track will run at the reference's effective BPM, so use reference beat length for phase
-    var beat_length: float = 60.0 / ref_current_bpm
+    var beat_length: float = (60.0 / ref_current_bpm) * 4.0
     var ref_pos: float = Utility.Return_Valid(AudioPlayerList[reference_track].get_playback_position(), 0.0)
     var move_pos: float = Utility.Return_Valid(AudioPlayerList[track_to_move].get_playback_position(), 0.0)
     var phase: float = fmod(ref_pos, beat_length)

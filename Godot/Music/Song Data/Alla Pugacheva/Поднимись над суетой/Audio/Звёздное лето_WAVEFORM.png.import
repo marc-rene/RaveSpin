@@ -5,7 +5,7 @@ type="CompressedTexture2D"
 uid="uid://dsa1lha4oby6t"
 path.s3tc="res://.godot/imported/Звёздное лето_WAVEFORM.png-ae590de5f945b8e00212593035db1e42.s3tc.ctex"
 path.etc2="res://.godot/imported/Звёздное лето_WAVEFORM.png-ae590de5f945b8e00212593035db1e42.etc2.ctex"
-metadata={
+metadata={"imported_formats": ["s3tc_bptc", "etc2_astc"], "vram_texture": true}
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }

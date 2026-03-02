@@ -5,7 +5,7 @@ type="CompressedTexture2D"
 uid="uid://b1yhdnltxx2o3"
 path.s3tc="res://.godot/imported/Death Grips - Exmilitary - 1 - Beware_WAVEFORM.png-4da6d202414064bcede40e12e29662fe.s3tc.ctex"
 path.etc2="res://.godot/imported/Death Grips - Exmilitary - 1 - Beware_WAVEFORM.png-4da6d202414064bcede40e12e29662fe.etc2.ctex"
-metadata={
+metadata={"imported_formats": ["s3tc_bptc", "etc2_astc"], "vram_texture": true}
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }

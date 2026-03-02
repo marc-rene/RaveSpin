@@ -5,7 +5,7 @@ type="CompressedTexture2D"
 uid="uid://bnurexj5778ma"
 path.s3tc="res://.godot/imported/Fake Blood - I Think I Like It - 126bpm_WAVEFORM.png-7197fbc8eb390a892a7ed1cab6b50327.s3tc.ctex"
 path.etc2="res://.godot/imported/Fake Blood - I Think I Like It - 126bpm_WAVEFORM.png-7197fbc8eb390a892a7ed1cab6b50327.etc2.ctex"
-metadata={
+metadata={"imported_formats": ["s3tc_bptc", "etc2_astc"], "vram_texture": true}
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }

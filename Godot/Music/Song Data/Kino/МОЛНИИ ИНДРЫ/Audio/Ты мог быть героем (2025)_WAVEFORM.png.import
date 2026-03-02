@@ -5,7 +5,7 @@ type="CompressedTexture2D"
 uid="uid://bqc7p1dx13u1e"
 path.s3tc="res://.godot/imported/Ты мог быть героем (2025)_WAVEFORM.png-3bd76731a4db778db5bf1c809bdf3bfb.s3tc.ctex"
 path.etc2="res://.godot/imported/Ты мог быть героем (2025)_WAVEFORM.png-3bd76731a4db778db5bf1c809bdf3bfb.etc2.ctex"
-metadata={
+metadata={"imported_formats": ["s3tc_bptc", "etc2_astc"], "vram_texture": true}
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }

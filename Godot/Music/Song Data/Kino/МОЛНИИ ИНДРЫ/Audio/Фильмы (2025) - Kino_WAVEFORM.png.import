@@ -5,7 +5,7 @@ type="CompressedTexture2D"
 uid="uid://bduj0cwbk8nyn"
 path.s3tc="res://.godot/imported/Фильмы (2025) - Kino_WAVEFORM.png-ae5c9609da246385c546892bb0cb9755.s3tc.ctex"
 path.etc2="res://.godot/imported/Фильмы (2025) - Kino_WAVEFORM.png-ae5c9609da246385c546892bb0cb9755.etc2.ctex"
-metadata={
+metadata={"imported_formats": ["s3tc_bptc", "etc2_astc"], "vram_texture": true}
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }

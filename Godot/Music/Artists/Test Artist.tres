@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="Artist" format=3 uid="uid://b4o2dfs0hh458"]
+
+[ext_resource type="Texture2D" uid="uid://cpatii2t7qfhg" path="res://icon.svg" id="1_gvgx1"]
+[ext_resource type="Script" uid="uid://djtjflwqyy3me" path="res://GLOBAL/Audio/Artist.gd" id="2_aqdtg"]
+
+[resource]
+script = ExtResource("2_aqdtg")
+Artist_Name = &"Not a real person"
+Artist_Profile_Picture = ExtResource("1_gvgx1")
+MusicBrainz_ID = &"1234-abcd-xyzw-rgba"
+metadata/_custom_type_script = "uid://djtjflwqyy3me"

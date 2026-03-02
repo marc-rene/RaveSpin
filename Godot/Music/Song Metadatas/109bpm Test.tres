@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="Song" format=3 uid="uid://c8ud1o0grl0yb"]
+
+[ext_resource type="AudioStream" uid="uid://dyulrsim6561k" path="res://Music/Song Data/Test/109bpm Test - Synth (C-E).wav" id="1_kiywr"]
+[ext_resource type="Texture2D" uid="uid://bbusx50mg2ait" path="res://Music/Song Data/Test/109bpm Test - Synth (C-E)_WAVEFORM.png" id="2_4r3hg"]
+[ext_resource type="Script" uid="uid://djtjflwqyy3me" path="res://GLOBAL/Audio/Artist.gd" id="2_7iukr"]
+[ext_resource type="Resource" uid="uid://b4o2dfs0hh458" path="res://Music/Artists/Test Artist.tres" id="3_4r3hg"]
+[ext_resource type="Resource" uid="uid://cooq6amn8nyxj" path="res://Music/Albums/Test Album.tres" id="4_wbfo8"]
+[ext_resource type="Script" uid="uid://b5ydxvk0vbgsi" path="res://GLOBAL/Audio/Song.gd" id="5_miqeo"]
+
+[resource]
+script = ExtResource("5_miqeo")
+Song_Title = &"109 bpm - Synth"
+Main_Artist = ExtResource("3_4r3hg")
+Song_Album = ExtResource("4_wbfo8")
+Audio_File = ExtResource("1_kiywr")
+Audio_File_Waveform = ExtResource("2_4r3hg")
+Track_BPM = 109.0
+metadata/_custom_type_script = "uid://b5ydxvk0vbgsi"
