@@ -296,6 +296,7 @@ func _seek_track_phase_to_match(track_to_move: int, reference_track: int):
     var new_pos: float = floor(move_pos / beat_length) * beat_length + phase
     # Clamp to stream and avoid negative
     new_pos = clampf(new_pos, 0.0, maxf(0.0, stream_length - 0.001))
+    AudioPlayerList[track_to_move].seek(new_pos)
     AudioPlayerList[track_to_move].play(new_pos)
 
     

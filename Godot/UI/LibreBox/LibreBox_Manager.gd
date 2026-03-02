@@ -101,10 +101,12 @@ func Update_Controller_and_Hub(Which_Track: int, New_Song: Song):
 
 
 func On_Song_Change_Track_1(New_Song: Song):
+    Track_1_Song = New_Song
     Update_Controller_and_Hub(0, New_Song)
 
 
 func On_Song_Change_Track_2(New_Song: Song):
+    Track_2_Song = New_Song
     Update_Controller_and_Hub(1, New_Song)
 
 

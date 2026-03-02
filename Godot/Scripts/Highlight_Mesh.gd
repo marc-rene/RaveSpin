@@ -45,24 +45,25 @@ func reset_highlight():
     return true
     
 func HighLight(p_state = E_ActivationStates.Hoovered):
-    match p_state:
-        E_ActivationStates.Exited:
-            if Target_Mesh != null:
-                Target_Mesh.material_overlay = null
-            on_unhovered.emit()
-        E_ActivationStates.Hoovered:
-            if Target_Mesh != null:
-                Target_Mesh.material_overlay = highlight_mat
-            on_hovered.emit()
-        E_ActivationStates.Pressed:
-            if Target_Mesh != null:
-                Target_Mesh.material_overlay = activated_mat
-            on_activated.emit()
+    if (Utility.all_is_ready):
+        match p_state:
+            E_ActivationStates.Exited:
+                if Target_Mesh != null:
+                    Target_Mesh.material_overlay = null
+                on_unhovered.emit()
+            E_ActivationStates.Hoovered:
+                if Target_Mesh != null:
+                    Target_Mesh.material_overlay = highlight_mat
+                on_hovered.emit()
+            E_ActivationStates.Pressed:
+                if Target_Mesh != null:
+                    Target_Mesh.material_overlay = activated_mat
+                on_activated.emit()
             
 
 
 func _on_BASE_highlight_area_entered(area: Area3D) -> void:
-    if (LibreBox.LibreBox_instance != null):
+    if (Utility.all_is_ready):
         HighLight(E_ActivationStates.Hoovered)
         fully_exited = false
     
@@ -85,4 +86,5 @@ func _on_BASE_activation_area_exited(area: Area3D) -> void:
     if (fully_exited):
         HighLight(E_ActivationStates.Exited)
     else:
-        HighLight(E_ActivationStates.Hoovered)
+        if (LibreBox.LibreBox_instance != null):
+            HighLight(E_ActivationStates.Hoovered)
