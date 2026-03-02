@@ -94,15 +94,30 @@ func LoadTrackIntoMemory(which_track : int, which_song : Song):
       
 func Play_Pause(p_which_track : int):
     p_which_track = Utility.Clamp_to_Valid_TrackID(p_which_track)
-        
+    
     if(AudioPlayerList[p_which_track].playing == false):
         print("Playing Track ", p_which_track, " now @ ", AudioPlayerList[p_which_track].get_playback_position())
-        AudioPlayerList[p_which_track].stream_paused = false
-        AudioPlayerList[p_which_track].play(AudioPlayerList[p_which_track].get_playback_position())
-        if BeatSyncState == E_BPM_Lock_Status.RIGHT_TRACK_SYNCED_TO_LEFT and p_which_track == 1:
+        
+        if BeatSyncState == E_BPM_Lock_Status.BOTH_FREE and AudioPlayerList[p_which_track].has_stream_playback():
+            AudioPlayerList[p_which_track].stream_paused = false
+        elif BeatSyncState == E_BPM_Lock_Status.BOTH_FREE and AudioPlayerList[p_which_track].has_stream_playback() == false:
+            AudioPlayerList[p_which_track].stream_paused = false
+            AudioPlayerList[p_which_track].play(Utility.Return_Valid(AudioPlayerList[p_which_track].get_playback_position(), 0.0)) 
+            
+        elif BeatSyncState == E_BPM_Lock_Status.RIGHT_TRACK_SYNCED_TO_LEFT and p_which_track == 1:
             _seek_track_phase_to_match(1, 0)
         elif BeatSyncState == E_BPM_Lock_Status.LEFT_TRACK_SYNCED_TO_RIGHT and p_which_track == 0:
             _seek_track_phase_to_match(0, 1)
+            
+        elif BeatSyncState == E_BPM_Lock_Status.RIGHT_TRACK_SYNCED_TO_LEFT and p_which_track == 0 and AudioPlayerList[p_which_track].has_stream_playback():
+            #_seek_track_phase_to_match(0, 0) # this is SCUFFED
+            AudioPlayerList[p_which_track].stream_paused = false
+            _seek_track_phase_to_match(1, 0)
+        elif BeatSyncState == E_BPM_Lock_Status.LEFT_TRACK_SYNCED_TO_RIGHT and p_which_track == 1 and AudioPlayerList[p_which_track].has_stream_playback():
+            AudioPlayerList[p_which_track].stream_paused = false
+            _seek_track_phase_to_match(0, 1)
+        else:
+            AudioPlayerList[p_which_track].play()
     
     else:
         print("Pausing Track ", p_which_track)
@@ -274,7 +289,11 @@ func _on_right_beat_sync_on_activated():
         Sync_RightTrackBPM_to_LeftTrackBPM.emit()
 
 
-# Aligns track_to_move so beat matches reference_track
+
+var ref_bpm : float = 0.0
+var move_bpm : float = 0.0
+# Aligns track_to_move so its beat phase matches reference_track. Only adjusts phase (same pos
+# within the beat); never snaps the moved track to the reference track's position in the song
 func _seek_track_phase_to_match(track_to_move: int, reference_track: int):
     track_to_move = Utility.Clamp_to_Valid_TrackID(track_to_move)
     reference_track = Utility.Clamp_to_Valid_TrackID(reference_track)
@@ -282,25 +301,41 @@ func _seek_track_phase_to_match(track_to_move: int, reference_track: int):
         return
 
     var stream_length: float = AudioPlayerList[track_to_move].stream.get_length()
-    var ref_current_bpm : float = 0.0
-    match reference_track:
-        0:
-            ref_current_bpm = track_1_new_bpm
-        1:
-            ref_current_bpm = track_2_new_bpm
-        # TODO: Add 3,4
+
+    # Beat boundaries in the file are fixed by metadata BPM
+    # so we need beat length in stream seconds (60 / base BPM), not real-time.
+    ref_bpm = LibreBox.Get_Track_BPM(reference_track)
+    move_bpm = LibreBox.Get_Track_BPM(track_to_move)
     
-    # After sync, the moved track will run at the reference's effective BPM, so use reference beat length for phase
-    var beat_length: float = (60.0 / ref_current_bpm) * 32.0 # I pray this fixes my 1/4 off time
+    if ref_bpm <= 0.0 or move_bpm <= 0.0:
+        return
+    
+    var ref_beat_stream: float = 60.0 / ref_bpm   # seconds of reference stream per beat
+    var move_beat_stream: float = 60.0 / move_bpm # seconds of move stream per beat
+
+    # Latency-correct positions so we align to what the listener actually hears (like RhythmNotifier)
+    var latency_correction: float = AudioServer.get_time_since_last_mix() - AudioServer.get_output_latency()
     var ref_pos: float = Utility.Return_Valid(AudioPlayerList[reference_track].get_playback_position(), 0.0)
-    var move_pos: float = Utility.Return_Valid(AudioPlayerList[track_to_move].get_playback_position(), 0.0)
-    var phase: float = fmod(ref_pos, beat_length)
     
-    # Place the moved track at the same phase within its current beat (nearest beat boundary)
-    var new_pos: float = floor(move_pos / beat_length) * beat_length + phase
-    # Clamp to stream and avoid negative
+    if AudioPlayerList[reference_track].playing:
+        ref_pos += latency_correction
+        
+    var move_pos: float = Utility.Return_Valid(AudioPlayerList[track_to_move].get_playback_position(), 0.0)
+    if AudioPlayerList[track_to_move].playing:
+        move_pos += latency_correction
+
+    # Phase as a ratio 0..1 within the beat (same for any BPM)
+    var phase_ratio: float = fmod(ref_pos, ref_beat_stream) / ref_beat_stream
+    
+    # Keep the moved track in the same beat region of its own song; only fix the phase
+    var move_beat_index: int = int(floor(move_pos / move_beat_stream))
+    var new_pos: float = move_beat_index * move_beat_stream + phase_ratio * move_beat_stream
     new_pos = clampf(new_pos, 0.0, maxf(0.0, stream_length - 0.001))
-    AudioPlayerList[track_to_move].seek(new_pos)
-    AudioPlayerList[track_to_move].play(new_pos)
+
+    if AudioPlayerList[track_to_move].has_stream_playback():
+        AudioPlayerList[track_to_move].stream_paused = false
+        AudioPlayerList[track_to_move].seek(new_pos)
+    else:
+        AudioPlayerList[track_to_move].play(new_pos)
 
     
