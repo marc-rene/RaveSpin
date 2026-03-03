@@ -23,13 +23,18 @@ reflected_light_source = 1
 [sub_resource type="BoxShape3D" id="BoxShape3D_3sm0n"]
 size = Vector3(100, 0.01, 100)
 
-[node name="Arena" type="Node3D" unique_id=1145637546]
+[node name="Arena" type="Node3D" unique_id=1145637546 node_paths=PackedStringArray("Player_cam")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 0, 0, 0)
 script = ExtResource("1_lr07p")
+Player_cam = NodePath("Player/XRCamera3D")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=667713396]
 environment = SubResource("Environment_3sm0n")
 
 [node name="Player" parent="." unique_id=1063771176 instance=ExtResource("1_hagq7")]
+
+[node name="XRCamera3D" parent="Player" index="0" unique_id=1747871428 node_paths=PackedStringArray("spawn_in_front")]
+spawn_in_front = NodePath("../../DDJ-FLX4")
 
 [node name="DDJ-FLX4" parent="." unique_id=111272397 instance=ExtResource("3_lr07p")]
 unique_name_in_owner = true
@@ -64,3 +69,7 @@ metadata/_custom_type_script = "uid://dvxittvfvayif"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=1223925268]
 shape = SubResource("BoxShape3D_3sm0n")
+
+[editable path="Player"]
+[editable path="Player/XR_LeftHand/LeftHandMesh"]
+[editable path="Player/XR_RightHand/RightHandMesh"]

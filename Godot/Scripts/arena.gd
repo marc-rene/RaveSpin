@@ -14,6 +14,12 @@ func enable_passthrough() -> bool:
         else:
             return false
             
+            
+
+@export var Player_cam : XRCamera3D
+func recenter():
+    Player_cam.recenter()
+
 func _ready():
     xr_interface = XRServer.primary_interface
     if xr_interface and xr_interface.is_initialized():
@@ -25,6 +31,6 @@ func _ready():
         # Change our main viewport to output to the HMD
         get_viewport().use_xr = true
         enable_passthrough()
-
+        xr_interface.pose_recentered.connect(recenter)
     else:
         print("OpenXR not initialized, please check if your headset is connected")

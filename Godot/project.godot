@@ -17,7 +17,7 @@ TU Dublin - Grangegorman
 
 "
 run/main_scene="uid://dixosugdlls6v"
-config/features=PackedStringArray("4.6", "Mobile")
+config/features=PackedStringArray("4.6", "C#", "Mobile")
 boot_splash/bg_color=Color(0.92941177, 0.68235296, 0.28627452, 1)
 boot_splash/image="uid://bo5b3mjv07m82"
 config/icon="uid://dhtm2bn2keywa"
