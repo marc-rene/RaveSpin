@@ -56,14 +56,14 @@ func Refresh_Details() -> bool:
     #print("Total: " + str(Song_Resource.Audio_File.get_length()))
     #print("Minutes: " + str(int(Song_Resource.Audio_File.get_length() / 60)))
     #print("Seconds: " + str(int(Song_Resource.Audio_File.get_length()) % 60))
-    var mins = int(Song_Resource.Audio_File.get_length() / 60)
-    var secs = int(Song_Resource.Audio_File.get_length()) % 60
-    var duration_text = ""
-    if mins >= 1:
-        duration_text += str(mins) + "m "
-
-    duration_text += str(secs) + "s "   
-    Track_Duration_Label.text = Utility.Return_Valid(duration_text, "N/A")
+    #var mins = int(Song_Resource.Audio_File.get_length() / 60)
+    #var secs = int(Song_Resource.Audio_File.get_length()) % 60
+    #var duration_text = ""
+    #if mins >= 1:
+        #duration_text += str(mins) + "m "
+#
+    #duration_text += str(secs) + "s "   
+    Track_Duration_Label.text = Utility.Seconds_to_MM_SS_MS(Song_Resource.Audio_File.get_length())
     
     Track_BPM_Label.text = Utility.Return_Valid(str(int(Song_Resource.Track_BPM)), "N/A")
     

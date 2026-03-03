@@ -1,0 +1,77 @@
+[gd_scene format=3 uid="uid://dgqjtuui0rvng"]
+
+[ext_resource type="Theme" uid="uid://ds0dxmwlq5niw" path="res://Art/Themes/Default_Theme.tres" id="1_es6fh"]
+[ext_resource type="Texture2D" uid="uid://bqcklrfllagp4" path="res://Art/Textures/T_BPMCounterGauge.png" id="1_ftefc"]
+[ext_resource type="Script" uid="uid://c4v378qqnol2b" path="res://UI/LibreBox/Components/BPM Spinner/bpm_spinner.gd" id="2_tx8s8"]
+[ext_resource type="Texture2D" uid="uid://rfu4x0sdts6q" path="res://Art/Textures/T_BPMCounterGaugePoint.png" id="3_fggnt"]
+[ext_resource type="Material" uid="uid://c0yo4nmoxvy32" path="res://Art/Materials/UI/Emissive/Simple_Emmisive.tres" id="4_5jb8n"]
+[ext_resource type="LabelSettings" uid="uid://du4olf7ix8h0m" path="res://Art/Themes/Heading_2.tres" id="4_ufylg"]
+[ext_resource type="LabelSettings" uid="uid://bl11km7ja4u0h" path="res://Art/Themes/Heading.tres" id="5_wnun6"]
+[ext_resource type="LabelSettings" uid="uid://c6r16al1fyqxr" path="res://Art/Themes/Heading_4.tres" id="6_wnun6"]
+
+[node name="BpmSpinner" type="AspectRatioContainer" unique_id=117165010]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_es6fh")
+script = ExtResource("2_tx8s8")
+
+[node name="Base BPM Tip" type="TextureRect" parent="." unique_id=2016558501]
+layout_mode = 2
+texture = ExtResource("1_ftefc")
+expand_mode = 2
+stretch_mode = 4
+
+[node name="BPM Guage bit" type="TextureRect" parent="Base BPM Tip" unique_id=1839217248]
+material = ExtResource("4_5jb8n")
+layout_mode = 1
+anchors_preset = 13
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -20.0
+offset_right = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+rotation = 0.7853982
+pivot_offset_ratio = Vector2(0.5, 0.5)
+texture = ExtResource("3_fggnt")
+stretch_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Base BPM Tip" unique_id=1606039606]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="Base BPM Tip/VBoxContainer" unique_id=1146926193]
+layout_mode = 2
+text = "BPM"
+label_settings = ExtResource("4_ufylg")
+horizontal_alignment = 1
+vertical_alignment = 3
+
+[node name="Current BPM var label" type="Label" parent="Base BPM Tip/VBoxContainer" unique_id=1446260282]
+layout_mode = 2
+text = "NaN"
+label_settings = ExtResource("5_wnun6")
+horizontal_alignment = 1
+vertical_alignment = 3
+
+[node name="Offset percent var label" type="Label" parent="Base BPM Tip/VBoxContainer" unique_id=328809510]
+layout_mode = 2
+text = "+10.3%"
+label_settings = ExtResource("6_wnun6")
+horizontal_alignment = 1
+vertical_alignment = 3

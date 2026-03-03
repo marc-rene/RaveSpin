@@ -39,17 +39,21 @@ transform = Transform3D(-7.888416e-08, 0.86209327, 1.8046594, 3.7683293e-08, 1.8
 transform = Transform3D(-4.371139e-08, 0, 1.0000005, 0, 1, 0, -1, 0, -4.371141e-08, -1, 2, 0.5)
 
 [node name="Track Stream Player Left" type="AudioStreamPlayer" parent="." unique_id=1328970906]
+unique_name_in_owner = true
 autoplay = true
 bus = &"Channel 1 Input"
 
 [node name="Track Stream Player Right" type="AudioStreamPlayer" parent="." unique_id=234223147]
+unique_name_in_owner = true
 autoplay = true
 bus = &"Channel 2 Input"
 
 [node name="Track Stream Player Left ALT" type="AudioStreamPlayer" parent="." unique_id=199533689]
+unique_name_in_owner = true
 bus = &"Channel 3 Input"
 
 [node name="Track Stream Player Right ALT" type="AudioStreamPlayer" parent="." unique_id=462492308]
+unique_name_in_owner = true
 bus = &"Channel 4 Input"
 
 [node name="StartXR" type="Node" parent="." unique_id=934317415]

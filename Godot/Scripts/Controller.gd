@@ -35,10 +35,10 @@ static func Get_Instance() -> DJ_Controller:
 @export var Use_2_Track_Bus_Layout = true
 var Bus_Layout : AudioBusLayout
 
-@onready var AudioPlayerList : Array[AudioStreamPlayer] = [$"../Track Stream Player Left", 
-    $"../Track Stream Player Right", 
-    $"../Track Stream Player Left ALT", 
-    $"../Track Stream Player Right ALT"]; 
+@onready var AudioPlayerList : Array[AudioStreamPlayer] = [%"Track Stream Player Left",
+    %"Track Stream Player Right",
+    %"Track Stream Player Left ALT",
+    %"Track Stream Player Right ALT"]; 
     
 @onready var Channel_1_Left_Bus_Index = BUS_MANAGER.Get_Channel_Index(BUS_MANAGER.E_AUDIO_BUSSES.CHANNEL_ONE_INPUT)
 @onready var Channel_2_Right_Bus_Index = BUS_MANAGER.Get_Channel_Index(BUS_MANAGER.E_AUDIO_BUSSES.CHANNEL_TWO_INPUT)
@@ -56,6 +56,9 @@ var Crossfade_Alpha = 0.5
 # Default is 10% Tempo Adjust Range
 @export var BPM_Adjust_Range = 0.1
    
+
+
+
 
 static func Get_Track_Playback_Position(which_track : int) -> float:
     which_track = Utility.Clamp_to_Valid_TrackID(which_track)
@@ -182,6 +185,28 @@ func Update_Channel_DBs():
 
 var track_1_new_bpm : float = 0
 var track_2_new_bpm : float = 0
+
+static func Get_Track_Current_BPM(which_track : int) -> float:
+    match which_track:
+        0:
+            return DJ_Controller.Get_Instance().track_1_new_bpm
+        1:
+            return DJ_Controller.Get_Instance().track_2_new_bpm
+        _:
+            return 0.0
+    
+    
+static func Get_Track_Speed_Mult(which_track : int) -> float:
+    match which_track:
+        0:
+            return DJ_Controller.Get_Instance().track_1_new_bpm / LibreBox.Get_Track_BPM(0)
+        1:
+            return DJ_Controller.Get_Instance().track_2_new_bpm / LibreBox.Get_Track_BPM(1)
+        _:
+            return 0.0
+                
+        
+
 
 # Adjust BPM/Tempo of our Tracks in range of +-BPM_Adjust_Range 
 func Update_Channel_Tempo_Adjusts():

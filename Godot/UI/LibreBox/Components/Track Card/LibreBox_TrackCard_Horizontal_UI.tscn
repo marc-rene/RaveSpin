@@ -31,7 +31,7 @@ shader_parameter/Force_Foreground_Colour = Color(1, 1, 1, 1)
 shader = ExtResource("6_ce06q")
 shader_parameter/Force_Foreground_Colour = Color(1, 1, 1, 1)
 
-[sub_resource type="Shader" id="Shader_sk0yf"]
+[sub_resource type="Shader" id="Shader_d7mpa"]
 code = "shader_type canvas_item;
 
 uniform vec4 Unlit_Colour : source_color = vec4(1.0);
@@ -46,7 +46,7 @@ void fragment() {
 "
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_d62xh"]
-shader = SubResource("Shader_sk0yf")
+shader = SubResource("Shader_d7mpa")
 shader_parameter/Unlit_Colour = Color(0.92941177, 0.68235296, 0.28627452, 1)
 
 [node name="LibreBoxTrackCardHorizontalUi" type="Button" unique_id=1906176276]
@@ -244,7 +244,7 @@ alignment = 1
 layout_mode = 2
 size_flags_horizontal = 5
 
-[node name="Time Icon" type="TextureRect" parent="VBoxContainer/Main Container/Key Container/HBoxContainer" unique_id=1806656450]
+[node name="Key Icon" type="TextureRect" parent="VBoxContainer/Main Container/Key Container/HBoxContainer" unique_id=1806656450]
 material = SubResource("ShaderMaterial_d62xh")
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2

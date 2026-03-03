@@ -27,6 +27,26 @@ static func is_all_ready() -> bool:
 
 
 
+static func Seconds_to_MM_SS_MS(seconds : float, truncate_zero_value : bool = true, include_ms : bool = false) -> String:
+    if seconds:
+        var temp_str : String = ""
+        if seconds < 60 and truncate_zero_value:
+            pass
+        else:
+            temp_str += str(int(floor(seconds / 60))) + "m "
+        if seconds < 1 and truncate_zero_value:
+            pass
+        else:
+            temp_str += str(int(floor(fmod(seconds, 60)))) + "s "
+        if include_ms:
+            temp_str += "%.4fms" % fmod(seconds, 1)
+        return temp_str
+    else:
+        return "NaN"
+    
+         
+
+
 static func is_Valid(object) -> bool:
     match typeof(object):
         TYPE_STRING:
