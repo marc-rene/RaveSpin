@@ -7,9 +7,9 @@ func _ready() -> void:
 
 
 
-@export var distance_in_front = 0
+@export var distance_in_front = -1
 
-@export var spawn_in_front:Node3D 
+@export var spawn_in_front: Array[Node3D] 
 
 func recenter():
     # var y = spawn_in_front.global_position.y
@@ -21,10 +21,11 @@ func recenter():
     # in_front.y = y
     
     
-    spawn_in_front.global_position = in_front
+    for node in spawn_in_front:
+        node.global_position = in_front
+        var y_rotation = global_basis.get_euler().y
+        node.global_basis = Basis(Vector3.UP, y_rotation).scaled(node.scale)
     # boid.global_position = in_front
-    var y_rotation = global_basis.get_euler().y
-    spawn_in_front.global_basis = Basis(Vector3.UP, y_rotation).scaled(spawn_in_front.scale)
 
 
 
