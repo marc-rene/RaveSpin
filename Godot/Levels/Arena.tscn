@@ -34,14 +34,14 @@ environment = SubResource("Environment_3sm0n")
 [node name="Player" parent="." unique_id=1063771176 instance=ExtResource("1_hagq7")]
 
 [node name="XRCamera3D" parent="Player" index="0" unique_id=1747871428 node_paths=PackedStringArray("spawn_in_front")]
-spawn_in_front = [NodePath("../../DDJ-FLX4")]
+spawn_in_front = NodePath("../../LibreboxScene")
 
-[node name="DDJ-FLX4" parent="." unique_id=111272397 instance=ExtResource("3_lr07p")]
+[node name="LibreboxScene" parent="." unique_id=889702823 instance=ExtResource("6_7t5kf")]
+transform = Transform3D(-4.371139e-08, 4.852939e-24, 1.0000005, -1.110223e-16, 1, 0, -1, 1.110223e-16, -4.371141e-08, -1.0000001, 2.073622, 0.50000006)
+
+[node name="DDJ-FLX4" parent="LibreboxScene" unique_id=111272397 instance=ExtResource("3_lr07p")]
 unique_name_in_owner = true
-transform = Transform3D(-7.888416e-08, 0.86209327, 1.8046594, 3.7683293e-08, 1.8046594, -0.86209327, -2, 0, -8.742278e-08, -0.87554413, 1.5913118, 0.96281934)
-
-[node name="LibreboxScene" parent="DDJ-FLX4" unique_id=889702823 instance=ExtResource("6_7t5kf")]
-transform = Transform3D(0.5, 9.420823e-09, 2.1346545e-09, -9.420823e-09, 0.45116484, 0.21552342, 2.1346533e-09, -0.21552332, 0.45116505, 0.23140964, 0.15756261, -0.14423192)
+transform = Transform3D(2, -3.7683293e-08, 8.538613e-09, 3.7683293e-08, 1.8046594, -0.86209327, 8.538609e-09, 0.86209285, 1.8046585, -0.46281928, -0.48231018, 0.12445587)
 
 [node name="Track Stream Player Left" type="AudioStreamPlayer" parent="." unique_id=1328970906]
 unique_name_in_owner = true

@@ -22,7 +22,7 @@ static var Controller_Instance : DJ_Controller = null
 
 static func Get_Instance_await() -> DJ_Controller:
     if Controller_Instance == null:
-        await Controller_Instance.all_ready
+        await Controller_Instance
     
     return Controller_Instance
     
@@ -51,7 +51,7 @@ var Bus_Layout : AudioBusLayout
 var Channel_Faders = [1.0, 1.0, 1.0, 1.0]
 var Crossfade_Alpha = 0.5
 
-
+#var Seek_Thread
 
 # Default is 10% Tempo Adjust Range
 @export var BPM_Adjust_Range = 0.1
@@ -214,7 +214,8 @@ func Update_Channel_Tempo_Adjusts():
     # Where are our Sliders set right now?
     if BeatSyncState == E_BPM_Lock_Status.LEFT_TRACK_SYNCED_TO_RIGHT:
         if LibreBox.Get_Track_BPM(0) > 1.0:
-            AudioPlayerList[0].pitch_scale = track_2_new_bpm / LibreBox.Get_Track_BPM(0) 
+            AudioPlayerList[0].pitch_scale = track_2_new_bpm / LibreBox.Get_Track_BPM(0)
+        track_1_new_bpm = track_2_new_bpm  # Synced: left matches right's BPM exactly
         $"Controls/L Tempo Adjust".UpdateAlpha(0.5)
     else:  
         var Left_adj = $"Controls/L Tempo Adjust".Value # between 0...1
@@ -230,7 +231,8 @@ func Update_Channel_Tempo_Adjusts():
         
     if BeatSyncState == E_BPM_Lock_Status.RIGHT_TRACK_SYNCED_TO_LEFT:  
         if LibreBox.Get_Track_BPM(1) > 1.0:
-            AudioPlayerList[1].pitch_scale = track_1_new_bpm / LibreBox.Get_Track_BPM(1) 
+            AudioPlayerList[1].pitch_scale = track_1_new_bpm / LibreBox.Get_Track_BPM(1)
+        track_2_new_bpm = track_1_new_bpm  # Synced: right matches left's BPM exactly
         $"Controls/R Tempo Adjust".UpdateAlpha(0.5)
     else:
         var Right_adj = $"Controls/R Tempo Adjust".Value
@@ -315,8 +317,19 @@ func _on_right_beat_sync_on_activated():
 
 
 
+# Im sorry for cramming all the vars up here... this function HITCHES bad and the profiles 
+# TODO: Offload _seek_track_phase_to_match to a different thread and pray that the result is the same but with no hitch??
 var ref_bpm : float = 0.0
 var move_bpm : float = 0.0
+var stream_length: float
+var ref_beat_stream: float
+var move_beat_stream: float
+var latency_correction: float
+var ref_pos: float
+var move_pos: float
+var phase_ratio: float
+var move_beat_index: int
+var new_pos: float
 # Aligns track_to_move so its beat phase matches reference_track. Only adjusts phase (same pos
 # within the beat); never snaps the moved track to the reference track's position in the song
 func _seek_track_phase_to_match(track_to_move: int, reference_track: int):
@@ -325,7 +338,7 @@ func _seek_track_phase_to_match(track_to_move: int, reference_track: int):
     if AudioPlayerList[reference_track].stream == null or AudioPlayerList[track_to_move].stream == null:
         return
 
-    var stream_length: float = AudioPlayerList[track_to_move].stream.get_length()
+    stream_length = AudioPlayerList[track_to_move].stream.get_length()
 
     # Beat boundaries in the file are fixed by metadata BPM
     # so we need beat length in stream seconds (60 / base BPM), not real-time.
@@ -335,26 +348,26 @@ func _seek_track_phase_to_match(track_to_move: int, reference_track: int):
     if ref_bpm <= 0.0 or move_bpm <= 0.0:
         return
     
-    var ref_beat_stream: float = 60.0 / ref_bpm   # seconds of reference stream per beat
-    var move_beat_stream: float = 60.0 / move_bpm # seconds of move stream per beat
+    ref_beat_stream = 60.0 / ref_bpm   # seconds of reference stream per beat
+    move_beat_stream = 60.0 / move_bpm # seconds of move stream per beat
 
     # Latency-correct positions so we align to what the listener actually hears (like RhythmNotifier)
-    var latency_correction: float = AudioServer.get_time_since_last_mix() - AudioServer.get_output_latency()
-    var ref_pos: float = Utility.Return_Valid(AudioPlayerList[reference_track].get_playback_position(), 0.0)
+    latency_correction = AudioServer.get_time_since_last_mix() - AudioServer.get_output_latency()
+    ref_pos = Utility.Return_Valid(AudioPlayerList[reference_track].get_playback_position(), 0.0)
     
     if AudioPlayerList[reference_track].playing:
         ref_pos += latency_correction
         
-    var move_pos: float = Utility.Return_Valid(AudioPlayerList[track_to_move].get_playback_position(), 0.0)
+    move_pos = Utility.Return_Valid(AudioPlayerList[track_to_move].get_playback_position(), 0.0)
     if AudioPlayerList[track_to_move].playing:
         move_pos += latency_correction
 
     # Phase as a ratio 0..1 within the beat (same for any BPM)
-    var phase_ratio: float = fmod(ref_pos, ref_beat_stream) / ref_beat_stream
+    phase_ratio = fmod(ref_pos, ref_beat_stream) / ref_beat_stream
     
     # Keep the moved track in the same beat region of its own song; only fix the phase
-    var move_beat_index: int = int(floor(move_pos / move_beat_stream))
-    var new_pos: float = move_beat_index * move_beat_stream + phase_ratio * move_beat_stream
+    move_beat_index = int(floor(move_pos / move_beat_stream))
+    new_pos = move_beat_index * move_beat_stream + phase_ratio * move_beat_stream
     new_pos = clampf(new_pos, 0.0, maxf(0.0, stream_length - 0.001))
 
     if AudioPlayerList[track_to_move].has_stream_playback():

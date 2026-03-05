@@ -522,7 +522,7 @@ func _update_render() -> void:
                     scene_node.set(key, scene_proxy_configuration[key])
 
             # Finally add it to the scene, so values are available in _ready
-            $Viewport.add_child(scene_node)
+            $Viewport.add_child.call_deferred(scene_node)
         elif $Viewport.get_child_count() == 1:
             # Use already-provided scene
             scene_node = $Viewport.get_child(0)

@@ -3,6 +3,8 @@ extends Node3D
 var xr_interface: XRInterface
 @onready var environment:Environment = $"WorldEnvironment".environment
 
+
+
 func enable_passthrough() -> bool:
     if xr_interface and xr_interface.is_passthrough_supported():		
         return xr_interface.start_passthrough()
@@ -16,7 +18,7 @@ func enable_passthrough() -> bool:
             
             
 
-@export var Player_cam : XRCamera3D
+@export var Player_cam : RaveSpin_XRCamera3D
 func recenter():
     Player_cam.recenter()
 
@@ -32,5 +34,7 @@ func _ready():
         get_viewport().use_xr = true
         enable_passthrough()
         xr_interface.pose_recentered.connect(recenter)
+        await get_tree().create_timer(0.2).timeout
+        recenter()
     else:
         print("OpenXR not initialized, please check if your headset is connected")

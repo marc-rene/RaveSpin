@@ -3,6 +3,7 @@
 [ext_resource type="Shader" uid="uid://bagouocssadxb" path="res://Art/Materials/UI/Horizontal_Pan.gdshader" id="1_ohk6w"]
 
 [resource]
+resource_local_to_scene = true
 shader = ExtResource("1_ohk6w")
 shader_parameter/alpha = 0.6970000331075
 shader_parameter/line_color = Color(1, 1, 1, 0.56600004)

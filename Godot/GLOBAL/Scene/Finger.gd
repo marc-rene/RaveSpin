@@ -29,6 +29,12 @@ const Acceptable_Selection_Poses : Array[E_POSES] = [E_POSES.THUMBS_UP, E_POSES.
 @onready var DEBUG_Left_Label : Label3D = %Left_Label3D
 @onready var DEBUG_Right_Label : Label3D = %Right_Label3D
 
+# Collision scale when finger is inside a slider (30% bigger)
+const SLIDER_COLLISION_SCALE := 1.3
+@onready var _collision_shape: CollisionShape3D = $CollisionShape3D
+var _default_collision_scale := Vector3.ONE
+var _slider_overlap_count: int = 0
+
 
 static var CURRENT_LEFT_HAND_POSE = E_POSES.NONE
 static var CURRENT_RIGHT_HAND_POSE = E_POSES.NONE
@@ -52,6 +58,8 @@ func set_debug_colour():
 
 
 func _ready() -> void:
+    if _collision_shape:
+        _default_collision_scale = _collision_shape.scale
     is_main_signaller = (Which_Finger == E_FINGER.SECOND)
     
     if is_right_hand and is_main_signaller:
@@ -247,3 +255,19 @@ func _on_hand_pose_detector_pose_ended_R(p_name: String) -> void:
 # Should we bother checking this finger for inputs?
 func is_active() -> bool:
     return active
+
+
+## Call when this finger enters a slider's activation area. Expands collision by 30% while in any slider.
+func notify_entered_slider() -> void:
+    if not _collision_shape:
+        return
+    _slider_overlap_count += 1
+    if _slider_overlap_count == 1:
+        _collision_shape.scale = _default_collision_scale * SLIDER_COLLISION_SCALE
+
+
+## Call when this finger exits a slider's activation area. Restores collision when not in any slider.
+func notify_exited_slider() -> void:
+    _slider_overlap_count = clampi(_slider_overlap_count, _slider_overlap_count - 1, 0)
+    if _slider_overlap_count == 0 and _collision_shape:
+        _collision_shape.scale = _default_collision_scale

@@ -5,6 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://dcbkr50uhlp42" path="res://UI/LibreBox/Components/Main_Hub/MainHub_UI.tscn" id="2_bg1lp"]
 [ext_resource type="FontFile" uid="uid://di6oaehdwb84i" path="res://Art/Fonts/FONT_Roboto.ttf" id="2_yb6eh"]
 [ext_resource type="PackedScene" uid="uid://d3vfyxnqa8u8p" path="res://UI/LibreBox/Components/Track Selection/Track_Selection.tscn" id="4_vnbwf"]
+[ext_resource type="Script" uid="uid://bnckdx4e6k3hk" path="res://Scripts/Viewport2DIn3DHandTouch.gd" id="5_hand"]
 
 [node name="LibreboxScene" type="Node3D" unique_id=889702823]
 script = ExtResource("1_al4tx")
@@ -18,6 +19,9 @@ unshaded = true
 scene_properties_keys = PackedStringArray("LibreBox_HUB.gd", "Track_1", "Track_2")
 Track_1 = null
 Track_2 = null
+
+[node name="HandTouch" type="Node" parent="HUB" unique_id=1535056161]
+script = ExtResource("5_hand")
 
 [node name="HUB Label" type="Label3D" parent="HUB" unique_id=1127725628]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6143331, 0)
@@ -44,6 +48,9 @@ text = "Track 1 Selection"
 font = ExtResource("2_yb6eh")
 outline_size = 0
 
+[node name="HandTouch" type="Node" parent="Track 1 Selection" unique_id=1106380327]
+script = ExtResource("5_hand")
+
 [node name="Track 2 Selection" parent="." unique_id=187553533 instance=ExtResource("1_ebwc8")]
 transform = Transform3D(0.49999997, 0, -0.86602545, 0, 1, 0, 0.86602545, 0, 0.49999997, 1.29, 0, 0.65)
 screen_size = Vector2(1.6, 1.6)
@@ -60,3 +67,6 @@ alpha_cut = 1
 text = "Track 2 Selection"
 font = ExtResource("2_yb6eh")
 outline_size = 0
+
+[node name="HandTouch" type="Node" parent="Track 2 Selection" unique_id=1070256822]
+script = ExtResource("5_hand")

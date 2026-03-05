@@ -17,6 +17,9 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_es6fh")
 script = ExtResource("2_tx8s8")
+Negative_Offset_Colour = Color(0.9137255, 0.30980393, 0.21568628, 1)
+Neutral_Offset_Colour = Color(0.31711307, 0.34237343, 0.35912356, 1)
+Positive_Offset_Colour = Color(0.26666668, 0.73333335, 0.6431373, 1)
 
 [node name="Base BPM Tip" type="TextureRect" parent="." unique_id=2016558501]
 layout_mode = 2
@@ -71,7 +74,7 @@ vertical_alignment = 3
 
 [node name="Offset percent var label" type="Label" parent="Base BPM Tip/VBoxContainer" unique_id=328809510]
 layout_mode = 2
-text = "+10.3%"
+text = "..."
 label_settings = ExtResource("6_wnun6")
 horizontal_alignment = 1
 vertical_alignment = 3

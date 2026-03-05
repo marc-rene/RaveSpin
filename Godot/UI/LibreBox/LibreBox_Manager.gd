@@ -27,6 +27,13 @@ static func Get_Track_Playback_Alpha(which_track : int) -> float:
 static func Get_Track_Playback_Player(which_track : int) -> AudioStreamPlayer:
     return DJ_Controller.Get_Instance().Get_Track_Playback_Player(which_track)
     
+static func Get_Instance_await() -> LibreBox:
+    if Utility.all_is_ready == false:
+        await DJ_Controller.Get_Instance_await()
+        DJ_Controller.Get_Instance().get_tree().create_timer(0.15).timeout # JANK
+    
+    return LibreBox_instance
+    
     
 # Get BPM of whatever track we're on
 static func Get_Track_BPM(which_track : int) -> float:

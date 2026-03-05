@@ -23,6 +23,8 @@ const BEAT_PULSE_DURATION : float = 0.2
 const LINE_COLOR_WHITE : Color = Color(1.0, 1.0, 1.0, 1.0)
 const LINE_COLOR_BEAT : Color = Color(1.0, 0.2, 0.2, 1.0)
 
+#@onready var _waveform_mat_1: ShaderMaterial = %"Track 1 Waveform preview".material
+#@onready var _waveform_mat_2: ShaderMaterial = %"Track 2 Waveform preview".material
 @onready var _waveform_mat_1: ShaderMaterial
 @onready var _waveform_mat_2: ShaderMaterial
 
@@ -48,11 +50,13 @@ func Refresh(Set_Track_1 : bool) -> void:
     
     
 func _ready() -> void:
+    # gotta do this horribleness because "local to scene" did nothing for some reason
     _waveform_mat_1 = M_HORIZONTAL_PAN.duplicate()
     Track_1_waveformVis.material = _waveform_mat_1
-
+    
     _waveform_mat_2 = M_HORIZONTAL_PAN.duplicate()
     Track_2_waveformVis.material = _waveform_mat_2
+    
 
     $"VBoxContainer/Track 1 Container/Track 1 Card".Song_Resource = Track_1
     $"VBoxContainer/Track 2 Container/Track 2 Card".Song_Resource = Track_2
@@ -62,6 +66,7 @@ func _ready() -> void:
     _setup_rhythm_notifiers()
 
 func _setup_rhythm_notifiers() -> void:
+    await LibreBox.Get_Instance_await()
     _rhythm_1 = RhythmNotifier.new()
     _rhythm_1.name = "RhythmNotifier_Track1"
     _rhythm_1.audio_stream_player = LibreBox.Get_Track_Playback_Player(0)

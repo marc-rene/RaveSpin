@@ -1,24 +1,63 @@
+#@tool
 extends AspectRatioContainer
+class_name BPM_Spinner
 
 @onready var Spinner : Control = $"Base BPM Tip/BPM Guage bit"
 
 const ZERO_ROT : float = 45.0
 
+@onready var Current_BPM_var_label : Label = $"Base BPM Tip/VBoxContainer/Current BPM var label"
+@onready var Offset_percent_var_label : Label = $"Base BPM Tip/VBoxContainer/Offset percent var label"
+
+@export var Negative_Offset_Colour : Color
+@export var Neutral_Offset_Colour : Color
+@export var Positive_Offset_Colour : Color
 @export var Alpha : float = 0.0
+var base_bpm : float = 0.0
+var current_bpm : float = 0.0
+
+@onready var guage_bit_mat : ShaderMaterial
+const M_SIMPLE_EMISSIVE : ShaderMaterial = preload("res://Art/Materials/UI/Emissive/Simple_Emmisive.tres")
 
 var Offset_Text : String
 
+func _ready():
+    guage_bit_mat = M_SIMPLE_EMISSIVE.duplicate()
+    Spinner.material = guage_bit_mat
+
+
 func _process(delta: float) -> void:
-    Spinner.rotation_degrees = remap(Alpha, 0, 1, 0, 359.99)
+    rotate_spinny(Alpha)
     if base_bpm > 1 and current_bpm > 1.0:
         Offset_Text = "+" if current_bpm > base_bpm else "-"
-        Offset_Text += "%.2f %" % (absf( 1 - (current_bpm / base_bpm) ) * 100.0)
-        $"Base BPM Tip/VBoxContainer/Offset percent var label".text = "Offset_Text"
+        if absf(current_bpm - base_bpm) < 0.5:
+            Offset_percent_var_label.add_theme_color_override("font_color", Neutral_Offset_Colour)
+        else:
+            Offset_percent_var_label.add_theme_color_override("font_color", (Positive_Offset_Colour if current_bpm > base_bpm else Negative_Offset_Colour))
+        Offset_Text += "%.2f" % float(absf( 1 - (current_bpm / base_bpm) ) * 100.0) # returns just "%.2f" if we dont recast to float... why??
+        Offset_Text += "%"
+        Offset_percent_var_label.text = Offset_Text
+        Current_BPM_var_label.text = "%.2f" % current_bpm
     else:
-        $"Base BPM Tip/VBoxContainer/Offset percent var label".text = "..."
+        Offset_percent_var_label.text = "..."
+        Current_BPM_var_label.text = "NaN"
 
-var base_bpm : float = 0.0
-var current_bpm : float = 0.0
+
+func rotate_spinny(new_alpha: float):
+    Spinner.rotation_degrees = remap(new_alpha, 0, 1, ZERO_ROT, (360.0 + ZERO_ROT))
+    Alpha = fmod(Alpha, 1.0)
+
+## Called when a beat has just occurred (alpha reached 1 and wrapped to 0). Use for visual feedback (e.g. pulse).
+func On_Beat() -> void:
+    guage_bit_mat.set_shader_parameter("Force_Foreground_Colour", LibreBox_HUB.LINE_COLOR_BEAT)
+    var tween : Tween = create_tween()
+    tween.tween_method(
+        func(c: Color) -> void: guage_bit_mat.set_shader_parameter("Force_Foreground_Colour", c),
+        LibreBox_HUB.LINE_COLOR_BEAT,
+        LibreBox_HUB.LINE_COLOR_WHITE,
+        LibreBox_HUB.BEAT_PULSE_DURATION
+    )
+
 
 
 func Set_Base_BPM(New_Base_BPM : float):

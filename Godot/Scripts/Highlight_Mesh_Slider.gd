@@ -29,6 +29,8 @@ func Set_MinMax_offset(new_offset : float = 0.02):
     
 func _on_activation_area_entered(area: Area3D) -> void:
     if (Utility.is_all_ready()):
+        if area is Player_Finger:
+            (area as Player_Finger).notify_entered_slider()
         active = true
         hand_ref = area
         starting_pos = Target_Mesh.position
@@ -42,6 +44,8 @@ func _on_activation_area_entered(area: Area3D) -> void:
     
 
 func _on_activation_area_exited(area: Area3D) -> void:
+    if area is Player_Finger:
+        (area as Player_Finger).notify_exited_slider()
     # We only want to stop tracking the hand here.
     # Let the base highlight logic decide whether we are
     # still hovered or fully exited.
