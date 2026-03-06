@@ -45,6 +45,14 @@ var Bus_Layout : AudioBusLayout
 @onready var Channel_3_LeftALT_Bus_Index = BUS_MANAGER.Get_Channel_Index(BUS_MANAGER.E_AUDIO_BUSSES.CHANNEL_THREE_INPUT)
 @onready var Channel_4_RightALT_Bus_Index = BUS_MANAGER.Get_Channel_Index(BUS_MANAGER.E_AUDIO_BUSSES.CHANNEL_FOUR_INPUT)
 
+@onready var Channel_1_FX_Bus_Index := BUS_MANAGER.Get_Channel_Index(BUS_MANAGER.E_AUDIO_BUSSES.CHANNEL_ONE_FX)
+@onready var Channel_2_FX_Bus_Index := BUS_MANAGER.Get_Channel_Index(BUS_MANAGER.E_AUDIO_BUSSES.CHANNEL_TWO_FX)
+
+# Single place: knob paths per channel (trim, hi, mid, low, cfx) EQ uses ±24 dB so high/low gonna be strong
+@onready var _PATHS_CH1: Array[Node] = [ $"Controls/Left Trim",  $"Controls/Left High Gain",  $"Controls/Left Medium Gain",  $"Controls/Left Low Gain",  $"Controls/Left Colour FX" ]
+@onready var _PATHS_CH2: Array[Node] = [ $"Controls/Right Trim", $"Controls/Right High Gain", $"Controls/Right Medium Gain", $"Controls/Right Low Gain", $"Controls/Right Colour FX" ]
+const _EQ_DB: float = 24.0
+
 @export var Crossfader_Curve_Left : Curve = preload("res://Components/Controls/Crossfade Curve Left.tres")
 @export var Crossfader_Curve_Right : Curve = preload("res://Components/Controls/Crossfade Curve Right.tres")
 
@@ -161,6 +169,9 @@ func _on_right_play_on_activated() -> void:
 # Adjust Channel Decibel output
 func Update_Channel_DBs():
     # Apply Crossfade
+    if not Utility.all_is_ready:
+        #print("CRAP")
+        return
     Crossfade_Alpha = clampf($Controls/Crossfade.Value, 0, 1) # 0 = Left 1 = right
     Channel_Faders[0] = clampf($"Controls/L Channel Fader".Value, 0, 1)
     Channel_Faders[1] = clampf($"Controls/R Channel Fader".Value, 0, 1) # TODO: Add [2][3] for Alt decks
@@ -169,7 +180,36 @@ func Update_Channel_DBs():
     # Update Channel DB based on Crossfader and channel fader
     AudioServer.set_bus_volume_linear(Channel_1_Left_Bus_Index, left_alpha)
     AudioServer.set_bus_volume_linear(Channel_2_Right_Bus_Index, right_alpha)
-    
+    print("Bus: " + AudioServer.get_bus_name(Channel_2_Right_Bus_Index) + " is " + str(AudioServer.get_bus_volume_linear(Channel_2_Right_Bus_Index)))
+
+
+# Trim (slot 0), EQ Hi/Mid/Low (slot 1), CFX (slot 2) Both channels use same 3-slot layout EQ +-24 dB
+func Update_Channel_Trim_EQ_CFX() -> void:
+    var buses: Array = [Channel_1_FX_Bus_Index, Channel_2_FX_Bus_Index]
+    var paths: Array[Array] = [_PATHS_CH1, _PATHS_CH2]
+    for channel in 2:
+        var bus: int = buses[channel]
+        if bus < 0 or AudioServer.get_bus_effect_count(bus) < 3:
+            continue
+        var p: Array[Node] = paths[channel]
+        var trim_v: float = clampf(p[0].Value, 0.0, 1.0)
+        var hi_v: float = clampf(p[1].Value, 0.0, 1.0)
+        var mid_v: float = clampf(p[2].Value, 0.0, 1.0)
+        var low_v: float = clampf(p[3].Value, 0.0, 1.0)
+        var cfx_v: float = clampf(p[4].Value, 0.0, 1.0)
+        var amp: AudioEffectAmplify = AudioServer.get_bus_effect(bus, 0) as AudioEffectAmplify
+        if amp:
+            amp.volume_db = remap(trim_v, 0.0, 1.0, BUS_MANAGER.TRIM_DB_MIN, BUS_MANAGER.TRIM_DB_MAX)
+        var eq: AudioEffectEQ = AudioServer.get_bus_effect(bus, 1) as AudioEffectEQ
+        if eq:
+            eq.set_band_gain_db(BUS_MANAGER.EQ6_BAND_HIGH, remap(hi_v, 0.0, 1.0, -_EQ_DB, _EQ_DB))
+            eq.set_band_gain_db(BUS_MANAGER.EQ6_BAND_MID, remap(mid_v, 0.0, 1.0, -_EQ_DB, _EQ_DB))
+            eq.set_band_gain_db(BUS_MANAGER.EQ6_BAND_LOW, remap(low_v, 0.0, 1.0, -_EQ_DB, _EQ_DB))
+        var filter: AudioEffectFilter = AudioServer.get_bus_effect(bus, 2) as AudioEffectFilter
+        if filter:
+            filter.set_cutoff(lerpf(BUS_MANAGER.SOUND_COLOR_CUTOFF_CLOSED_HZ, BUS_MANAGER.SOUND_COLOR_CUTOFF_OPEN_HZ, cfx_v))
+            filter.set_resonance(0.0)
+
 
 ## incase we want to set tempos from beatsync or something
 #func Update_Channel_Tempos() -> void:
@@ -250,6 +290,7 @@ func _process(delta: float) -> void:
            
     Update_Channel_Tempo_Adjusts()    
     Update_Channel_DBs() # crossfades and stuff
+    Update_Channel_Trim_EQ_CFX() # trim, EQ hi/mid/low, CFX per track
 
     $"General Status".text = "Crossfade: %.3f" % remap(Crossfade_Alpha, 0.0, 1.0, -1.0, 1.0)
 
@@ -270,6 +311,16 @@ func _on_reset_area_area_entered(area: Area3D) -> void:
     $"Controls/L Tempo Adjust".UpdateAlpha(0.5)
     $"Controls/R Tempo Adjust".UpdateAlpha(0.5)
     $"Controls/R Channel Fader".UpdateAlpha(0.5)
+    $"Controls/Left Trim".UpdateAlpha(0.5)
+    $"Controls/Right Trim".UpdateAlpha(0.5)
+    $"Controls/Left High Gain".UpdateAlpha(0.5)
+    $"Controls/Left Medium Gain".UpdateAlpha(0.5)
+    $"Controls/Left Low Gain".UpdateAlpha(0.5)
+    $"Controls/Right High Gain".UpdateAlpha(0.5)
+    $"Controls/Right Medium Gain".UpdateAlpha(0.5)
+    $"Controls/Right Low Gain".UpdateAlpha(0.5)
+    $"Controls/Left Colour FX".UpdateAlpha(0.5)
+    $"Controls/Right Colour FX".UpdateAlpha(0.5)
     
     for child in $Controls.get_children():
         child.reset_highlight()

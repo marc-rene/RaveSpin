@@ -14,6 +14,9 @@ var active = false
 @onready var slider_global_spawn_node_col_box : BoxShape3D = $"Slider Spawn Point/CollisionShape3D".shape
 
 
+func UpdateAlpha(new_alpha : float):
+    Value = new_alpha
+
 # Shared popup slider support
 const SLIDER_SCENE : Resource = preload("res://GLOBAL/CTRL_Slider.tscn")
 static var current_slider_L: Slider_Control = null
@@ -48,9 +51,9 @@ func _on_activation_area_entered(area: Area3D) -> void:
 
 func _on_activation_area_exited(area: Area3D) -> void:
     if (Utility.is_all_ready()):
-        print("Slider Deactivated")
+        #print("Slider Deactivated")
         if area is Player_Finger:
-            print("SUCCESS THIS WORKS")
+            #print("SUCCESS THIS WORKS")
             active = false
             if(fully_exited):
                 HighLight(E_ActivationStates.Exited)
