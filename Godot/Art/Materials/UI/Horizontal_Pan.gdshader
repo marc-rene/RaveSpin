@@ -3,6 +3,9 @@ shader_type canvas_item;
 // 0..1: pan position — center of the rect shows this point on the texture
 uniform float alpha : hint_range(0.0, 1.0) = 0.0;
 
+// Whatever image we have, force this one instead (set alpha to 0 if you want to use texture instead
+uniform vec4 force_colour : source_color = vec4(1.0,1.0,1.0,1.0);
+
 //uniform sampler2D source_texture : hint_default_white;
 //uniform bool use_source_texture = false;
 
@@ -15,22 +18,27 @@ void fragment() {
     vec2 uv = UV;
     uv.x = clamp(uv.x - 0.5 + alpha, 0.0, 1.0);
 
-/*
-    if (use_source_texture) 
+    vec4 final_colour;
+    if (force_colour.a > 0.01)
     {
-        COLOR = texture(source_texture, uv);
-    } 
-    else 
-    {   
-        COLOR = texture(TEXTURE, uv);
+        final_colour = force_colour;
+        final_colour.a = texture(TEXTURE, uv).a;
     }
-*/
-    COLOR = texture(TEXTURE, uv);
+    else
+    {
+        final_colour = texture(TEXTURE, uv);
+    }
+    
+    //COLOR.a = texture(TEXTURE, uv).a;
 
     // Draw a skinny vertical line down the middle
     float dist_from_center = abs(UV.x - 0.5);
     if (dist_from_center < line_width) 
     {
-        COLOR = line_color + texture(TEXTURE, uv);
+        COLOR = line_color + final_colour;
+    }
+    else
+    {
+        COLOR = final_colour;
     }
 }

@@ -3,7 +3,9 @@
 [ext_resource type="Script" uid="uid://d2rcrtt56bc36" path="res://UI/LibreBox/Components/Main_Hub/LibreBox_HUB.gd" id="1_rytid"]
 [ext_resource type="PackedScene" uid="uid://dns5r0q5qe2rx" path="res://UI/LibreBox/Components/Main_Hub/Active_Track_Card.tscn" id="3_onqk1"]
 [ext_resource type="LabelSettings" uid="uid://bl11km7ja4u0h" path="res://Art/Themes/Heading.tres" id="4_v1ksm"]
+[ext_resource type="Texture2D" uid="uid://dsa1lha4oby6t" path="res://Music/Song Data/Alla Pugacheva/Поднимись над суетой/Audio/Звёздное лето_WAVEFORM.png" id="6_ke47i"]
 [ext_resource type="Material" uid="uid://dn7dlw5hmjop5" path="res://Art/Materials/UI/M_Horizontal_Pan.tres" id="7_8d0fx"]
+[ext_resource type="PackedScene" uid="uid://df2ivkn5t2nfe" path="res://UI/LibreBox/Components/Main_Hub/DB_Meter.tscn" id="8_dbmtr"]
 
 [node name="MainHub" type="Control" unique_id=15880144]
 custom_minimum_size = Vector2(1650, 1400)
@@ -32,19 +34,24 @@ label_settings = ExtResource("4_v1ksm")
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="Track 1 Label" type="Label" parent="VBoxContainer" unique_id=1508323206]
+layout_mode = 2
+text = "LEFT"
+label_settings = ExtResource("4_v1ksm")
+horizontal_alignment = 1
+
 [node name="Track 1 Container" type="HBoxContainer" parent="VBoxContainer" unique_id=1443123779]
 custom_minimum_size = Vector2(0, 400)
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Track 1 Label" type="Label" parent="VBoxContainer/Track 1 Container" unique_id=1508323206]
-layout_mode = 2
-text = "LEFT"
-label_settings = ExtResource("4_v1ksm")
-
 [node name="Track 1 Card" parent="VBoxContainer/Track 1 Container" unique_id=547501860 instance=ExtResource("3_onqk1")]
 layout_mode = 2
 size_flags_horizontal = 3
+
+[node name="Track 1 DB Meter" parent="VBoxContainer/Track 1 Container" unique_id=1972613103 instance=ExtResource("8_dbmtr")]
+layout_mode = 2
+Title = "DB #1"
 
 [node name="Track 1 Waveform preview" type="TextureRect" parent="VBoxContainer" unique_id=792870201]
 unique_name_in_owner = true
@@ -61,6 +68,7 @@ material = ExtResource("7_8d0fx")
 clip_contents = true
 custom_minimum_size = Vector2(0, 180)
 layout_mode = 2
+texture = ExtResource("6_ke47i")
 expand_mode = 1
 stretch_mode = 3
 
@@ -69,12 +77,19 @@ custom_minimum_size = Vector2(0, 400)
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Track 2 Label" type="Label" parent="VBoxContainer/Track 2 Container" unique_id=1096811934]
-layout_mode = 2
-text = "RIGHT"
-label_settings = ExtResource("4_v1ksm")
-
 [node name="Track 2 Card" parent="VBoxContainer/Track 2 Container" unique_id=1797187498 instance=ExtResource("3_onqk1")]
 layout_mode = 2
 size_flags_horizontal = 3
 Track_ID = 1
+
+[node name="Track 2 DB Meter" parent="VBoxContainer/Track 2 Container" unique_id=1419764152 instance=ExtResource("8_dbmtr")]
+layout_mode = 2
+Track_ID = 1
+Title = "DB #2"
+
+[node name="Track 2 Label" type="Label" parent="VBoxContainer" unique_id=1096811934]
+layout_mode = 2
+text = "RIGHT"
+label_settings = ExtResource("4_v1ksm")
+horizontal_alignment = 1
+vertical_alignment = 2

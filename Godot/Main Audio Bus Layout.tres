@@ -12,8 +12,20 @@ resource_name = "EQ6"
 [sub_resource type="AudioEffectLowPassFilter" id="AudioEffectLowPassFilter_hv4lm"]
 resource_name = "LowPassFilter"
 
+[sub_resource type="AudioEffectHighPassFilter" id="AudioEffectHighPassFilter_c1"]
+resource_name = "HighPassFilter"
+
 [sub_resource type="AudioEffectEQ6" id="AudioEffectEQ6_w7de6"]
 resource_name = "EQ6"
+
+[sub_resource type="AudioEffectEQ6" id="AudioEffectEQ6_fl42v"]
+resource_name = "EQ6"
+
+[sub_resource type="AudioEffectLowPassFilter" id="AudioEffectLowPassFilter_c2"]
+resource_name = "LowPassFilter"
+
+[sub_resource type="AudioEffectHighPassFilter" id="AudioEffectHighPassFilter_c2"]
+resource_name = "HighPassFilter"
 
 [resource]
 bus/0/effect/0/effect = SubResource("AudioEffectRecord_hv4lm")
@@ -48,6 +60,8 @@ bus/4/effect/1/effect = SubResource("AudioEffectEQ6_hv4lm")
 bus/4/effect/1/enabled = true
 bus/4/effect/2/effect = SubResource("AudioEffectLowPassFilter_hv4lm")
 bus/4/effect/2/enabled = true
+bus/4/effect/3/effect = SubResource("AudioEffectHighPassFilter_c1")
+bus/4/effect/3/enabled = false
 bus/5/name = &"Channel 1 Input"
 bus/5/solo = false
 bus/5/mute = false
@@ -62,6 +76,12 @@ bus/6/volume_db = 0.0
 bus/6/send = &"Main Mixer"
 bus/6/effect/0/effect = SubResource("AudioEffectEQ6_w7de6")
 bus/6/effect/0/enabled = true
+bus/6/effect/1/effect = SubResource("AudioEffectEQ6_fl42v")
+bus/6/effect/1/enabled = true
+bus/6/effect/2/effect = SubResource("AudioEffectLowPassFilter_c2")
+bus/6/effect/2/enabled = false
+bus/6/effect/3/effect = SubResource("AudioEffectHighPassFilter_c2")
+bus/6/effect/3/enabled = false
 bus/7/name = &"Channel 2 Input"
 bus/7/solo = false
 bus/7/mute = false
