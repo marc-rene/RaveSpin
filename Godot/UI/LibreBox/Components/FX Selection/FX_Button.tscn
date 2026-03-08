@@ -3,7 +3,10 @@
 [ext_resource type="Script" uid="uid://c06quswvaif2s" path="res://UI/LibreBox/Components/FX Selection/fx_button.gd" id="1_r2n55"]
 [ext_resource type="Theme" uid="uid://ds0dxmwlq5niw" path="res://Art/Themes/Default_Theme.tres" id="1_tup71"]
 
-[node name="FxButton" type="Button" unique_id=1311551109]
+[node name="FxButton" type="CheckButton" unique_id=574064859]
+offset_right = 178.0
+offset_bottom = 32.0
 theme = ExtResource("1_tup71")
 text = "Dummy FX"
+alignment = 1
 script = ExtResource("1_r2n55")

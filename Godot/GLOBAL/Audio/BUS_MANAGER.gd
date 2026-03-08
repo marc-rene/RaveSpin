@@ -26,7 +26,7 @@ enum E_Track_FX_Policy
     Both_Tracks,
 }
     
-static var CURRENT_TRACK_FX_POLICY : E_Track_FX_Policy = E_Track_FX_Policy.Both_Tracks
+static var CURRENT_TRACK_FX_POLICY : E_Track_FX_Policy = E_Track_FX_Policy.FX_Disabled
 
 static func Can_Track_1_Take_FX() -> bool:
     return CURRENT_TRACK_FX_POLICY in [E_Track_FX_Policy.Only_Track_1, E_Track_FX_Policy.Both_Tracks]
@@ -185,6 +185,22 @@ enum E_BEAT_FX_TYPE
     DISTORTION, # AudioEffectDistortion (drive/overdrive)
 }
 
+const Beat_FX_Names : Dictionary[E_BEAT_FX_TYPE, String] = {
+    E_BEAT_FX_TYPE.DELAY : "DELAY",
+    E_BEAT_FX_TYPE.ECHO : "ECHO",
+    E_BEAT_FX_TYPE.REVERB : "REVERB",
+    E_BEAT_FX_TYPE.TRANS : "TRANS",
+    E_BEAT_FX_TYPE.FLANGER : "FLANGER",
+    E_BEAT_FX_TYPE.PHASER : "PHASER",
+    E_BEAT_FX_TYPE.PITCH : "PITCH",
+    E_BEAT_FX_TYPE.CRUSH : "CRUSH",
+    E_BEAT_FX_TYPE.COMPRESSOR : "COMPRESSOR",
+    E_BEAT_FX_TYPE.LIMITER : "LIMITER",
+    E_BEAT_FX_TYPE.BAND_PASS : "BAND PASS",
+    E_BEAT_FX_TYPE.PANNER : "PANNER",
+    E_BEAT_FX_TYPE.STEREO_ENHANCE : "STEREO ENHANCE",
+    E_BEAT_FX_TYPE.DISTORTION : "DISTORTION",
+}
 
 
     
@@ -216,7 +232,7 @@ static func Calculate_Weights_DB(low_alpha : float = 0.5, mid_alpha : float = 0.
     mid_alpha = remap(mid_alpha, 0.0, 1.0, 0.0, 2.0)
     high_alpha = remap(high_alpha, 0.0, 1.0, 0.0, 2.0)
     
-    var low_db : float = clampf(linear_to_db(low_alpha), BUS_MANAGER.EQ_DB_MIN, BUS_MANAGER.EQ_DB_MAX)
+    var low_db : float =    clampf(linear_to_db(low_alpha), BUS_MANAGER.EQ_DB_MIN, BUS_MANAGER.EQ_DB_MAX)
     var mid_db : float =    clampf(linear_to_db(mid_alpha), BUS_MANAGER.EQ_DB_MIN, BUS_MANAGER.EQ_DB_MAX)
     var high_db : float =   clampf(linear_to_db(high_alpha), BUS_MANAGER.EQ_DB_MIN, BUS_MANAGER.EQ_DB_MAX)
     
@@ -320,10 +336,9 @@ static func add_beat_fx(fx_type: E_BEAT_FX_TYPE, channel: int) -> void:
     var active_fx : Dictionary = _get_active_effects_for_channel(channel)
         
     if ONE_FX_AT_A_TIME:
-        # Only slot 3's used... replace whats is there.
-        if active_fx.size() > 0:
-            var existing_slot: int = active_fx.values()[0]
-            AudioServer.remove_bus_effect(bus_index, existing_slot)
+        # Only slot 4's used... replace whats is there.
+        if AudioServer.get_bus_effect_count(bus_index) > BEAT_FX_SLOT_SINGLE:
+            AudioServer.remove_bus_effect(bus_index, (BEAT_FX_SLOT_SINGLE - 1) )
             active_fx.clear()
         var effect: AudioEffect = _create_beat_fx_instance(fx_type)
         if effect != null:
@@ -331,7 +346,7 @@ static func add_beat_fx(fx_type: E_BEAT_FX_TYPE, channel: int) -> void:
             AudioServer.set_bus_effect_enabled(bus_index, BEAT_FX_SLOT_SINGLE, true)
             active_fx[fx_type] = BEAT_FX_SLOT_SINGLE
     else:
-        # Multiple: set next free slot and add effect there and oray
+        # Multiple: set next free slot and add effect there and pray
         if active_fx.has(fx_type):
             return  # already on
         var slot: int = _get_next_free_slot(channel)
@@ -370,63 +385,3 @@ static func toggle_beat_fx(fx_type: E_BEAT_FX_TYPE, channel : int) -> void:
 
 static func is_beat_fx_active(fx_type: E_BEAT_FX_TYPE, channel : int) -> bool:
     return _get_active_effects_for_channel(channel).has(fx_type)
-
-
-# Thank you ChatGPT for automating this horriblness: add/remove by name (for LibreBox_Manager button handlers)
-func add_delay_effect(channel : int) -> void:
-    add_beat_fx(E_BEAT_FX_TYPE.DELAY, channel)
-func add_echo_effect(channel : int) -> void:
-    add_beat_fx(E_BEAT_FX_TYPE.ECHO, channel)
-func add_reverb_effect(channel : int) -> void:
-    add_beat_fx(E_BEAT_FX_TYPE.REVERB, channel)
-func add_trans_effect(channel : int) -> void:
-    add_beat_fx(E_BEAT_FX_TYPE.TRANS, channel)
-func add_flanger_effect(channel : int) -> void:
-    add_beat_fx(E_BEAT_FX_TYPE.FLANGER, channel)
-func add_phaser_effect(channel : int) -> void:
-    add_beat_fx(E_BEAT_FX_TYPE.PHASER, channel)
-func add_pitch_effect(channel : int) -> void:
-    add_beat_fx(E_BEAT_FX_TYPE.PITCH, channel)
-func add_crush_effect(channel : int) -> void:
-    add_beat_fx(E_BEAT_FX_TYPE.CRUSH, channel)
-func add_compressor_effect(channel : int) -> void:
-    add_beat_fx(E_BEAT_FX_TYPE.COMPRESSOR, channel)
-func add_limiter_effect(channel : int) -> void:
-    add_beat_fx(E_BEAT_FX_TYPE.LIMITER, channel)
-func add_band_pass_effect(channel : int) -> void:
-    add_beat_fx(E_BEAT_FX_TYPE.BAND_PASS, channel)
-func add_panner_effect(channel : int) -> void:
-    add_beat_fx(E_BEAT_FX_TYPE.PANNER, channel)
-func add_stereo_enhance_effect(channel : int) -> void:
-    add_beat_fx(E_BEAT_FX_TYPE.STEREO_ENHANCE, channel)
-func add_distortion_effect(channel : int) -> void:
-    add_beat_fx(E_BEAT_FX_TYPE.DISTORTION, channel)
-
-func remove_delay_effect(channel : int) -> void:
-    remove_beat_fx(E_BEAT_FX_TYPE.DELAY, channel)
-func remove_echo_effect(channel : int) -> void:
-    remove_beat_fx(E_BEAT_FX_TYPE.ECHO, channel)
-func remove_reverb_effect(channel : int) -> void:
-    remove_beat_fx(E_BEAT_FX_TYPE.REVERB, channel)
-func remove_trans_effect(channel : int) -> void:
-    remove_beat_fx(E_BEAT_FX_TYPE.TRANS, channel)
-func remove_flanger_effect(channel : int) -> void:
-    remove_beat_fx(E_BEAT_FX_TYPE.FLANGER, channel)
-func remove_phaser_effect(channel : int) -> void:
-    remove_beat_fx(E_BEAT_FX_TYPE.PHASER, channel)
-func remove_pitch_effect(channel : int) -> void:
-    remove_beat_fx(E_BEAT_FX_TYPE.PITCH, channel)
-func remove_crush_effect(channel : int) -> void:
-    remove_beat_fx(E_BEAT_FX_TYPE.CRUSH, channel)
-func remove_compressor_effect(channel : int) -> void:
-    remove_beat_fx(E_BEAT_FX_TYPE.COMPRESSOR, channel)
-func remove_limiter_effect(channel : int) -> void:
-    remove_beat_fx(E_BEAT_FX_TYPE.LIMITER, channel)
-func remove_band_pass_effect(channel : int) -> void:
-    remove_beat_fx(E_BEAT_FX_TYPE.BAND_PASS, channel)
-func remove_panner_effect(channel : int) -> void:
-    remove_beat_fx(E_BEAT_FX_TYPE.PANNER, channel)
-func remove_stereo_enhance_effect(channel : int) -> void:
-    remove_beat_fx(E_BEAT_FX_TYPE.STEREO_ENHANCE, channel)
-func remove_distortion_effect(channel : int) -> void:
-    remove_beat_fx(E_BEAT_FX_TYPE.DISTORTION, channel)

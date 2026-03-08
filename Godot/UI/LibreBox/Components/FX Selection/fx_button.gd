@@ -1,46 +1,65 @@
-extends Button
+extends CheckButton
 class_name FX_Button_Select
 
-## FX type this button applies (set by FX_Selection_Menu).
-## Which track(s) it affects is determined by BUS_MANAGER.CURRENT_TRACK_FX_POLICY.
-var fx_type: BUS_MANAGER.E_BEAT_FX_TYPE = BUS_MANAGER.E_BEAT_FX_TYPE.DELAY
+@export var FX_Type : BUS_MANAGER.E_BEAT_FX_TYPE
 
 
 func _ready() -> void:
-    toggle_mode = true
     pressed.connect(_on_pressed)
     refresh_state()
 
 
 func _on_pressed() -> void:
-    if not _any_track_can_take_fx():
-        return
-    # Toggle this FX on every channel allowed by CURRENT_TRACK_FX_POLICY
-    if _is_fx_active_on_any_allowed_track():
-        if BUS_MANAGER.Can_Track_1_Take_FX():
-            BUS_MANAGER.remove_beat_fx(fx_type, 0)
-        if BUS_MANAGER.Can_Track_2_Take_FX():
-            BUS_MANAGER.remove_beat_fx(fx_type, 1)
+
+    if _any_track_can_take_fx():
+        if BUS_MANAGER.Can_Track_1_Take_FX() and not BUS_MANAGER.is_beat_fx_active(FX_Type, 0):
+            BUS_MANAGER.add_beat_fx(FX_Type, 0)
+        elif not BUS_MANAGER.Can_Track_1_Take_FX() and BUS_MANAGER.is_beat_fx_active(FX_Type, 0):
+            BUS_MANAGER.remove_beat_fx(FX_Type, 0)
+            
+        if BUS_MANAGER.Can_Track_2_Take_FX() and not BUS_MANAGER.is_beat_fx_active(FX_Type, 1):
+            BUS_MANAGER.add_beat_fx(FX_Type, 1)
+        elif not BUS_MANAGER.Can_Track_2_Take_FX() and BUS_MANAGER.is_beat_fx_active(FX_Type, 1):
+            BUS_MANAGER.remove_beat_fx(FX_Type, 1)
     else:
-        if BUS_MANAGER.Can_Track_1_Take_FX():
-            BUS_MANAGER.add_beat_fx(fx_type, 0)
-        if BUS_MANAGER.Can_Track_2_Take_FX():
-            BUS_MANAGER.add_beat_fx(fx_type, 1)
+        BUS_MANAGER.remove_beat_fx(FX_Type, 0)
+        BUS_MANAGER.remove_beat_fx(FX_Type, 1)
+            
     refresh_state()
 
 
 func refresh_state() -> void:
-    button_pressed = _is_fx_active_on_any_allowed_track()
+    #print("FX type: " + str(FX_Type) + " is active on 1?: " + str(BUS_MANAGER.is_beat_fx_active(FX_Type, 0)) + " and 2?" + str(BUS_MANAGER.is_beat_fx_active(FX_Type, 1)) )
+    # TODO: refactor this into a sep function because this is silly
+    if _any_track_can_take_fx() and _is_fx_active_on_any_track():
+        button_pressed = true
+        if BUS_MANAGER.Can_Track_1_Take_FX() and not BUS_MANAGER.is_beat_fx_active(FX_Type, 0):
+            BUS_MANAGER.add_beat_fx(FX_Type, 0)
+        elif not BUS_MANAGER.Can_Track_1_Take_FX() and BUS_MANAGER.is_beat_fx_active(FX_Type, 0):
+            BUS_MANAGER.remove_beat_fx(FX_Type, 0)
+            
+        if BUS_MANAGER.Can_Track_2_Take_FX() and not BUS_MANAGER.is_beat_fx_active(FX_Type, 1):
+            BUS_MANAGER.add_beat_fx(FX_Type, 1)
+        elif not BUS_MANAGER.Can_Track_2_Take_FX() and BUS_MANAGER.is_beat_fx_active(FX_Type, 1):
+            BUS_MANAGER.remove_beat_fx(FX_Type, 1)
+    else:
+        button_pressed = false
+        
     disabled = not _any_track_can_take_fx()
+    if disabled:
+        BUS_MANAGER.remove_beat_fx(FX_Type, 0)
+        BUS_MANAGER.remove_beat_fx(FX_Type, 1)
+        button_pressed = false
+        
 
 
 func _any_track_can_take_fx() -> bool:
     return BUS_MANAGER.Can_Track_1_Take_FX() or BUS_MANAGER.Can_Track_2_Take_FX()
 
 
-func _is_fx_active_on_any_allowed_track() -> bool:
-    if BUS_MANAGER.Can_Track_1_Take_FX() and BUS_MANAGER.is_beat_fx_active(fx_type, 0):
+func _is_fx_active_on_any_track() -> bool:
+    if BUS_MANAGER.is_beat_fx_active(FX_Type, 0):
         return true
-    if BUS_MANAGER.Can_Track_2_Take_FX() and BUS_MANAGER.is_beat_fx_active(fx_type, 1):
+    if BUS_MANAGER.is_beat_fx_active(FX_Type, 1):
         return true
     return false

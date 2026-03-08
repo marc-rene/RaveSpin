@@ -3,7 +3,6 @@
 [ext_resource type="Script" uid="uid://d2rcrtt56bc36" path="res://UI/LibreBox/Components/Main_Hub/LibreBox_HUB.gd" id="1_rytid"]
 [ext_resource type="PackedScene" uid="uid://dns5r0q5qe2rx" path="res://UI/LibreBox/Components/Main_Hub/Active_Track_Card.tscn" id="3_onqk1"]
 [ext_resource type="LabelSettings" uid="uid://bl11km7ja4u0h" path="res://Art/Themes/Heading.tres" id="4_v1ksm"]
-[ext_resource type="Texture2D" uid="uid://dsa1lha4oby6t" path="res://Music/Song Data/Alla Pugacheva/Поднимись над суетой/Audio/Звёздное лето_WAVEFORM.png" id="6_ke47i"]
 [ext_resource type="Material" uid="uid://dn7dlw5hmjop5" path="res://Art/Materials/UI/M_Horizontal_Pan.tres" id="7_8d0fx"]
 [ext_resource type="PackedScene" uid="uid://df2ivkn5t2nfe" path="res://UI/LibreBox/Components/Main_Hub/DB_Meter.tscn" id="8_dbmtr"]
 
@@ -68,7 +67,6 @@ material = ExtResource("7_8d0fx")
 clip_contents = true
 custom_minimum_size = Vector2(0, 180)
 layout_mode = 2
-texture = ExtResource("6_ke47i")
 expand_mode = 1
 stretch_mode = 3
 

@@ -14,7 +14,7 @@ shader_parameter/warning_color = Color(0.9137255, 0.30980393, 0.21568628, 1)
 shader_parameter/border_color = Color(0.92941177, 0.68235296, 0.28627452, 1)
 
 [node name="DBMeter" type="PanelContainer" unique_id=1120661416]
-custom_minimum_size = Vector2(72, 0)
+custom_minimum_size = Vector2(100, 0)
 size_flags_vertical = 3
 script = ExtResource("1_dbmtr")
 

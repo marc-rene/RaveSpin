@@ -35,7 +35,10 @@ void fragment() {
     float dist_from_center = abs(UV.x - 0.5);
     if (dist_from_center < line_width) 
     {
-        COLOR = line_color + final_colour;
+        COLOR.r = line_color.r * final_colour.r;
+        COLOR.g = line_color.g * final_colour.g;
+        COLOR.b = line_color.b * final_colour.b;
+        COLOR.a = 1.0 - final_colour.a;
     }
     else
     {

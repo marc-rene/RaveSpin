@@ -255,81 +255,10 @@ layout_mode = 2
 alignment = 1
 last_wrap_alignment = 2
 
-[node name="Filter btn" type="Button" parent="VBoxContainer/Active Effects Container" unique_id=1979964890]
+[node name="Label" type="Label" parent="VBoxContainer/Active Effects Container" unique_id=1785908593]
 layout_mode = 2
-theme = ExtResource("2_looh3")
-text = "Filter"
-
-[node name="Delay btn" type="Button" parent="VBoxContainer/Active Effects Container" unique_id=328543229]
-layout_mode = 2
-theme = ExtResource("2_looh3")
-text = "Delay"
-
-[node name="Echo btn" type="Button" parent="VBoxContainer/Active Effects Container" unique_id=2016066654]
-layout_mode = 2
-theme = ExtResource("2_looh3")
-text = "Echo"
-
-[node name="Reverb btn" type="Button" parent="VBoxContainer/Active Effects Container" unique_id=221574893]
-layout_mode = 2
-theme = ExtResource("2_looh3")
-text = "Reverb"
-
-[node name="Trans btn" type="Button" parent="VBoxContainer/Active Effects Container" unique_id=840281373]
-layout_mode = 2
-theme = ExtResource("2_looh3")
-text = "Trans"
-
-[node name="Flanger btn" type="Button" parent="VBoxContainer/Active Effects Container" unique_id=477509744]
-layout_mode = 2
-theme = ExtResource("2_looh3")
-text = "Flanger"
-
-[node name="Phaser btn" type="Button" parent="VBoxContainer/Active Effects Container" unique_id=1946025042]
-layout_mode = 2
-theme = ExtResource("2_looh3")
-disabled = true
-text = "Phaser"
-
-[node name="Pitch btn" type="Button" parent="VBoxContainer/Active Effects Container" unique_id=714463568]
-layout_mode = 2
-theme = ExtResource("2_looh3")
-text = "Pitch"
-
-[node name="Crush btn" type="Button" parent="VBoxContainer/Active Effects Container" unique_id=664597969]
-layout_mode = 2
-theme = ExtResource("2_looh3")
-text = "Crush"
-
-[node name="Compressor btn" type="Button" parent="VBoxContainer/Active Effects Container" unique_id=1592773459]
-layout_mode = 2
-theme = ExtResource("2_looh3")
-text = "Compressor"
-
-[node name="Limiter btn" type="Button" parent="VBoxContainer/Active Effects Container" unique_id=320604286]
-layout_mode = 2
-theme = ExtResource("2_looh3")
-text = "Limiter"
-
-[node name="BandPass btn" type="Button" parent="VBoxContainer/Active Effects Container" unique_id=1203368385]
-layout_mode = 2
-theme = ExtResource("2_looh3")
-text = "Band Pass"
-
-[node name="Panner btn" type="Button" parent="VBoxContainer/Active Effects Container" unique_id=1066699309]
-layout_mode = 2
-theme = ExtResource("2_looh3")
-text = "Panner"
-
-[node name="StereoEnhance btn" type="Button" parent="VBoxContainer/Active Effects Container" unique_id=1635522876]
-layout_mode = 2
-theme = ExtResource("2_looh3")
-text = "Stereo Enhance"
-
-[node name="Distortion btn" type="Button" parent="VBoxContainer/Active Effects Container" unique_id=2064639993]
-layout_mode = 2
-theme = ExtResource("2_looh3")
-text = "Distortion"
+text = "Active FX: "
+label_settings = ExtResource("5_8tb87")
 
 [node name="Time Remaining Container" type="HBoxContainer" parent="VBoxContainer" unique_id=1539477309]
 custom_minimum_size = Vector2(0, 30)

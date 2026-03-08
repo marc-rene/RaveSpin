@@ -20,6 +20,8 @@ class_name Active_Track_Card
 @onready var Note_Text_Label : Label = $"VBoxContainer/HBoxContainer/Note Container/Note SubContainer/Note var Label"
 @onready var Note_Text_Container_Parent : Container = $"VBoxContainer/HBoxContainer/Note Container"
 
+var CheckFX_thread : Thread
+
 var prev_beat_alpha : float = -1.0
 
 var position_sec : float
@@ -60,10 +62,32 @@ func _on_beat():
     pass
 
 func _ready():
+    
     Track_ID = Utility.Clamp_to_Valid_TrackID(Track_ID)
     # Use controller's player so we work regardless of scene tree / path
     await DJ_Controller.Get_Instance_await()
     AudioPlayer_ref = DJ_Controller.Get_Track_Playback_Player(Track_ID)
+    
+    CheckFX_thread = Thread.new()
+    
+
+var fx_labels : Dictionary[BUS_MANAGER.E_BEAT_FX_TYPE, Label]
+
+func Check_Active_FX():
+    while true:
+        await get_tree().create_timer(0.5).timeout 
+        for fx in BUS_MANAGER.E_BEAT_FX_TYPE.values():
+            if BUS_MANAGER.is_beat_fx_active(fx, Track_ID) and fx not in fx_labels:
+                var new_label : Label = Label.new()
+                new_label.text = BUS_MANAGER.Beat_FX_Names[fx] + ",   "
+                new_label.label_settings.font_size = 20
+                $"VBoxContainer/Active Effects Container".add_child(new_label)
+                fx_labels[fx] = new_label
+            elif not BUS_MANAGER.is_beat_fx_active(fx, Track_ID) and fx in fx_labels:
+                fx_labels[fx].queue_free()
+                    
+            
+        
 
 
 func Set_New_Song(New_Song: Song) -> bool:
