@@ -1,0 +1,163 @@
+[gd_scene format=3 uid="uid://cprhr6myydno5"]
+
+[ext_resource type="Theme" uid="uid://ds0dxmwlq5niw" path="res://Art/Themes/Default_Theme.tres" id="1_4boa5"]
+
+[node name="FxSelectionMenu" type="PanelContainer" unique_id=1774675461]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=479472714]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=200369804]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1833640721]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.2
+
+[node name="Enable_Track_1_fx_btn" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=1573997875]
+layout_mode = 2
+size_flags_horizontal = 3
+toggle_mode = true
+text = "Enable Track 1 FX"
+
+[node name="padding" type="Control" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=153950082]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.2
+
+[node name="Enable_Track_2_fx_btn" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=944512746]
+layout_mode = 2
+size_flags_horizontal = 3
+toggle_mode = true
+text = "Enable Track 2 FX"
+
+[node name="padding" type="Control" parent="MarginContainer/VBoxContainer" unique_id=1276620251]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.05
+
+[node name="FX Containers" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1822984336]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="VBoxContainer_L" type="VBoxContainer" parent="MarginContainer/VBoxContainer/FX Containers" unique_id=54994231]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Delay btn" type="Button" parent="MarginContainer/VBoxContainer/FX Containers/VBoxContainer_L" unique_id=1801941926]
+layout_mode = 2
+theme = ExtResource("1_4boa5")
+disabled = true
+toggle_mode = true
+text = "Delay"
+
+[node name="Echo btn" type="Button" parent="MarginContainer/VBoxContainer/FX Containers/VBoxContainer_L" unique_id=1058790184]
+layout_mode = 2
+theme = ExtResource("1_4boa5")
+disabled = true
+toggle_mode = true
+text = "Echo"
+
+[node name="Reverb btn" type="Button" parent="MarginContainer/VBoxContainer/FX Containers/VBoxContainer_L" unique_id=212321515]
+layout_mode = 2
+theme = ExtResource("1_4boa5")
+disabled = true
+toggle_mode = true
+text = "Reverb"
+
+[node name="Trans btn" type="Button" parent="MarginContainer/VBoxContainer/FX Containers/VBoxContainer_L" unique_id=1958349893]
+layout_mode = 2
+theme = ExtResource("1_4boa5")
+disabled = true
+toggle_mode = true
+text = "Trans"
+
+[node name="Flanger btn" type="Button" parent="MarginContainer/VBoxContainer/FX Containers/VBoxContainer_L" unique_id=419781113]
+layout_mode = 2
+theme = ExtResource("1_4boa5")
+disabled = true
+toggle_mode = true
+text = "Flanger"
+
+[node name="Phaser btn" type="Button" parent="MarginContainer/VBoxContainer/FX Containers/VBoxContainer_L" unique_id=1002484293]
+layout_mode = 2
+theme = ExtResource("1_4boa5")
+disabled = true
+toggle_mode = true
+text = "Phaser"
+
+[node name="Pitch btn" type="Button" parent="MarginContainer/VBoxContainer/FX Containers/VBoxContainer_L" unique_id=222393379]
+layout_mode = 2
+theme = ExtResource("1_4boa5")
+disabled = true
+toggle_mode = true
+text = "Pitch"
+
+[node name="padding" type="Control" parent="MarginContainer/VBoxContainer/FX Containers" unique_id=871874107]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.05
+
+[node name="VBoxContainer_R" type="VBoxContainer" parent="MarginContainer/VBoxContainer/FX Containers" unique_id=1276800628]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Crush btn" type="Button" parent="MarginContainer/VBoxContainer/FX Containers/VBoxContainer_R" unique_id=280055529]
+layout_mode = 2
+theme = ExtResource("1_4boa5")
+disabled = true
+toggle_mode = true
+text = "Crush"
+
+[node name="Compressor btn" type="Button" parent="MarginContainer/VBoxContainer/FX Containers/VBoxContainer_R" unique_id=1470794425]
+layout_mode = 2
+theme = ExtResource("1_4boa5")
+disabled = true
+toggle_mode = true
+text = "Compressor"
+
+[node name="Limiter btn" type="Button" parent="MarginContainer/VBoxContainer/FX Containers/VBoxContainer_R" unique_id=842808575]
+layout_mode = 2
+theme = ExtResource("1_4boa5")
+disabled = true
+toggle_mode = true
+text = "Limiter"
+
+[node name="BandPass btn" type="Button" parent="MarginContainer/VBoxContainer/FX Containers/VBoxContainer_R" unique_id=558555290]
+layout_mode = 2
+theme = ExtResource("1_4boa5")
+disabled = true
+toggle_mode = true
+text = "Band Pass"
+
+[node name="Panner btn" type="Button" parent="MarginContainer/VBoxContainer/FX Containers/VBoxContainer_R" unique_id=2126197632]
+layout_mode = 2
+theme = ExtResource("1_4boa5")
+disabled = true
+toggle_mode = true
+text = "Panner"
+
+[node name="StereoEnhance btn" type="Button" parent="MarginContainer/VBoxContainer/FX Containers/VBoxContainer_R" unique_id=556708232]
+layout_mode = 2
+theme = ExtResource("1_4boa5")
+disabled = true
+toggle_mode = true
+text = "Stereo Enhance"
+
+[node name="Distortion btn" type="Button" parent="MarginContainer/VBoxContainer/FX Containers/VBoxContainer_R" unique_id=193027930]
+layout_mode = 2
+theme = ExtResource("1_4boa5")
+disabled = true
+toggle_mode = true
+text = "Distortion"

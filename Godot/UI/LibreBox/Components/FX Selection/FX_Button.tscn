@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://cawi4fikssids"]
+
+[ext_resource type="Script" uid="uid://c06quswvaif2s" path="res://UI/LibreBox/Components/FX Selection/fx_button.gd" id="1_r2n55"]
+
+[node name="FxButton" type="Button" unique_id=1311551109]
+script = ExtResource("1_r2n55")

@@ -2,6 +2,72 @@ extends Node
 class_name BUS_MANAGER
 
 
+# ---- Beat FX: single vs multiple, and active state ---
+static var ONE_FX_AT_A_TIME: bool = true # FLX4 style (one FX at a time) or allow stacking (AWFUL PERFORMANCE)?
+
+static func Allow_Multiple_FX_at_same_time() -> bool:
+    return ONE_FX_AT_A_TIME == false
+    
+    
+static func Set_Allow_Multiple_FX_at_same_time(enabled : bool):
+    ONE_FX_AT_A_TIME = not enabled
+    
+## false means we cant do multiple FX at the same time now 
+static func Toggle_Allow_Multiple_FX_at_same_time() -> bool:
+    ONE_FX_AT_A_TIME = not ONE_FX_AT_A_TIME
+    return not ONE_FX_AT_A_TIME
+    
+    
+enum E_Track_FX_Policy
+{
+    FX_Disabled,
+    Only_Track_1,
+    Only_Track_2,
+    Both_Tracks,
+}
+    
+static var CURRENT_TRACK_FX_POLICY : E_Track_FX_Policy = E_Track_FX_Policy.Both_Tracks
+
+static func Can_Track_1_Take_FX() -> bool:
+    return CURRENT_TRACK_FX_POLICY in [E_Track_FX_Policy.Only_Track_1, E_Track_FX_Policy.Both_Tracks]
+
+static func Can_Track_2_Take_FX() -> bool:
+    return CURRENT_TRACK_FX_POLICY in [E_Track_FX_Policy.Only_Track_2, E_Track_FX_Policy.Both_Tracks]
+
+
+static func Set_Track_1_can_take_FX(enabled:bool):
+    if CURRENT_TRACK_FX_POLICY == E_Track_FX_Policy.Both_Tracks and not enabled:
+        CURRENT_TRACK_FX_POLICY = E_Track_FX_Policy.Only_Track_2
+    elif CURRENT_TRACK_FX_POLICY == E_Track_FX_Policy.Only_Track_2 and enabled:
+        CURRENT_TRACK_FX_POLICY = E_Track_FX_Policy.Both_Tracks
+    elif CURRENT_TRACK_FX_POLICY == E_Track_FX_Policy.Only_Track_1 and not enabled:
+        CURRENT_TRACK_FX_POLICY = E_Track_FX_Policy.FX_Disabled
+    elif CURRENT_TRACK_FX_POLICY == E_Track_FX_Policy.FX_Disabled and enabled:
+        CURRENT_TRACK_FX_POLICY = E_Track_FX_Policy.Only_Track_1
+    print("FX Policy is now " + str(CURRENT_TRACK_FX_POLICY))
+
+static func Set_Track_2_can_take_FX(enabled:bool):
+    if CURRENT_TRACK_FX_POLICY == E_Track_FX_Policy.Both_Tracks and not enabled:
+        CURRENT_TRACK_FX_POLICY = E_Track_FX_Policy.Only_Track_1
+    elif CURRENT_TRACK_FX_POLICY == E_Track_FX_Policy.Only_Track_1 and enabled:
+        CURRENT_TRACK_FX_POLICY = E_Track_FX_Policy.Both_Tracks
+    elif CURRENT_TRACK_FX_POLICY == E_Track_FX_Policy.Only_Track_2 and not enabled:
+        CURRENT_TRACK_FX_POLICY = E_Track_FX_Policy.FX_Disabled
+    elif CURRENT_TRACK_FX_POLICY == E_Track_FX_Policy.FX_Disabled and enabled:
+        CURRENT_TRACK_FX_POLICY = E_Track_FX_Policy.Only_Track_2
+    print("FX Policy is now " + str(CURRENT_TRACK_FX_POLICY))
+        
+
+
+static var active_effects_Channel_1 : Dictionary[E_BEAT_FX_TYPE, int] = {} # the int is the INDEX of that effect on a bus, an index of -1 means the effect is inactive / disabled
+static var active_effects_Channel_2 : Dictionary[E_BEAT_FX_TYPE, int] = {}
+#var active_effects_Channel_3 : Dictionary[E_BEAT_FX_TYPE, int] = {}
+#var active_effects_Channel_4 : Dictionary[E_BEAT_FX_TYPE, int] = {}
+
+
+const CFX_LOWPASS_SLOT : int = 2
+const CFX_HIGHPASS_SLOT : int = 3
+const BEAT_FX_SLOT_SINGLE: int = 4  # When 1 FX at once, only this slot is used (0=trim, 1=eq, 2=lowpass, 3=highpass)
 
 # do NOT mess with this order... unless you change Main Audio Bus Layout.tres
 enum E_AUDIO_BUSSES
@@ -97,27 +163,8 @@ const EQ6_HIGH_WEIGHTS : Dictionary[E_BAND_HZ, float] = {
     E_BAND_HZ.HZ_10000 : 1.0
 }
 
-# So Give me the low, mid, hi alpha floats (0-1) and then spit out a dictionary of the new HZ but in 0-1 form
-static func Calculate_Weights_Normal(low_alpha : float = 0.5, mid_alpha : float = 0.5, high_alpha : float = 0.5) -> Dictionary[E_BAND_HZ, float]:
-    low_alpha = clampf(low_alpha, 0.0, 1.0)
-    mid_alpha = clampf(mid_alpha, 0.0, 1.0)
-    high_alpha = clampf(high_alpha, 0.0, 1.0)
-    
-    var new_weights : Dictionary[E_BAND_HZ, float] = {}
-    for band in E_BAND_HZ.values():
-        var weighted_alpha : float = (
-            low_alpha * EQ6_LOW_WEIGHTS[band] +
-            mid_alpha * EQ6_MID_WEIGHTS[band] +
-            high_alpha * EQ6_HIGH_WEIGHTS[band]
-        )
-        new_weights[band] = clampf(weighted_alpha, 0.0, 1.0)
-    
-    return new_weights
-    
-    
 
-# Beat FX set (Tribe XR Online FLX4 reference + extra native Godot effects). Order = FX SELECT.
-# FLX4/rekordbox/Serato: typically ONE Beat FX active at a time (FX SELECT). Some software allows stacking.
+
 enum E_BEAT_FX_TYPE
 {
     # Core
@@ -140,19 +187,29 @@ enum E_BEAT_FX_TYPE
 
 
 
+    
+    
 
-# ---- Beat FX: single vs multiple, and active state ---
-@export var ONE_FX_AT_A_TIME: bool = true # FLX4 style (one FX at a time) or allow stacking (AWFUL PERFORMANCE)?
+# So Give me the low, mid, hi alpha floats (0-1) and then spit out a dictionary of the new HZ but in 0-1 form
+static func Calculate_Weights_Normal(low_alpha : float = 0.5, mid_alpha : float = 0.5, high_alpha : float = 0.5) -> Dictionary[E_BAND_HZ, float]:
+    low_alpha = clampf(low_alpha, 0.0, 1.0)
+    mid_alpha = clampf(mid_alpha, 0.0, 1.0)
+    high_alpha = clampf(high_alpha, 0.0, 1.0)
+    
+    var new_weights : Dictionary[E_BAND_HZ, float] = {}
+    for band in E_BAND_HZ.values():
+        var weighted_alpha : float = (
+            low_alpha * EQ6_LOW_WEIGHTS[band] +
+            mid_alpha * EQ6_MID_WEIGHTS[band] +
+            high_alpha * EQ6_HIGH_WEIGHTS[band]
+        )
+        new_weights[band] = clampf(weighted_alpha, 0.0, 1.0)
+    
+    return new_weights
 
-static var active_effects_Channel_1 : Dictionary[E_BEAT_FX_TYPE, int] = {} # the int is the INDEX of that effect on a bus, an index of -1 means the effect is inactive / disabled
-static var active_effects_Channel_2 : Dictionary[E_BEAT_FX_TYPE, int] = {}
-#var active_effects_Channel_3 : Dictionary[E_BEAT_FX_TYPE, int] = {}
-#var active_effects_Channel_4 : Dictionary[E_BEAT_FX_TYPE, int] = {}
 
 
-const CFX_LOWPASS_SLOT : int = 2
-const CFX_HIGHPASS_SLOT : int = 3
-const BEAT_FX_SLOT_SINGLE: int = 4  # When 1 FX at once, only this slot is used (0=trim, 1=eq, 2=lowpass, 3=highpass)
+
 
 
 
