@@ -1,0 +1,17 @@
+[configuration]
+
+entry_symbol = "waveform_generator_library_init"
+reloadable = true
+compatibility_minimum = "4.2"
+
+[libraries]
+
+; Windows: build with scons target=template_release, then copy the .dll into addons/waveform_generator/bin/win64/
+windows.debug.x86_64 = "res://addons/waveform_generator/bin/win64/libwaveform_generator.windows.template_debug.x86_64.dll"
+windows.release.x86_64 = "res://addons/waveform_generator/bin/win64/libwaveform_generator.windows.template_release.x86_64.dll"
+; Linux: build with scons, copy .so into addons/waveform_generator/bin/linux.x86_64/
+linux.debug.x86_64 = "res://addons/waveform_generator/bin/linux.x86_64/libwaveform_generator.linux.template_debug.x86_64.so"
+linux.release.x86_64 = "res://addons/waveform_generator/bin/linux.x86_64/libwaveform_generator.linux.template_release.x86_64.so"
+; macOS: build with scons, copy .dylib into addons/waveform_generator/bin/macos/
+macos.debug = "res://addons/waveform_generator/bin/macos/libwaveform_generator.macos.template_debug.universal.dylib"
+macos.release = "res://addons/waveform_generator/bin/macos/libwaveform_generator.macos.template_release.universal.dylib"

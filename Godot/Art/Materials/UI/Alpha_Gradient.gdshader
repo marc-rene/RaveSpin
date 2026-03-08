@@ -10,18 +10,18 @@ uniform bool flip = false;           // false == top->bottom, true == bottom->to
 
 
 void fragment() {
-	float temp_y = UV.y;
+    float temp_y = UV.y;
     
-	if (flip == true)
+    if (flip == true)
     {
       temp_y = 1.0 - temp_y;  
     } 
 
-	float denom = max(0.00001, fade_end - fade_start);
-	float t = clamp((temp_y - fade_start) / denom, 0.0, 1.0);
+    float denom = max(0.00001, fade_end - fade_start);
+    float t = clamp((temp_y - fade_start) / denom, 0.0, 1.0);
 
-	// eased fade: 1 at start, 0 at end
-	float temp_alpha = 1.0 - smoothstep(0.0, 1.0, t);
+    // eased fade: 1 at start, 0 at end
+    float temp_alpha = 1.0 - smoothstep(0.0, 1.0, t);
 
-	COLOR = vec4(start_colour.rgb, start_colour.a * temp_alpha);
+    COLOR = vec4(start_colour.rgb, start_colour.a * temp_alpha);
 }
