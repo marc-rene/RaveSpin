@@ -48,22 +48,21 @@ var Bus_Layout : AudioBusLayout
 #@onready var Channel_1_FX_Bus_Index := BUS_MANAGER.Get_Channel_Index(BUS_MANAGER.E_AUDIO_BUSSES.CHANNEL_ONE_FX)
 #@onready var Channel_2_FX_Bus_Index := BUS_MANAGER.Get_Channel_Index(BUS_MANAGER.E_AUDIO_BUSSES.CHANNEL_TWO_FX)
 
-# Single place: knob paths per channel (trim, hi, mid, low, cfx) EQ uses ±24 dB so high/low gonna be strong
-@onready var Core_FX_Knobs_L: Dictionary[BUS_MANAGER.E_CORE_EFFECTS_ORDER, Knob_Control] = {
-    BUS_MANAGER.E_CORE_EFFECTS_ORDER.TRIM :             $"Controls/Left Trim",
-    BUS_MANAGER.E_CORE_EFFECTS_ORDER.EQ_LOW :           $"Controls/Left Low Gain",
-    BUS_MANAGER.E_CORE_EFFECTS_ORDER.EQ_MID :           $"Controls/Left Medium Gain",
-    BUS_MANAGER.E_CORE_EFFECTS_ORDER.EQ_HIGH :          $"Controls/Left High Gain",
-    BUS_MANAGER.E_CORE_EFFECTS_ORDER.SOUND_COLOR_FX :   $"Controls/Left Colour FX"
-    }
+# Single place: knob paths per channel (trim, hi, mid, low, cfx) EQ uses +-24 dB so high/low gonna be strong
 
-@onready var Core_FX_Knobs_R: Dictionary[BUS_MANAGER.E_CORE_EFFECTS_ORDER, Knob_Control] = { 
-    BUS_MANAGER.E_CORE_EFFECTS_ORDER.TRIM :             $"Controls/Right Trim",
-    BUS_MANAGER.E_CORE_EFFECTS_ORDER.EQ_LOW :           $"Controls/Right Low Gain",
-    BUS_MANAGER.E_CORE_EFFECTS_ORDER.EQ_MID :           $"Controls/Right Medium Gain",
-    BUS_MANAGER.E_CORE_EFFECTS_ORDER.EQ_HIGH :          $"Controls/Right High Gain",
-    BUS_MANAGER.E_CORE_EFFECTS_ORDER.SOUND_COLOR_FX :   $"Controls/Right Colour FX"
-    }
+@onready var Core_FX_Knobs_TRIM_L : Knob_Control    =   $"Controls/Left Trim"
+@onready var Core_FX_Knobs_EQ_LOW_L : Knob_Control  =   $"Controls/Left Low Gain"
+@onready var Core_FX_Knobs_EQ_MID_L : Knob_Control  =   $"Controls/Left Medium Gain"
+@onready var Core_FX_Knobs_EQ_HIGH_L : Knob_Control =   $"Controls/Left High Gain"
+@onready var Core_FX_Knobs_SOUND_COLOR_FX_L : Knob_Control  =   $"Controls/Left Colour FX"
+    
+
+
+@onready var Core_FX_Knobs_TRIM_R : Knob_Control           =   $"Controls/Right Trim"
+@onready var Core_FX_Knobs_EQ_LOW_R : Knob_Control         =   $"Controls/Right Low Gain"
+@onready var Core_FX_Knobs_EQ_MID_R : Knob_Control         =   $"Controls/Right Medium Gain"
+@onready var Core_FX_Knobs_EQ_HIGH_R : Knob_Control        =   $"Controls/Right High Gain"
+@onready var Core_FX_Knobs_SOUND_COLOR_FX_R : Knob_Control =   $"Controls/Right Colour FX"
     
 
 
@@ -194,7 +193,7 @@ func Update_Channel_DBs():
     # Update Channel DB based on Crossfader and channel fader
     AudioServer.set_bus_volume_linear(Channel_1_Left_Bus_Index, left_alpha)
     AudioServer.set_bus_volume_linear(Channel_2_Right_Bus_Index, right_alpha)
-    print("Bus: " + AudioServer.get_bus_name(Channel_2_Right_Bus_Index) + " is " + str(AudioServer.get_bus_volume_linear(Channel_2_Right_Bus_Index)))
+    #print("Bus: " + AudioServer.get_bus_name(Channel_2_Right_Bus_Index) + " is " + str(AudioServer.get_bus_volume_linear(Channel_2_Right_Bus_Index)))
 
 
 
@@ -207,54 +206,53 @@ func Update_Channel_Trim_EQ_CFX() -> void:
     
     # step 1 trim / amplify
     #var amp: AudioEffectInstance = AudioServer.get_bus_effect(channel_1, 0) as AudioEffectAmplify
-    AudioServer.get_bus_effect(channel_1, 0).volume_db = remap(Core_FX_Knobs_L[BUS_MANAGER.E_CORE_EFFECTS_ORDER.TRIM].Value, 0.0, 1.0, BUS_MANAGER.TRIM_DB_MIN, BUS_MANAGER.TRIM_DB_MAX)
-    AudioServer.get_bus_effect(channel_2, 0).volume_db = remap(Core_FX_Knobs_R[BUS_MANAGER.E_CORE_EFFECTS_ORDER.TRIM].Value, 0.0, 1.0, BUS_MANAGER.TRIM_DB_MIN, BUS_MANAGER.TRIM_DB_MAX)
+    AudioServer.get_bus_effect(channel_1, 0).volume_db = linear_to_db(remap(Core_FX_Knobs_TRIM_L.Value, 0.0, 1.0, 0.001, 2.0))
+    AudioServer.get_bus_effect(channel_2, 0).volume_db = linear_to_db(remap(Core_FX_Knobs_TRIM_R.Value, 0.0, 1.0, 0.001, 2.0))
     
     # step 2: get our converted alphas for hi -> low to DBs
     var Track_1_core_fx_DBs : Dictionary[BUS_MANAGER.E_BAND_HZ, float] = BUS_MANAGER.Calculate_Weights_DB(
-        Core_FX_Knobs_L[BUS_MANAGER.E_CORE_EFFECTS_ORDER.EQ_LOW].Value, 
-        Core_FX_Knobs_L[BUS_MANAGER.E_CORE_EFFECTS_ORDER.EQ_MID].Value, 
-        Core_FX_Knobs_L[BUS_MANAGER.E_CORE_EFFECTS_ORDER.EQ_HIGH].Value
+        Core_FX_Knobs_EQ_LOW_L.Value, 
+        Core_FX_Knobs_EQ_MID_L.Value, 
+        Core_FX_Knobs_EQ_HIGH_L.Value
         )
     var Track_2_core_fx_DBs : Dictionary[BUS_MANAGER.E_BAND_HZ, float] = BUS_MANAGER.Calculate_Weights_DB(
-        Core_FX_Knobs_R[BUS_MANAGER.E_CORE_EFFECTS_ORDER.EQ_LOW].Value, 
-        Core_FX_Knobs_R[BUS_MANAGER.E_CORE_EFFECTS_ORDER.EQ_MID].Value, 
-        Core_FX_Knobs_R[BUS_MANAGER.E_CORE_EFFECTS_ORDER.EQ_HIGH].Value
+        Core_FX_Knobs_EQ_LOW_R.Value,  
+        Core_FX_Knobs_EQ_MID_R.Value,  
+        Core_FX_Knobs_EQ_HIGH_R.Value       
         )
         
     # go through all bands and set them for left and right   
-    var TEMP_DEBUG_DB = "Track 1 EQ Dbs: "
-    for band in BUS_MANAGER.E_BAND_HZ:
-        AudioServer.get_bus_effect(channel_1, 1).set_band_gain_db(band, Track_1_core_fx_DBs[band])
-        AudioServer.get_bus_effect(channel_2, 1).set_band_gain_db(band, Track_2_core_fx_DBs[band])
-        TEMP_DEBUG_DB += str(band) + " = " + str(Track_1_core_fx_DBs[band]) + " | "
-    print(TEMP_DEBUG_DB)
+    #var TEMP_DEBUG_DB = "Track 1 EQ Dbs: "
+    for band in BUS_MANAGER.E_BAND_HZ.values():
+        #print("Setting Band #" + str(band) + " to " + str(Track_1_core_fx_DBs[band]))
+        AudioServer.get_bus_effect(channel_1, 1).set_band_gain_db(int(band), Track_1_core_fx_DBs[band])
+        AudioServer.get_bus_effect(channel_2, 1).set_band_gain_db(int(band), Track_2_core_fx_DBs[band])
+        #TEMP_DEBUG_DB += str(band) + " = " + str(Track_1_core_fx_DBs[band]) + " | "
+    #print(TEMP_DEBUG_DB)
     
     # step 3: Color FX - (0 -> 0.5 is LOW PASS FILTER   0.5 -> 1 High Pass filter)
-    var cfx_l : float = Core_FX_Knobs_L[BUS_MANAGER.E_CORE_EFFECTS_ORDER.SOUND_COLOR_FX].Value
-    var cfx_r : float = Core_FX_Knobs_R[BUS_MANAGER.E_CORE_EFFECTS_ORDER.SOUND_COLOR_FX].Value
-    
     # low-pass
-    if cfx_l < 0.495:
+    if Core_FX_Knobs_SOUND_COLOR_FX_L.Value < 0.495:
         AudioServer.set_bus_effect_enabled(channel_1, BUS_MANAGER.CFX_LOWPASS_SLOT, true)
-        AudioServer.get_bus_effect(channel_1, BUS_MANAGER.CFX_LOWPASS_SLOT).cutoff_hz = lerpf(BUS_MANAGER.CFX_CUTOFF_CLOSED_HZ, BUS_MANAGER.CFX_CUTOFF_OPEN_HZ, cfx_l * 2.0)
+        #AudioServer.get_bus_effect(channel_1, BUS_MANAGER.CFX_LOWPASS_SLOT).cutoff_hz = lerpf(BUS_MANAGER.CFX_CUTOFF_CLOSED_HZ, BUS_MANAGER.CFX_CUTOFF_OPEN_HZ, cfx_l * 2.0)
+        AudioServer.get_bus_effect(channel_1, BUS_MANAGER.CFX_LOWPASS_SLOT).cutoff_hz = remap(Core_FX_Knobs_SOUND_COLOR_FX_L.Value, 0.0, 0.495, BUS_MANAGER.CFX_CUTOFF_CLOSED_HZ, BUS_MANAGER.CFX_CUTOFF_OPEN_HZ)
     else:
         AudioServer.set_bus_effect_enabled(channel_1, BUS_MANAGER.CFX_LOWPASS_SLOT, false)
-    if cfx_r < 0.495:
+    if Core_FX_Knobs_SOUND_COLOR_FX_R.Value < 0.495:
         AudioServer.set_bus_effect_enabled(channel_2, BUS_MANAGER.CFX_LOWPASS_SLOT, true)
-        AudioServer.get_bus_effect(channel_2, BUS_MANAGER.CFX_LOWPASS_SLOT).cutoff_hz = lerpf(BUS_MANAGER.CFX_CUTOFF_CLOSED_HZ, BUS_MANAGER.CFX_CUTOFF_OPEN_HZ, cfx_r * 2.0)
+        AudioServer.get_bus_effect(channel_2, BUS_MANAGER.CFX_LOWPASS_SLOT).cutoff_hz = remap(Core_FX_Knobs_SOUND_COLOR_FX_R.Value, 0.0, 0.495, BUS_MANAGER.CFX_CUTOFF_CLOSED_HZ, BUS_MANAGER.CFX_CUTOFF_OPEN_HZ)
     else:
         AudioServer.set_bus_effect_enabled(channel_2, BUS_MANAGER.CFX_LOWPASS_SLOT, false)
 
     # high-pass
-    if cfx_l > 0.505:
+    if Core_FX_Knobs_SOUND_COLOR_FX_L.Value > 0.505:
         AudioServer.set_bus_effect_enabled(channel_1, BUS_MANAGER.CFX_HIGHPASS_SLOT, true)
-        AudioServer.get_bus_effect(channel_1, BUS_MANAGER.CFX_HIGHPASS_SLOT).cutoff_hz = lerpf(BUS_MANAGER.CFX_CUTOFF_CLOSED_HZ, BUS_MANAGER.CFX_CUTOFF_OPEN_HZ, cfx_l * 2.0)
+        AudioServer.get_bus_effect(channel_1, BUS_MANAGER.CFX_HIGHPASS_SLOT).cutoff_hz = remap(Core_FX_Knobs_SOUND_COLOR_FX_L.Value, 0.505, 1.0, BUS_MANAGER.CFX_CUTOFF_CLOSED_HZ, BUS_MANAGER.CFX_CUTOFF_OPEN_HZ)
     else:
         AudioServer.set_bus_effect_enabled(channel_1, BUS_MANAGER.CFX_HIGHPASS_SLOT, false)
-    if cfx_r > 0.505:
+    if Core_FX_Knobs_SOUND_COLOR_FX_R.Value > 0.505:
         AudioServer.set_bus_effect_enabled(channel_2, BUS_MANAGER.CFX_HIGHPASS_SLOT, true)
-        AudioServer.get_bus_effect(channel_2, BUS_MANAGER.CFX_HIGHPASS_SLOT).cutoff_hz = lerpf(BUS_MANAGER.CFX_CUTOFF_CLOSED_HZ, BUS_MANAGER.CFX_CUTOFF_OPEN_HZ, cfx_r * 2.0)
+        AudioServer.get_bus_effect(channel_2, BUS_MANAGER.CFX_HIGHPASS_SLOT).cutoff_hz = remap(Core_FX_Knobs_SOUND_COLOR_FX_R.Value, 0.505, 1.0, BUS_MANAGER.CFX_CUTOFF_CLOSED_HZ, BUS_MANAGER.CFX_CUTOFF_OPEN_HZ)
     else:
         AudioServer.set_bus_effect_enabled(channel_2, BUS_MANAGER.CFX_HIGHPASS_SLOT, false)
             
@@ -468,3 +466,7 @@ func _seek_track_phase_to_match(track_to_move: int, reference_track: int):
         AudioPlayerList[track_to_move].play(new_pos)
 
     
+
+
+func _on_Select_FX_activated() -> void:
+    pass

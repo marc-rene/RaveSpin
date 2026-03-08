@@ -209,23 +209,19 @@ static func Calculate_Weights_Normal(low_alpha : float = 0.5, mid_alpha : float 
 
 
 
-
-
-
-
 # Same thing as Calculate_Weights_Normal, except returns raw dB values for each EQ6 band.
 # Input is still low/mid/high alpha (0-1), which is remapped to EQ_DB_MIN...EQ_DB_MAX first.
 static func Calculate_Weights_DB(low_alpha : float = 0.5, mid_alpha : float = 0.5, high_alpha : float = 0.5) -> Dictionary[E_BAND_HZ, float]:
-    low_alpha = clampf(low_alpha, 0.0, 1.0)
-    mid_alpha = clampf(mid_alpha, 0.0, 1.0)
-    high_alpha = clampf(high_alpha, 0.0, 1.0)
+    low_alpha = remap(low_alpha, 0.0, 1.0, 0.0, 2.0)
+    mid_alpha = remap(mid_alpha, 0.0, 1.0, 0.0, 2.0)
+    high_alpha = remap(high_alpha, 0.0, 1.0, 0.0, 2.0)
     
-    var low_db : float = remap(low_alpha, 0.0, 1.0, EQ_DB_MIN, EQ_DB_MAX)
-    var mid_db : float = remap(mid_alpha, 0.0, 1.0, EQ_DB_MIN, EQ_DB_MAX)
-    var high_db : float = remap(high_alpha, 0.0, 1.0, EQ_DB_MIN, EQ_DB_MAX)
+    var low_db : float = clampf(linear_to_db(low_alpha), BUS_MANAGER.EQ_DB_MIN, BUS_MANAGER.EQ_DB_MAX)
+    var mid_db : float =    clampf(linear_to_db(mid_alpha), BUS_MANAGER.EQ_DB_MIN, BUS_MANAGER.EQ_DB_MAX)
+    var high_db : float =   clampf(linear_to_db(high_alpha), BUS_MANAGER.EQ_DB_MIN, BUS_MANAGER.EQ_DB_MAX)
     
     var new_band_dbs : Dictionary[E_BAND_HZ, float] = {}
-    for band in E_BAND_HZ:
+    for band in E_BAND_HZ.values():
         var band_db : float = (
             low_db * EQ6_LOW_WEIGHTS[band] +
             mid_db * EQ6_MID_WEIGHTS[band] +
@@ -292,7 +288,7 @@ static func _get_active_effects_for_channel(channel: int) -> Dictionary[E_BEAT_F
 
 
 ## whats the next free slot in our bus for us to add an FX? get the index of that slot
-func _get_next_free_slot(channel: int) -> int:
+static func _get_next_free_slot(channel: int) -> int:
     if ONE_FX_AT_A_TIME:
         return BEAT_FX_SLOT_SINGLE
         
@@ -306,7 +302,7 @@ func _get_next_free_slot(channel: int) -> int:
     return slot
 
 
-func _create_beat_fx_instance(fx_type: E_BEAT_FX_TYPE) -> AudioEffect:
+static func _create_beat_fx_instance(fx_type: E_BEAT_FX_TYPE) -> AudioEffect:
     var new_fx : Variant = get_beat_fx_class(fx_type) # GDSCRIPT DOESN'T ACCEPT AudioEffect AS VALID SET... need to use horrible Varient
     if new_fx == null:
         return null
@@ -316,7 +312,7 @@ func _create_beat_fx_instance(fx_type: E_BEAT_FX_TYPE) -> AudioEffect:
     return effect
 
 
-func add_beat_fx(fx_type: E_BEAT_FX_TYPE, channel: int) -> void:
+static func add_beat_fx(fx_type: E_BEAT_FX_TYPE, channel: int) -> void:
     channel = Utility.Clamp_to_Valid_TrackID(channel)
     var bus_index: int = Get_Channel_Index_i(channel)
     if bus_index < 0:
@@ -365,14 +361,14 @@ static func remove_beat_fx(fx_type: E_BEAT_FX_TYPE, channel: int) -> void:
                 active_fx[fx_key] = active_fx[fx_key] - 1
 
 
-func toggle_beat_fx(fx_type: E_BEAT_FX_TYPE, channel : int) -> void:
+static func toggle_beat_fx(fx_type: E_BEAT_FX_TYPE, channel : int) -> void:
     if is_beat_fx_active(fx_type, channel):
         remove_beat_fx(fx_type, channel)
     else:
         add_beat_fx(fx_type, channel)
 
 
-func is_beat_fx_active(fx_type: E_BEAT_FX_TYPE, channel : int) -> bool:
+static func is_beat_fx_active(fx_type: E_BEAT_FX_TYPE, channel : int) -> bool:
     return _get_active_effects_for_channel(channel).has(fx_type)
 
 

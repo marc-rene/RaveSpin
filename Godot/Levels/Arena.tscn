@@ -3,8 +3,11 @@
 [ext_resource type="PackedScene" uid="uid://ohc5g4ss6tlg" path="res://GLOBAL/Player.tscn" id="1_hagq7"]
 [ext_resource type="Script" uid="uid://cjw3mllds5qjs" path="res://Scripts/arena.gd" id="1_lr07p"]
 [ext_resource type="PackedScene" uid="uid://c3iykg71k0su4" path="res://Components/DDJ-FLX4/DDJ-FLX4.tscn" id="3_lr07p"]
+[ext_resource type="PackedScene" uid="uid://clujaf3u776a3" path="res://addons/godot-xr-tools/objects/viewport_2d_in_3d.tscn" id="5_3sm0n"]
 [ext_resource type="PackedScene" uid="uid://dh8cyr4ti48fi" path="res://UI/LibreBox/Librebox_Scene.tscn" id="6_7t5kf"]
+[ext_resource type="PackedScene" uid="uid://cprhr6myydno5" path="res://UI/LibreBox/Components/FX Selection/FX_Selection_Menu.tscn" id="6_f8rhi"]
 [ext_resource type="Script" uid="uid://dvxittvfvayif" path="res://GLOBAL/Scene/start_xr.gd" id="9_4yh7d"]
+[ext_resource type="Script" uid="uid://bnckdx4e6k3hk" path="res://Scripts/Viewport2DIn3DHandTouch.gd" id="9_kn3ki"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_dsr05"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -39,9 +42,32 @@ spawn_in_front = NodePath("../../LibreboxScene")
 [node name="LibreboxScene" parent="." unique_id=889702823 instance=ExtResource("6_7t5kf")]
 transform = Transform3D(-4.371139e-08, 4.852939e-24, 1.0000005, -1.110223e-16, 1, 0, -1, 1.110223e-16, -4.371141e-08, -1.0000001, 2.073622, 0.50000006)
 
+[node name="HUB" parent="LibreboxScene" index="0" unique_id=1761191025]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.093685865, -0.053591132)
+
+[node name="Track 1 Selection" parent="LibreboxScene" index="1" unique_id=900064892]
+transform = Transform3D(0.34202015, 0, 0.9396926, 0, 1, 0, -0.9396926, 0, 0.34202015, -0.72, 0, 0.33)
+screen_size = Vector2(0.7, 0.7)
+
+[node name="Track 2 Selection" parent="LibreboxScene" index="2" unique_id=187553533]
+transform = Transform3D(0.34202015, 0, -0.9396926, 0, 1, 0, 0.9396926, 0, 0.34202015, 0.72, 0, 0.33)
+screen_size = Vector2(0.7, 0.7)
+hover_scroll_speed = 250.0
+
 [node name="DDJ-FLX4" parent="LibreboxScene" unique_id=111272397 instance=ExtResource("3_lr07p")]
 unique_name_in_owner = true
-transform = Transform3D(2, -3.7683293e-08, 8.538613e-09, 3.7683293e-08, 1.8046594, -0.86209327, 8.538609e-09, 0.86209285, 1.8046585, -0.46281928, -0.48231018, 0.12445587)
+transform = Transform3D(2, -3.7683293e-08, 8.538613e-09, 3.7683293e-08, 1.8046594, -0.86209327, 8.538609e-09, 0.86209285, 1.8046585, -0.46281928, -0.48231018, -0.072314024)
+
+[node name="FX Selection" parent="LibreboxScene" unique_id=1333438952 instance=ExtResource("5_3sm0n")]
+transform = Transform3D(1, -6.238468e-17, 9.9801465e-17, -6.238469e-17, 0.43808877, 0.8989317, -9.980147e-17, -0.89893174, 0.43808877, 0.5887204, -0.72288305, 0.61940217)
+screen_size = Vector2(0.455, 0.35)
+scene = ExtResource("6_f8rhi")
+viewport_size = Vector2(650, 500)
+unshaded = true
+scene_properties_keys = PackedStringArray("fx_selection_menu.gd")
+
+[node name="HandTouch" type="Node" parent="LibreboxScene/FX Selection" unique_id=946866879]
+script = ExtResource("9_kn3ki")
 
 [node name="Track Stream Player Left" type="AudioStreamPlayer" parent="." unique_id=1328970906]
 unique_name_in_owner = true
@@ -73,3 +99,4 @@ shape = SubResource("BoxShape3D_3sm0n")
 [editable path="Player"]
 [editable path="Player/XR_LeftHand/LeftHandMesh"]
 [editable path="Player/XR_RightHand/RightHandMesh"]
+[editable path="LibreboxScene"]

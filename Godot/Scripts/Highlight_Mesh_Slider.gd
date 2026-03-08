@@ -5,6 +5,7 @@ var active = false
 var hand_ref : Area3D
 var starting_pos : Vector3
 @export var Value = 0.5
+@export var snap_to_middle_tolerance = 0.1
 
 @onready var min_point_node : Node3D = $"Highlight/Min point"
 @onready var max_point_node : Node3D = $"Highlight/Max point"
@@ -79,6 +80,9 @@ func _process(delta: float) -> void:
         # Clamp immediately so a hand leaving quickly (e.g. out the side) never
         # overwrites our position with a mid-track z — that was causing snap to 0.5.
         $Highlight/Activation.position.z = clampf($Highlight/Activation.position.z, min_pos, max_pos)
+    elif absf(0.5 - Value) < snap_to_middle_tolerance:
+        Value = 0.5
+        UpdateAlpha(Value)
     Target_Mesh.global_position = $Highlight/Activation.global_position
     var alpha = remap($Highlight/Activation.position.z, min_pos, max_pos, 0, 1)
     #print("New_ALPHA is ", alpha)

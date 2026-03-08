@@ -12,12 +12,10 @@ resource_name = "EQ6"
 [sub_resource type="AudioEffectLowPassFilter" id="AudioEffectLowPassFilter_ul6oe"]
 resource_name = "LowPassFilter"
 resonance = 1.0
-db = 1
 
 [sub_resource type="AudioEffectHighPassFilter" id="AudioEffectHighPassFilter_ul6oe"]
 resource_name = "HighPassFilter"
 resonance = 1.0
-db = 1
 
 [sub_resource type="AudioEffectAmplify" id="AudioEffectAmplify_bxhr7"]
 resource_name = "Amplify"
@@ -28,12 +26,10 @@ resource_name = "EQ6"
 [sub_resource type="AudioEffectLowPassFilter" id="AudioEffectLowPassFilter_bxhr7"]
 resource_name = "LowPassFilter"
 resonance = 1.0
-db = 1
 
 [sub_resource type="AudioEffectHighPassFilter" id="AudioEffectHighPassFilter_bxhr7"]
 resource_name = "HighPassFilter"
 resonance = 1.0
-db = 1
 
 [resource]
 bus/0/effect/0/effect = SubResource("AudioEffectRecord_hv4lm")

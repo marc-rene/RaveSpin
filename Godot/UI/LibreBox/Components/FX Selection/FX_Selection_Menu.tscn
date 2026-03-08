@@ -5,11 +5,12 @@
 [ext_resource type="Script" uid="uid://c06quswvaif2s" path="res://UI/LibreBox/Components/FX Selection/fx_button.gd" id="2_ecric"]
 
 [node name="FxSelectionMenu" type="PanelContainer" unique_id=1774675461]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+custom_minimum_size = Vector2(650, 500)
+anchors_preset = -1
+anchor_right = 0.564
+anchor_bottom = 0.772
+offset_right = -159.72803
+offset_bottom = -196.25601
 script = ExtResource("1_10h13")
 
 [node name="MarginContainer" type="MarginContainer" parent="." unique_id=479472714]
@@ -27,24 +28,24 @@ layout_mode = 2
 size_flags_vertical = 3
 size_flags_stretch_ratio = 0.2
 
-[node name="Enable_Track_1_fx_btn" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=1573997875]
+[node name="Enable_Track_1_fx_btn" type="CheckButton" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=1700108077]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("1_4boa5")
-toggle_mode = true
 text = "Enable Track 1 FX"
+alignment = 1
 
 [node name="padding" type="Control" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=153950082]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.2
 
-[node name="Enable_Track_2_fx_btn" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=944512746]
+[node name="Enable_Track_2_fx_btn" type="CheckButton" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=1698200999]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("1_4boa5")
-toggle_mode = true
 text = "Enable Track 2 FX"
+alignment = 1
 
 [node name="padding" type="Control" parent="MarginContainer/VBoxContainer" unique_id=1276620251]
 layout_mode = 2
@@ -62,6 +63,7 @@ size_flags_horizontal = 3
 
 [node name="Delay btn" type="Button" parent="MarginContainer/VBoxContainer/FX Containers/VBoxContainer_L" unique_id=2100391031]
 layout_mode = 2
+size_flags_vertical = 3
 theme = ExtResource("1_4boa5")
 disabled = true
 toggle_mode = true
@@ -71,6 +73,7 @@ metadata/_custom_type_script = "uid://c06quswvaif2s"
 
 [node name="Echo btn" type="Button" parent="MarginContainer/VBoxContainer/FX Containers/VBoxContainer_L" unique_id=1700983072]
 layout_mode = 2
+size_flags_vertical = 3
 theme = ExtResource("1_4boa5")
 disabled = true
 toggle_mode = true
@@ -80,6 +83,7 @@ metadata/_custom_type_script = "uid://c06quswvaif2s"
 
 [node name="Reverb btn" type="Button" parent="MarginContainer/VBoxContainer/FX Containers/VBoxContainer_L" unique_id=946512453]
 layout_mode = 2
+size_flags_vertical = 3
 theme = ExtResource("1_4boa5")
 disabled = true
 toggle_mode = true
@@ -89,6 +93,7 @@ metadata/_custom_type_script = "uid://c06quswvaif2s"
 
 [node name="Trans btn" type="Button" parent="MarginContainer/VBoxContainer/FX Containers/VBoxContainer_L" unique_id=945003626]
 layout_mode = 2
+size_flags_vertical = 3
 theme = ExtResource("1_4boa5")
 disabled = true
 toggle_mode = true
@@ -98,6 +103,7 @@ metadata/_custom_type_script = "uid://c06quswvaif2s"
 
 [node name="Flanger btn" type="Button" parent="MarginContainer/VBoxContainer/FX Containers/VBoxContainer_L" unique_id=425689566]
 layout_mode = 2
+size_flags_vertical = 3
 theme = ExtResource("1_4boa5")
 disabled = true
 toggle_mode = true
@@ -107,6 +113,7 @@ metadata/_custom_type_script = "uid://c06quswvaif2s"
 
 [node name="Phaser btn" type="Button" parent="MarginContainer/VBoxContainer/FX Containers/VBoxContainer_L" unique_id=1320327271]
 layout_mode = 2
+size_flags_vertical = 3
 theme = ExtResource("1_4boa5")
 disabled = true
 toggle_mode = true
@@ -116,6 +123,7 @@ metadata/_custom_type_script = "uid://c06quswvaif2s"
 
 [node name="Pitch btn" type="Button" parent="MarginContainer/VBoxContainer/FX Containers/VBoxContainer_L" unique_id=241153756]
 layout_mode = 2
+size_flags_vertical = 3
 theme = ExtResource("1_4boa5")
 disabled = true
 toggle_mode = true
@@ -134,6 +142,7 @@ size_flags_horizontal = 3
 
 [node name="Crush btn" type="Button" parent="MarginContainer/VBoxContainer/FX Containers/VBoxContainer_R" unique_id=553985796]
 layout_mode = 2
+size_flags_vertical = 3
 theme = ExtResource("1_4boa5")
 disabled = true
 toggle_mode = true
@@ -143,6 +152,7 @@ metadata/_custom_type_script = "uid://c06quswvaif2s"
 
 [node name="Compressor btn" type="Button" parent="MarginContainer/VBoxContainer/FX Containers/VBoxContainer_R" unique_id=1869361749]
 layout_mode = 2
+size_flags_vertical = 3
 theme = ExtResource("1_4boa5")
 disabled = true
 toggle_mode = true
@@ -152,6 +162,7 @@ metadata/_custom_type_script = "uid://c06quswvaif2s"
 
 [node name="Limiter btn" type="Button" parent="MarginContainer/VBoxContainer/FX Containers/VBoxContainer_R" unique_id=1957485407]
 layout_mode = 2
+size_flags_vertical = 3
 theme = ExtResource("1_4boa5")
 disabled = true
 toggle_mode = true
@@ -161,6 +172,7 @@ metadata/_custom_type_script = "uid://c06quswvaif2s"
 
 [node name="BandPass btn" type="Button" parent="MarginContainer/VBoxContainer/FX Containers/VBoxContainer_R" unique_id=628492458]
 layout_mode = 2
+size_flags_vertical = 3
 theme = ExtResource("1_4boa5")
 disabled = true
 toggle_mode = true
@@ -170,6 +182,7 @@ metadata/_custom_type_script = "uid://c06quswvaif2s"
 
 [node name="Panner btn" type="Button" parent="MarginContainer/VBoxContainer/FX Containers/VBoxContainer_R" unique_id=1912349108]
 layout_mode = 2
+size_flags_vertical = 3
 theme = ExtResource("1_4boa5")
 disabled = true
 toggle_mode = true
@@ -179,6 +192,7 @@ metadata/_custom_type_script = "uid://c06quswvaif2s"
 
 [node name="StereoEnhance btn" type="Button" parent="MarginContainer/VBoxContainer/FX Containers/VBoxContainer_R" unique_id=111036618]
 layout_mode = 2
+size_flags_vertical = 3
 theme = ExtResource("1_4boa5")
 disabled = true
 toggle_mode = true
@@ -188,6 +202,7 @@ metadata/_custom_type_script = "uid://c06quswvaif2s"
 
 [node name="Distortion btn" type="Button" parent="MarginContainer/VBoxContainer/FX Containers/VBoxContainer_R" unique_id=1855989050]
 layout_mode = 2
+size_flags_vertical = 3
 theme = ExtResource("1_4boa5")
 disabled = true
 toggle_mode = true

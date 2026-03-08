@@ -12,7 +12,7 @@ script = ExtResource("1_al4tx")
 
 [node name="HUB" parent="." unique_id=1761191025 instance=ExtResource("1_ebwc8")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.27776587, 0)
-screen_size = Vector2(1.65, 1.4)
+screen_size = Vector2(1.155, 0.98)
 scene = ExtResource("2_bg1lp")
 viewport_size = Vector2(1650, 1400)
 unshaded = true
@@ -32,8 +32,8 @@ font = ExtResource("2_yb6eh")
 outline_size = 0
 
 [node name="Track 1 Selection" parent="." unique_id=900064892 instance=ExtResource("1_ebwc8")]
-transform = Transform3D(0.49999997, 0, 0.86602545, 0, 1, 0, -0.86602545, 0, 0.49999997, -1.29, 0, 0.65)
-screen_size = Vector2(1.6, 1.6)
+transform = Transform3D(0.49999997, 0, 0.86602545, 0, 1, 0, -0.86602545, 0, 0.49999997, -0.956, 0.275, 0.65)
+screen_size = Vector2(1, 1)
 scene = ExtResource("4_vnbwf")
 viewport_size = Vector2(1280, 1280)
 unshaded = true
@@ -52,8 +52,8 @@ outline_size = 0
 script = ExtResource("5_hand")
 
 [node name="Track 2 Selection" parent="." unique_id=187553533 instance=ExtResource("1_ebwc8")]
-transform = Transform3D(0.49999997, 0, -0.86602545, 0, 1, 0, 0.86602545, 0, 0.49999997, 1.29, 0, 0.65)
-screen_size = Vector2(1.6, 1.6)
+transform = Transform3D(0.49999997, 0, -0.86602545, 0, 1, 0, 0.86602545, 0, 0.49999997, 0.9445436, 0.275, 0.65)
+screen_size = Vector2(1, 1)
 scene = ExtResource("4_vnbwf")
 viewport_size = Vector2(1280, 1280)
 unshaded = true

@@ -2,7 +2,7 @@ extends "res://Scripts/Highlight_Mesh.gd"
 class_name Knob_Control
 
 # 0..1 normalised knob value
-@export var Value: float = 0.0
+@export var Value: float = 0.5
 var active = false
 # Local-space min and max rotations for the knob
 @export var min_quat: Quaternion = Quaternion()
@@ -107,7 +107,7 @@ func _process(_delta: float) -> void:
     # whats the alpha between min and max quat??
     var t: float = alpha_from_quat(hand_local_quat, min_quat, max_quat)
     t = clamp(t, 0.0, 1.0)
-    Value = t
+    #Value = t
     
     # do NOT go beyopnd min max
     var knob_quat2: Quaternion = min_quat.slerp(max_quat, t).normalized()
