@@ -1,6 +1,8 @@
 [gd_scene format=3 uid="uid://cprhr6myydno5"]
 
 [ext_resource type="Theme" uid="uid://ds0dxmwlq5niw" path="res://Art/Themes/Default_Theme.tres" id="1_4boa5"]
+[ext_resource type="Script" uid="uid://bv6gg22tfo4bj" path="res://UI/LibreBox/Components/FX Selection/fx_selection_menu.gd" id="1_10h13"]
+[ext_resource type="Script" uid="uid://c06quswvaif2s" path="res://UI/LibreBox/Components/FX Selection/fx_button.gd" id="2_ecric"]
 
 [node name="FxSelectionMenu" type="PanelContainer" unique_id=1774675461]
 anchors_preset = 15
@@ -8,6 +10,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_10h13")
 
 [node name="MarginContainer" type="MarginContainer" parent="." unique_id=479472714]
 layout_mode = 2
@@ -27,6 +30,7 @@ size_flags_stretch_ratio = 0.2
 [node name="Enable_Track_1_fx_btn" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=1573997875]
 layout_mode = 2
 size_flags_horizontal = 3
+theme = ExtResource("1_4boa5")
 toggle_mode = true
 text = "Enable Track 1 FX"
 
@@ -38,6 +42,7 @@ size_flags_stretch_ratio = 0.2
 [node name="Enable_Track_2_fx_btn" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=944512746]
 layout_mode = 2
 size_flags_horizontal = 3
+theme = ExtResource("1_4boa5")
 toggle_mode = true
 text = "Enable Track 2 FX"
 
@@ -55,54 +60,68 @@ size_flags_vertical = 3
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Delay btn" type="Button" parent="MarginContainer/VBoxContainer/FX Containers/VBoxContainer_L" unique_id=1801941926]
+[node name="Delay btn" type="Button" parent="MarginContainer/VBoxContainer/FX Containers/VBoxContainer_L" unique_id=2100391031]
 layout_mode = 2
 theme = ExtResource("1_4boa5")
 disabled = true
 toggle_mode = true
 text = "Delay"
+script = ExtResource("2_ecric")
+metadata/_custom_type_script = "uid://c06quswvaif2s"
 
-[node name="Echo btn" type="Button" parent="MarginContainer/VBoxContainer/FX Containers/VBoxContainer_L" unique_id=1058790184]
+[node name="Echo btn" type="Button" parent="MarginContainer/VBoxContainer/FX Containers/VBoxContainer_L" unique_id=1700983072]
 layout_mode = 2
 theme = ExtResource("1_4boa5")
 disabled = true
 toggle_mode = true
 text = "Echo"
+script = ExtResource("2_ecric")
+metadata/_custom_type_script = "uid://c06quswvaif2s"
 
-[node name="Reverb btn" type="Button" parent="MarginContainer/VBoxContainer/FX Containers/VBoxContainer_L" unique_id=212321515]
+[node name="Reverb btn" type="Button" parent="MarginContainer/VBoxContainer/FX Containers/VBoxContainer_L" unique_id=946512453]
 layout_mode = 2
 theme = ExtResource("1_4boa5")
 disabled = true
 toggle_mode = true
 text = "Reverb"
+script = ExtResource("2_ecric")
+metadata/_custom_type_script = "uid://c06quswvaif2s"
 
-[node name="Trans btn" type="Button" parent="MarginContainer/VBoxContainer/FX Containers/VBoxContainer_L" unique_id=1958349893]
+[node name="Trans btn" type="Button" parent="MarginContainer/VBoxContainer/FX Containers/VBoxContainer_L" unique_id=945003626]
 layout_mode = 2
 theme = ExtResource("1_4boa5")
 disabled = true
 toggle_mode = true
 text = "Trans"
+script = ExtResource("2_ecric")
+metadata/_custom_type_script = "uid://c06quswvaif2s"
 
-[node name="Flanger btn" type="Button" parent="MarginContainer/VBoxContainer/FX Containers/VBoxContainer_L" unique_id=419781113]
+[node name="Flanger btn" type="Button" parent="MarginContainer/VBoxContainer/FX Containers/VBoxContainer_L" unique_id=425689566]
 layout_mode = 2
 theme = ExtResource("1_4boa5")
 disabled = true
 toggle_mode = true
 text = "Flanger"
+script = ExtResource("2_ecric")
+metadata/_custom_type_script = "uid://c06quswvaif2s"
 
-[node name="Phaser btn" type="Button" parent="MarginContainer/VBoxContainer/FX Containers/VBoxContainer_L" unique_id=1002484293]
+[node name="Phaser btn" type="Button" parent="MarginContainer/VBoxContainer/FX Containers/VBoxContainer_L" unique_id=1320327271]
 layout_mode = 2
 theme = ExtResource("1_4boa5")
 disabled = true
 toggle_mode = true
 text = "Phaser"
+script = ExtResource("2_ecric")
+metadata/_custom_type_script = "uid://c06quswvaif2s"
 
-[node name="Pitch btn" type="Button" parent="MarginContainer/VBoxContainer/FX Containers/VBoxContainer_L" unique_id=222393379]
+[node name="Pitch btn" type="Button" parent="MarginContainer/VBoxContainer/FX Containers/VBoxContainer_L" unique_id=241153756]
 layout_mode = 2
 theme = ExtResource("1_4boa5")
 disabled = true
 toggle_mode = true
 text = "Pitch"
+script = ExtResource("2_ecric")
+metadata/_custom_type_script = "uid://c06quswvaif2s"
 
 [node name="padding" type="Control" parent="MarginContainer/VBoxContainer/FX Containers" unique_id=871874107]
 layout_mode = 2
@@ -113,51 +132,65 @@ size_flags_stretch_ratio = 0.05
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Crush btn" type="Button" parent="MarginContainer/VBoxContainer/FX Containers/VBoxContainer_R" unique_id=280055529]
+[node name="Crush btn" type="Button" parent="MarginContainer/VBoxContainer/FX Containers/VBoxContainer_R" unique_id=553985796]
 layout_mode = 2
 theme = ExtResource("1_4boa5")
 disabled = true
 toggle_mode = true
 text = "Crush"
+script = ExtResource("2_ecric")
+metadata/_custom_type_script = "uid://c06quswvaif2s"
 
-[node name="Compressor btn" type="Button" parent="MarginContainer/VBoxContainer/FX Containers/VBoxContainer_R" unique_id=1470794425]
+[node name="Compressor btn" type="Button" parent="MarginContainer/VBoxContainer/FX Containers/VBoxContainer_R" unique_id=1869361749]
 layout_mode = 2
 theme = ExtResource("1_4boa5")
 disabled = true
 toggle_mode = true
 text = "Compressor"
+script = ExtResource("2_ecric")
+metadata/_custom_type_script = "uid://c06quswvaif2s"
 
-[node name="Limiter btn" type="Button" parent="MarginContainer/VBoxContainer/FX Containers/VBoxContainer_R" unique_id=842808575]
+[node name="Limiter btn" type="Button" parent="MarginContainer/VBoxContainer/FX Containers/VBoxContainer_R" unique_id=1957485407]
 layout_mode = 2
 theme = ExtResource("1_4boa5")
 disabled = true
 toggle_mode = true
 text = "Limiter"
+script = ExtResource("2_ecric")
+metadata/_custom_type_script = "uid://c06quswvaif2s"
 
-[node name="BandPass btn" type="Button" parent="MarginContainer/VBoxContainer/FX Containers/VBoxContainer_R" unique_id=558555290]
+[node name="BandPass btn" type="Button" parent="MarginContainer/VBoxContainer/FX Containers/VBoxContainer_R" unique_id=628492458]
 layout_mode = 2
 theme = ExtResource("1_4boa5")
 disabled = true
 toggle_mode = true
 text = "Band Pass"
+script = ExtResource("2_ecric")
+metadata/_custom_type_script = "uid://c06quswvaif2s"
 
-[node name="Panner btn" type="Button" parent="MarginContainer/VBoxContainer/FX Containers/VBoxContainer_R" unique_id=2126197632]
+[node name="Panner btn" type="Button" parent="MarginContainer/VBoxContainer/FX Containers/VBoxContainer_R" unique_id=1912349108]
 layout_mode = 2
 theme = ExtResource("1_4boa5")
 disabled = true
 toggle_mode = true
 text = "Panner"
+script = ExtResource("2_ecric")
+metadata/_custom_type_script = "uid://c06quswvaif2s"
 
-[node name="StereoEnhance btn" type="Button" parent="MarginContainer/VBoxContainer/FX Containers/VBoxContainer_R" unique_id=556708232]
+[node name="StereoEnhance btn" type="Button" parent="MarginContainer/VBoxContainer/FX Containers/VBoxContainer_R" unique_id=111036618]
 layout_mode = 2
 theme = ExtResource("1_4boa5")
 disabled = true
 toggle_mode = true
 text = "Stereo Enhance"
+script = ExtResource("2_ecric")
+metadata/_custom_type_script = "uid://c06quswvaif2s"
 
-[node name="Distortion btn" type="Button" parent="MarginContainer/VBoxContainer/FX Containers/VBoxContainer_R" unique_id=193027930]
+[node name="Distortion btn" type="Button" parent="MarginContainer/VBoxContainer/FX Containers/VBoxContainer_R" unique_id=1855989050]
 layout_mode = 2
 theme = ExtResource("1_4boa5")
 disabled = true
 toggle_mode = true
 text = "Distortion"
+script = ExtResource("2_ecric")
+metadata/_custom_type_script = "uid://c06quswvaif2s"

@@ -1,6 +1,9 @@
 [gd_scene format=3 uid="uid://cawi4fikssids"]
 
 [ext_resource type="Script" uid="uid://c06quswvaif2s" path="res://UI/LibreBox/Components/FX Selection/fx_button.gd" id="1_r2n55"]
+[ext_resource type="Theme" uid="uid://ds0dxmwlq5niw" path="res://Art/Themes/Default_Theme.tres" id="1_tup71"]
 
 [node name="FxButton" type="Button" unique_id=1311551109]
+theme = ExtResource("1_tup71")
+text = "Dummy FX"
 script = ExtResource("1_r2n55")
