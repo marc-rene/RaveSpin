@@ -63,7 +63,9 @@ var Bus_Layout : AudioBusLayout
 @onready var Core_FX_Knobs_EQ_MID_R : Knob_Control         =   $"Controls/Right Medium Gain"
 @onready var Core_FX_Knobs_EQ_HIGH_R : Knob_Control        =   $"Controls/Right High Gain"
 @onready var Core_FX_Knobs_SOUND_COLOR_FX_R : Knob_Control =   $"Controls/Right Colour FX"
-    
+
+# One knob sets "power" of whatever Beat FX is active (0 = no effect, 1 = full) — FLX4 style
+@onready var Beat_FX_Knob : Knob_Control = $"Controls/Beat FX"
 
 
 @export var Crossfader_Curve_Left : Curve = preload("res://Components/Controls/Crossfade Curve Left.tres")
@@ -326,9 +328,12 @@ func Update_Channel_Tempo_Adjusts():
     
 func _process(delta: float) -> void:
            
-    Update_Channel_Tempo_Adjusts()    
+    Update_Channel_Tempo_Adjusts()
     Update_Channel_DBs() # crossfades and stuff
     Update_Channel_Trim_EQ_CFX() # trim, EQ hi/mid/low, CFX per track
+    # Beat FX "power": 0 = inaudible, 1 = full effect
+    BUS_MANAGER.Apply_Beat_FX_Level(0, Beat_FX_Knob.Value)
+    BUS_MANAGER.Apply_Beat_FX_Level(1, Beat_FX_Knob.Value)
 
     $"General Status".text = "Crossfade: %.3f" % remap(Crossfade_Alpha, 0.0, 1.0, -1.0, 1.0)
 
@@ -359,7 +364,8 @@ func _on_reset_area_area_entered(area: Area3D) -> void:
     $"Controls/Right Low Gain".UpdateAlpha(0.5)
     $"Controls/Left Colour FX".UpdateAlpha(0.5)
     $"Controls/Right Colour FX".UpdateAlpha(0.5)
-    
+    $"Controls/Beat FX".UpdateAlpha(0.0)
+
     for child in $Controls.get_children():
         child.reset_highlight()
 

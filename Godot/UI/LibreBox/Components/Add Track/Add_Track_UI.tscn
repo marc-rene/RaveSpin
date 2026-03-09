@@ -1,9 +1,281 @@
 [gd_scene format=3 uid="uid://7kyk88qnftlr"]
 
-[node name="AddTrackUi" type="Control" unique_id=162213247]
-layout_mode = 3
+[ext_resource type="Theme" uid="uid://ds0dxmwlq5niw" path="res://Art/Themes/Default_Theme.tres" id="1_raf6m"]
+[ext_resource type="Texture2D" uid="uid://bo5b3mjv07m82" path="res://Art/Splash/Light Splash.png" id="2_crrgg"]
+[ext_resource type="Script" uid="uid://cab2vcqu7xgvb" path="res://UI/LibreBox/Components/Add Track/add_track_ui.gd" id="2_jbcxj"]
+[ext_resource type="LabelSettings" uid="uid://bl11km7ja4u0h" path="res://Art/Themes/Heading.tres" id="2_rehha"]
+[ext_resource type="Texture2D" uid="uid://4cy4ugkg4xj" path="res://Art/Icon/Streaming_Platforms/T_LocalStorage.png" id="3_0gylw"]
+[ext_resource type="LabelSettings" uid="uid://ba1a888r0ljce" path="res://Art/Themes/Heading_3.tres" id="4_mkoma"]
+[ext_resource type="LabelSettings" uid="uid://du4olf7ix8h0m" path="res://Art/Themes/Heading_2.tres" id="4_toce6"]
+[ext_resource type="Texture2D" uid="uid://df02pyeje8lek" path="res://Art/Icon/Streaming_Platforms/T_Spotify.png" id="5_jbcxj"]
+[ext_resource type="Texture2D" uid="uid://edtn7ys1hpk3" path="res://Art/Icon/Streaming_Platforms/T_SoundCloud.png" id="6_tc5bx"]
+[ext_resource type="Texture2D" uid="uid://tgqdhuhcp3ho" path="res://Art/Icon/Streaming_Platforms/T_YouTube_Music.png" id="7_ynhe2"]
+[ext_resource type="Texture2D" uid="uid://bhwwtlbs4tlw4" path="res://Art/Icon/T_Metronome_Dark.png" id="10_jbcxj"]
+
+[node name="AddTrackUi" type="PanelContainer" unique_id=729583082]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("1_raf6m")
+script = ExtResource("2_jbcxj")
+
+[node name="PanelContainer" type="MarginContainer" parent="." unique_id=1879957827]
+layout_mode = 2
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="GridContainer" type="VBoxContainer" parent="PanelContainer" unique_id=1149748099]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/GridContainer" unique_id=1021516638]
+layout_mode = 2
+alignment = 2
+
+[node name="Label" type="Label" parent="PanelContainer/GridContainer/HBoxContainer" unique_id=795719894]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Add New Song"
+label_settings = ExtResource("2_rehha")
+horizontal_alignment = 1
+
+[node name="Close btn" type="Button" parent="PanelContainer/GridContainer/HBoxContainer" unique_id=1833337639]
+layout_mode = 2
+text = "X"
+
+[node name="Add Songs Container" type="HFlowContainer" parent="PanelContainer/GridContainer" unique_id=1135122566]
+layout_mode = 2
+size_flags_vertical = 6
+alignment = 1
+
+[node name="Add_Local_Song_btn" type="Button" parent="PanelContainer/GridContainer/Add Songs Container" unique_id=834730844]
+layout_mode = 2
+theme = ExtResource("1_raf6m")
+text = "Local 
+Disk"
+icon = ExtResource("3_0gylw")
+
+[node name="Add_Local_Song_btn2" type="Button" parent="PanelContainer/GridContainer/Add Songs Container" unique_id=612619710]
+layout_mode = 2
+theme = ExtResource("1_raf6m")
+disabled = true
+text = "Spotify"
+icon = ExtResource("5_jbcxj")
+
+[node name="Add_Local_Song_btn3" type="Button" parent="PanelContainer/GridContainer/Add Songs Container" unique_id=1313333364]
+layout_mode = 2
+theme = ExtResource("1_raf6m")
+disabled = true
+text = "SoundCloud"
+icon = ExtResource("6_tc5bx")
+
+[node name="Add_Local_Song_btn4" type="Button" parent="PanelContainer/GridContainer/Add Songs Container" unique_id=153534716]
+layout_mode = 2
+theme = ExtResource("1_raf6m")
+disabled = true
+text = "YouTube
+Music"
+icon = ExtResource("7_ynhe2")
+
+[node name="Row 1" type="HBoxContainer" parent="PanelContainer/GridContainer" unique_id=119305861]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Album Art btn" type="TextureRect" parent="PanelContainer/GridContainer/Row 1" unique_id=510533714]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource("2_crrgg")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Details input container" type="VBoxContainer" parent="PanelContainer/GridContainer/Row 1" unique_id=1273659174]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 4.0
+
+[node name="ArtistLabel" type="Label" parent="PanelContainer/GridContainer/Row 1/Details input container" unique_id=2059345266]
+layout_mode = 2
+text = "Artist"
+label_settings = ExtResource("4_toce6")
+horizontal_alignment = 1
+
+[node name="Choose Artist Name" type="HBoxContainer" parent="PanelContainer/GridContainer/Row 1/Details input container" unique_id=402654949]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="PanelContainer/GridContainer/Row 1/Details input container/Choose Artist Name" unique_id=1670307221]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "Choose Artist"
+vertical_alignment = 1
+
+[node name="New ArtistName" type="OptionButton" parent="PanelContainer/GridContainer/Row 1/Details input container/Choose Artist Name" unique_id=1632760282]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 1
+icon_alignment = 1
+selected = 0
+item_count = 1
+popup/item_0/text = "Choose from already existing Artists..."
+popup/item_0/id = 0
+popup/item_0/disabled = true
+popup/item_0/separator = true
+
+[node name="New Artist Name" type="HBoxContainer" parent="PanelContainer/GridContainer/Row 1/Details input container" unique_id=453782659]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="PanelContainer/GridContainer/Row 1/Details input container/New Artist Name" unique_id=487418858]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "New Artist Name"
+vertical_alignment = 1
+
+[node name="New ArtistName" type="LineEdit" parent="PanelContainer/GridContainer/Row 1/Details input container/New Artist Name" unique_id=1280453406]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Enter New Artist Name..."
+
+[node name="AlbumLabel" type="Label" parent="PanelContainer/GridContainer/Row 1/Details input container" unique_id=1449272130]
+layout_mode = 2
+text = "Album"
+label_settings = ExtResource("4_toce6")
+horizontal_alignment = 1
+
+[node name="Choose Label Name" type="HBoxContainer" parent="PanelContainer/GridContainer/Row 1/Details input container" unique_id=115646668]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="PanelContainer/GridContainer/Row 1/Details input container/Choose Label Name" unique_id=729228060]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "Choose Album"
+vertical_alignment = 1
+
+[node name="New ArtistName" type="OptionButton" parent="PanelContainer/GridContainer/Row 1/Details input container/Choose Label Name" unique_id=1776753247]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 1
+icon_alignment = 1
+selected = 0
+item_count = 1
+popup/item_0/text = "Choose from already existing Albums..."
+popup/item_0/id = 0
+popup/item_0/disabled = true
+popup/item_0/separator = true
+
+[node name="New Album Name" type="HBoxContainer" parent="PanelContainer/GridContainer/Row 1/Details input container" unique_id=1510656657]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="PanelContainer/GridContainer/Row 1/Details input container/New Album Name" unique_id=960757918]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "New Album Name"
+vertical_alignment = 1
+
+[node name="New ArtistName" type="LineEdit" parent="PanelContainer/GridContainer/Row 1/Details input container/New Album Name" unique_id=1687902835]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Enter New Album Name.."
+
+[node name="HSeparator" type="HSeparator" parent="PanelContainer/GridContainer" unique_id=765054997]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.1
+
+[node name="Row 2" type="HBoxContainer" parent="PanelContainer/GridContainer" unique_id=138766103]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.5
+alignment = 1
+
+[node name="BPM LABEL" type="Label" parent="PanelContainer/GridContainer/Row 2" unique_id=2114843615]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 1.5
+text = "Track BPM:"
+label_settings = ExtResource("4_mkoma")
+horizontal_alignment = 2
+
+[node name="BPM" type="LineEdit" parent="PanelContainer/GridContainer/Row 2" unique_id=481356531]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+size_flags_stretch_ratio = 2.0
+placeholder_text = "120"
+alignment = 1
+expand_to_text_length = true
+right_icon = ExtResource("10_jbcxj")
+icon_expand_mode = 2
+
+[node name="VSeparator" type="VSeparator" parent="PanelContainer/GridContainer/Row 2" unique_id=206005187]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.25
+
+[node name="BPM2" type="OptionButton" parent="PanelContainer/GridContainer/Row 2" unique_id=1316820537]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+alignment = 1
+selected = 0
+item_count = 2
+popup/item_0/text = "Music Key"
+popup/item_0/id = 0
+popup/item_0/disabled = true
+popup/item_1/id = 0
+
+[node name="VSeparator2" type="VSeparator" parent="PanelContainer/GridContainer/Row 2" unique_id=731253494]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.25
+
+[node name="Sidenote label" type="Label" parent="PanelContainer/GridContainer/Row 2" unique_id=650193804]
+layout_mode = 2
+text = "User note: "
+label_settings = ExtResource("4_mkoma")
+
+[node name="BPM3" type="TextEdit" parent="PanelContainer/GridContainer/Row 2" unique_id=1683562319]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 3.0
+placeholder_text = "Bass drop comes in at 25 second mark"
+wrap_mode = 1
+
+[node name="HSeparator2" type="HSeparator" parent="PanelContainer/GridContainer" unique_id=1050799733]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.1
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="PanelContainer/GridContainer" unique_id=987532635]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PanelContainer/GridContainer/HBoxContainer2" unique_id=1033509593]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+size_flags_stretch_ratio = 0.2
+text = "Tags / Genres"
+horizontal_alignment = 1
+
+[node name="HFlowContainer" type="HFlowContainer" parent="PanelContainer/GridContainer/HBoxContainer2" unique_id=761837372]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="OptionButton" type="OptionButton" parent="PanelContainer/GridContainer/HBoxContainer2/HFlowContainer" unique_id=1392408790]
+layout_mode = 2
+selected = 0
+item_count = 1
+popup/item_0/text = "Select a Genre"
+popup/item_0/id = 0

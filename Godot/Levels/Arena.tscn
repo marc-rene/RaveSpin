@@ -44,6 +44,7 @@ transform = Transform3D(-4.371139e-08, 4.852939e-24, 1.0000005, -1.110223e-16, 1
 
 [node name="HUB" parent="LibreboxScene" index="0" unique_id=1761191025]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.093685865, -0.053591132)
+throttle_fps = 45.0
 
 [node name="Track 1 Selection" parent="LibreboxScene" index="1" unique_id=900064892]
 transform = Transform3D(0.34202015, -0.081899606, 0.9361168, 0, 0.9961947, 0.08715574, -0.9396926, -0.029809019, 0.34071866, -0.72, -0.2, 0.33)
