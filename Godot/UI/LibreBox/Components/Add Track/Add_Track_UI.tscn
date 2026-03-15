@@ -59,21 +59,21 @@ text = "Local
 Disk"
 icon = ExtResource("3_0gylw")
 
-[node name="Add_Local_Song_btn2" type="Button" parent="PanelContainer/GridContainer/Add Songs Container" unique_id=612619710]
+[node name="Add_Spotify_Song_btn" type="Button" parent="PanelContainer/GridContainer/Add Songs Container" unique_id=612619710]
 layout_mode = 2
 theme = ExtResource("1_raf6m")
 disabled = true
 text = "Spotify"
 icon = ExtResource("5_jbcxj")
 
-[node name="Add_Local_Song_btn3" type="Button" parent="PanelContainer/GridContainer/Add Songs Container" unique_id=1313333364]
+[node name="Add_SoundCloud_Song_btn" type="Button" parent="PanelContainer/GridContainer/Add Songs Container" unique_id=1313333364]
 layout_mode = 2
 theme = ExtResource("1_raf6m")
 disabled = true
 text = "SoundCloud"
 icon = ExtResource("6_tc5bx")
 
-[node name="Add_Local_Song_btn4" type="Button" parent="PanelContainer/GridContainer/Add Songs Container" unique_id=153534716]
+[node name="Add_YoutubeMusic_Song_btn" type="Button" parent="PanelContainer/GridContainer/Add Songs Container" unique_id=153534716]
 layout_mode = 2
 theme = ExtResource("1_raf6m")
 disabled = true
