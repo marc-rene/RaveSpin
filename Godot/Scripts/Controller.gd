@@ -111,7 +111,7 @@ func LoadTrackIntoMemory(which_track : int, which_song : Song):
     which_track = Utility.Clamp_to_Valid_TrackID(which_track)
     print("Spawned Player for Track ", which_track)
     
-    AudioPlayerList[which_track].stream = which_song.Audio_File
+    AudioPlayerList[which_track].stream = which_song.get_audio_stream()
     print("Loading Track ", which_track, " into memory now")
     
     AudioPlayerList[which_track].stream_paused = true

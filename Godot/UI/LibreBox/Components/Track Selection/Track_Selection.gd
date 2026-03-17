@@ -6,7 +6,7 @@ class_name LibreBox_TrackSelection
 @onready var Scroll_Container : ScrollContainer = $"VBoxContainer/ScrollContainer"
 @onready var Scroll_Up_Node : Control = $"VBoxContainer/Scroll Up"
 @onready var Scroll_Down_Node : Control = $"VBoxContainer/Scroll Down"
-
+@onready var Add_Track_UI_node : XRToolsViewport2DIn3D = $"../../../Add Song"
 
 const track_card = preload("res://UI/LibreBox/Components/Track Card/LibreBox_TrackCard_Horizontal_UI.tscn")
 @export_range(50.0, 500.0, 10.0) var hover_scroll_speed : float = 200.0 #100 is lowkey painfully slow
@@ -60,6 +60,12 @@ func New_Track_Selected(New_Song : Song):
     #print("NEW TRACK SELECTED CALLED WITH SONG: " + New_Song.Song_Title + " for track #" + str(Which_Track_Responcible_For))
     track_selected.emit(New_Song)
     
+    
+func show_add_track():
+    if Add_Track_UI_node.position.y > 1:
+        Add_Track_UI_node.position.y = -0.1
+        Add_Track_UI_node.set_enabled(true)
+        
 
 func _ready():
     root_node.mouse_exited.connect(_on_scroll_hover_ended)
@@ -69,5 +75,7 @@ func _ready():
     #down
     Scroll_Down_Node.mouse_entered.connect(_on_scroll_down_hovered)
     Scroll_Down_Node.mouse_exited.connect(_on_scroll_hover_ended)
+    
+    $"VBoxContainer/HBoxContainer/ADD ZE TRACK".pressed.connect(show_add_track)
     #print("Track Selection Made for Track #" + str(Which_Track_Responcible_For))
     Refresh()    

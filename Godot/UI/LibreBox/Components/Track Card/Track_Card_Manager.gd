@@ -46,12 +46,12 @@ func Refresh_Details() -> bool:
         ETrackOrigins.Get_Origin_Platform_Logo(Song_Resource.Song_Origin_Platform),
         ETrackOrigins.Get_Origin_Platform_Logo(ETrackOrigins.Track_Origins_enum.OTHER))) # If we can't find it, just say "Other"
     
-    Album_Art_Texture_Holder.texture = Utility.Return_Valid(Song_Resource.Song_Album.Album_Artwork, 
+    Album_Art_Texture_Holder.texture = Utility.Return_Valid(Song_Resource.Song_Album.Album_Artwork if Song_Resource.Song_Album else null,
     "res://Art/Icon/T_RaveSpinHeader_Light.png")
     
     Track_Name_Label.text = Utility.Return_Valid(Song_Resource.Song_Title, "Untitled")
-    Artist_Name_Label.text = Utility.Return_Valid(Song_Resource.Main_Artist.Artist_Name, "Untitled")
-    Album_Name_Label.text = Utility.Return_Valid(Song_Resource.Song_Album.Album_Name, "Untitled")
+    Artist_Name_Label.text = Utility.Return_Valid(Song_Resource.Main_Artist.Artist_Name if Song_Resource.Main_Artist else null, "Untitled")
+    Album_Name_Label.text = Utility.Return_Valid(Song_Resource.Song_Album.Album_Name if Song_Resource.Song_Album else null, "Untitled")
     
     #print("Total: " + str(Song_Resource.Audio_File.get_length()))
     #print("Minutes: " + str(int(Song_Resource.Audio_File.get_length() / 60)))
@@ -63,7 +63,8 @@ func Refresh_Details() -> bool:
         #duration_text += str(mins) + "m "
 #
     #duration_text += str(secs) + "s "   
-    Track_Duration_Label.text = Utility.Seconds_to_MM_SS_MS(Song_Resource.Audio_File.get_length())
+    var stream := Song_Resource.get_audio_stream()
+    Track_Duration_Label.text = Utility.Seconds_to_MM_SS_MS(stream.get_length() if stream else 0.0)
     
     Track_BPM_Label.text = Utility.Return_Valid(str(int(Song_Resource.Track_BPM)), "N/A")
     

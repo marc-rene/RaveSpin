@@ -44,8 +44,14 @@ label_settings = ExtResource("2_rehha")
 horizontal_alignment = 1
 
 [node name="Close btn" type="Button" parent="PanelContainer/GridContainer/HBoxContainer" unique_id=1833337639]
+unique_name_in_owner = true
 layout_mode = 2
 text = "X"
+
+[node name="Save to library btn" type="Button" parent="PanelContainer/GridContainer/HBoxContainer" unique_id=839384759]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Save to library"
 
 [node name="Add Songs Container" type="HFlowContainer" parent="PanelContainer/GridContainer" unique_id=1135122566]
 layout_mode = 2
@@ -53,6 +59,7 @@ size_flags_vertical = 6
 alignment = 1
 
 [node name="Add_Local_Song_btn" type="Button" parent="PanelContainer/GridContainer/Add Songs Container" unique_id=834730844]
+unique_name_in_owner = true
 layout_mode = 2
 theme = ExtResource("1_raf6m")
 text = "Local 
@@ -98,6 +105,23 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 size_flags_stretch_ratio = 4.0
+
+[node name="Song Title Row" type="HBoxContainer" parent="PanelContainer/GridContainer/Row 1/Details input container" unique_id=829384756]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="PanelContainer/GridContainer/Row 1/Details input container/Song Title Row" unique_id=829384757]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "Song Title"
+label_settings = ExtResource("4_toce6")
+vertical_alignment = 1
+
+[node name="SongTitleLineEdit" type="LineEdit" parent="PanelContainer/GridContainer/Row 1/Details input container/Song Title Row" unique_id=829384758]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Enter song title..."
 
 [node name="ArtistLabel" type="Label" parent="PanelContainer/GridContainer/Row 1/Details input container" unique_id=2059345266]
 layout_mode = 2

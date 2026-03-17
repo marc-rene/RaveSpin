@@ -28,6 +28,9 @@ const ROOT_MUSIC_DIR = "res://Music/Song Metadatas/"
 
 # What's the actual data for this song? Its MP3/WAV file 
 @export var Audio_File: AudioStream
+## For user-imported songs (Add Local): path to the file under user:// so it persists.
+## When set, get_audio_stream() loads from this path if Audio_File is null.
+@export var Audio_File_Path: String
 @export var Audio_File_Waveform : CompressedTexture2D
 
 # How many Beats Per Minute for this song?
@@ -64,6 +67,33 @@ func Refresh_Music_Key():
 # This will make future Metadata retrieval easier
 @export var MusicBrainz_ID: StringName
 
+
+## Returns the playable stream: Audio_File if set, otherwise loads from Audio_File_Path (user imports).
+func get_audio_stream() -> AudioStream:
+    if Audio_File != null:
+        return Audio_File
+    if Audio_File_Path.is_empty():
+        return null
+    var ext := Audio_File_Path.get_extension().to_lower()
+    if ext == "mp3":
+        return AudioStreamMP3.load_from_file(Audio_File_Path)
+    if ext == "wav":
+        var file := FileAccess.open(Audio_File_Path, FileAccess.READ)
+        if not file:
+            return null
+        var wav := AudioStreamWAV.new()
+        wav.data = file.get_buffer(file.get_length())
+        file.close()
+        return wav
+    if ext == "ogg":
+        var file := FileAccess.open(Audio_File_Path, FileAccess.READ)
+        if not file:
+            return null
+        var ogg := AudioStreamOggVorbis.new()
+        ogg.data = file.get_buffer(file.get_length())
+        file.close()
+        return ogg
+    return null
 
 func Attempt_Find_waveform() -> bool:
     # The waveform is expected to be the same name as our audio file
