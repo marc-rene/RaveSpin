@@ -48,14 +48,9 @@ unique_name_in_owner = true
 layout_mode = 2
 text = "X"
 
-[node name="Save to library btn" type="Button" parent="PanelContainer/GridContainer/HBoxContainer" unique_id=839384759]
-unique_name_in_owner = true
-layout_mode = 2
-text = "Save to library"
-
 [node name="Add Songs Container" type="HFlowContainer" parent="PanelContainer/GridContainer" unique_id=1135122566]
 layout_mode = 2
-size_flags_vertical = 6
+size_flags_vertical = 4
 alignment = 1
 
 [node name="Add_Local_Song_btn" type="Button" parent="PanelContainer/GridContainer/Add Songs Container" unique_id=834730844]
@@ -91,6 +86,7 @@ icon = ExtResource("7_ynhe2")
 [node name="Row 1" type="HBoxContainer" parent="PanelContainer/GridContainer" unique_id=119305861]
 layout_mode = 2
 size_flags_vertical = 3
+size_flags_stretch_ratio = 2.0
 
 [node name="Album Art btn" type="TextureRect" parent="PanelContainer/GridContainer/Row 1" unique_id=510533714]
 layout_mode = 2
@@ -220,8 +216,6 @@ size_flags_stretch_ratio = 0.1
 
 [node name="Row 2" type="HBoxContainer" parent="PanelContainer/GridContainer" unique_id=138766103]
 layout_mode = 2
-size_flags_vertical = 3
-size_flags_stretch_ratio = 0.5
 alignment = 1
 
 [node name="BPM LABEL" type="Label" parent="PanelContainer/GridContainer/Row 2" unique_id=2114843615]
@@ -241,7 +235,7 @@ placeholder_text = "120"
 alignment = 1
 expand_to_text_length = true
 right_icon = ExtResource("10_jbcxj")
-icon_expand_mode = 2
+icon_expand_mode = 1
 
 [node name="VSeparator" type="VSeparator" parent="PanelContainer/GridContainer/Row 2" unique_id=206005187]
 layout_mode = 2
@@ -303,3 +297,19 @@ selected = 0
 item_count = 1
 popup/item_0/text = "Select a Genre"
 popup/item_0/id = 0
+
+[node name="HSeparator3" type="HSeparator" parent="PanelContainer/GridContainer" unique_id=854095055]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.1
+
+[node name="Save to library btn" type="Button" parent="PanelContainer/GridContainer" unique_id=839384759]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+text = "Save to library"
+
+[node name="HSeparator4" type="HSeparator" parent="PanelContainer/GridContainer" unique_id=750215452]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.1

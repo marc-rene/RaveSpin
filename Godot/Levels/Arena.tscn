@@ -86,8 +86,8 @@ scene_properties_keys = PackedStringArray("fx_selection_menu.gd")
 script = ExtResource("9_kn3ki")
 
 [node name="Add Song" parent="LibreboxScene" unique_id=335463304 instance=ExtResource("5_3sm0n")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10, 0.3)
-screen_size = Vector2(1.152, 0.648)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.16, 0.357)
+screen_size = Vector2(0.922, 0.518)
 enabled = false
 scene = ExtResource("8_4yh7d")
 viewport_size = Vector2(1152, 648)
@@ -95,6 +95,7 @@ scene_properties_keys = PackedStringArray("add_track_ui.gd")
 
 [node name="HandTouch" type="Node" parent="LibreboxScene/Add Song" unique_id=1571468936]
 script = ExtResource("9_kn3ki")
+enable_double = true
 
 [node name="Track Stream Player Left" type="AudioStreamPlayer" parent="." unique_id=1328970906]
 unique_name_in_owner = true

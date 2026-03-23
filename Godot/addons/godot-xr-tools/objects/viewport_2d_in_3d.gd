@@ -457,7 +457,7 @@ func _update_screen_size() -> void:
 func _update_enabled() -> void:
     if Engine.is_editor_hint():
         return
-
+    
     $StaticBody3D/CollisionShape3D.disabled = !enabled or not is_visible_in_tree()
 
 

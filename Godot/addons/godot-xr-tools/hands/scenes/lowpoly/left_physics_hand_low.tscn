@@ -48,7 +48,7 @@ default_pose = ExtResource("3_t17lq")
 [node name="Hand_Nails_low_L" parent="." unique_id=770086331 instance=ExtResource("2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.03, -0.05, 0.15)
 
-[node name="Skeleton3D" parent="Hand_Nails_low_L/Armature" parent_id_path=PackedInt32Array(770086331, 217278874) index="0" unique_id=535551836]
+[node name="Skeleton3D" parent="Hand_Nails_low_L/Armature" parent_id_path=PackedInt32Array(770086331, 258525226) index="0" unique_id=493545244]
 bones/1/rotation = Quaternion(0.323537, -2.5658142e-05, -0.027220426, 0.9458239)
 bones/2/rotation = Quaternion(-0.09044407, -0.04151748, -0.16629349, 0.98104167)
 bones/3/rotation = Quaternion(-0.04661986, 0.02097099, 0.010327632, 0.9986392)
@@ -69,7 +69,7 @@ bones/21/rotation = Quaternion(-0.06251818, -0.00022572002, -0.115392834, 0.9913
 bones/22/rotation = Quaternion(0.058578636, 0.021648303, -0.26990518, 0.9608596)
 bones/23/rotation = Quaternion(0.006871769, -0.0035727466, -0.21195254, 0.97724926)
 
-[node name="mesh_Hand_Nails_low_L" parent="Hand_Nails_low_L/Armature/Skeleton3D" index="0" unique_id=363005711]
+[node name="mesh_Hand_Nails_low_L" parent="Hand_Nails_low_L/Armature/Skeleton3D" index="0" unique_id=536177575]
 surface_material_override/0 = ExtResource("5")
 
 [node name="BoneRoot" type="BoneAttachment3D" parent="Hand_Nails_low_L/Armature/Skeleton3D" index="1" unique_id=1783158266]

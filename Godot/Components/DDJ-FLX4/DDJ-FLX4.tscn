@@ -15,7 +15,7 @@ transform = Transform3D(1.2, 0, 0, 0, 1.2, 0, 0, 0, 1.2, 0, 0, 0)
 script = ExtResource("2_3ugcv")
 BPM_Adjust_Range = 0.2
 
-[node name="Crossfade Slider" parent="." index="6" unique_id=1241271005]
+[node name="Crossfade Slider" parent="." index="6" unique_id=2139715587]
 transform = Transform3D(1.4190836e-07, 0, -1, 0, 1, 0, 0.7288296, 0, 1.9470718e-07, 0.2408275, 0.042000003, 0.2543439)
 
 [node name="Controls" type="Node3D" parent="." index="53" unique_id=839374979]

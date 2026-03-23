@@ -46,7 +46,7 @@ default_pose = ExtResource("3_3ih8a")
 [node name="Hand_Glove_R" parent="." unique_id=2049227124 instance=ExtResource("2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.03, -0.05, 0.15)
 
-[node name="Skeleton3D" parent="Hand_Glove_R/Armature" parent_id_path=PackedInt32Array(2049227124, 1870412832) index="0" unique_id=1840183609]
+[node name="Skeleton3D" parent="Hand_Glove_R/Armature" parent_id_path=PackedInt32Array(2049227124, 534625362) index="0" unique_id=1359278362]
 bones/1/rotation = Quaternion(0.323537, 2.5658142e-05, 0.027220426, 0.9458239)
 bones/2/rotation = Quaternion(-0.09044407, 0.04151748, 0.16629349, 0.98104167)
 bones/3/rotation = Quaternion(-0.04661986, -0.020970985, -0.010327632, 0.9986392)
@@ -67,7 +67,7 @@ bones/21/rotation = Quaternion(-0.06251817, 0.00022572096, 0.115392834, 0.991350
 bones/22/rotation = Quaternion(0.058578644, -0.021648303, 0.26990518, 0.9608596)
 bones/23/rotation = Quaternion(0.0068717655, 0.0035727452, 0.21195254, 0.97724926)
 
-[node name="mesh_Glove_R" parent="Hand_Glove_R/Armature/Skeleton3D" index="0" unique_id=232689285]
+[node name="mesh_Glove_R" parent="Hand_Glove_R/Armature/Skeleton3D" index="0" unique_id=427466424]
 surface_material_override/0 = ExtResource("5")
 
 [node name="AnimationPlayer" parent="Hand_Glove_R" unique_id=784115970 instance=ExtResource("1")]

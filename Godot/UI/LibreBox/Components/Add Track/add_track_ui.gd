@@ -37,6 +37,7 @@ func _on_save_to_library_pressed() -> void:
 
 func _setup_file_dialog() -> void:
     _file_dialog = FileDialog.new()
+    _file_dialog.use_native_dialog = true
     _file_dialog.size = Parent_XR_2D_3D_Node.viewport_size
     _file_dialog.title = "Choose an audio file (MP3 / WAV / OGG)"
     _file_dialog.access = FileDialog.ACCESS_FILESYSTEM

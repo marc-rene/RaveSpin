@@ -62,8 +62,8 @@ func New_Track_Selected(New_Song : Song):
     
     
 func show_add_track():
-    if Add_Track_UI_node.position.y > 1:
-        Add_Track_UI_node.position.y = -0.1
+    if Add_Track_UI_node.position.y > 1 or Add_Track_UI_node.enabled == false:
+        Add_Track_UI_node.position.y = -0.16 # TODO: Make this adjustable or something
         Add_Track_UI_node.set_enabled(true)
         
 
