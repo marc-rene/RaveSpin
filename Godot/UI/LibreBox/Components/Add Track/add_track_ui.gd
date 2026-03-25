@@ -305,22 +305,24 @@ func _on_native_file_dialog_result(status: bool, paths: PackedStringArray, _filt
     if (not status) or paths.is_empty():
         return
     var first_path: String = paths[0]
-    _on_audio_file_selected(first_path)
+    var file_extension_hint: String = _extension_hint_for_filter_index(_filter_index)
+    _on_audio_file_selected(first_path, file_extension_hint)
 
 
 func _on_fallback_file_dialog_file_selected(path: String) -> void:
     _picking_file = false
-    _on_audio_file_selected(path)
+    var detected_extension: String = path.get_extension().to_lower()
+    _on_audio_file_selected(path, detected_extension)
 
 
 func _on_fallback_file_dialog_canceled() -> void:
     _picking_file = false
 
 
-func _on_audio_file_selected(selected_path: String) -> void:
+func _on_audio_file_selected(selected_path: String, file_extension_hint: String = "") -> void:
     if selected_path.is_empty():
         return
-    var dest_path: String = AudioMetadata.copy_to_user_imports(selected_path)
+    var dest_path: String = AudioMetadata.copy_to_user_imports(selected_path, file_extension_hint)
     if dest_path.is_empty():
         push_error("Add Track: Failed to copy file to user imports.")
         return
@@ -343,6 +345,18 @@ func _on_audio_file_selected(selected_path: String) -> void:
     _populate_form_from_metadata(meta)
     _apply_album_artwork(_last_extracted_music_metadata)
     _generate_and_assign_waveform_png(dest_path)
+
+
+func _extension_hint_for_filter_index(filter_index: int) -> String:
+    match filter_index:
+        0:
+            return "mp3"
+        1:
+            return "wav"
+        2:
+            return "ogg"
+        _:
+            return ""
 
 
 func _extract_metadata_merged(audio_path: String) -> Dictionary:
@@ -686,6 +700,8 @@ func _save_internal() -> String:
             _pending_song.Main_Artist = Artist.Get_Artist_Resource_By_Name(new_artist_name)
             if _pending_song.Main_Artist == null:
                 _pending_song.Main_Artist = _create_or_get_artist(new_artist_name)
+            if _pending_song.Main_Artist == null:
+                return "Failed to create Artist resource."
         else:
             return "Artist name is empty."
     else:
@@ -706,6 +722,8 @@ func _save_internal() -> String:
             _pending_song.Song_Album = Album.Get_Album_Resource_By_Name(new_album_name)
             if _pending_song.Song_Album == null:
                 _pending_song.Song_Album = _create_or_get_album(new_album_name)
+            if _pending_song.Song_Album == null:
+                return "Failed to create Album resource."
         else:
             return "Album name is empty."
     else:
@@ -731,10 +749,15 @@ func _save_internal() -> String:
 
     _pending_song.Song_Genres = _collect_song_genres()
 
+    var audio_stream_to_validate: AudioStream = _pending_song.get_audio_stream()
+    if audio_stream_to_validate == null:
+        return "Imported audio could not be loaded. Please try a different file."
+
     var safe_name: String = String(_pending_song.Song_Title)
     safe_name = safe_name.replace("/", "-").replace("\\", "-").strip_edges()
     if safe_name.is_empty():
         safe_name = "Untitled"
+    safe_name = _sanitize_resource_filename(safe_name)
     var save_dir: String
     if Engine.is_editor_hint():
         save_dir = Song.ROOT_MUSIC_DIR
@@ -799,7 +822,7 @@ func save_current_song_to_library() -> bool:
 func _create_or_get_artist(name_str: StringName) -> Artist:
     var artist: Artist = Artist.new()
     artist.Artist_Name = name_str
-    var safe_filename: String = String(name_str).replace("/", "-").replace(" ", "_")
+    var safe_filename: String = _sanitize_resource_filename(String(name_str))
     var artist_path: String
     if Engine.is_editor_hint():
         var editor_dir: String = "res://Music/Artists"
@@ -809,7 +832,9 @@ func _create_or_get_artist(name_str: StringName) -> Artist:
         var user_dir: String = "user://Music/Artists"
         artist_path = "%s/%s_Artist.tres" % [user_dir, safe_filename]
         DirAccess.make_dir_recursive_absolute(user_dir + "/")
-    ResourceSaver.save(artist, artist_path)
+    var save_error: Error = ResourceSaver.save(artist, artist_path)
+    if save_error != OK:
+        return null
     return ResourceLoader.load(artist_path) as Artist
 
 
@@ -818,7 +843,7 @@ func _create_or_get_album(name_str: StringName) -> Album:
     album.Album_Name = name_str
     if _pending_song.Main_Artist != null:
         album.Album_Artist = _pending_song.Main_Artist
-    var safe_filename: String = String(name_str).replace("/", "-").replace(" ", "_")
+    var safe_filename: String = _sanitize_resource_filename(String(name_str))
     var album_path: String
     if Engine.is_editor_hint():
         var editor_dir: String = "res://Music/Albums"
@@ -828,5 +853,23 @@ func _create_or_get_album(name_str: StringName) -> Album:
         var user_dir: String = "user://Music/Albums"
         album_path = "%s/%s_Album.tres" % [user_dir, safe_filename]
         DirAccess.make_dir_recursive_absolute(user_dir + "/")
-    ResourceSaver.save(album, album_path)
+    var save_error: Error = ResourceSaver.save(album, album_path)
+    if save_error != OK:
+        return null
     return ResourceLoader.load(album_path) as Album
+
+
+func _sanitize_resource_filename(raw_name: String) -> String:
+    var sanitized: String = raw_name.strip_edges()
+    sanitized = sanitized.replace("/", "-").replace("\\", "-")
+    sanitized = sanitized.replace(" ", "_")
+
+    # Replace any character that isn't a safe filename char.
+    var invalid_char_regex: RegEx = RegEx.new()
+    invalid_char_regex.compile("[^A-Za-z0-9_-]")
+    sanitized = invalid_char_regex.sub(sanitized, "_", true)
+
+    sanitized = sanitized.strip_edges()
+    if sanitized.is_empty():
+        sanitized = "Unknown"
+    return sanitized

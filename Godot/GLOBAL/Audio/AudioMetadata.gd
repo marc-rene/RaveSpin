@@ -460,15 +460,81 @@ static func _load_stream_from_path(path: String) -> AudioStream:
     return null
 
 
-static func copy_to_user_imports(source_path: String) -> String:
+static func copy_to_user_imports(source_path: String, file_extension_hint: String = "") -> String:
     DirAccess.make_dir_recursive_absolute(USER_IMPORTS_DIR)
-    var base_name: String = source_path.get_file()
-    var dest_path: String = USER_IMPORTS_DIR.path_join(base_name)
+
+    var original_file_name: String = source_path.get_file()
+    var cleaned_file_name: String = original_file_name.strip_edges()
+
+    # If the native picker gives a path like "..._16." (no real extension), remove trailing dots.
+    while cleaned_file_name.ends_with("."):
+        cleaned_file_name = cleaned_file_name.substr(0, cleaned_file_name.length() - 1)
+
+    var original_extension: String = source_path.get_extension().to_lower().strip_edges()
+    var normalized_extension_hint: String = file_extension_hint.to_lower().strip_edges()
+    if normalized_extension_hint.begins_with("."):
+        normalized_extension_hint = normalized_extension_hint.substr(1, normalized_extension_hint.length() - 1)
+
+    var audio_extension: String = ""
+    if not normalized_extension_hint.is_empty():
+        audio_extension = normalized_extension_hint
+    elif not original_extension.is_empty():
+        audio_extension = original_extension
+
+    if audio_extension.is_empty():
+        audio_extension = _infer_audio_extension_from_file_magic(source_path)
+
+    var output_base_name: String = cleaned_file_name
+    if not audio_extension.is_empty():
+        output_base_name = cleaned_file_name.get_basename()
+
+    var initial_dest_file_name: String = ""
+    if audio_extension.is_empty():
+        initial_dest_file_name = output_base_name
+    else:
+        initial_dest_file_name = "%s.%s" % [output_base_name, audio_extension]
+
+    var dest_path: String = USER_IMPORTS_DIR.path_join(initial_dest_file_name)
     var counter: int = 0
     while FileAccess.file_exists(dest_path):
         counter += 1
-        var name_no_ext: String = base_name.get_basename()
-        var extension: String = base_name.get_extension()
-        dest_path = USER_IMPORTS_DIR.path_join("%s_%d.%s" % [name_no_ext, counter, extension])
-    DirAccess.copy_absolute(source_path, dest_path)
+        if audio_extension.is_empty():
+            dest_path = USER_IMPORTS_DIR.path_join("%s_%d" % [output_base_name, counter])
+        else:
+            dest_path = USER_IMPORTS_DIR.path_join("%s_%d.%s" % [output_base_name, counter, audio_extension])
+
+    var copy_error: Error = DirAccess.copy_absolute(source_path, dest_path)
+    if copy_error != OK:
+        return ""
+
     return dest_path
+
+
+static func _infer_audio_extension_from_file_magic(source_path: String) -> String:
+    var file: FileAccess = FileAccess.open(source_path, FileAccess.READ)
+    if file == null:
+        return ""
+
+    var header_bytes: PackedByteArray = file.get_buffer(32)
+    file.close()
+    if header_bytes.is_empty():
+        return ""
+
+    # MP3 (often ID3 at the beginning)
+    if header_bytes.size() >= 3 and header_bytes[0] == 0x49 and header_bytes[1] == 0x44 and header_bytes[2] == 0x33:
+        return "mp3"
+
+    # WAV starts with "RIFF" then "WAVE"
+    if header_bytes.size() >= 12:
+        var riff_str: String = header_bytes.slice(0, 4).get_string_from_ascii()
+        var wave_str: String = header_bytes.slice(8, 12).get_string_from_ascii()
+        if riff_str == "RIFF" and wave_str == "WAVE":
+            return "wav"
+
+    # OGG starts with "OggS"
+    if header_bytes.size() >= 4:
+        var ogg_str: String = header_bytes.slice(0, 4).get_string_from_ascii()
+        if ogg_str == "OggS":
+            return "ogg"
+
+    return ""
