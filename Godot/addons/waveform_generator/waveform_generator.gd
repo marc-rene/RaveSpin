@@ -16,10 +16,15 @@ static func _singleton() -> Object:
 
 
 static func generate(audio_path: String, output_png_path: String, width: int = 1200, height: int = 320) -> int:
-    var s: Object = _singleton()
+    var s : Object = _singleton()
     if s == null:
         return -1
-    return s.generate(audio_path, output_png_path, width, height)
+    var global_audio: String = ProjectSettings.globalize_path(audio_path)
+    var global_out: String = ProjectSettings.globalize_path(output_png_path)
+    var global_dir: String = global_out.get_base_dir()
+    if not DirAccess.dir_exists_absolute(global_dir):
+        DirAccess.make_dir_recursive_absolute(global_dir)
+    return s.generate(global_audio, global_out, width, height)
 
 
 static func get_song_title(audio_path: String) -> StringName:

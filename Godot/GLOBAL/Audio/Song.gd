@@ -140,6 +140,90 @@ func Attempt_Find_waveform() -> bool:
 var attempt_find_waveform_texture = Attempt_Find_waveform
 
 
+## Attempts to load the generated `*_WAVEFORM.png` from next to `Audio_File_Path`.
+## This is useful for user-imported songs where `Audio_File` is null.
+func Attempt_Find_waveform_from_audio_file_path() -> bool:
+    if Audio_File_Waveform != null:
+        return true
+    if Audio_File_Path.is_empty():
+        return false
+
+    var base_dir: String = Audio_File_Path.get_base_dir()
+    var base_name: String = Audio_File_Path.get_file().get_basename()
+    var candidate_base_names: Array[String] = [base_name, _sanitize_waveform_base_name(base_name)]
+    var candidate_global_paths: Array[String] = []
+
+    for candidate_index: int in range(candidate_base_names.size()):
+        var candidate_base: String = candidate_base_names[candidate_index]
+        var near_audio: String = "%s/%s_WAVEFORM.png" % [base_dir, candidate_base]
+        candidate_global_paths.append(ProjectSettings.globalize_path(near_audio))
+
+        var in_waveforms: String = "user://waveforms/%s_WAVEFORM.png" % candidate_base
+        candidate_global_paths.append(ProjectSettings.globalize_path(in_waveforms))
+
+    var found_global_path: String = ""
+    for path_index: int in range(candidate_global_paths.size()):
+        if FileAccess.file_exists(candidate_global_paths[path_index]):
+            found_global_path = candidate_global_paths[path_index]
+            break
+
+    if found_global_path.is_empty():
+        # Extra Android check: external app-specific storage (readable via adb):
+        # /storage/emulated/0/Android/data/<package>/files/...
+        for path_index: int in range(candidate_global_paths.size()):
+            var external_global_waveform_path: String = _android_external_files_fallback(candidate_global_paths[path_index])
+            if not external_global_waveform_path.is_empty() and FileAccess.file_exists(external_global_waveform_path):
+                found_global_path = external_global_waveform_path
+                break
+
+    if found_global_path.is_empty():
+        print("Song: waveform PNG missing: %s" % ProjectSettings.globalize_path("%s/%s_WAVEFORM.png" % [base_dir, base_name]))
+        return false
+
+    var loaded_image: Image = Image.load_from_file(found_global_path)
+    if loaded_image == null:
+        print("Song: waveform PNG load failed: %s" % found_global_path)
+        return false
+
+    var loaded_texture: ImageTexture = ImageTexture.create_from_image(loaded_image)
+    Audio_File_Waveform = loaded_texture as Texture2D
+    print("Song: waveform PNG loaded: %s" % found_global_path)
+    return true
+
+
+func _sanitize_waveform_base_name(raw_base_name: String) -> String:
+    var sanitized: String = raw_base_name.strip_edges()
+    sanitized = sanitized.replace("%", "_")
+    sanitized = sanitized.replace(":", "_")
+    sanitized = sanitized.replace("/", "_")
+    sanitized = sanitized.replace("\\", "_")
+    sanitized = sanitized.replace(" ", "_")
+    while sanitized.contains("__"):
+        sanitized = sanitized.replace("__", "_")
+    sanitized = sanitized.strip_edges()
+    if sanitized.is_empty():
+        sanitized = "ImportedSong"
+    return sanitized
+
+
+func _android_external_files_fallback(internal_global_path: String) -> String:
+    if not OS.has_feature("android"):
+        return ""
+    # Try to map: /data/data/<pkg>/files/<rel> -> /storage/emulated/0/Android/data/<pkg>/files/<rel>
+    # We do not reliably know <pkg> at runtime without Android APIs, but we can extract it if present.
+    var marker: String = "/data/data/"
+    var idx: int = internal_global_path.find(marker)
+    if idx < 0:
+        return ""
+    var after: String = internal_global_path.substr(idx + marker.length())
+    var slash_idx: int = after.find("/")
+    if slash_idx < 0:
+        return ""
+    var package_name: String = after.substr(0, slash_idx)
+    var rest: String = after.substr(slash_idx) # includes "/files/..."
+    return "/storage/emulated/0/Android/data/%s%s" % [package_name, rest]
+
+
 
 func _ready():
     if Track_Key == null and Track_Key_Note != null and Track_Scale == null:

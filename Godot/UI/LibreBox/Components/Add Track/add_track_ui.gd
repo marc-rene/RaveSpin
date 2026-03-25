@@ -40,6 +40,10 @@ var _fallback_file_dialog: FileDialog
 ## Latest [MusicMetadata] from the addon (embedded cover art).
 var _last_extracted_music_metadata: MusicMetadata
 
+## Embedded cover texture extracted from the current selected song.
+## Used to persist `Album.Album_Artwork` when saving the song to the library.
+var _pending_album_artwork_texture: Texture2D
+
 
 func close_window() -> void:
     Parent_XR_2D_3D_Node.position.y = 10.0
@@ -371,19 +375,89 @@ func _generate_and_assign_waveform_png(audio_path: String) -> void:
     if _pending_song == null:
         return
     var base_name: String = audio_path.get_file().get_basename()
-    var output_png: String = audio_path.get_base_dir().path_join("%s_WAVEFORM.png" % base_name)
-    var global_audio: String = ProjectSettings.globalize_path(audio_path)
-    var global_png: String = ProjectSettings.globalize_path(output_png)
-    var exit_code: int = WaveformGenerator.generate(global_audio, global_png, 1200, 320)
-    if exit_code != 0:
+    var safe_base_name: String = _sanitize_waveform_base_name(base_name)
+    var output_png: String = audio_path.get_base_dir().path_join("%s_WAVEFORM.png" % safe_base_name)
+    var temp_output_png: String = "user://waveforms/%s_WAVEFORM.png" % safe_base_name
+    print("Add_Track: Generating waveform PNG")
+    print("Add_Track: audio_path (user://): %s" % audio_path)
+    print("Add_Track: output_png (user://): %s" % output_png)
+    print("Add_Track: temp_output_png (user://): %s" % temp_output_png)
+
+    var output_directory_user: String = output_png.get_base_dir()
+    DirAccess.make_dir_recursive_absolute(output_directory_user)
+    DirAccess.make_dir_recursive_absolute("user://waveforms/")
+
+    # Wrapper now globalizes paths internally (matches extract_album_artwork behavior).
+    var exit_code: int = WaveformGenerator.generate(audio_path, temp_output_png, 1200, 320)
+    print("Add_Track: waveform generator exit_code: %d" % exit_code)
+
+    var temp_output_global: String = ProjectSettings.globalize_path(temp_output_png)
+    var target_output_global: String = ProjectSettings.globalize_path(output_png)
+    var temp_output_external: String = _android_external_files_fallback(temp_output_global)
+
+    # Some Android plugin writes asynchronously; poll briefly.
+    var wait_slices: int = 0
+    while wait_slices < 20 and (not FileAccess.file_exists(temp_output_global)) and (temp_output_external.is_empty() or (not FileAccess.file_exists(temp_output_external))):
+        await get_tree().create_timer(0.05).timeout
+        wait_slices += 1
+
+    var found_temp_global: String = ""
+    if FileAccess.file_exists(temp_output_global):
+        found_temp_global = temp_output_global
+    elif not temp_output_external.is_empty() and FileAccess.file_exists(temp_output_external):
+        found_temp_global = temp_output_external
+
+    if found_temp_global.is_empty():
+        print("Add_Track: waveform temp PNG not found after generation: %s" % temp_output_global)
+        if not temp_output_external.is_empty():
+            print("Add_Track: also not found at external path: %s" % temp_output_external)
         return
-    if not FileAccess.file_exists(global_png):
+
+    # Copy beside the audio file so existing loaders keep working.
+    var copy_error: Error = DirAccess.copy_absolute(found_temp_global, target_output_global)
+    if copy_error != OK:
+        print("Add_Track: failed to copy waveform PNG to target: %s (error=%d)" % [target_output_global, copy_error])
         return
-    var loaded_image: Image = Image.load_from_file(global_png)
-    if loaded_image == null:
-        return
-    var waveform_texture: ImageTexture = ImageTexture.create_from_image(loaded_image)
-    _pending_song.Audio_File_Waveform = waveform_texture
+
+    _pending_song.Attempt_Find_waveform_from_audio_file_path()
+
+
+func _android_external_files_fallback(internal_global_path: String) -> String:
+    if not OS.has_feature("android"):
+        return ""
+    var marker: String = "/data/data/"
+    var idx: int = internal_global_path.find(marker)
+    if idx < 0:
+        return ""
+    var after: String = internal_global_path.substr(idx + marker.length())
+    var slash_idx: int = after.find("/")
+    if slash_idx < 0:
+        return ""
+    var package_name: String = after.substr(0, slash_idx)
+    var rest: String = after.substr(slash_idx) # includes "/files/..."
+    return "/storage/emulated/0/Android/data/%s%s" % [package_name, rest]
+
+
+func _sanitize_waveform_base_name(raw_base_name: String) -> String:
+    var sanitized: String = raw_base_name.strip_edges()
+    # FFmpeg treats '%' specially (image sequences). Also avoid other path-hostile chars.
+    sanitized = sanitized.replace("%", "_")
+    sanitized = sanitized.replace(":", "_")
+    sanitized = sanitized.replace("/", "_")
+    sanitized = sanitized.replace("\\", "_")
+    sanitized = sanitized.replace("?", "_")
+    sanitized = sanitized.replace("*", "_")
+    sanitized = sanitized.replace("\"", "_")
+    sanitized = sanitized.replace("<", "_")
+    sanitized = sanitized.replace(">", "_")
+    sanitized = sanitized.replace("|", "_")
+    sanitized = sanitized.replace(" ", "_")
+    while sanitized.contains("__"):
+        sanitized = sanitized.replace("__", "_")
+    sanitized = sanitized.strip_edges()
+    if sanitized.is_empty():
+        sanitized = "ImportedSong"
+    return sanitized
 
 
 func _append_genre_tag_strings_to(target: PackedStringArray, raw_genre: String) -> void:
@@ -478,11 +552,13 @@ func _apply_album_artwork(music_meta: MusicMetadata) -> void:
     if _album_art_rect == null:
         return
     var artwork_texture: Texture2D
+    _pending_album_artwork_texture = null
     if music_meta != null:
         var embedded_cover: ImageTexture = music_meta.get_most_relevent_cover()
         if embedded_cover != null:
             artwork_texture = embedded_cover
     if artwork_texture != null:
+        _pending_album_artwork_texture = artwork_texture
         _album_art_rect.texture = artwork_texture
     elif _default_album_art != null:
         _album_art_rect.texture = _default_album_art
@@ -733,6 +809,14 @@ func _save_internal() -> String:
         else:
             return "Invalid album selection."
 
+    # Persist extracted cover art onto the selected album resource (if the album has none yet).
+    if _pending_song.Song_Album != null and _pending_album_artwork_texture != null and _pending_song.Song_Album.Album_Artwork == null:
+        _pending_song.Song_Album.Album_Artwork = _pending_album_artwork_texture
+        if not _pending_song.Song_Album.resource_path.is_empty():
+            var save_album_error: Error = ResourceSaver.save(_pending_song.Song_Album, _pending_song.Song_Album.resource_path)
+            if save_album_error != OK:
+                push_warning("Add_Track: Could not save Album artwork to %s" % _pending_song.Song_Album.resource_path)
+
     var bpm_edit: LineEdit = _row2.get_node_or_null("BPM") as LineEdit
     if bpm_edit != null and bpm_edit.text.strip_edges().is_valid_float():
         _pending_song.Track_BPM = bpm_edit.text.strip_edges().to_float()
@@ -785,6 +869,7 @@ func _save_internal() -> String:
 func _reset_form_after_success() -> void:
     _pending_song = null
     _pending_audio_path = ""
+    _pending_album_artwork_texture = null
     if _album_art_rect != null and _default_album_art != null:
         _album_art_rect.texture = _default_album_art
     var title_edit: LineEdit = _details_container.get_node_or_null("Song Title Row/SongTitleLineEdit") as LineEdit

@@ -37,6 +37,9 @@ func Refresh(Set_Track_1 : bool) -> bool:
     var success = true
     if Set_Track_1:
         $"VBoxContainer/Track 1 Container/Track 1 Card".Set_New_Song(Track_1)
+        if Track_1:
+            if Track_1.Audio_File_Waveform == null:
+                Track_1.Attempt_Find_waveform_from_audio_file_path()
         if Track_1 and Track_1.Audio_File_Waveform:
             if not Track_1_waveformVis:
                 success = false
@@ -51,6 +54,9 @@ func Refresh(Set_Track_1 : bool) -> bool:
             _rhythm_1.bpm = Track_1.Track_BPM if Track_1 else 120.0
     else:
         $"VBoxContainer/Track 2 Container/Track 2 Card".Set_New_Song(Track_2)
+        if Track_2:
+            if Track_2.Audio_File_Waveform == null:
+                Track_2.Attempt_Find_waveform_from_audio_file_path()
         if Track_2 and Track_2.Audio_File_Waveform:
             if not Track_2_waveformVis:
                 success = false

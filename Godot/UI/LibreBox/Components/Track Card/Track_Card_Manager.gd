@@ -6,7 +6,7 @@ class_name Track_Card
 @onready var Origin_Platform_Logo : TextureRect = %"Origin Platform Logo"
 
 @onready var Album_Art_Texture_Holder : TextureRect = %Album_Thumbnail
-const Default_Album_art = preload("res://Art/Icon/T_RaveSpinHeader_Light.png")
+const Default_Album_art = preload("res://Art/Splash/Light Splash.png")
 
 @onready var Track_Name_Label : Label = %Title
 @onready var Artist_Name_Label : Label = %Artist
@@ -55,7 +55,10 @@ func Refresh_Details() -> bool:
         ETrackOrigins.Get_Origin_Platform_Logo(Song_Resource.Song_Origin_Platform),
         ETrackOrigins.Get_Origin_Platform_Logo(ETrackOrigins.Track_Origins_enum.OTHER))) # If we can't find it, just say "Other"
     
-    Album_Art_Texture_Holder.texture = Song_Resource.Song_Album.Album_Artwork if Song_Resource.Song_Album else Default_Album_art
+    var album_artwork_texture: Texture2D = Default_Album_art
+    if Song_Resource.Song_Album and Song_Resource.Song_Album.Album_Artwork != null:
+        album_artwork_texture = Song_Resource.Song_Album.Album_Artwork
+    Album_Art_Texture_Holder.texture = album_artwork_texture
     
     
     Track_Name_Label.text = Utility.Return_Valid(Song_Resource.Song_Title, "Untitled")

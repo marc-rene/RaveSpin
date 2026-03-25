@@ -9,7 +9,7 @@ static var All_Albums: Array[Album]
 # Who's the artist who made it?
 @export var Album_Artist : Artist
 
-@export var Album_Artwork : CompressedTexture2D
+@export var Album_Artwork: Texture2D
 
 @export var MusicBrainz_ID : StringName
 
