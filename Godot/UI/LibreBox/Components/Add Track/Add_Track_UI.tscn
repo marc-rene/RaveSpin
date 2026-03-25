@@ -52,11 +52,14 @@ text = "X"
 [node name="Add Songs Container" type="HFlowContainer" parent="PanelContainer/GridContainer" unique_id=1135122566]
 layout_mode = 2
 size_flags_vertical = 4
+size_flags_stretch_ratio = 0.8
 alignment = 1
 
 [node name="Add_Local_Song_btn" type="Button" parent="PanelContainer/GridContainer/Add Songs Container" unique_id=834730844]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_vertical = 4
+size_flags_stretch_ratio = 0.8
 theme = ExtResource("1_raf6m")
 text = "Local 
 Disk"
@@ -64,6 +67,8 @@ icon = ExtResource("3_0gylw")
 
 [node name="Add_Spotify_Song_btn" type="Button" parent="PanelContainer/GridContainer/Add Songs Container" unique_id=612619710]
 layout_mode = 2
+size_flags_vertical = 4
+size_flags_stretch_ratio = 0.8
 theme = ExtResource("1_raf6m")
 disabled = true
 text = "Spotify"
@@ -71,6 +76,8 @@ icon = ExtResource("5_jbcxj")
 
 [node name="Add_SoundCloud_Song_btn" type="Button" parent="PanelContainer/GridContainer/Add Songs Container" unique_id=1313333364]
 layout_mode = 2
+size_flags_vertical = 4
+size_flags_stretch_ratio = 0.8
 theme = ExtResource("1_raf6m")
 disabled = true
 text = "SoundCloud"
@@ -78,6 +85,8 @@ icon = ExtResource("6_tc5bx")
 
 [node name="Add_YoutubeMusic_Song_btn" type="Button" parent="PanelContainer/GridContainer/Add Songs Container" unique_id=153534716]
 layout_mode = 2
+size_flags_vertical = 4
+size_flags_stretch_ratio = 0.8
 theme = ExtResource("1_raf6m")
 disabled = true
 text = "YouTube
@@ -87,7 +96,7 @@ icon = ExtResource("7_ynhe2")
 [node name="Row 1" type="HBoxContainer" parent="PanelContainer/GridContainer" unique_id=119305861]
 layout_mode = 2
 size_flags_vertical = 3
-size_flags_stretch_ratio = 2.0
+size_flags_stretch_ratio = 2.5
 
 [node name="Album Art btn" type="TextureRect" parent="PanelContainer/GridContainer/Row 1" unique_id=510533714]
 unique_name_in_owner = true
@@ -107,6 +116,7 @@ size_flags_stretch_ratio = 4.0
 [node name="Song Title Row" type="HBoxContainer" parent="PanelContainer/GridContainer/Row 1/Details input container" unique_id=829384756]
 layout_mode = 2
 size_flags_vertical = 3
+size_flags_stretch_ratio = 2.0
 
 [node name="Label" type="Label" parent="PanelContainer/GridContainer/Row 1/Details input container/Song Title Row" unique_id=829384757]
 layout_mode = 2
@@ -331,6 +341,7 @@ size_flags_horizontal = 3
 [node name="GenreOption0" type="OptionButton" parent="PanelContainer/GridContainer/HBoxContainer2/HFlowContainer" unique_id=1392408790]
 unique_name_in_owner = true
 layout_mode = 2
+action_mode = 1
 selected = 0
 item_count = 1
 popup/item_0/text = "Select a Genre"

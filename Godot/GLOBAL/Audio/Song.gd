@@ -177,6 +177,14 @@ func Attempt_Find_waveform_from_audio_file_path() -> bool:
                 break
 
     if found_global_path.is_empty():
+        # Extra Android check: alternate internal folder layout /data/<package>/files/...
+        for path_index: int in range(candidate_global_paths.size()):
+            var alt_internal: String = _android_alt_internal_files_fallback(candidate_global_paths[path_index])
+            if not alt_internal.is_empty() and FileAccess.file_exists(alt_internal):
+                found_global_path = alt_internal
+                break
+
+    if found_global_path.is_empty():
         print("Song: waveform PNG missing: %s" % ProjectSettings.globalize_path("%s/%s_WAVEFORM.png" % [base_dir, base_name]))
         return false
 
@@ -222,6 +230,22 @@ func _android_external_files_fallback(internal_global_path: String) -> String:
     var package_name: String = after.substr(0, slash_idx)
     var rest: String = after.substr(slash_idx) # includes "/files/..."
     return "/storage/emulated/0/Android/data/%s%s" % [package_name, rest]
+
+
+func _android_alt_internal_files_fallback(internal_global_path: String) -> String:
+    if not OS.has_feature("android"):
+        return ""
+    var marker: String = "/data/data/"
+    var idx: int = internal_global_path.find(marker)
+    if idx < 0:
+        return ""
+    var after: String = internal_global_path.substr(idx + marker.length())
+    var slash_idx: int = after.find("/")
+    if slash_idx < 0:
+        return ""
+    var package_name: String = after.substr(0, slash_idx)
+    var rest: String = after.substr(slash_idx) # includes "/files/..."
+    return "/data/%s%s" % [package_name, rest]
 
 
 

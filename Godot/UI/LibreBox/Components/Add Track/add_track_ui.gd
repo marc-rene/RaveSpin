@@ -84,7 +84,7 @@ func _setup_fallback_file_dialog() -> void:
     _fallback_file_dialog.file_mode = FileDialog.FILE_MODE_OPEN_FILE
     _fallback_file_dialog.access = FileDialog.ACCESS_FILESYSTEM
     _fallback_file_dialog.title = "Choose an audio file (MP3 / WAV / OGG)"
-    _fallback_file_dialog.min_size = Vector2i(960, 720)
+    _fallback_file_dialog.min_size = Vector2i(1000, 1000)
     _fallback_file_dialog.ok_button_text = "Open"
     _fallback_file_dialog.add_filter("*.mp3", "MP3")
     _fallback_file_dialog.add_filter("*.wav", "WAV")
@@ -308,8 +308,10 @@ func _on_native_file_dialog_result(status: bool, paths: PackedStringArray, _filt
     _picking_file = false
     if (not status) or paths.is_empty():
         return
+    
     var first_path: String = paths[0]
-    var file_extension_hint: String = _extension_hint_for_filter_index(_filter_index)
+    var file_extension_hint: String = _extension_hint_for_native_path_by_magic(first_path)
+    print("Chose file: %s which is a %s" % [first_path, file_extension_hint])
     _on_audio_file_selected(first_path, file_extension_hint)
 
 
@@ -351,16 +353,38 @@ func _on_audio_file_selected(selected_path: String, file_extension_hint: String 
     _generate_and_assign_waveform_png(dest_path)
 
 
-func _extension_hint_for_filter_index(filter_index: int) -> String:
-    match filter_index:
-        0:
+## Infers `mp3`/`wav`/`ogg` by reading the first bytes from the native picker URI.
+## This works even when the native path has no extension (e.g. `.../document/msf%3A1000000088`).
+## Returns "" when the type cannot be determined.
+func _extension_hint_for_native_path_by_magic(native_path_string: String) -> String:
+    var file_handle: FileAccess = FileAccess.open(native_path_string, FileAccess.READ)
+    if file_handle == null:
+        return ""
+
+    var header_bytes: PackedByteArray = file_handle.get_buffer(32)
+    file_handle.close()
+    if header_bytes.is_empty():
+        return ""
+
+    # MP3 often starts with "ID3"
+    if header_bytes.size() >= 3:
+        if header_bytes[0] == 0x49 and header_bytes[1] == 0x44 and header_bytes[2] == 0x33:
             return "mp3"
-        1:
+
+    # WAV: "RIFF" ... "WAVE" at offset 8
+    if header_bytes.size() >= 12:
+        var riff_string: String = header_bytes.slice(0, 4).get_string_from_ascii()
+        var wave_string: String = header_bytes.slice(8, 12).get_string_from_ascii()
+        if riff_string == "RIFF" and wave_string == "WAVE":
             return "wav"
-        2:
+
+    # OGG: "OggS"
+    if header_bytes.size() >= 4:
+        var ogg_string: String = header_bytes.slice(0, 4).get_string_from_ascii()
+        if ogg_string == "OggS":
             return "ogg"
-        _:
-            return ""
+
+    return ""
 
 
 func _extract_metadata_merged(audio_path: String) -> Dictionary:
@@ -375,51 +399,96 @@ func _generate_and_assign_waveform_png(audio_path: String) -> void:
     if _pending_song == null:
         return
     var base_name: String = audio_path.get_file().get_basename()
-    var safe_base_name: String = _sanitize_waveform_base_name(base_name)
-    var output_png: String = audio_path.get_base_dir().path_join("%s_WAVEFORM.png" % safe_base_name)
-    var temp_output_png: String = "user://waveforms/%s_WAVEFORM.png" % safe_base_name
+    var output_png: String = audio_path.get_base_dir().path_join("%s_WAVEFORM.png" % base_name)
     print("Add_Track: Generating waveform PNG")
+    
     print("Add_Track: audio_path (user://): %s" % audio_path)
+    
+    var temp_input_global: String = ProjectSettings.globalize_path(audio_path)
+    print("Add_Track: GLOBAL audio_path : %s" % temp_input_global)
+    
     print("Add_Track: output_png (user://): %s" % output_png)
-    print("Add_Track: temp_output_png (user://): %s" % temp_output_png)
-
-    var output_directory_user: String = output_png.get_base_dir()
-    DirAccess.make_dir_recursive_absolute(output_directory_user)
-    DirAccess.make_dir_recursive_absolute("user://waveforms/")
-
-    # Wrapper now globalizes paths internally (matches extract_album_artwork behavior).
-    var exit_code: int = WaveformGenerator.generate(audio_path, temp_output_png, 1200, 320)
-    print("Add_Track: waveform generator exit_code: %d" % exit_code)
-
-    var temp_output_global: String = ProjectSettings.globalize_path(temp_output_png)
-    var target_output_global: String = ProjectSettings.globalize_path(output_png)
-    var temp_output_external: String = _android_external_files_fallback(temp_output_global)
-
+    
+    var temp_output_global: String = ProjectSettings.globalize_path(output_png)
+    print("Add_Track: GLOBAL output png : %s" % temp_output_global)
+    
+    var exit_code: int = WaveformGenerator.generate(temp_input_global, temp_output_global, 1200, 240)
+    print("ADD_TRACK 1: Exit code was %d" % exit_code)
+    
     # Some Android plugin writes asynchronously; poll briefly.
     var wait_slices: int = 0
-    while wait_slices < 20 and (not FileAccess.file_exists(temp_output_global)) and (temp_output_external.is_empty() or (not FileAccess.file_exists(temp_output_external))):
+    while wait_slices < 20 and (not FileAccess.file_exists(output_png)): 
         await get_tree().create_timer(0.05).timeout
         wait_slices += 1
-
-    var found_temp_global: String = ""
+    
     if FileAccess.file_exists(temp_output_global):
-        found_temp_global = temp_output_global
-    elif not temp_output_external.is_empty() and FileAccess.file_exists(temp_output_external):
-        found_temp_global = temp_output_external
-
-    if found_temp_global.is_empty():
-        print("Add_Track: waveform temp PNG not found after generation: %s" % temp_output_global)
-        if not temp_output_external.is_empty():
-            print("Add_Track: also not found at external path: %s" % temp_output_external)
-        return
-
-    # Copy beside the audio file so existing loaders keep working.
-    var copy_error: Error = DirAccess.copy_absolute(found_temp_global, target_output_global)
-    if copy_error != OK:
-        print("Add_Track: failed to copy waveform PNG to target: %s (error=%d)" % [target_output_global, copy_error])
-        return
-
-    _pending_song.Attempt_Find_waveform_from_audio_file_path()
+        print("THE WAVEFORM EXISTS! %s IS REAL" % temp_output_global)
+        var temp_waveform_texture : CompressedTexture2D = load(temp_output_global)
+        await temp_waveform_texture
+        if temp_waveform_texture:
+            print("YES!!")
+            _pending_song.Audio_File_Waveform = temp_waveform_texture
+        else:
+            print("shit")
+    else:
+        print("Crap... The waveform doesn't exist! %s isn't real" % temp_output_global)
+        if await _fallback_generate_waveform_png_with_audio_preview(temp_input_global, temp_output_global):
+            print("YAY NEVERMIND THE FALLBACK WORKED")
+            var temp_waveform_texture : CompressedTexture2D = load(temp_output_global)
+            await temp_waveform_texture
+            if temp_waveform_texture:
+                print("YES THE WAVEFORMS SET!!")
+            _pending_song.Audio_File_Waveform = temp_waveform_texture
+        else:
+            print("Not even the fallback worked")
+            
+    #var output_directory_user: String = output_png.get_base_dir()
+    #DirAccess.make_dir_recursive_absolute(output_directory_user)
+    #DirAccess.make_dir_recursive_absolute("user://waveforms/")
+#
+    ## Wrapper now globalizes paths internally (matches extract_album_artwork behavior).
+    #print("Add_Track: waveform generator exit_code: %d" % exit_code)
+#
+    #var temp_output_global: String = ProjectSettings.globalize_path(output_png)
+    #print("ADD_TRACK: Global Path of PNG is at %s" % output_png)
+    #var temp_output_alt_internal: String = _android_alt_internal_files_fallback(temp_output_global)
+    #var temp_output_external: String = _android_external_files_fallback(temp_output_global)
+    #var target_output_global: String = ProjectSettings.globalize_path(output_png)
+#
+    ## Some Android plugin writes asynchronously; poll briefly.
+    #var wait_slices: int = 0
+    #while wait_slices < 20 \
+            #and (not FileAccess.file_exists(temp_output_global)) \
+            #and (temp_output_alt_internal.is_empty() or (not FileAccess.file_exists(temp_output_alt_internal))) \
+            #and (temp_output_external.is_empty() or (not FileAccess.file_exists(temp_output_external))):
+        #await get_tree().create_timer(0.05).timeout
+        #wait_slices += 1
+#
+    #var found_temp_global: String = ""
+    #if FileAccess.file_exists(temp_output_global):
+        #found_temp_global = temp_output_global
+    #elif not temp_output_alt_internal.is_empty() and FileAccess.file_exists(temp_output_alt_internal):
+        #found_temp_global = temp_output_alt_internal
+    #elif not temp_output_external.is_empty() and FileAccess.file_exists(temp_output_external):
+        #found_temp_global = temp_output_external
+#
+    #if found_temp_global.is_empty():
+        #print("Add_Track: waveform temp PNG not found after generation: %s" % temp_output_global)
+        #if not temp_output_alt_internal.is_empty():
+            #print("Add_Track: also not found at alt internal path: %s" % temp_output_alt_internal)
+        #if not temp_output_external.is_empty():
+            #print("Add_Track: also not found at external path: %s" % temp_output_external)
+        #await _fallback_generate_waveform_png_with_audio_preview(audio_path, target_output_global)
+        #_pending_song.Attempt_Find_waveform_from_audio_file_path()
+        #return
+#
+    ## Copy beside the audio file so existing loaders keep working.
+    #var copy_error: Error = DirAccess.copy_absolute(found_temp_global, target_output_global)
+    #if copy_error != OK:
+        #print("Add_Track: failed to copy waveform PNG to target: %s (error=%d)" % [target_output_global, copy_error])
+        #return
+#
+    #_pending_song.Attempt_Find_waveform_from_audio_file_path()
 
 
 func _android_external_files_fallback(internal_global_path: String) -> String:
@@ -436,6 +505,65 @@ func _android_external_files_fallback(internal_global_path: String) -> String:
     var package_name: String = after.substr(0, slash_idx)
     var rest: String = after.substr(slash_idx) # includes "/files/..."
     return "/storage/emulated/0/Android/data/%s%s" % [package_name, rest]
+
+
+func _android_alt_internal_files_fallback(internal_global_path: String) -> String:
+    if not OS.has_feature("android"):
+        return ""
+    # Some environments expose app files under /data/<package>/files instead of /data/data/<package>/files
+    var marker: String = "/data/data/"
+    var idx: int = internal_global_path.find(marker)
+    if idx < 0:
+        return ""
+    var after: String = internal_global_path.substr(idx + marker.length())
+    var slash_idx: int = after.find("/")
+    if slash_idx < 0:
+        return ""
+    var package_name: String = after.substr(0, slash_idx)
+    var rest: String = after.substr(slash_idx) # includes "/files/..."
+    return "/data/%s%s" % [package_name, rest]
+
+
+## WAV-only fallback waveform generator using `addons/audio_preview` (pure GDScript).
+## This is only used when WaveformGenerator says success but no PNG appears on disk.
+func _fallback_generate_waveform_png_with_audio_preview(audio_path: String, output_png_global_path: String) -> bool:
+    var success : bool = false
+    var extension_lower: String = audio_path.get_extension().to_lower()
+    if extension_lower != "wav":
+        return false
+
+    var stream_variant: Variant = _pending_song.get_audio_stream() if _pending_song != null else null
+    if not (stream_variant is AudioStreamWAV):
+        return false
+    var wav_stream: AudioStreamWAV = stream_variant as AudioStreamWAV
+
+    var generator_scene: PackedScene = preload("res://addons/audio_preview/voice_preview_generator.tscn")
+    var generator_node: Node = generator_scene.instantiate()
+    add_child(generator_node)
+
+    var texture: Texture2D = await _await_audio_preview_texture(generator_node, wav_stream)
+    if texture is ImageTexture:
+        var image_texture: ImageTexture = texture as ImageTexture
+        var image: Image = image_texture.get_image()
+        if image != null:
+            var save_error: Error = image.save_png(output_png_global_path)
+            if save_error == OK:
+                print("Add_Track: audio_preview waveform PNG saved: %s" % output_png_global_path)
+                success = true
+    generator_node.queue_free()
+    return success
+
+
+func _await_audio_preview_texture(generator_node: Node, wav_stream: AudioStreamWAV) -> Texture2D:
+    var texture_variant: Variant = null
+    var callable: Callable = func(tex: Variant) -> void: texture_variant = tex
+    generator_node.connect("texture_ready", callable)
+    await generator_node.call("generate_preview", wav_stream, 1200)
+    while texture_variant == null:
+        await get_tree().process_frame
+    if texture_variant is Texture2D:
+        return texture_variant as Texture2D
+    return null
 
 
 func _sanitize_waveform_base_name(raw_base_name: String) -> String:
@@ -677,6 +805,7 @@ func _refresh_all_genre_dropdowns() -> void:
     for picker_index: int in range(_genre_pickers.size()):
         var genre_option: OptionButton = _genre_pickers[picker_index]
         genre_option.set_block_signals(true)
+        genre_option.action_mode = BaseButton.ACTION_MODE_BUTTON_RELEASE
         var current_selection_id: int = genre_option.get_item_id(genre_option.selected)
         var exclude_ids: Array[int] = _selected_id3_genre_ids_excluding(genre_option)
         genre_option.clear()
