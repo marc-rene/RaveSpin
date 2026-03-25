@@ -39,8 +39,8 @@ func _process(delta: float) -> void:
         Offset_percent_var_label.text = Offset_Text
         Current_BPM_var_label.text = "%.2f" % current_bpm
     else:
-        Offset_percent_var_label.text = "..."
-        Current_BPM_var_label.text = "NaN"
+        Offset_percent_var_label.text = tr("...")
+        Current_BPM_var_label.text = tr("NaN")
 
 
 func rotate_spinny(new_alpha: float):

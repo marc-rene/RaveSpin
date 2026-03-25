@@ -4,7 +4,7 @@ extends RefCounted
 ## Unified metadata extraction: [MusicMetadata] addon first, then hand-written parsers as backup.
 ## Does not use WaveformGenerator (waveforms are generated separately via WaveformGenerator.generate).
 
-const USER_IMPORTS_DIR: String = "user://Music"
+const USER_IMPORTS_DIR: String = Song.USER_SONG_METADATA_DIR
 ## Internal key: [MusicMetadata] instance for album art; stripped before persisting.
 const PLUGIN_METADATA_KEY: StringName = &"_plugin_music_metadata"
 

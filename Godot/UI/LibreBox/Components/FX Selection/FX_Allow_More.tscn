@@ -19,6 +19,7 @@ theme_override_constants/margin_right = 8
 theme_override_constants/margin_bottom = 8
 
 [node name="CheckButton" type="CheckButton" parent="MarginContainer" unique_id=690508829]
+auto_translate_mode = 1
 layout_mode = 2
 theme = ExtResource("1_yamdy")
 text = "Allow Poly FX?

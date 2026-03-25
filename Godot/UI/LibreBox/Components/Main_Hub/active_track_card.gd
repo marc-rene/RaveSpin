@@ -67,6 +67,21 @@ func _process(delta: float) -> void:
 func _on_beat():
     pass
 
+func _notification(what: int) -> void:
+    if what == NOTIFICATION_TRANSLATION_CHANGED:
+        ACTIVE_FX_TITLE_DEFAULT = tr("Active FX: ")
+        if Song_Resource != null:
+            Refresh_Details()
+        _sync_active_fx_labels_after_locale_change()
+
+
+func _sync_active_fx_labels_after_locale_change() -> void:
+    for fx_type in fx_labels.keys():
+        var lab: Label = fx_labels[fx_type]
+        if is_instance_valid(lab):
+            lab.text = tr(BUS_MANAGER.Beat_FX_Names.get(fx_type, str(fx_type)))
+
+
 func _ready():
     
     Track_ID = Utility.Clamp_to_Valid_TrackID(Track_ID)
@@ -87,7 +102,7 @@ func _physics_process(_delta: float) -> void:
         var channel: int = Utility.Clamp_to_Valid_TrackID(Track_ID)
         var can_take_fx: bool = (channel == 0 and BUS_MANAGER.Can_Track_1_Take_FX()) or (channel == 1 and BUS_MANAGER.Can_Track_2_Take_FX())
         if not can_take_fx:
-            _active_fx_title_label.text = "No FX allowed for Track %d, can be changed from FX Panel" % (channel + 1)
+            _active_fx_title_label.text = tr("No FX allowed for Track %d, can be changed from FX Panel") % (channel + 1)
             _clear_dynamic_fx_labels()
             return
 
@@ -126,7 +141,7 @@ func _sync_active_fx_labels(active_dict: Dictionary) -> void:
             continue
         var new_label := Label.new()
         new_label.label_settings = HEADING_2_LABEL_SETTINGS
-        new_label.text = BUS_MANAGER.Beat_FX_Names.get(fx_type, str(fx_type))
+        new_label.text = tr(BUS_MANAGER.Beat_FX_Names.get(fx_type, str(fx_type)))
         _active_fx_container.add_child(new_label)
         fx_labels[fx_type] = new_label
 
@@ -150,18 +165,18 @@ func Refresh_Details() -> bool:
     Album_Art_Texture_Holder.texture = album_artwork_texture
     
     
-    Track_Name_Label.text = Utility.Return_Valid(Song_Resource.Song_Title, "Untitled")
-    Artist_Name_Label.text = Utility.Return_Valid(Song_Resource.Main_Artist.Artist_Name, "Untitled")
-    Album_Name_Label.text = Utility.Return_Valid(Song_Resource.Song_Album.Album_Name, "Untitled")
+    Track_Name_Label.text = Utility.Return_Valid(Song_Resource.Song_Title, tr("Untitled"))
+    Artist_Name_Label.text = Utility.Return_Valid(Song_Resource.Main_Artist.Artist_Name, tr("Untitled"))
+    Album_Name_Label.text = Utility.Return_Valid(Song_Resource.Song_Album.Album_Name, tr("Untitled"))
     
-    Track_BPM_Label.text = Utility.Return_Valid(str(int(Song_Resource.Track_BPM)), "N/A")
+    Track_BPM_Label.text = Utility.Return_Valid(str(int(Song_Resource.Track_BPM)), tr("N/A"))
     
     # Safety measure because Music Key wont get updated sometimes
     if Song_Resource.Track_Key.to_string() == "C Unknown":
         Song_Resource.Refresh_Music_Key()
     
     #print("Song key is " + Song_Resource.Track_Key.to_string())
-    Track_Key_Label.text = Utility.Return_Valid(Song_Resource.Track_Key.to_string(), "N/A")
+    Track_Key_Label.text = Utility.Return_Valid(Song_Resource.Track_Key.to_string(), tr("N/A"))
    
     if Utility.is_Valid(Song_Resource.User_Sidenote) and Utility.is_Valid(Note_Text_Label) and Song_Resource.User_Sidenote != "N/A":
         Note_Text_Label.show()

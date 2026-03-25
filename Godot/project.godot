@@ -31,9 +31,9 @@ buses/channel_disable_time=180.0
 
 [autoload]
 
-Language_Manager="*res://GLOBAL/Langauge_Manager.gd"
 XRToolsUserSettings="*uid://dj7ac5oc0ja3f"
 XRToolsRumbleManager="*uid://cld4y0tvk1qfc"
+Language_Manager="*res://GLOBAL/Langauge_Manager.gd"
 
 [dotnet]
 
@@ -54,8 +54,8 @@ player/standard_height=1.75
 [internationalization]
 
 locale/translation_remaps={}
-locale/translations=PackedStringArray("res://Language/LANG_Chinese.tres", "res://Language/LANG_French.tres", "res://Language/LANG_Irish.tres")
-locale/fallback="en"
+locale/translations=PackedStringArray("res://Language/LANG_Translation.en.translation", "res://Language/LANG_Translation.fr.translation", "res://Language/LANG_Translation.ga.translation", "res://Language/LANG_Translation.zh_CN.translation")
+locale/locale_filter_mode=1
 
 [physics]
 

@@ -5,7 +5,7 @@ extends Resource
 # Where will all of our Music Metadatas be saved to?
 const ROOT_MUSIC_DIR = "res://Music/Song Metadatas/"
 ## User-imported songs (Add Track on device) save .tres here so they persist on Quest/Android.
-const USER_SONG_METADATA_DIR: String = "user://Music/Song Metadatas/"
+const USER_SONG_METADATA_DIR: String = "user://Music/"
 
 # Name??
 @export var Song_Title: StringName

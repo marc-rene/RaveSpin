@@ -1,15 +1,20 @@
 [gd_scene format=3 uid="uid://b6ltbvcirle8v"]
 
-[ext_resource type="Script" path="res://UI/LibreBox/Components/Langauge/ui_language_selection.gd" id="1_langui"]
 [ext_resource type="LabelSettings" uid="uid://bl11km7ja4u0h" path="res://Art/Themes/Heading.tres" id="1_l3kav"]
+[ext_resource type="Script" uid="uid://ct7wkp8nq0hm3" path="res://UI/LibreBox/Components/Langauge/ui_language_selection.gd" id="1_langui"]
+[ext_resource type="Theme" uid="uid://ds0dxmwlq5niw" path="res://Art/Themes/Default_Theme.tres" id="3_ohaok"]
+[ext_resource type="Texture2D" uid="uid://cy3y288lelwgu" path="res://Art/Icon/T_Flag_UK.png" id="4_rtn16"]
+[ext_resource type="Texture2D" uid="uid://d1e4qf5gy4sxm" path="res://Art/Icon/T_Flag_Irish.png" id="5_tlslu"]
+[ext_resource type="Texture2D" uid="uid://dc4hphmepdp1p" path="res://Art/Icon/T_Flag_France.png" id="6_d5mix"]
+[ext_resource type="Texture2D" uid="uid://bpmmopmfaay6m" path="res://Art/Icon/T_Flag_China.png" id="7_uejvg"]
 
 [node name="UiLanguageSelection" type="PanelContainer" unique_id=1869812151]
-script = ExtResource("1_langui")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_langui")
 
 [node name="MarginContainer" type="MarginContainer" parent="." unique_id=895492894]
 layout_mode = 2
@@ -22,6 +27,38 @@ theme_override_constants/margin_bottom = 12
 layout_mode = 2
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer" unique_id=110362687]
+auto_translate_mode = 1
 layout_mode = 2
-text = "Change Language"
+size_flags_vertical = 3
+text = "KEY_CHANGE_LANGUAGE"
 label_settings = ExtResource("1_l3kav")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="LangBTN_English" type="Button" parent="MarginContainer/VBoxContainer" unique_id=1132323857]
+layout_mode = 2
+size_flags_vertical = 3
+theme = ExtResource("3_ohaok")
+text = "English"
+icon = ExtResource("4_rtn16")
+
+[node name="LangBTN_Irish" type="Button" parent="MarginContainer/VBoxContainer" unique_id=1065833754]
+layout_mode = 2
+size_flags_vertical = 3
+theme = ExtResource("3_ohaok")
+text = "Gaeilge"
+icon = ExtResource("5_tlslu")
+
+[node name="LangBTN_French" type="Button" parent="MarginContainer/VBoxContainer" unique_id=1609481916]
+layout_mode = 2
+size_flags_vertical = 3
+theme = ExtResource("3_ohaok")
+text = "Français"
+icon = ExtResource("6_d5mix")
+
+[node name="LangBTN_Chinese" type="Button" parent="MarginContainer/VBoxContainer" unique_id=1025202625]
+layout_mode = 2
+size_flags_vertical = 3
+theme = ExtResource("3_ohaok")
+text = "简体中文"
+icon = ExtResource("7_uejvg")

@@ -107,7 +107,7 @@ func _on_track_card_remove_requested(target_song: Song) -> void:
         
     var title_safe: String = String(target_song.Song_Title)
     
-    confirm_ui.set_message_text("Remove \"%s\" from your library?" % title_safe)
+    confirm_ui.set_message_text(tr('Remove "%s" from your library?') % title_safe)
     
     Delete_Confirm_Viewport.call_deferred("set_enabled", true)
     Delete_Confirm_Viewport.position.y = 0

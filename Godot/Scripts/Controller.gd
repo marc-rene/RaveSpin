@@ -337,7 +337,7 @@ func _physics_process(delta: float) -> void:
     BUS_MANAGER.Apply_Beat_FX_Level(0, Beat_FX_Knob.Value)
     BUS_MANAGER.Apply_Beat_FX_Level(1, Beat_FX_Knob.Value)
 
-    $"General Status".text = "Crossfade: %.3f" % remap(Crossfade_Alpha, 0.0, 1.0, -1.0, 1.0)
+    $"General Status".text = tr("Crossfade: %s") % ("%0.3f" % remap(Crossfade_Alpha, 0.0, 1.0, -1.0, 1.0))
 
     
 

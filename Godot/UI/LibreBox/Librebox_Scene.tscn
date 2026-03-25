@@ -10,6 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://cprhr6myydno5" path="res://UI/LibreBox/Components/FX Selection/FX_Selection_Menu.tscn" id="8_83nvb"]
 [ext_resource type="PackedScene" uid="uid://7kyk88qnftlr" path="res://UI/LibreBox/Components/Add Track/Add_Track_UI.tscn" id="9_83nvb"]
 [ext_resource type="PackedScene" uid="uid://bowim16kwtx7w" path="res://UI/LibreBox/Components/FX Selection/FX_Allow_More.tscn" id="10_j0p6t"]
+[ext_resource type="PackedScene" uid="uid://b6ltbvcirle8v" path="res://UI/LibreBox/Components/Langauge/UI_LanguageSelection.tscn" id="11_6xn47"]
 
 [node name="LibreboxScene" type="Node3D" unique_id=889702823]
 script = ExtResource("1_al4tx")
@@ -30,7 +31,7 @@ script = ExtResource("5_hand")
 [node name="HUB Label" type="Label3D" parent="HUB" unique_id=1127725628]
 transform = Transform3D(1, 0, 0, 0, 0.8660254, -0.5, 0, 0.5, 0.8660254, 0, 0.6143331, 0.051016763)
 pixel_size = 0.004
-text = "HUB"
+text = "KEY_HUB"
 font = ExtResource("2_yb6eh")
 font_size = 40
 outline_size = 0
@@ -50,7 +51,7 @@ Delete_Confirm_Viewport = NodePath("../Track Delete Confirm")
 transform = Transform3D(1, 2.2351742e-08, 0, -3.7252903e-09, 0.90630776, -0.42261827, 0, 0.42261833, 0.9063078, 0, 0.4018476, 0.035157084)
 pixel_size = 0.002
 texture_filter = 0
-text = "Track 1 Selection"
+text = "KEY_TRACK_1_SELECTION"
 font = ExtResource("2_yb6eh")
 font_size = 40
 outline_size = 0
@@ -74,7 +75,7 @@ Delete_Confirm_Viewport = NodePath("../Track Delete Confirm")
 transform = Transform3D(1, -2.2351742e-08, 0, 3.7252903e-09, 0.90630776, -0.42261827, 0, 0.42261833, 0.9063078, 0, 0.4018476, 0.035157084)
 pixel_size = 0.002
 texture_filter = 0
-text = "Track 2 Selection"
+text = "KEY_TRACK_2_SELECTION"
 font = ExtResource("2_yb6eh")
 font_size = 40
 outline_size = 0
@@ -145,6 +146,9 @@ scroll_sensitivity = 0.3
 [node name="Language Select" parent="." unique_id=605638321 instance=ExtResource("1_ebwc8")]
 transform = Transform3D(0.34202015, -0.081899606, 0.9361168, 0, 0.9961947, 0.08715574, -0.9396926, -0.029809019, 0.34071866, -0.93253744, -0.21653448, 0.9154934)
 screen_size = Vector2(0.4, 0.5)
+scene = ExtResource("11_6xn47")
+viewport_size = Vector2(520, 650)
+scene_properties_keys = PackedStringArray("ui_language_selection.gd")
 
 [node name="HandTouch" type="Node" parent="Language Select" unique_id=727519343]
 script = ExtResource("5_hand")
