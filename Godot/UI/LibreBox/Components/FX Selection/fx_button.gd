@@ -3,6 +3,8 @@ class_name FX_Button_Select
 
 @export var FX_Type : BUS_MANAGER.E_BEAT_FX_TYPE
 
+const Inactive_Colour_Mod : Color = Color8(100, 100, 140)
+const Active_Colour_Mod : Color = Color8(255, 255, 255)
 
 func _ready() -> void:
     pressed.connect(_on_pressed)
@@ -44,12 +46,14 @@ func refresh_state() -> void:
             BUS_MANAGER.remove_beat_fx(FX_Type, 1)
     else:
         button_pressed = false
-        
-    disabled = not _any_track_can_take_fx()
-    if disabled:
+    
+    
+    self_modulate = Active_Colour_Mod if _any_track_can_take_fx() else Inactive_Colour_Mod
+    
+    if not _any_track_can_take_fx():
         BUS_MANAGER.remove_beat_fx(FX_Type, 0)
         BUS_MANAGER.remove_beat_fx(FX_Type, 1)
-        button_pressed = false
+        #button_pressed = false
         
 
 

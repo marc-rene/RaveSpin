@@ -15,6 +15,28 @@ class_name LibreBox
 static var LibreBox_instance : LibreBox
 
 
+static func refresh_both_track_selection_lists() -> void:
+    if LibreBox_instance == null:
+        return
+    LibreBox_instance.Track_1_Selection_ref.Refresh()
+    LibreBox_instance.Track_2_Selection_ref.Refresh()
+
+
+static func apply_song_deleted_from_library(deleted_metadata_path: String) -> void:
+    if deleted_metadata_path.is_empty():
+        return
+    if LibreBox_instance.Track_1_Song != null and LibreBox_instance.Track_1_Song.resource_path == deleted_metadata_path:
+        LibreBox_instance.Track_1_Song = null
+        DJ_Controller.Get_Instance().LoadTrackIntoMemory(0, null)
+        LibreBox_instance.HUB_Menu_ref.Track_1 = null
+        LibreBox_instance.HUB_Menu_ref.Refresh(true)
+    if LibreBox_instance.Track_2_Song != null and LibreBox_instance.Track_2_Song.resource_path == deleted_metadata_path:
+        LibreBox_instance.Track_2_Song = null
+        DJ_Controller.Get_Instance().LoadTrackIntoMemory(1, null)
+        LibreBox_instance.HUB_Menu_ref.Track_2 = null
+        LibreBox_instance.HUB_Menu_ref.Refresh(false)
+
+
 # where is track X playback position? 
 static func Get_Track_Playback_Position(which_track : int) -> float:
     return DJ_Controller.Get_Instance().Get_Track_Playback_Position(which_track)
@@ -160,9 +182,8 @@ func Sync_Track_BPMs(Track_we_want_to_Match: int, Track_we_want_change : int, ma
     #Sync_Track_BPMs()  # match track 1 to track 2's BPM
     
 
-func Refresh():
-    HUB_Menu_ref.Refresh(true)
-    HUB_Menu_ref.Refresh(false)
+func Refresh() -> bool:
+    return HUB_Menu_ref.Refresh(true) and HUB_Menu_ref.Refresh(false)
     
 func _ready() -> void:
     HUB_Menu_ref.Track_1 = Track_1_Song
@@ -170,7 +191,7 @@ func _ready() -> void:
     Track_1_Selection_ref.track_selected.connect(On_Song_Change_Track_1)
     Track_2_Selection_ref.track_selected.connect(On_Song_Change_Track_2)
     LibreBox_instance = self
-    Refresh()
+    var success = Refresh()
     
     await DJ_Controller.Get_Instance_await()
     if Track_1_Song:
@@ -181,4 +202,5 @@ func _ready() -> void:
     #JANK... but works
     await get_tree().create_timer(0.1).timeout
     Utility.set_all_is_ready(true)
-    
+    if not success:
+        Refresh()

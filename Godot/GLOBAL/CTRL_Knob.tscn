@@ -52,7 +52,7 @@ mesh = SubResource("PlaneMesh_2lspa")
 skeleton = NodePath("../Activation")
 
 [node name="Slider Spawn Point" type="Node3D" parent="." unique_id=1867433061]
-transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 3, 0, -1, -1.3113416e-07, 0, 0.16819465, -2.400341e-09)
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 3, 0, -1, -1.3113416e-07, 0, 0.12876594, -6.7685757e-10)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Slider Spawn Point" unique_id=1957937713]
 shape = SubResource("BoxShape3D_nx18d")

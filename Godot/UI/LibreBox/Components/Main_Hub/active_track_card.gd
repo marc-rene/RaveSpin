@@ -9,7 +9,7 @@ class_name Active_Track_Card
 @export var Song_Resource : Song
 
 @onready var Album_Art_Texture_Holder : TextureRect = $"VBoxContainer/HBoxContainer/AspectRatioContainer/Album Art Holder"
-
+const Default_album_art_T = preload("res://Art/Icon/T_RaveSpinHeader_Light.png")
 @onready var Track_Name_Label : Label = $"VBoxContainer/HBoxContainer/Core Details Container/Title"
 @onready var Artist_Name_Label : Label = $"VBoxContainer/HBoxContainer/Core Details Container/Artist"
 @onready var Album_Name_Label : Label = $"VBoxContainer/HBoxContainer/Core Details Container/Album"
@@ -103,8 +103,8 @@ func Refresh_Details() -> bool:
     if Song_Resource == null:
         return false
     
-    Album_Art_Texture_Holder.texture = Utility.Return_Valid(Song_Resource.Song_Album.Album_Artwork, 
-    "res://Art/Icon/T_RaveSpinHeader_Light.png")
+    Album_Art_Texture_Holder.texture = Song_Resource.Song_Album.Album_Artwork if Song_Resource.Song_Album else Default_album_art_T
+    
     
     Track_Name_Label.text = Utility.Return_Valid(Song_Resource.Song_Title, "Untitled")
     Artist_Name_Label.text = Utility.Return_Valid(Song_Resource.Main_Artist.Artist_Name, "Untitled")

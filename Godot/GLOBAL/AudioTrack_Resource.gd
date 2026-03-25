@@ -60,7 +60,3 @@ func _init( p_audio_file : AudioStream = null,
     
     if Utility.is_Valid(p_user_note) or p_user_note != "N/A":
         User_Sidenote = p_user_note
-
-
-
-

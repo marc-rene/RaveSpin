@@ -10,12 +10,12 @@
 [sub_resource type="BoxShape3D" id="BoxShape3D_eg1xv"]
 size = Vector3(0.1, 0.1, 0.1)
 
-[node name="FLX4" unique_id=321834793 instance=ExtResource("1_mrnpa")]
+[node name="FLX4" unique_id=1624226957 instance=ExtResource("1_mrnpa")]
 transform = Transform3D(1.2, 0, 0, 0, 1.2, 0, 0, 0, 1.2, 0, 0, 0)
 script = ExtResource("2_3ugcv")
 BPM_Adjust_Range = 0.2
 
-[node name="Crossfade Slider" parent="." index="6" unique_id=2139715587]
+[node name="Crossfade Slider" parent="." index="6" unique_id=1004818941]
 transform = Transform3D(1.4190836e-07, 0, -1, 0, 1, 0, 0.7288296, 0, 1.9470718e-07, 0.2408275, 0.042000003, 0.2543439)
 
 [node name="Controls" type="Node3D" parent="." index="53" unique_id=839374979]
@@ -93,25 +93,43 @@ Target_Mesh = NodePath("../../L_BeatSync")
 transform = Transform3D(-0.14999996, 0, 2.2649367e-08, 0, 0.14999996, 0, -2.2649367e-08, 0, -0.14999996, 0.45896953, 0.038652465, 0.026953587)
 Target_Mesh = NodePath("../../R_BeatSync")
 
-[node name="Beat FX" parent="Controls" index="18" unique_id=1829892089 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("5_eg1xv")]
+[node name="Left_LoopStart" parent="Controls" index="18" unique_id=1522453072 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("3_pj43g")]
+transform = Transform3D(-0.14999996, 0, 2.2649367e-08, 0, 0.14999996, 0, -2.2649367e-08, 0, -0.14999996, 0.02207329, 0.038652465, 0.026953587)
+Target_Mesh = NodePath("../../L_Loop Input Point")
+
+[node name="Right_LoopStart" parent="Controls" index="19" unique_id=886361105 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("3_pj43g")]
+transform = Transform3D(-0.14999996, 0, 2.2649367e-08, 0, 0.14999996, 0, -2.2649367e-08, 0, -0.14999996, 0.33734995, 0.038652465, 0.026953587)
+Target_Mesh = NodePath("../../R_Loop Input Point")
+
+[node name="Left_LoopEND" parent="Controls" index="20" unique_id=1446767453 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("3_pj43g")]
+transform = Transform3D(-0.14999996, 0, 2.2649367e-08, 0, 0.14999996, 0, -2.2649367e-08, 0, -0.14999996, 0.04763628, 0.038652465, 0.026953587)
+Target_Mesh = NodePath("../../L_Loop Output Point")
+
+[node name="Right_LoopEND" parent="Controls" index="21" unique_id=831853233 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("3_pj43g")]
+transform = Transform3D(-0.14999996, 0, 2.2649367e-08, 0, 0.14999996, 0, -2.2649367e-08, 0, -0.14999996, 0.36291292, 0.038652465, 0.026953587)
+Target_Mesh = NodePath("../../R_Loop Output Point")
+
+[node name="Left_Make4BeatLoop" parent="Controls" index="22" unique_id=578749798 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("3_pj43g")]
+transform = Transform3D(-0.14999996, 0, 2.2649367e-08, 0, 0.14999996, 0, -2.2649367e-08, 0, -0.14999996, 0.07335417, 0.038652465, 0.026953587)
+Target_Mesh = NodePath("../../L_Loop Output Point")
+
+[node name="Right_Make4BeatLoop" parent="Controls" index="23" unique_id=479431467 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("3_pj43g")]
+transform = Transform3D(-0.14999996, 0, 2.2649367e-08, 0, 0.14999996, 0, -2.2649367e-08, 0, -0.14999996, 0.3886308, 0.038652465, 0.026953587)
+Target_Mesh = NodePath("../../R_Loop Output Point")
+
+[node name="Beat FX" parent="Controls" index="24" unique_id=1829892089 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("5_eg1xv")]
 transform = Transform3D(-0.7, 0, -1.0569706e-07, 0, 0.7, 0, 1.0569706e-07, 0, -0.7, 0.2979233, 0.038605843, 0.19556488)
 Target_Mesh = NodePath("../../Beat FX Parameter")
 
-[node name="Crossfade" parent="Controls" index="19" unique_id=1967443421 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("3_ic1ra")]
+[node name="Crossfade" parent="Controls" index="25" unique_id=1967443421 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("3_ic1ra")]
 transform = Transform3D(-4.3711385e-08, 0, 1.1999998, 0, 0.99999994, 0, -0.99999994, 0, -5.2453657e-08, 0.24082747, 0.042, 0.25434384)
 Target_Mesh = NodePath("../../Crossfade Slider")
 
-[node name="Master Volume" parent="Controls" index="20" unique_id=436933577 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("5_eg1xv")]
+[node name="Master Volume" parent="Controls" index="26" unique_id=436933577 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("5_eg1xv")]
 transform = Transform3D(-0.99999994, 0, -8.742277e-08, 0, 0.99999994, 0, 8.742277e-08, 0, -0.99999994, 0.2977116, 0.038605843, 0.03848871)
 Target_Mesh = NodePath("../../Master Volume")
 
-[node name="Scroll Track" parent="Controls" index="21" unique_id=1332184102 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("5_eg1xv")]
-process_mode = 4
-transform = Transform3D(-0.9999998, 0, -8.742276e-08, 0, 0.9999998, 0, 8.742276e-08, 0, -0.9999998, 0.24087735, 0.038605843, 0.014162338)
-visible = false
-Target_Mesh = NodePath("../../Scroll track List")
-
-[node name="Mic Level" parent="Controls" index="22" unique_id=103727725 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("5_eg1xv")]
+[node name="Mic Level" parent="Controls" index="27" unique_id=103727725 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("5_eg1xv")]
 transform = Transform3D(-0.85, 0, -1.2834643e-07, 0, 0.85, 0, 1.2834643e-07, 0, -0.85, 0.18364322, 0.038605843, 0.0887777)
 Target_Mesh = NodePath("../../Microphone Level")
 
@@ -131,13 +149,12 @@ horizontal_alignment = 2
 uppercase = true
 
 [node name="General Status" type="Label3D" parent="." index="55" unique_id=625255237]
-transform = Transform3D(0.99999976, 0, 0, 0, -0.3275147, 0.9448458, 0, -0.9448458, -0.3275147, 0.24095315, -0.018652782, 0.35984936)
-alpha_cut = 1
-alpha_scissor_threshold = 0.4
+transform = Transform3D(0.99999976, 0, 0, 0, -0.3275147, 0.9448458, 0, -0.9448458, -0.3275147, 0.24095315, 0.020903723, 0.294634)
+pixel_size = 0.001
 texture_filter = 0
 text = "Crossfade: "
 font = ExtResource("7_c5t0g")
-font_size = 10
+font_size = 16
 outline_size = 0
 uppercase = true
 
@@ -205,6 +222,12 @@ outline_size = 0
 [connection signal="on_activated" from="Controls/Right_Play" to="." method="_on_right_play_on_activated"]
 [connection signal="on_activated" from="Controls/Left_BeatSync" to="." method="_on_left_beat_sync_on_activated"]
 [connection signal="on_activated" from="Controls/Right_BeatSync" to="." method="_on_right_beat_sync_on_activated"]
+[connection signal="on_activated" from="Controls/Left_LoopStart" to="." method="_on_right_beat_sync_on_activated"]
+[connection signal="on_activated" from="Controls/Right_LoopStart" to="." method="_on_right_beat_sync_on_activated"]
+[connection signal="on_activated" from="Controls/Left_LoopEND" to="." method="_on_right_beat_sync_on_activated"]
+[connection signal="on_activated" from="Controls/Right_LoopEND" to="." method="_on_right_beat_sync_on_activated"]
+[connection signal="on_activated" from="Controls/Left_Make4BeatLoop" to="." method="_on_right_beat_sync_on_activated"]
+[connection signal="on_activated" from="Controls/Right_Make4BeatLoop" to="." method="_on_right_beat_sync_on_activated"]
 [connection signal="on_activated" from="Controls/Crossfade" to="." method="_on_crossfade_on_activated"]
 [connection signal="on_unhovered" from="Controls/Crossfade" to="." method="_on_crossfade_on_unhovered"]
 [connection signal="area_entered" from="Node3D/ResetArea" to="." method="_on_reset_area_area_entered"]

@@ -39,6 +39,8 @@ var _slider_overlap_count: int = 0
 static var CURRENT_LEFT_HAND_POSE = E_POSES.NONE
 static var CURRENT_RIGHT_HAND_POSE = E_POSES.NONE
 
+const active_mat = preload("res://Art/Materials/M_Item_Activated.tres")
+
 # to avoid race-condition : SCUFFED 
 @onready var is_main_signaller = (Which_Finger == E_FINGER.SECOND)
 
@@ -94,35 +96,35 @@ signal ThumbsUp_Pose_End_L
 
 @onready var XR_Hand_Ref_L : XRController3D = %XR_LeftHand
 @onready var XR_Hand_Ref_R : XRController3D = %XR_RightHand
-@onready var XR_Hand_Ref_FP_L : XRToolsFunctionPointer = %Left_MainFuctionPointer
-@onready var XR_Hand_Ref_FP_R : XRToolsFunctionPointer = %Right_MainFuctionPointer
+#@onready var XR_Hand_Ref_FP_L : XRToolsFunctionPointer = %Left_MainFuctionPointer
+#@onready var XR_Hand_Ref_FP_R : XRToolsFunctionPointer = %Right_MainFuctionPointer
 
 func Set_Pointer_Enabled(use_right_hand: bool, Is_Enabled: bool):
     if use_right_hand and is_main_signaller:
-        XR_Hand_Ref_FP_R.set_enabled(Is_Enabled)
-        XR_Hand_Ref_FP_R.set_distance(5 if Is_Enabled else 0)
-        XR_Hand_Ref_FP_R.set_show_target(Is_Enabled)
+        #XR_Hand_Ref_FP_R.set_enabled(Is_Enabled)
+        #XR_Hand_Ref_FP_R.set_distance(5 if Is_Enabled else 0)
+        #XR_Hand_Ref_FP_R.set_show_target(Is_Enabled)
         DEBUG_Right_Label.modulate = Color("44bba4ff") if Is_Enabled else Color("e94f37ff")
-        XR_Hand_Ref_FP_R.set_show_laser(XRToolsFunctionPointer.LaserShow.SHOW if Is_Enabled else XRToolsFunctionPointer.LaserShow.HIDE)
+        #XR_Hand_Ref_FP_R.set_show_laser(XRToolsFunctionPointer.LaserShow.SHOW if Is_Enabled else XRToolsFunctionPointer.LaserShow.HIDE)
     
     elif is_main_signaller:
-        XR_Hand_Ref_FP_L.set_enabled(Is_Enabled)
-        XR_Hand_Ref_FP_L.set_show_target(Is_Enabled)
-        XR_Hand_Ref_FP_L.set_distance(5 if Is_Enabled else 0)
+        #XR_Hand_Ref_FP_L.set_enabled(Is_Enabled)
+        #XR_Hand_Ref_FP_L.set_show_target(Is_Enabled)
+        #XR_Hand_Ref_FP_L.set_distance(5 if Is_Enabled else 0)
         DEBUG_Left_Label.modulate = Color("44bba4ff") if Is_Enabled else Color("e94f37ff")
-        XR_Hand_Ref_FP_L.set_show_laser(XRToolsFunctionPointer.LaserShow.SHOW if Is_Enabled else XRToolsFunctionPointer.LaserShow.HIDE)
+        #XR_Hand_Ref_FP_L.set_show_laser(XRToolsFunctionPointer.LaserShow.SHOW if Is_Enabled else XRToolsFunctionPointer.LaserShow.HIDE)
 
         
         
 func Do_Pointer_Click(use_right_hand: bool):
     if use_right_hand and is_main_signaller:
         #XR_Hand_Ref_FP_R._on_button_pressed("trigger_click", XR_Hand_Ref_R)
-        await _simulate_pointer_click(XR_Hand_Ref_FP_R, XR_Hand_Ref_R)    
+        #await _simulate_pointer_click(XR_Hand_Ref_FP_R, XR_Hand_Ref_R)    
         DEBUG_Right_Label.modulate = Color("edae49ff")
         print("WE DID A R CLICK")
     elif is_main_signaller:
         #XR_Hand_Ref_FP_L._on_button_pressed("trigger_click", XR_Hand_Ref_L)    
-        await _simulate_pointer_click(XR_Hand_Ref_FP_L, XR_Hand_Ref_L)
+        #await _simulate_pointer_click(XR_Hand_Ref_FP_L, XR_Hand_Ref_L)
         DEBUG_Left_Label.modulate = Color("edae49ff")
         print("WE DID A L CLICK")
 
@@ -264,10 +266,23 @@ func notify_entered_slider() -> void:
     _slider_overlap_count += 1
     if _slider_overlap_count == 1:
         _collision_shape.scale = _default_collision_scale * SLIDER_COLLISION_SCALE
-
+        var target_mesh : MeshInstance3D
+        if is_right_hand:
+            target_mesh = %RightHandMesh
+        else:
+            target_mesh = %LeftHandMesh
+        target_mesh.scale = _default_collision_scale * SLIDER_COLLISION_SCALE
+        target_mesh.material_override = active_mat
 
 ## Call when this finger exits a slider's activation area. Restores collision when not in any slider.
 func notify_exited_slider() -> void:
     _slider_overlap_count = clampi(_slider_overlap_count, _slider_overlap_count - 1, 0)
     if _slider_overlap_count == 0 and _collision_shape:
         _collision_shape.scale = _default_collision_scale
+        var target_mesh : MeshInstance3D
+        if is_right_hand:
+            target_mesh = %RightHandMesh
+        else:
+            target_mesh = %LeftHandMesh
+        target_mesh.scale = _default_collision_scale
+        target_mesh.material_override = null

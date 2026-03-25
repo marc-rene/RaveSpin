@@ -14,24 +14,32 @@ RUNNING
 
 """
 import re
+import pathlib
+import os
 
 
 
 # What will we start looking for our array from? like 'const String_Array : Array[StringName] = ['
-START_SEARCH_PHRASE = "const m_MusicGenres_str : Array[StringName] = ["
-ORIGINAL_VAR_NAME = "m_MusicGenres_str"
+START_SEARCH_PHRASE = "const m_scales_str : Array[StringName] = ["
+ORIGINAL_VAR_NAME = "m_scales_str"
 
 # Where will we insert our Enum and String -> Enum function??
 INJECTION_POINT_PHRASE = "### INSERT ENUM VERSION HERE ###"
 
 # Name of the enum version of our string array
-ENUM_VARIABLE_NAME = "m_MusicGenres_enum"
+ENUM_VARIABLE_NAME = "m_scales_enum"
 
 # MAKE SURE YOU'VE SAVED THIS FILE FIRST!
-TARGET_GD_FILE = "E_Genre.gd"
+TARGET_GD_FILE = "E_MusicKey.gd"
 
 
 if __name__ == "__main__":
+    try:
+        open(TARGET_GD_FILE, "r")
+    except FileNotFoundError:
+        new_dir = pathlib.Path(__file__).parent.absolute()
+        print(f"{TARGET_GD_FILE} not found in cwd, changing to {new_dir} ")
+        os.chdir(new_dir)
     with open(TARGET_GD_FILE, "rb+") as gd_file:
         try:
             all_contents = gd_file.read()

@@ -4,6 +4,8 @@ extends Resource
 
 # Where will all of our Music Metadatas be saved to?
 const ROOT_MUSIC_DIR = "res://Music/Song Metadatas/"
+## User-imported songs (Add Track on device) save .tres here so they persist on Quest/Android.
+const USER_SONG_METADATA_DIR: String = "user://Music/Song Metadatas/"
 
 # Name??
 @export var Song_Title: StringName
@@ -23,15 +25,25 @@ const ROOT_MUSIC_DIR = "res://Music/Song Metadatas/"
 
 
 # Genres that describe this song
-@export var Song_Genres: Array[EGenre.m_MusicGenres_enum]
+## Done in Ints, use Int_to_Id3Genre_str() to get the Genre Display
+@export var Song_Genres: Array[EGenre.E_ID3Genres]
 
+static func Id3_to_DisplayTitle(Genre_ID : int) -> String:
+    if Genre_ID == 192:
+        return MusicMetadataTools.ID3_GENRE_IDS.get('CR')
+    elif Genre_ID == 193:
+        return MusicMetadataTools.ID3_GENRE_IDS.get('RX')
+    else:
+        return MusicMetadataTools.ID3_GENRE_IDS.get(str(Genre_ID), "N/A")
+    
+    
 
 # What's the actual data for this song? Its MP3/WAV file 
 @export var Audio_File: AudioStream
 ## For user-imported songs (Add Local): path to the file under user:// so it persists.
 ## When set, get_audio_stream() loads from this path if Audio_File is null.
 @export var Audio_File_Path: String
-@export var Audio_File_Waveform : CompressedTexture2D
+@export var Audio_File_Waveform: Texture2D
 
 # How many Beats Per Minute for this song?
 @export var Track_BPM: float
@@ -74,7 +86,7 @@ func get_audio_stream() -> AudioStream:
         return Audio_File
     if Audio_File_Path.is_empty():
         return null
-    var ext := Audio_File_Path.get_extension().to_lower()
+    var ext : String = Audio_File_Path.get_extension().to_lower()
     if ext == "mp3":
         return AudioStreamMP3.load_from_file(Audio_File_Path)
     if ext == "wav":
@@ -115,13 +127,13 @@ func Attempt_Find_waveform() -> bool:
         push_warning("Attempt_Find_waveform: Could not find waveform texture at %s" % waveform_path)
         return false
 
-    var tex := load(waveform_path)
-    if tex is CompressedTexture2D:
-        Audio_File_Waveform = tex
+    var tex: Resource = load(waveform_path)
+    if tex is Texture2D:
+        Audio_File_Waveform = tex as Texture2D
         print("Attempt_Find_waveform: Set Audio_File_Waveform to ", waveform_path)
         return true
     else:
-        push_warning("Attempt_Find_waveform: Resource at %s is not a CompressedTexture2D." % waveform_path)
+        push_warning("Attempt_Find_waveform: Resource at %s is not a Texture2D." % waveform_path)
         return false
     
 @export_tool_button("Set Waveform from file", "Callable") 
@@ -133,7 +145,7 @@ func _ready():
     if Track_Key == null and Track_Key_Note != null and Track_Scale == null:
         Track_Key = EMusicKey.new(Track_Key_Note, Track_Scale)
     
-
+## @deprecated
 func Attempt_Automatic_Data_Fill_From_Audio_File():
     print("Attempting grab data from file")
     if Audio_File == null:
@@ -199,6 +211,67 @@ func _to_string() -> String:
 
         
         
-# Get the "Res://..." path to all songs
-static func Get_All_Song_Paths() -> PackedStringArray :
-    return ResourceLoader.list_directory("res://Music/Song Metadatas/")
+# Get paths to all song metadata .tres under res:// and user:// (no guaranteed order).
+static func Get_All_Song_Paths() -> PackedStringArray:
+    var paths: PackedStringArray = PackedStringArray()
+    if DirAccess.dir_exists_absolute(ROOT_MUSIC_DIR):
+        for entry_name: String in ResourceLoader.list_directory(ROOT_MUSIC_DIR):
+            if entry_name.ends_with(".tres"):
+                paths.append(ROOT_MUSIC_DIR.path_join(entry_name))
+    DirAccess.make_dir_recursive_absolute(USER_SONG_METADATA_DIR)
+    if DirAccess.dir_exists_absolute(USER_SONG_METADATA_DIR):
+        var user_dir: DirAccess = DirAccess.open(USER_SONG_METADATA_DIR)
+        if user_dir != null:
+            user_dir.list_dir_begin()
+            var user_entry: String = user_dir.get_next()
+            while user_entry != "":
+                if (not user_dir.current_is_dir()) and user_entry.ends_with(".tres"):
+                    paths.append(USER_SONG_METADATA_DIR.path_join(user_entry))
+                user_entry = user_dir.get_next()
+            user_dir.list_dir_end()
+    return paths
+
+
+## Deletes a user-imported song: the `.tres` metadata file, optional `Audio_File_Path` under `user://`,
+## and a waveform PNG next to the audio if present. Built-in `res://` library tracks are not removable at runtime.
+static func try_delete_song_at_metadata_path(metadata_resource_path: String) -> Dictionary:
+    var result: Dictionary = {
+        "ok": false,
+        "message": "",
+    }
+    if metadata_resource_path.is_empty() or not metadata_resource_path.ends_with(".tres"):
+        result["message"] = "Invalid song file path."
+        return result
+    if metadata_resource_path.begins_with("res://"):
+        result["message"] = "Built-in tracks cannot be removed."
+        return result
+    if not metadata_resource_path.begins_with("user://"):
+        result["message"] = "Only user-imported tracks can be removed."
+        return result
+    if not FileAccess.file_exists(metadata_resource_path):
+        result["message"] = "Song file is already gone."
+        return result
+
+    var song_to_remove: Song = load(metadata_resource_path) as Song
+    if song_to_remove == null:
+        result["message"] = "Could not load song data."
+        return result
+
+    var audio_path: String = String(song_to_remove.Audio_File_Path).strip_edges()
+    if audio_path.begins_with("user://") and FileAccess.file_exists(audio_path):
+        var waveform_png_path: String = "%s/%s_WAVEFORM.png" % [
+            audio_path.get_base_dir(),
+            audio_path.get_file().get_basename(),
+        ]
+        if FileAccess.file_exists(waveform_png_path):
+            DirAccess.remove_absolute(ProjectSettings.globalize_path(waveform_png_path))
+        DirAccess.remove_absolute(ProjectSettings.globalize_path(audio_path))
+
+    var remove_err: Error = DirAccess.remove_absolute(ProjectSettings.globalize_path(metadata_resource_path))
+    if remove_err != OK:
+        result["message"] = "Failed to delete metadata (%d)." % remove_err
+        return result
+
+    result["ok"] = true
+    result["message"] = "Removed."
+    return result

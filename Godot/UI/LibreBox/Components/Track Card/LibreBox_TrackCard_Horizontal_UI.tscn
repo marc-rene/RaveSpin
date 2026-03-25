@@ -50,6 +50,7 @@ shader = SubResource("Shader_d7mpa")
 shader_parameter/Unlit_Colour = Color(0.92941177, 0.68235296, 0.28627452, 1)
 
 [node name="LibreBoxTrackCardHorizontalUi" type="Button" unique_id=1906176276]
+clip_contents = true
 custom_minimum_size = Vector2(0, 180)
 anchors_preset = -1
 anchor_right = 1.0
@@ -302,6 +303,7 @@ alignment = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/Main Container/Note Container" unique_id=67316717]
 layout_mode = 2
+size_flags_horizontal = 0
 
 [node name="Note Icon" type="TextureRect" parent="VBoxContainer/Main Container/Note Container/HBoxContainer" unique_id=611951739]
 material = SubResource("ShaderMaterial_d62xh")
@@ -317,7 +319,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
 theme = ExtResource("2_sjwx3")
-text = "Personal Note"
+text = "Info"
 label_settings = ExtResource("8_d62xh")
 horizontal_alignment = 1
 vertical_alignment = 2
@@ -329,6 +331,10 @@ size_flags_vertical = 3
 
 [node name="Note var Label" type="Label" parent="VBoxContainer/Main Container/Note Container/Note SubContainer" unique_id=1220629847]
 unique_name_in_owner = true
+process_mode = 4
+process_thread_group = 2
+process_thread_group_order = 0
+process_thread_messages = 0
 layout_mode = 2
 size_flags_vertical = 1
 text = "Song sidenote and extra information - N/A"
@@ -344,5 +350,24 @@ layout_mode = 2
 [node name="Padding" type="Control" parent="VBoxContainer" unique_id=1163360951]
 layout_mode = 2
 size_flags_vertical = 3
+
+[node name="CenterContainer2" type="CenterContainer" parent="." unique_id=1738733473]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -62.0
+offset_bottom = 54.0
+grow_horizontal = 0
+
+[node name="RemoveTrackButton" type="Button" parent="CenterContainer2" unique_id=1752822027]
+unique_name_in_owner = true
+self_modulate = Color(0.9137255, 0.30980393, 0.21568628, 1)
+z_index = 3
+clip_contents = true
+layout_mode = 2
+text = "X"
+icon_alignment = 1
+vertical_icon_alignment = 0
 
 [connection signal="pressed" from="." to="." method="_on_pressed"]

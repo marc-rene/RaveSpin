@@ -338,7 +338,7 @@ static func add_beat_fx(fx_type: E_BEAT_FX_TYPE, channel: int) -> void:
     if ONE_FX_AT_A_TIME:
         # Only slot 4's used... replace whats is there.
         if AudioServer.get_bus_effect_count(bus_index) > BEAT_FX_SLOT_SINGLE:
-            AudioServer.remove_bus_effect(bus_index, (BEAT_FX_SLOT_SINGLE - 1) )
+            AudioServer.remove_bus_effect(bus_index, BEAT_FX_SLOT_SINGLE )
             active_fx.clear()
         var effect: AudioEffect = _create_beat_fx_instance(fx_type)
         if effect != null:

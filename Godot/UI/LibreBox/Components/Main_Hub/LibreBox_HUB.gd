@@ -33,19 +33,37 @@ var _rhythm_2: RhythmNotifier
 
 
 
-func Refresh(Set_Track_1 : bool) -> void:
+func Refresh(Set_Track_1 : bool) -> bool:
+    var success = true
     if Set_Track_1:
         $"VBoxContainer/Track 1 Container/Track 1 Card".Set_New_Song(Track_1)
-        if Track_1 and Track_1.Audio_File_Waveform: # Godot at init time is HORRIBLE
-            Track_1_waveformVis.texture = Track_1.Audio_File_Waveform
-        if _rhythm_1 and Track_1:
-            _rhythm_1.bpm = Track_1.Track_BPM
+        if Track_1 and Track_1.Audio_File_Waveform:
+            if not Track_1_waveformVis:
+                success = false
+            else:
+                Track_1_waveformVis.texture = Track_1.Audio_File_Waveform
+        else:
+            if not Track_1_waveformVis:
+                success = false
+            else:
+                Track_1_waveformVis.texture = null
+        if _rhythm_1:
+            _rhythm_1.bpm = Track_1.Track_BPM if Track_1 else 120.0
     else:
         $"VBoxContainer/Track 2 Container/Track 2 Card".Set_New_Song(Track_2)
-        if Track_2 and Track_2.Audio_File_Waveform: 
-            Track_2_waveformVis.texture = Track_2.Audio_File_Waveform
-        if _rhythm_2 and Track_2:
-            _rhythm_2.bpm = Track_2.Track_BPM
+        if Track_2 and Track_2.Audio_File_Waveform:
+            if not Track_2_waveformVis:
+                success = false
+            else:
+                Track_2_waveformVis.texture = Track_2.Audio_File_Waveform
+        else:
+            if not Track_2_waveformVis:
+                success = false
+            else:
+                Track_2_waveformVis.texture = null
+        if _rhythm_2:
+            _rhythm_2.bpm = Track_2.Track_BPM if Track_2 else 120.0
+    return success
     
     
     

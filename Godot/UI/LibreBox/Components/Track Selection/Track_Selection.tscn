@@ -38,12 +38,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer" unique_id=1061895039]
-layout_mode = 2
-size_flags_vertical = 3
-size_flags_stretch_ratio = 2.0
-
-[node name="Track Selection Label" type="Label" parent="VBoxContainer/HBoxContainer" unique_id=845195395]
+[node name="Track Selection Label" type="Label" parent="VBoxContainer" unique_id=845195395]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -52,7 +47,7 @@ label_settings = ExtResource("2_1m280")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="ADD ZE TRACK" type="Button" parent="VBoxContainer/HBoxContainer" unique_id=86367898]
+[node name="ADD ZE TRACK" type="Button" parent="VBoxContainer" unique_id=86367898]
 z_index = 2
 layout_mode = 2
 size_flags_horizontal = 3

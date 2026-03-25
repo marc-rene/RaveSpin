@@ -110,10 +110,12 @@ static func Get_Track_Playback_Player(which_track : int) -> AudioStreamPlayer:
 func LoadTrackIntoMemory(which_track : int, which_song : Song):
     which_track = Utility.Clamp_to_Valid_TrackID(which_track)
     print("Spawned Player for Track ", which_track)
-    
+    if which_song == null:
+        AudioPlayerList[which_track].stream = null
+        AudioPlayerList[which_track].stream_paused = true
+        return
     AudioPlayerList[which_track].stream = which_song.get_audio_stream()
     print("Loading Track ", which_track, " into memory now")
-    
     AudioPlayerList[which_track].stream_paused = true
     
     
@@ -326,7 +328,7 @@ func Update_Channel_Tempo_Adjusts():
     # TODO: Do AudioPlayerList[2] + [3]
     
     
-func _process(delta: float) -> void:
+func _physics_process(delta: float) -> void:
            
     Update_Channel_Tempo_Adjusts()
     Update_Channel_DBs() # crossfades and stuff
