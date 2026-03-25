@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://cdx5rxkmy32p5" path="res://UI/LibreBox/Components/Track Selection/Track_Delete_Confirm_UI.tscn" id="7_4oknt"]
 [ext_resource type="PackedScene" uid="uid://cprhr6myydno5" path="res://UI/LibreBox/Components/FX Selection/FX_Selection_Menu.tscn" id="8_83nvb"]
 [ext_resource type="PackedScene" uid="uid://7kyk88qnftlr" path="res://UI/LibreBox/Components/Add Track/Add_Track_UI.tscn" id="9_83nvb"]
+[ext_resource type="PackedScene" uid="uid://bowim16kwtx7w" path="res://UI/LibreBox/Components/FX Selection/FX_Allow_More.tscn" id="10_j0p6t"]
 
 [node name="LibreboxScene" type="Node3D" unique_id=889702823]
 script = ExtResource("1_al4tx")
@@ -125,4 +126,30 @@ scene_properties_keys = PackedStringArray("add_track_ui.gd")
 [node name="HandTouch" type="Node" parent="Add Song" unique_id=1884731617]
 script = ExtResource("5_hand")
 enable_double = true
+scroll_sensitivity = 0.3
+
+[node name="AllowMoreFX" parent="." unique_id=52213427 instance=ExtResource("1_ebwc8")]
+transform = Transform3D(0.870622, 1.4901161e-08, -0.49195263, 0.44216406, 0.43837115, 0.78250986, 0.21565783, -0.89879405, 0.38165557, 0.937826, -0.73622274, 0.80204165)
+screen_size = Vector2(0.2, 0.1)
+scene = ExtResource("10_j0p6t")
+viewport_size = Vector2(300, 150)
+
+[node name="HandTouch" type="Node" parent="AllowMoreFX" unique_id=142616372]
+script = ExtResource("5_hand")
+click_cooldown_seconds = 0.5
+scroll_enabled = false
+scroll_pose_index_pinch = false
+scroll_pose_fist = false
+scroll_sensitivity = 0.3
+
+[node name="Language Select" parent="." unique_id=605638321 instance=ExtResource("1_ebwc8")]
+transform = Transform3D(0.34202015, -0.081899606, 0.9361168, 0, 0.9961947, 0.08715574, -0.9396926, -0.029809019, 0.34071866, -0.93253744, -0.21653448, 0.9154934)
+screen_size = Vector2(0.4, 0.5)
+
+[node name="HandTouch" type="Node" parent="Language Select" unique_id=727519343]
+script = ExtResource("5_hand")
+click_cooldown_seconds = 0.5
+scroll_enabled = false
+scroll_pose_index_pinch = false
+scroll_pose_fist = false
 scroll_sensitivity = 0.3

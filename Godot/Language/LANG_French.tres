@@ -1,0 +1,8 @@
+[gd_resource type="Translation" format=3 uid="uid://dv1rakrabfcq7"]
+
+[resource]
+locale = "fr"
+messages = {
+&"Active FX: ": "Effets actifs : ",
+&"Change Language": "Changer de langue"
+}

@@ -255,10 +255,10 @@ layout_mode = 2
 alignment = 1
 last_wrap_alignment = 2
 
-[node name="Label" type="Label" parent="VBoxContainer/Active Effects Container" unique_id=1785908593]
+[node name="Active FX Title Label" type="Label" parent="VBoxContainer/Active Effects Container" unique_id=1785908593]
 layout_mode = 2
 text = "Active FX: "
-label_settings = ExtResource("5_8tb87")
+label_settings = ExtResource("9_72dxl")
 
 [node name="Time Remaining Container" type="HBoxContainer" parent="VBoxContainer" unique_id=1539477309]
 custom_minimum_size = Vector2(0, 30)

@@ -1,0 +1,27 @@
+[gd_scene format=3 uid="uid://b6ltbvcirle8v"]
+
+[ext_resource type="Script" path="res://UI/LibreBox/Components/Langauge/ui_language_selection.gd" id="1_langui"]
+[ext_resource type="LabelSettings" uid="uid://bl11km7ja4u0h" path="res://Art/Themes/Heading.tres" id="1_l3kav"]
+
+[node name="UiLanguageSelection" type="PanelContainer" unique_id=1869812151]
+script = ExtResource("1_langui")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=895492894]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=793031695]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer" unique_id=110362687]
+layout_mode = 2
+text = "Change Language"
+label_settings = ExtResource("1_l3kav")

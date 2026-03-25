@@ -31,6 +31,7 @@ buses/channel_disable_time=180.0
 
 [autoload]
 
+Language_Manager="*res://GLOBAL/Langauge_Manager.gd"
 XRToolsUserSettings="*uid://dj7ac5oc0ja3f"
 XRToolsRumbleManager="*uid://cld4y0tvk1qfc"
 
@@ -49,6 +50,17 @@ Utility="Global functions to just help"
 [godot_xr_tools]
 
 player/standard_height=1.75
+
+[internationalization]
+
+locale/translation_remaps={}
+locale/translations=PackedStringArray("res://Language/LANG_Chinese.tres", "res://Language/LANG_French.tres", "res://Language/LANG_Irish.tres")
+locale/fallback="en"
+
+[physics]
+
+common/physics_ticks_per_second=45
+common/max_physics_steps_per_frame=4
 
 [rendering]
 

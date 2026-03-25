@@ -20,6 +20,12 @@ const Default_album_art_T = preload("res://Art/Splash/Light Splash.png")
 @onready var Note_Text_Label : Label = $"VBoxContainer/HBoxContainer/Note Container/Note SubContainer/Note var Label"
 @onready var Note_Text_Container_Parent : Container = $"VBoxContainer/HBoxContainer/Note Container"
 
+@onready var _active_fx_container: HFlowContainer = $"VBoxContainer/Active Effects Container"
+@onready var _active_fx_title_label: Label = $"VBoxContainer/Active Effects Container/Active FX Title Label"
+
+var ACTIVE_FX_TITLE_DEFAULT: String = tr("Active FX: ")
+const HEADING_2_LABEL_SETTINGS: LabelSettings = preload("res://Art/Themes/Heading_2.tres")
+
 var CheckFX_thread : Thread
 
 var prev_beat_alpha : float = -1.0
@@ -73,21 +79,56 @@ func _ready():
 
 var fx_labels : Dictionary[BUS_MANAGER.E_BEAT_FX_TYPE, Label]
 
-func Check_Active_FX():
-    while true:
-        await get_tree().create_timer(0.5).timeout 
-        for fx in BUS_MANAGER.E_BEAT_FX_TYPE.values():
-            if BUS_MANAGER.is_beat_fx_active(fx, Track_ID) and fx not in fx_labels:
-                var new_label : Label = Label.new()
-                new_label.text = BUS_MANAGER.Beat_FX_Names[fx] + ",   "
-                new_label.label_settings.font_size = 20
-                $"VBoxContainer/Active Effects Container".add_child(new_label)
-                fx_labels[fx] = new_label
-            elif not BUS_MANAGER.is_beat_fx_active(fx, Track_ID) and fx in fx_labels:
-                fx_labels[fx].queue_free()
-                    
-            
-        
+var wait_t : int = 0
+func _physics_process(_delta: float) -> void:
+    if wait_t % 4 == 0:
+        if _active_fx_container == null or _active_fx_title_label == null:
+            return
+        var channel: int = Utility.Clamp_to_Valid_TrackID(Track_ID)
+        var can_take_fx: bool = (channel == 0 and BUS_MANAGER.Can_Track_1_Take_FX()) or (channel == 1 and BUS_MANAGER.Can_Track_2_Take_FX())
+        if not can_take_fx:
+            _active_fx_title_label.text = "No FX allowed for Track %d, can be changed from FX Panel" % (channel + 1)
+            _clear_dynamic_fx_labels()
+            return
+
+        _active_fx_title_label.text = ACTIVE_FX_TITLE_DEFAULT
+        var active_dict: Dictionary = BUS_MANAGER.active_effects_Channel_1 if channel == 0 else BUS_MANAGER.active_effects_Channel_2
+        _sync_active_fx_labels(active_dict)
+    
+    wait_t += 1
+
+
+func _clear_dynamic_fx_labels() -> void:
+    var to_drop: Array = fx_labels.keys().duplicate()
+    for fx_type in to_drop:
+        var lab: Label = fx_labels[fx_type]
+        fx_labels.erase(fx_type)
+        if is_instance_valid(lab):
+            lab.queue_free()
+
+
+func _sync_active_fx_labels(active_dict: Dictionary) -> void:
+    var remove_keys: Array = []
+    for fx_type in fx_labels.keys():
+        if not active_dict.has(fx_type):
+            remove_keys.append(fx_type)
+    for fx_type in remove_keys:
+        var lab: Label = fx_labels[fx_type]
+        fx_labels.erase(fx_type)
+        if is_instance_valid(lab):
+            lab.queue_free()
+
+    for fx_type in active_dict.keys():
+        var slot: int = int(active_dict[fx_type])
+        if slot < 0:
+            continue
+        if fx_labels.has(fx_type):
+            continue
+        var new_label := Label.new()
+        new_label.label_settings = HEADING_2_LABEL_SETTINGS
+        new_label.text = BUS_MANAGER.Beat_FX_Names.get(fx_type, str(fx_type))
+        _active_fx_container.add_child(new_label)
+        fx_labels[fx_type] = new_label
 
 
 func Set_New_Song(New_Song: Song) -> bool:

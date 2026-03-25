@@ -90,21 +90,18 @@ func get_audio_stream() -> AudioStream:
     if ext == "mp3":
         return AudioStreamMP3.load_from_file(Audio_File_Path)
     if ext == "wav":
-        var file := FileAccess.open(Audio_File_Path, FileAccess.READ)
-        if not file:
+        # AudioStreamWAV.data is not "whole WAV file bytes".
+        # Use the provided decoder to interpret WAV headers/encoding correctly.
+        var bytes: PackedByteArray = FileAccess.get_file_as_bytes(Audio_File_Path)
+        if bytes.is_empty():
             return null
-        var wav := AudioStreamWAV.new()
-        wav.data = file.get_buffer(file.get_length())
-        file.close()
-        return wav
+        return AudioStreamWAV.load_from_buffer(bytes)
     if ext == "ogg":
-        var file := FileAccess.open(Audio_File_Path, FileAccess.READ)
-        if not file:
+        # Same rationale as WAV: load and decode via the built-in importer.
+        var bytes: PackedByteArray = FileAccess.get_file_as_bytes(Audio_File_Path)
+        if bytes.is_empty():
             return null
-        var ogg := AudioStreamOggVorbis.new()
-        ogg.data = file.get_buffer(file.get_length())
-        file.close()
-        return ogg
+        return AudioStreamOggVorbis.load_from_buffer(bytes)
     return null
 
 func Attempt_Find_waveform() -> bool:

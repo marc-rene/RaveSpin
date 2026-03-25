@@ -1,0 +1,8 @@
+[gd_resource type="Translation" format=3 uid="uid://dcpkri2q2kbrh"]
+
+[resource]
+locale = "zh_CN"
+messages = {
+&"Active FX: ": "当前效果：",
+&"Change Language": "更改语言"
+}

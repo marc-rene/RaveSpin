@@ -442,21 +442,18 @@ static func _load_stream_from_path(path: String) -> AudioStream:
     if ext == "mp3":
         return AudioStreamMP3.load_from_file(path)
     if ext == "wav":
-        var wav_file: FileAccess = FileAccess.open(path, FileAccess.READ)
-        if wav_file == null:
+        # AudioStreamWAV.data is decoded PCM payload, not the whole WAV file bytes.
+        # Decode via load_from_buffer to respect WAV encoding/header.
+        var bytes: PackedByteArray = FileAccess.get_file_as_bytes(path)
+        if bytes.is_empty():
             return null
-        var wav_stream: AudioStreamWAV = AudioStreamWAV.new()
-        wav_stream.data = wav_file.get_buffer(wav_file.get_length())
-        wav_file.close()
-        return wav_stream
+        return AudioStreamWAV.load_from_buffer(bytes)
     if ext == "ogg":
-        var ogg_file: FileAccess = FileAccess.open(path, FileAccess.READ)
-        if ogg_file == null:
+        # Decode via load_from_buffer to avoid interpreting container bytes as payload.
+        var bytes: PackedByteArray = FileAccess.get_file_as_bytes(path)
+        if bytes.is_empty():
             return null
-        var ogg_stream: AudioStreamOggVorbis = AudioStreamOggVorbis.new()
-        ogg_stream.data = ogg_file.get_buffer(ogg_file.get_length())
-        ogg_file.close()
-        return ogg_stream
+        return AudioStreamOggVorbis.load_from_buffer(bytes)
     return null
 
 

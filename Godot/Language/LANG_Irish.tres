@@ -1,0 +1,8 @@
+[gd_resource type="Translation" format=3 uid="uid://d0rko4km2madm"]
+
+[resource]
+locale = "ga"
+messages = {
+&"Active FX: ": "Éifeachtaí gníomhacha: ",
+&"Change Language": "Athraigh an teanga"
+}
