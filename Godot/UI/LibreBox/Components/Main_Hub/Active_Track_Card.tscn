@@ -101,14 +101,14 @@ size_flags_stretch_ratio = 1.5
 alignment = 1
 
 [node name="Title" type="Label" parent="VBoxContainer/HBoxContainer/Core Details Container" unique_id=1077802637]
+auto_translate_mode = 1
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 size_flags_vertical = 7
 size_flags_stretch_ratio = 1.5
 theme = ExtResource("2_looh3")
 theme_override_font_sizes/font_size = 18
-auto_translate = true
-text = "Song Title - N/A"
+text = "KEY_SONG_TITLE_PLACEHOLDER"
 label_settings = SubResource("LabelSettings_61u8w")
 vertical_alignment = 1
 autowrap_mode = 1
@@ -116,24 +116,24 @@ text_overrun_behavior = 3
 uppercase = true
 
 [node name="Artist" type="Label" parent="VBoxContainer/HBoxContainer/Core Details Container" unique_id=602966769]
+auto_translate_mode = 1
 layout_mode = 2
 size_flags_vertical = 7
 size_flags_stretch_ratio = 1.5
 theme_override_colors/font_color = Color(1, 1, 1, 1)
-auto_translate = true
-text = "Artist - N/A"
+text = "KEY_ARTIST_PLACEHOLDER"
 label_settings = ExtResource("5_8tb87")
 vertical_alignment = 2
 text_overrun_behavior = 5
 ellipsis_char = "-"
 
 [node name="Album" type="Label" parent="VBoxContainer/HBoxContainer/Core Details Container" unique_id=1145567050]
+auto_translate_mode = 1
 layout_mode = 2
 size_flags_vertical = 7
 size_flags_stretch_ratio = 1.5
 theme = ExtResource("2_looh3")
-auto_translate = true
-text = "Album - N/A"
+text = "KEY_ALBUM_PLACEHOLDER"
 label_settings = ExtResource("6_l5wfa")
 
 [node name="BPM Container" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/Core Details Container" unique_id=738187836]
@@ -157,17 +157,17 @@ size_flags_stretch_ratio = 3.0
 alignment = 1
 
 [node name="BPM Label" type="Label" parent="VBoxContainer/HBoxContainer/Core Details Container/BPM Container/HBoxContainer" unique_id=1059795141]
+auto_translate_mode = 1
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("2_looh3")
-auto_translate = true
-text = "Base BPM"
+text = "KEY_BASE_BPM"
 label_settings = ExtResource("6_l5wfa")
 horizontal_alignment = 1
 
 [node name="BPM var Label" type="Label" parent="VBoxContainer/HBoxContainer/Core Details Container/BPM Container/HBoxContainer" unique_id=866828823]
+auto_translate_mode = 1
 layout_mode = 2
-auto_translate = true
 text = "NaN"
 label_settings = ExtResource("9_72dxl")
 horizontal_alignment = 1
@@ -193,17 +193,17 @@ size_flags_stretch_ratio = 3.0
 alignment = 1
 
 [node name="Key Label" type="Label" parent="VBoxContainer/HBoxContainer/Core Details Container/Key Container/HBoxContainer" unique_id=1679178961]
+auto_translate_mode = 1
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("2_looh3")
-auto_translate = true
-text = "Base Key"
+text = "KEY_BASE_KEY"
 label_settings = ExtResource("6_l5wfa")
 horizontal_alignment = 1
 
 [node name="Key var Label" type="Label" parent="VBoxContainer/HBoxContainer/Core Details Container/Key Container/HBoxContainer" unique_id=921451048]
+auto_translate_mode = 1
 layout_mode = 2
-auto_translate = true
 text = "NaN"
 label_settings = ExtResource("9_72dxl")
 horizontal_alignment = 1
@@ -228,12 +228,12 @@ expand_mode = 4
 stretch_mode = 6
 
 [node name="Note Label" type="Label" parent="VBoxContainer/HBoxContainer/Note Container/HBoxContainer" unique_id=327221930]
+auto_translate_mode = 1
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
 theme = ExtResource("2_looh3")
-auto_translate = true
-text = "Personal Note"
+text = "KEY_PERSONAL_NOTE"
 label_settings = ExtResource("11_41gg5")
 horizontal_alignment = 1
 vertical_alignment = 2
@@ -244,10 +244,10 @@ layout_mode = 2
 size_flags_vertical = 3
 
 [node name="Note var Label" type="Label" parent="VBoxContainer/HBoxContainer/Note Container/Note SubContainer" unique_id=1730416823]
+auto_translate_mode = 1
 layout_mode = 2
 size_flags_vertical = 1
-auto_translate = true
-text = "Song sidenote and extra information - N/A"
+text = "KEY_SIDENOTE_PLACEHOLDER"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
@@ -265,9 +265,9 @@ alignment = 1
 last_wrap_alignment = 2
 
 [node name="Active FX Title Label" type="Label" parent="VBoxContainer/Active Effects Container" unique_id=1785908593]
+auto_translate_mode = 1
 layout_mode = 2
-auto_translate = true
-text = "Active FX: "
+text = "KEY_NO_FX_ALLOWED_2"
 label_settings = ExtResource("9_72dxl")
 
 [node name="Time Remaining Container" type="HBoxContainer" parent="VBoxContainer" unique_id=1539477309]
@@ -276,23 +276,23 @@ layout_mode = 2
 alignment = 2
 
 [node name="Current Runtime" type="Label" parent="VBoxContainer/Time Remaining Container" unique_id=757078497]
+auto_translate_mode = 1
 layout_mode = 2
-auto_translate = true
 text = "NaN h : NaN m : NaN s : NaN"
 label_settings = ExtResource("6_l5wfa")
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Div" type="Label" parent="VBoxContainer/Time Remaining Container" unique_id=452517017]
+auto_translate_mode = 1
 layout_mode = 2
-auto_translate = true
 text = "/"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Max Runtime" type="Label" parent="VBoxContainer/Time Remaining Container" unique_id=1531663842]
+auto_translate_mode = 1
 layout_mode = 2
-auto_translate = true
 text = "NaN h : NaN m : NaN s : NaN"
 label_settings = ExtResource("11_41gg5")
 horizontal_alignment = 1

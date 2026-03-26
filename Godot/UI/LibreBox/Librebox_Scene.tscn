@@ -29,6 +29,7 @@ Track_2 = null
 script = ExtResource("5_hand")
 
 [node name="HUB Label" type="Label3D" parent="HUB" unique_id=1127725628]
+auto_translate_mode = 1
 transform = Transform3D(1, 0, 0, 0, 0.8660254, -0.5, 0, 0.5, 0.8660254, 0, 0.6143331, 0.051016763)
 pixel_size = 0.004
 text = "KEY_HUB"
@@ -48,6 +49,7 @@ hover_scroll_speed = 50.0
 Delete_Confirm_Viewport = NodePath("../Track Delete Confirm")
 
 [node name="Track Select Label" type="Label3D" parent="Track 1 Selection" unique_id=61489553]
+auto_translate_mode = 1
 transform = Transform3D(1, 2.2351742e-08, 0, -3.7252903e-09, 0.90630776, -0.42261827, 0, 0.42261833, 0.9063078, 0, 0.4018476, 0.035157084)
 pixel_size = 0.002
 texture_filter = 0
@@ -72,6 +74,7 @@ hover_scroll_speed = 50.0
 Delete_Confirm_Viewport = NodePath("../Track Delete Confirm")
 
 [node name="Track Select Label" type="Label3D" parent="Track 2 Selection" unique_id=1008893548]
+auto_translate_mode = 1
 transform = Transform3D(1, -2.2351742e-08, 0, 3.7252903e-09, 0.90630776, -0.42261827, 0, 0.42261833, 0.9063078, 0, 0.4018476, 0.035157084)
 pixel_size = 0.002
 texture_filter = 0
@@ -85,7 +88,7 @@ script = ExtResource("5_hand")
 scroll_sensitivity = 0.2
 
 [node name="Track Delete Confirm" parent="." unique_id=491399500 instance=ExtResource("1_ebwc8")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.12, 0.42)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10, 0.42)
 screen_size = Vector2(0.55, 0.32)
 enabled = false
 scene = ExtResource("7_4oknt")
@@ -115,7 +118,7 @@ scroll_pose_index_pinch = false
 scroll_pose_fist = false
 
 [node name="Add Song" parent="." unique_id=357377217 instance=ExtResource("1_ebwc8")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0.357)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10, 0.357)
 screen_size = Vector2(0.7, 0.7)
 enabled = false
 scene = ExtResource("9_83nvb")
@@ -133,7 +136,7 @@ scroll_sensitivity = 0.3
 transform = Transform3D(0.870622, 1.4901161e-08, -0.49195263, 0.44216406, 0.43837115, 0.78250986, 0.21565783, -0.89879405, 0.38165557, 0.937826, -0.73622274, 0.80204165)
 screen_size = Vector2(0.2, 0.1)
 scene = ExtResource("10_j0p6t")
-viewport_size = Vector2(300, 150)
+viewport_size = Vector2(400, 200)
 
 [node name="HandTouch" type="Node" parent="AllowMoreFX" unique_id=142616372]
 script = ExtResource("5_hand")
@@ -144,10 +147,10 @@ scroll_pose_fist = false
 scroll_sensitivity = 0.3
 
 [node name="Language Select" parent="." unique_id=605638321 instance=ExtResource("1_ebwc8")]
-transform = Transform3D(0.34202015, -0.081899606, 0.9361168, 0, 0.9961947, 0.08715574, -0.9396926, -0.029809019, 0.34071866, -0.93253744, -0.21653448, 0.9154934)
+transform = Transform3D(0.17364821, -0.08583164, 0.98106027, 0, 0.9961947, 0.08715574, -0.98480767, -0.015134439, 0.17298745, -0.87379867, -0.21653448, 0.9154934)
 screen_size = Vector2(0.4, 0.5)
 scene = ExtResource("11_6xn47")
-viewport_size = Vector2(520, 650)
+viewport_size = Vector2(600, 750)
 scene_properties_keys = PackedStringArray("ui_language_selection.gd")
 
 [node name="HandTouch" type="Node" parent="Language Select" unique_id=727519343]

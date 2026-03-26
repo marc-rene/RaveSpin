@@ -1,88 +1,162 @@
 [gd_scene format=3 uid="uid://dixosugdlls6v"]
 
-[ext_resource type="PackedScene" uid="uid://ohc5g4ss6tlg" path="res://GLOBAL/Player.tscn" id="1_hagq7"]
-[ext_resource type="Script" uid="uid://cjw3mllds5qjs" path="res://Scripts/arena.gd" id="1_lr07p"]
-[ext_resource type="PackedScene" uid="uid://c3iykg71k0su4" path="res://Components/DDJ-FLX4/DDJ-FLX4.tscn" id="3_lr07p"]
-[ext_resource type="FontFile" uid="uid://cjruwrctskb83" path="res://Art/Fonts/Road_Rage.otf" id="5_7t5kf"]
-[ext_resource type="PackedScene" uid="uid://dh8cyr4ti48fi" path="res://UI/LibreBox/Librebox_Scene.tscn" id="6_7t5kf"]
-[ext_resource type="Script" uid="uid://dvxittvfvayif" path="res://GLOBAL/Scene/start_xr.gd" id="9_4yh7d"]
+[ext_resource type="Script" uid="uid://cu88cv23bkqfq" path="res://UI/LibreBox/LibreBox_Manager.gd" id="1_8ml7l"]
+[ext_resource type="PackedScene" uid="uid://clujaf3u776a3" path="res://addons/godot-xr-tools/objects/viewport_2d_in_3d.tscn" id="2_k3an4"]
+[ext_resource type="PackedScene" uid="uid://dcbkr50uhlp42" path="res://UI/LibreBox/Components/Main_Hub/MainHub_UI.tscn" id="3_ifjt6"]
+[ext_resource type="Script" uid="uid://bnckdx4e6k3hk" path="res://Scripts/Viewport2DIn3DHandTouch.gd" id="4_mo5sh"]
+[ext_resource type="FontFile" uid="uid://di6oaehdwb84i" path="res://Art/Fonts/FONT_Roboto.ttf" id="5_f1bm4"]
+[ext_resource type="PackedScene" uid="uid://d3vfyxnqa8u8p" path="res://UI/LibreBox/Components/Track Selection/Track_Selection.tscn" id="6_famn7"]
+[ext_resource type="PackedScene" uid="uid://cdx5rxkmy32p5" path="res://UI/LibreBox/Components/Track Selection/Track_Delete_Confirm_UI.tscn" id="7_d75p2"]
+[ext_resource type="PackedScene" uid="uid://cprhr6myydno5" path="res://UI/LibreBox/Components/FX Selection/FX_Selection_Menu.tscn" id="8_exqbx"]
+[ext_resource type="PackedScene" uid="uid://7kyk88qnftlr" path="res://UI/LibreBox/Components/Add Track/Add_Track_UI.tscn" id="9_e43p4"]
+[ext_resource type="PackedScene" uid="uid://bowim16kwtx7w" path="res://UI/LibreBox/Components/FX Selection/FX_Allow_More.tscn" id="10_bk1gr"]
+[ext_resource type="PackedScene" uid="uid://b6ltbvcirle8v" path="res://UI/LibreBox/Components/Langauge/UI_LanguageSelection.tscn" id="11_sb1hv"]
 
-[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_dsr05"]
-sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
-ground_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+[node name="LibreboxScene" type="Node3D" unique_id=889702823]
+script = ExtResource("1_8ml7l")
 
-[sub_resource type="Sky" id="Sky_7t5kf"]
-sky_material = SubResource("ProceduralSkyMaterial_dsr05")
+[node name="HUB" parent="." unique_id=1761191025 instance=ExtResource("2_k3an4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.093685865, -0.053591132)
+screen_size = Vector2(1.155, 0.98)
+scene = ExtResource("3_ifjt6")
+viewport_size = Vector2(1650, 1400)
+unshaded = true
+scene_properties_keys = PackedStringArray("LibreBox_HUB.gd", "Track_1", "Track_2")
+Track_1 = null
+Track_2 = null
 
-[sub_resource type="Environment" id="Environment_3sm0n"]
-background_energy_multiplier = 0.0
-sky = SubResource("Sky_7t5kf")
-ambient_light_source = 2
-ambient_light_color = Color(1, 1, 1, 1)
-reflected_light_source = 1
+[node name="HandTouch" type="Node" parent="HUB" unique_id=1535056161]
+script = ExtResource("4_mo5sh")
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_3sm0n"]
-size = Vector3(100, 0.01, 100)
+[node name="HUB Label" type="Label3D" parent="HUB" unique_id=1127725628]
+auto_translate_mode = 1
+transform = Transform3D(1, 0, 0, 0, 0.8660254, -0.5, 0, 0.5, 0.8660254, 0, 0.6143331, 0.051016763)
+pixel_size = 0.004
+text = "KEY_HUB"
+font = ExtResource("5_f1bm4")
+font_size = 40
+outline_size = 0
 
-[node name="Arena" type="Node3D" unique_id=1145637546 node_paths=PackedStringArray("Player_cam")]
-transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 0, 0, 0)
-script = ExtResource("1_lr07p")
-Player_cam = NodePath("Player/XRCamera3D")
+[node name="Track 1 Selection" parent="." unique_id=900064892 node_paths=PackedStringArray("Add_Track_UI_node", "Delete_Confirm_Viewport") instance=ExtResource("2_k3an4")]
+transform = Transform3D(0.34202015, -0.081899606, 0.9361168, 0, 0.9961947, 0.08715574, -0.9396926, -0.029809019, 0.34071866, -0.72, -0.2, 0.33)
+screen_size = Vector2(0.7, 0.7)
+scene = ExtResource("6_famn7")
+viewport_size = Vector2(1280, 1280)
+unshaded = true
+scene_properties_keys = PackedStringArray("Track_Selection.gd", "Add_Track_UI_node", "hover_scroll_speed", "Delete_Confirm_Viewport")
+Add_Track_UI_node = NodePath("../Add Song")
+hover_scroll_speed = 50.0
+Delete_Confirm_Viewport = NodePath("../Track Delete Confirm")
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=667713396]
-environment = SubResource("Environment_3sm0n")
-
-[node name="Player" parent="." unique_id=1063771176 instance=ExtResource("1_hagq7")]
-
-[node name="XRCamera3D" parent="Player" index="0" unique_id=1747871428 node_paths=PackedStringArray("spawn_in_front")]
-spawn_in_front = NodePath("../../LibreboxScene")
-
-[node name="LibreboxScene" parent="." unique_id=889702823 instance=ExtResource("6_7t5kf")]
-transform = Transform3D(-4.371139e-08, 4.852939e-24, 1.0000005, -1.110223e-16, 1, 0, -1, 1.110223e-16, -4.371141e-08, -0.9999264, 2.074472, 0.4998038)
-
-[node name="DDJ-FLX4" parent="LibreboxScene" unique_id=321834793 instance=ExtResource("3_lr07p")]
-unique_name_in_owner = true
-transform = Transform3D(2, -3.7683293e-08, 8.538613e-09, 3.7683293e-08, 1.8046594, -0.86209327, 8.538609e-09, 0.86209285, 1.8046585, -0.46281928, -0.48231018, -0.072314024)
-
-[node name="Label3D" type="Label3D" parent="LibreboxScene" unique_id=1030625250]
-transform = Transform3D(1, -3.0963276e-17, -7.6918824e-17, -3.0963276e-17, 0.7211076, -0.6928232, 7.691882e-17, 0.6928231, 0.72110754, 0, 0.9126384, 0.14983642)
+[node name="Track Select Label" type="Label3D" parent="Track 1 Selection" unique_id=61489553]
+auto_translate_mode = 1
+transform = Transform3D(1, 2.2351742e-08, 0, -3.7252903e-09, 0.90630776, -0.42261827, 0, 0.42261833, 0.9063078, 0, 0.4018476, 0.035157084)
 pixel_size = 0.002
-modulate = Color(0.92941177, 0.68235296, 0.28627452, 1)
-outline_modulate = Color(0.9137255, 0.30980393, 0.21568628, 1)
-text = "KEY_RAVESPIN"
-font = ExtResource("5_7t5kf")
-font_size = 144
-outline_size = 14
+texture_filter = 0
+text = "KEY_TRACK_1_SELECTION"
+font = ExtResource("5_f1bm4")
+font_size = 40
+outline_size = 0
 
-[node name="Track Stream Player Left" type="AudioStreamPlayer" parent="." unique_id=1328970906]
-unique_name_in_owner = true
-autoplay = true
-mix_target = 1
-bus = &"Channel 1 Input"
+[node name="HandTouch" type="Node" parent="Track 1 Selection" unique_id=1106380327]
+script = ExtResource("4_mo5sh")
+scroll_sensitivity = 0.2
 
-[node name="Track Stream Player Right" type="AudioStreamPlayer" parent="." unique_id=234223147]
-unique_name_in_owner = true
-autoplay = true
-mix_target = 1
-bus = &"Channel 2 Input"
+[node name="Track 2 Selection" parent="." unique_id=187553533 node_paths=PackedStringArray("Add_Track_UI_node", "Delete_Confirm_Viewport") instance=ExtResource("2_k3an4")]
+transform = Transform3D(0.34202015, 0.081899606, -0.9361168, 0, 0.9961947, 0.08715574, 0.9396926, -0.029809019, 0.34071866, 0.72, -0.2, 0.33)
+screen_size = Vector2(0.7, 0.7)
+scene = ExtResource("6_famn7")
+viewport_size = Vector2(1280, 1280)
+unshaded = true
+scene_properties_keys = PackedStringArray("Track_Selection.gd", "Add_Track_UI_node", "hover_scroll_speed", "Delete_Confirm_Viewport")
+Add_Track_UI_node = NodePath("../Add Song")
+hover_scroll_speed = 50.0
+Delete_Confirm_Viewport = NodePath("../Track Delete Confirm")
 
-[node name="Track Stream Player Left ALT" type="AudioStreamPlayer" parent="." unique_id=199533689]
-unique_name_in_owner = true
-bus = &"Channel 3 Input"
+[node name="Track Select Label" type="Label3D" parent="Track 2 Selection" unique_id=1008893548]
+auto_translate_mode = 1
+transform = Transform3D(1, -2.2351742e-08, 0, 3.7252903e-09, 0.90630776, -0.42261827, 0, 0.42261833, 0.9063078, 0, 0.4018476, 0.035157084)
+pixel_size = 0.002
+texture_filter = 0
+text = "KEY_TRACK_2_SELECTION"
+font = ExtResource("5_f1bm4")
+font_size = 40
+outline_size = 0
 
-[node name="Track Stream Player Right ALT" type="AudioStreamPlayer" parent="." unique_id=462492308]
-unique_name_in_owner = true
-bus = &"Channel 4 Input"
+[node name="HandTouch" type="Node" parent="Track 2 Selection" unique_id=1070256822]
+script = ExtResource("4_mo5sh")
+scroll_sensitivity = 0.2
 
-[node name="StartXR" type="Node" parent="." unique_id=934317415]
-script = ExtResource("9_4yh7d")
-metadata/_custom_type_script = "uid://dvxittvfvayif"
+[node name="Track Delete Confirm" parent="." unique_id=491399500 instance=ExtResource("2_k3an4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10, 0.42)
+screen_size = Vector2(0.55, 0.32)
+enabled = false
+scene = ExtResource("7_d75p2")
+viewport_size = Vector2(800, 480)
+unshaded = true
+scene_properties_keys = PackedStringArray("track_delete_confirm_ui.gd")
 
-[node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=653514328]
+[node name="HandTouch" type="Node" parent="Track Delete Confirm" unique_id=1814810397]
+script = ExtResource("4_mo5sh")
+scroll_enabled = false
+scroll_pose_index_pinch = false
+scroll_pose_fist = false
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=1223925268]
-shape = SubResource("BoxShape3D_3sm0n")
+[node name="FX Selection" parent="." unique_id=1120781123 instance=ExtResource("2_k3an4")]
+transform = Transform3D(1, -6.238468e-17, 9.9801465e-17, -6.238469e-17, 0.43808877, 0.8989317, -9.980147e-17, -0.89893174, 0.43808877, 0.5887204, -0.72288305, 0.61940217)
+screen_size = Vector2(0.455, 0.35)
+scene = ExtResource("8_exqbx")
+viewport_size = Vector2(650, 500)
+unshaded = true
+scene_properties_keys = PackedStringArray("fx_selection_menu.gd")
 
-[editable path="Player"]
-[editable path="Player/XR_LeftHand/LeftHandMesh"]
-[editable path="Player/XR_RightHand/RightHandMesh"]
+[node name="HandTouch" type="Node" parent="FX Selection" unique_id=728653650]
+script = ExtResource("4_mo5sh")
+click_cooldown_seconds = 0.2
+scroll_enabled = false
+scroll_pose_index_pinch = false
+scroll_pose_fist = false
+
+[node name="Add Song" parent="." unique_id=357377217 instance=ExtResource("2_k3an4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10, 0.357)
+screen_size = Vector2(0.7, 0.7)
+enabled = false
+scene = ExtResource("9_e43p4")
+viewport_size = Vector2(1050, 1050)
+throttle_fps = 20.0
+unshaded = true
+scene_properties_keys = PackedStringArray("add_track_ui.gd")
+
+[node name="HandTouch" type="Node" parent="Add Song" unique_id=1884731617]
+script = ExtResource("4_mo5sh")
+enable_double = true
+scroll_sensitivity = 0.3
+
+[node name="AllowMoreFX" parent="." unique_id=52213427 instance=ExtResource("2_k3an4")]
+transform = Transform3D(0.870622, 1.4901161e-08, -0.49195263, 0.44216406, 0.43837115, 0.78250986, 0.21565783, -0.89879405, 0.38165557, 0.937826, -0.73622274, 0.80204165)
+screen_size = Vector2(0.2, 0.1)
+scene = ExtResource("10_bk1gr")
+viewport_size = Vector2(400, 200)
+
+[node name="HandTouch" type="Node" parent="AllowMoreFX" unique_id=142616372]
+script = ExtResource("4_mo5sh")
+click_cooldown_seconds = 0.5
+scroll_enabled = false
+scroll_pose_index_pinch = false
+scroll_pose_fist = false
+scroll_sensitivity = 0.3
+
+[node name="Language Select" parent="." unique_id=605638321 instance=ExtResource("2_k3an4")]
+transform = Transform3D(0.17364821, -0.08583164, 0.98106027, 0, 0.9961947, 0.08715574, -0.98480767, -0.015134439, 0.17298745, -0.87379867, -0.21653448, 0.9154934)
+screen_size = Vector2(0.4, 0.5)
+scene = ExtResource("11_sb1hv")
+viewport_size = Vector2(600, 750)
+scene_properties_keys = PackedStringArray("ui_language_selection.gd")
+
+[node name="HandTouch" type="Node" parent="Language Select" unique_id=727519343]
+script = ExtResource("4_mo5sh")
+click_cooldown_seconds = 0.5
+scroll_enabled = false
+scroll_pose_index_pinch = false
+scroll_pose_fist = false
+scroll_sensitivity = 0.3

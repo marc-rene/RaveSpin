@@ -6,7 +6,7 @@ class_name DB_Meter
 @export var Min_DB: float = -48.0
 @export var Max_DB: float = 6.0
 @export var Warning_DB: float = 0.1
-@export var Title : String = "DB"
+@export var Title : String = "KEY_DB_LABEL"
 
 @onready var Meter_Fill_ref: ColorRect = $"MarginContainer/VBoxContainer/Meter Fill"
 @onready var DB_Label_ref: Label = $"MarginContainer/VBoxContainer/DB Label"
@@ -16,11 +16,6 @@ var bus_index: int = -1
 var meter_mat: ShaderMaterial
 
 
-func _notification(what: int) -> void:
-    if what == NOTIFICATION_TRANSLATION_CHANGED and Title_Label_ref != null:
-        Title_Label_ref.text = tr(Title)
-
-
 func _ready() -> void:
     Track_ID = Utility.Clamp_to_Valid_TrackID(Track_ID)
     meter_mat = Meter_Fill_ref.material.duplicate()
@@ -28,7 +23,7 @@ func _ready() -> void:
     
     bus_index = BUS_MANAGER.Get_Channel_Index_i(Track_ID)
     
-    Title_Label_ref.text = tr(Title)
+    Title_Label_ref.text = tr(Title) # Title is a KEY_* from scene (e.g. KEY_DB_METER_1)
     
     var warning_alpha : float = remap(Warning_DB, Min_DB, Max_DB, 0.0, 1.0)
     meter_mat.set_shader_parameter("warning_alpha", warning_alpha)
@@ -55,11 +50,11 @@ func update_metre(peak_db: float) -> void:
     
     if peak_db == null or is_inf(peak_db) or peak_db <= Min_DB:
         peak_db = Min_DB
-        DB_Label_ref.text = tr("-INF dB")
+        DB_Label_ref.text = "-INF dB"
 
     peak_db = clampf(peak_db, Min_DB, Max_DB)
 
     meter_mat.set_shader_parameter("alpha", remap(peak_db, Min_DB, Max_DB, 0.0, 1.0))
 
     if peak_db > Min_DB:
-        DB_Label_ref.text = tr("%s dB") % ("%.1f" % peak_db)
+        DB_Label_ref.text = "%.1f dB" % peak_db

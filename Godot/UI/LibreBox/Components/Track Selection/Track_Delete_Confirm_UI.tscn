@@ -46,20 +46,20 @@ layout_mode = 2
 theme_override_constants/separation = 20
 
 [node name="Title" type="Label" parent="Center/Panel/Margin/VBox" unique_id=430171562]
+auto_translate_mode = 1
 layout_mode = 2
-auto_translate = true
-text = "Remove track?"
+text = "KEY_REMOVE_TRACK_TITLE"
 label_settings = ExtResource("3_heading")
 horizontal_alignment = 1
 
 [node name="DeleteConfirmMessage" type="Label" parent="Center/Panel/Margin/VBox" unique_id=749641945]
 unique_name_in_owner = true
+auto_translate_mode = 1
 layout_mode = 2
 size_flags_vertical = 3
 theme = ExtResource("2_theme")
 theme_override_font_sizes/font_size = 28
-auto_translate = true
-text = "Are you sure you want to remove this track from your library?"
+text = "KEY_REMOVE_TRACK_BODY"
 horizontal_alignment = 1
 autowrap_mode = 2
 
@@ -70,18 +70,18 @@ alignment = 1
 
 [node name="DeleteConfirmNoButton" type="Button" parent="Center/Panel/Margin/VBox/Buttons" unique_id=1200658157]
 unique_name_in_owner = true
+auto_translate_mode = 1
 custom_minimum_size = Vector2(180, 72)
 layout_mode = 2
 theme = ExtResource("2_theme")
 theme_override_font_sizes/font_size = 32
-auto_translate = true
-text = "No"
+text = "KEY_NO"
 
 [node name="DeleteConfirmYesButton" type="Button" parent="Center/Panel/Margin/VBox/Buttons" unique_id=1997919099]
 unique_name_in_owner = true
+auto_translate_mode = 1
 custom_minimum_size = Vector2(180, 72)
 layout_mode = 2
 theme = ExtResource("2_theme")
 theme_override_font_sizes/font_size = 32
-auto_translate = true
-text = "Yes"
+text = "KEY_YES"

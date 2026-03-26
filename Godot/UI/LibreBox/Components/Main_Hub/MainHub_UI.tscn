@@ -29,7 +29,7 @@ offset_bottom = 1396.0
 layout_mode = 2
 size_flags_vertical = 3
 auto_translate = true
-text = "HUB"
+text = "KEY_HUB"
 label_settings = ExtResource("4_v1ksm")
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -37,7 +37,7 @@ vertical_alignment = 1
 [node name="Track 1 Label" type="Label" parent="VBoxContainer" unique_id=1508323206]
 layout_mode = 2
 auto_translate = true
-text = "LEFT"
+text = "KEY_LEFT"
 label_settings = ExtResource("4_v1ksm")
 horizontal_alignment = 1
 
@@ -52,7 +52,7 @@ size_flags_horizontal = 3
 
 [node name="Track 1 DB Meter" parent="VBoxContainer/Track 1 Container" unique_id=1972613103 instance=ExtResource("8_dbmtr")]
 layout_mode = 2
-Title = "DB #1"
+Title = "KEY_DB_METER_1"
 
 [node name="Track 1 Waveform preview" type="TextureRect" parent="VBoxContainer" unique_id=792870201]
 unique_name_in_owner = true
@@ -85,12 +85,12 @@ Track_ID = 1
 [node name="Track 2 DB Meter" parent="VBoxContainer/Track 2 Container" unique_id=1419764152 instance=ExtResource("8_dbmtr")]
 layout_mode = 2
 Track_ID = 1
-Title = "DB #2"
+Title = "KEY_DB_METER_2"
 
 [node name="Track 2 Label" type="Label" parent="VBoxContainer" unique_id=1096811934]
 layout_mode = 2
 auto_translate = true
-text = "RIGHT"
+text = "KEY_RIGHT"
 label_settings = ExtResource("4_v1ksm")
 horizontal_alignment = 1
 vertical_alignment = 2

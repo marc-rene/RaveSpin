@@ -133,7 +133,7 @@ size_flags_vertical = 3
 size_flags_stretch_ratio = 4.0
 theme = ExtResource("2_sjwx3")
 theme_override_font_sizes/font_size = 18
-text = "Song Title - N/A"
+text = "KEY_SONG_TITLE_PLACEHOLDER"
 label_settings = SubResource("LabelSettings_8ykwl")
 vertical_alignment = 1
 autowrap_mode = 1
@@ -147,7 +147,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_colors/font_color = Color(1, 1, 1, 1)
-text = "Artist - N/A"
+text = "KEY_ARTIST_PLACEHOLDER"
 label_settings = ExtResource("4_ce06q")
 vertical_alignment = 2
 text_overrun_behavior = 5
@@ -160,7 +160,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme = ExtResource("2_sjwx3")
-text = "Album - N/A"
+text = "KEY_ALBUM_PLACEHOLDER"
 label_settings = ExtResource("5_sjwx3")
 
 [node name="VSeparator" type="VSeparator" parent="VBoxContainer/Main Container" unique_id=2123995937]
@@ -191,7 +191,7 @@ auto_translate_mode = 1
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("2_sjwx3")
-text = "Time"
+text = "KEY_TIME_LABEL"
 label_settings = ExtResource("5_sjwx3")
 horizontal_alignment = 1
 
@@ -229,7 +229,7 @@ auto_translate_mode = 1
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("2_sjwx3")
-text = "BPM"
+text = "KEY_BPM_LABEL"
 label_settings = ExtResource("5_sjwx3")
 horizontal_alignment = 1
 
@@ -266,7 +266,7 @@ auto_translate_mode = 1
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("2_sjwx3")
-text = "Key"
+text = "KEY_KEY_LABEL"
 label_settings = ExtResource("5_sjwx3")
 horizontal_alignment = 1
 
@@ -297,7 +297,7 @@ alignment = 1
 [node name="Genre" type="Button" parent="VBoxContainer/Main Container/Genres Container" unique_id=509996570]
 auto_translate_mode = 1
 layout_mode = 2
-text = "Genre - N/A"
+text = "KEY_GENRE_PLACEHOLDER"
 
 [node name="Separator Genre-Note" type="VSeparator" parent="VBoxContainer/Main Container" unique_id=425708211]
 unique_name_in_owner = true
@@ -330,7 +330,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
 theme = ExtResource("2_sjwx3")
-text = "Info"
+text = "KEY_INFO"
 label_settings = ExtResource("8_d62xh")
 horizontal_alignment = 1
 vertical_alignment = 2
@@ -349,7 +349,7 @@ process_thread_messages = 0
 auto_translate_mode = 1
 layout_mode = 2
 size_flags_vertical = 1
-text = "Song sidenote and extra information - N/A"
+text = "KEY_SIDENOTE_PLACEHOLDER"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2

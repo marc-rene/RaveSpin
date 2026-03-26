@@ -127,7 +127,7 @@ auto_translate_mode = 1
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
-text = "KEY_Song_Title"
+text = "KEY_SONG_TITLE"
 label_settings = ExtResource("4_toce6")
 vertical_alignment = 1
 
@@ -135,12 +135,12 @@ vertical_alignment = 1
 auto_translate_mode = 1
 layout_mode = 2
 size_flags_horizontal = 3
-placeholder_text = "KEY_Enter_song_title"
+placeholder_text = "KEY_ENTER_SONG_TITLE"
 
 [node name="ArtistLabel" type="Label" parent="PanelContainer/GridContainer/Row 1/Details input container" unique_id=2059345266]
 auto_translate_mode = 1
 layout_mode = 2
-text = "KEY_Artist"
+text = "KEY_ARTIST"
 label_settings = ExtResource("4_toce6")
 horizontal_alignment = 1
 
@@ -154,7 +154,7 @@ auto_translate_mode = 1
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
-text = "KEY_Choose Artist"
+text = "KEY_CHOOSE_ARTIST"
 vertical_alignment = 1
 
 [node name="ChooseArtistOption" type="OptionButton" parent="PanelContainer/GridContainer/Row 1/Details input container/Choose Artist Name" unique_id=1632760282]
@@ -168,11 +168,11 @@ alignment = 1
 icon_alignment = 1
 selected = 0
 item_count = 2
-popup/item_0/text = "KEY_Choose from already existing Artists..."
+popup/item_0/text = "KEY_CHOOSE_EXISTING_ARTISTS"
 popup/item_0/id = 0
 popup/item_0/disabled = true
 popup/item_0/separator = true
-popup/item_1/text = "KEY_+ Add a new Artist!"
+popup/item_1/text = "KEY_ADD_NEW_ARTIST_OPTION"
 popup/item_1/id = 1
 
 [node name="New Artist Name" type="HBoxContainer" parent="PanelContainer/GridContainer/Row 1/Details input container" unique_id=453782659]
@@ -184,19 +184,19 @@ auto_translate_mode = 1
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
-text = "KEY_New Artist Name"
+text = "KEY_NEW_ARTIST_NAME_LABEL"
 vertical_alignment = 1
 
 [node name="New ArtistName" type="LineEdit" parent="PanelContainer/GridContainer/Row 1/Details input container/New Artist Name" unique_id=1280453406]
 auto_translate_mode = 1
 layout_mode = 2
 size_flags_horizontal = 3
-placeholder_text = "KEY_Enter New Artist Name..."
+placeholder_text = "KEY_ENTER_NEW_ARTIST_NAME"
 
 [node name="AlbumLabel" type="Label" parent="PanelContainer/GridContainer/Row 1/Details input container" unique_id=1449272130]
 auto_translate_mode = 1
 layout_mode = 2
-text = "KEY_Album"
+text = "KEY_ALBUM"
 label_settings = ExtResource("4_toce6")
 horizontal_alignment = 1
 
@@ -210,7 +210,7 @@ auto_translate_mode = 1
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
-text = "KEY_Choose Album"
+text = "KEY_CHOOSE_ALBUM"
 vertical_alignment = 1
 
 [node name="ChooseAlbumOption" type="OptionButton" parent="PanelContainer/GridContainer/Row 1/Details input container/Choose Label Name" unique_id=1776753247]
@@ -224,11 +224,11 @@ alignment = 1
 icon_alignment = 1
 selected = 0
 item_count = 2
-popup/item_0/text = "KEY_Choose from already existing Albums..."
+popup/item_0/text = "KEY_CHOOSE_EXISTING_ALBUMS"
 popup/item_0/id = 0
 popup/item_0/disabled = true
 popup/item_0/separator = true
-popup/item_1/text = "KEY_+ Add a new Album!"
+popup/item_1/text = "KEY_ADD_NEW_ALBUM_OPTION"
 popup/item_1/id = 1
 
 [node name="New Album Name" type="HBoxContainer" parent="PanelContainer/GridContainer/Row 1/Details input container" unique_id=1510656657]
@@ -240,14 +240,14 @@ auto_translate_mode = 1
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
-text = "KEY_New Album Name"
+text = "KEY_NEW_ALBUM_NAME_LABEL"
 vertical_alignment = 1
 
 [node name="New ArtistName" type="LineEdit" parent="PanelContainer/GridContainer/Row 1/Details input container/New Album Name" unique_id=1687902835]
 auto_translate_mode = 1
 layout_mode = 2
 size_flags_horizontal = 3
-placeholder_text = "KEY_Enter New Album Name.."
+placeholder_text = "KEY_ENTER_NEW_ALBUM_NAME"
 
 [node name="HSeparator" type="HSeparator" parent="PanelContainer/GridContainer" unique_id=765054997]
 layout_mode = 2
@@ -264,7 +264,7 @@ auto_translate_mode = 1
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 1.5
-text = "KEY_Track BPM:"
+text = "KEY_TRACK_BPM_LABEL"
 label_settings = ExtResource("4_mkoma")
 horizontal_alignment = 2
 
@@ -297,7 +297,7 @@ button_group = ExtResource("10_ynhe2")
 alignment = 1
 selected = 0
 item_count = 1
-popup/item_0/text = "KEY_Root Note"
+popup/item_0/text = "KEY_ROOT_NOTE"
 popup/item_0/id = 0
 popup/item_0/disabled = true
 popup/item_0/separator = true
@@ -314,7 +314,7 @@ button_group = ExtResource("10_ynhe2")
 alignment = 1
 selected = 0
 item_count = 1
-popup/item_0/text = "KEY_Root Scale"
+popup/item_0/text = "KEY_ROOT_SCALE"
 popup/item_0/id = 0
 popup/item_0/disabled = true
 popup/item_0/separator = true
@@ -327,7 +327,7 @@ size_flags_stretch_ratio = 0.25
 [node name="Sidenote label" type="Label" parent="PanelContainer/GridContainer/Row 2" unique_id=650193804]
 auto_translate_mode = 1
 layout_mode = 2
-text = "KEY_User note: "
+text = "KEY_USER_NOTE_LABEL"
 label_settings = ExtResource("4_mkoma")
 
 [node name="BPM3" type="TextEdit" parent="PanelContainer/GridContainer/Row 2" unique_id=1683562319]
@@ -335,7 +335,7 @@ auto_translate_mode = 1
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 3.0
-placeholder_text = "KEY_Bass drop comes in at 25 second mark"
+placeholder_text = "KEY_USER_NOTE_PLACEHOLDER"
 wrap_mode = 1
 
 [node name="HSeparator2" type="HSeparator" parent="PanelContainer/GridContainer" unique_id=1050799733]
@@ -354,7 +354,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
 size_flags_stretch_ratio = 0.2
-text = "KEY_Tags / Genres"
+text = "KEY_TAGS_GENRES"
 horizontal_alignment = 1
 
 [node name="HFlowContainer" type="HFlowContainer" parent="PanelContainer/GridContainer/HBoxContainer2" unique_id=761837372]
@@ -369,7 +369,7 @@ layout_mode = 2
 action_mode = 1
 selected = 0
 item_count = 1
-popup/item_0/text = "KEY_Select a Genre"
+popup/item_0/text = "KEY_SELECT_GENRE"
 popup/item_0/id = 0
 
 [node name="HSeparator3" type="HSeparator" parent="PanelContainer/GridContainer" unique_id=854095055]
@@ -383,7 +383,7 @@ auto_translate_mode = 1
 layout_mode = 2
 size_flags_vertical = 3
 size_flags_stretch_ratio = 0.5
-text = "KEY_Save to library"
+text = "KEY_SAVE_TO_LIBRARY"
 
 [node name="HSeparator4" type="HSeparator" parent="PanelContainer/GridContainer" unique_id=750215452]
 layout_mode = 2

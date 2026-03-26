@@ -185,21 +185,25 @@ func Sync_Track_BPMs(Track_we_want_to_Match: int, Track_we_want_change : int, ma
 func Refresh() -> bool:
     return HUB_Menu_ref.Refresh(true) and HUB_Menu_ref.Refresh(false)
     
-func _notification(what: int) -> void:
-    if what == NOTIFICATION_TRANSLATION_CHANGED:
-        _apply_viewport_space_labels()
-
-
 func _apply_viewport_space_labels() -> void:
     var hub_lbl: Label3D = $HUB.get_node_or_null("HUB Label") as Label3D
     if hub_lbl != null:
-        hub_lbl.text = tr("HUB")
+        hub_lbl.text = tr("KEY_HUB")
     var t1: Label3D = $"Track 1 Selection".get_node_or_null("Track Select Label") as Label3D
     if t1 != null:
-        t1.text = tr("Track 1 Selection")
+        t1.text = tr("KEY_TRACK_1_SELECTION")
     var t2: Label3D = $"Track 2 Selection".get_node_or_null("Track Select Label") as Label3D
     if t2 != null:
-        t2.text = tr("Track 2 Selection")
+        t2.text = tr("KEY_TRACK_2_SELECTION")
+    # Arena (and other parents) may add this child to the instanced scene; Label3D does not auto-refresh like Control.
+    var rave_lbl: Label3D = get_node_or_null("Label3D") as Label3D
+    if rave_lbl != null:
+        rave_lbl.text = tr("KEY_RAVESPIN")
+
+
+func _notification(what: int) -> void:
+    if what == NOTIFICATION_TRANSLATION_CHANGED:
+        _apply_viewport_space_labels()
 
 
 func _ready() -> void:

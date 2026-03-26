@@ -61,12 +61,12 @@ func Refresh_Details() -> bool:
     Album_Art_Texture_Holder.texture = album_artwork_texture
     
     
-    Track_Name_Label.text = Utility.Return_Valid(Song_Resource.Song_Title, tr("Untitled"))
+    Track_Name_Label.text = Utility.Return_Valid(Song_Resource.Song_Title, tr("KEY_UNTITLED"))
     Artist_Name_Label.text = Utility.Return_Valid(
-        Song_Resource.Main_Artist.Artist_Name if Song_Resource.Main_Artist else null, tr("Untitled")
+        Song_Resource.Main_Artist.Artist_Name if Song_Resource.Main_Artist else null, tr("KEY_UNTITLED")
     )
     Album_Name_Label.text = Utility.Return_Valid(
-        Song_Resource.Song_Album.Album_Name if Song_Resource.Song_Album else null, tr("Untitled")
+        Song_Resource.Song_Album.Album_Name if Song_Resource.Song_Album else null, tr("KEY_UNTITLED")
     )
     
     #print("Total: " + str(Song_Resource.Audio_File.get_length()))
@@ -82,14 +82,14 @@ func Refresh_Details() -> bool:
     var stream : AudioStream = Song_Resource.get_audio_stream()
     Track_Duration_Label.text = Utility.Seconds_to_MM_SS_MS(stream.get_length() if stream else 0.0)
     
-    Track_BPM_Label.text = Utility.Return_Valid(str(int(Song_Resource.Track_BPM)), tr("N/A"))
+    Track_BPM_Label.text = Utility.Return_Valid(str(int(Song_Resource.Track_BPM)), "N/A")
     
     # Safety measure because Music Key wont get updated sometimes
     if Song_Resource.Track_Key.to_string() == "C Unknown":
         Song_Resource.Refresh_Music_Key()
     
     #print("Song key is " + Song_Resource.Track_Key.to_string())
-    Track_Key_Label.text = Utility.Return_Valid(Song_Resource.Track_Key.to_string(), tr("N/A"))
+    Track_Key_Label.text = Utility.Return_Valid(Song_Resource.Track_Key.to_string(), "N/A")
     
     var expand_others = true
     
@@ -133,12 +133,12 @@ func _clear_card_visuals() -> void:
     if Track_Genres_Containers:
         for genre_child in Track_Genres_Containers.get_children():
             genre_child.free()
-    Track_Name_Label.text = tr("No track")
+    Track_Name_Label.text = tr("KEY_NO_TRACK")
     Artist_Name_Label.text = ""
     Album_Name_Label.text = ""
-    Track_Duration_Label.text = tr("--:--")
-    Track_BPM_Label.text = tr("N/A")
-    Track_Key_Label.text = tr("N/A")
+    Track_Duration_Label.text = "--:--"
+    Track_BPM_Label.text = "N/A"
+    Track_Key_Label.text = "N/A"
     Album_Art_Texture_Holder.texture = Default_Album_art
     if Remove_Track_Button != null:
         Remove_Track_Button.hide()
@@ -150,16 +150,6 @@ func _update_remove_button_visibility() -> void:
     var path: String = Song_Resource.resource_path
     var can_delete: bool = path.begins_with("user://") and path.ends_with(".tres")
     Remove_Track_Button.visible = can_delete
-
-
-func _notification(what: int) -> void:
-    if what == NOTIFICATION_TRANSLATION_CHANGED:
-        if Song_Resource != null:
-            Refresh_Details()
-        else:
-            # Cheeky way to get around runtime onready weirdness
-            if Track_Genres_Containers:
-                _clear_card_visuals()
 
 
 func _ready() -> void:

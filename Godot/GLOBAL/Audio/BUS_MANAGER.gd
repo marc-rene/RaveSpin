@@ -202,6 +202,28 @@ const Beat_FX_Names : Dictionary[E_BEAT_FX_TYPE, String] = {
     E_BEAT_FX_TYPE.DISTORTION : "DISTORTION",
 }
 
+## Translation CSV keys (see Language/LANG_Translation.csv).
+const Beat_FX_Translation_Keys: Dictionary[E_BEAT_FX_TYPE, String] = {
+    E_BEAT_FX_TYPE.DELAY: "KEY_FX_DELAY",
+    E_BEAT_FX_TYPE.ECHO: "KEY_FX_ECHO",
+    E_BEAT_FX_TYPE.REVERB: "KEY_FX_REVERB",
+    E_BEAT_FX_TYPE.TRANS: "KEY_FX_TRANS",
+    E_BEAT_FX_TYPE.FLANGER: "KEY_FX_FLANGER",
+    E_BEAT_FX_TYPE.PHASER: "KEY_FX_PHASER",
+    E_BEAT_FX_TYPE.PITCH: "KEY_FX_PITCH",
+    E_BEAT_FX_TYPE.CRUSH: "KEY_FX_CRUSH",
+    E_BEAT_FX_TYPE.COMPRESSOR: "KEY_FX_COMPRESSOR",
+    E_BEAT_FX_TYPE.LIMITER: "KEY_FX_LIMITER",
+    E_BEAT_FX_TYPE.BAND_PASS: "KEY_FX_BAND_PASS",
+    E_BEAT_FX_TYPE.PANNER: "KEY_FX_PANNER",
+    E_BEAT_FX_TYPE.STEREO_ENHANCE: "KEY_FX_STEREO_ENHANCE",
+    E_BEAT_FX_TYPE.DISTORTION: "KEY_FX_DISTORTION",
+}
+
+
+static func beat_fx_translation_key(fx: E_BEAT_FX_TYPE) -> String:
+    return Beat_FX_Translation_Keys.get(fx, "KEY_FX_DELAY")
+
 
     
     

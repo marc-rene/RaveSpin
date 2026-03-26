@@ -1,2 +1,149 @@
 key,en,fr,zh_CN,ga
-RAVESPIN, RaveSpin, DiscoSpin, 炫盘, Casadh Rave
+KEY_RAVESPIN,RaveSpin,DiscoSpin,炫盘,Casadh Rave
+KEY_LANG_EN,English,Anglais,英语,Béarla
+KEY_LANG_FR,Français,Français,法语,Fraincis
+KEY_LANG_ZH_CN,简体中文,Chinois simplifié,简体中文,Sínis shimpli
+KEY_LANG_GA,Gaeilge,Irlandais,爱尔兰语,Gaeilge
+KEY_CHANGE_LANGUAGE,Change Language,Changer de langue,更改语言,Athraigh an teanga
+KEY_OPEN_SETUP,Open Setup,Configuration,打开设置,Oscail socrú
+KEY_TUTORIAL,Tutorial,Tutoriel,教程,Teagaisc
+KEY_OPTIONS,Options,Options,选项,Roghanna
+KEY_EXIT_GAME,Exit Game,Quitter,退出游戏,Scoir an cluiche
+KEY_CURRENT_SESSION,Current Session:,Session actuelle :,当前会话：,Seisiún reatha:
+KEY_HUB,HUB,HUB,控制台,HUB
+KEY_LEFT,LEFT,GAUCHE,左,CLÉ
+KEY_RIGHT,RIGHT,DROITE,右,DEAS
+KEY_TRACK_1_SELECTION,Track 1 Selection,Sélection piste 1,轨道 1 选择,Roghnú rian 1
+KEY_TRACK_2_SELECTION,Track 2 Selection,Sélection piste 2,轨道 2 选择,Roghnú rian 2
+KEY_TRACK_SELECT,Track Select,Choisir une piste,选择轨道,Roghnaigh rian
+KEY_ADD_NEW_TRACK,+ Add New Track,+ Ajouter une piste,+ 添加轨道,+ Cuir rian leis
+KEY_SCROLL_UP,Scroll Up ↑,Défiler vers le haut ↑,向上滚动 ↑,Scrollaigh suas ↑
+KEY_SCROLL_DOWN,Scroll Down↓,Défiler vers le bas ↓,向下滚动 ↓,Scrollaigh anuas ↓
+KEY_ENABLE_TRACK_1_FX,Enable Track 1 FX,Activer FX piste 1,启用轨道 1 效果,Cumasaigh éifeachtaí rian 1
+KEY_ENABLE_TRACK_2_FX,Enable Track 2 FX,Activer FX piste 2,启用轨道 2 效果,Cumasaigh éifeachtaí rian 2
+KEY_FX_DELAY,Delay,Delay,延迟,Moill
+KEY_FX_ECHO,Echo,Echo,回声,Macalla
+KEY_FX_REVERB,Reverb,Réverb,混响,Athshondas
+KEY_FX_TRANS,Trans,Trans,过渡,Aistriú
+KEY_FX_FLANGER,Flanger,Flanger,镶边,Flanger
+KEY_FX_PHASER,Phaser,Phaser,相位,Phaser
+KEY_FX_PITCH,Pitch,Hauteur,音高,Páirc
+KEY_FX_CRUSH,Crush,Crush,压碎,Brist
+KEY_FX_COMPRESSOR,Compressor,Compresseur,压缩,Comhbhrúiteoir
+KEY_FX_LIMITER,Limiter,Limiteur,限制,Teoraitheoir
+KEY_FX_BAND_PASS,Band Pass,Passe-bande,带通,Pasband
+KEY_FX_PANNER,Panner,Pan,声像,Pana
+KEY_FX_STEREO_ENHANCE,Stereo Enhance,Stéréo +,立体声增强,Treisiú steiréo
+KEY_FX_DISTORTION,Distortion,Distorsion,失真,Saimhill
+KEY_FX_DUMMY,Dummy FX,FX test,占位效果,FX bréige
+KEY_ALLOW_POLY_FX,"Allow Poly FX?
+- - - - - - - - - - - - - -
+Note: Turn Off if
+Audible crackling","FX polyphoniques ?
+- - - - - - - - - - - - - -
+Désactiver si
+crépitements audibles","允许多重效果？
+— — — — — — — — — — — — — —
+提示：如出现
+可听爆音请关闭","Ceadaigh iliomad éifeachtaí?
+- - - - - - - - - - - - - -
+Múch má chloiseann tú
+créachtáil"
+KEY_DB_LABEL,DB,DB,分贝表,DB
+KEY_DB_METER_1,DB #1,DB no 1,分贝 #1,DB #1
+KEY_DB_METER_2,DB #2,DB no 2,分贝 #2,DB #2
+KEY_BPM_LABEL,BPM,BPM,BPM,BPM
+KEY_ADD_NEW_SONG,Add New Song,Ajouter un morceau,添加歌曲,Cuir amhrán nua leis
+KEY_LOCAL_DISK,"Local 
+Disk","Disque
+local","本地
+磁盘","Diosca
+áitiúil"
+KEY_SPOTIFY,Spotify,Spotify,Spotify,Spotify
+KEY_SOUNDCLOUD,SoundCloud,SoundCloud,SoundCloud,SoundCloud
+KEY_YOUTUBE_MUSIC,"YouTube
+Music","YouTube
+Music","YouTube
+音乐","YouTube
+Ceol"
+KEY_SONG_TITLE,Song Title,Titre,歌曲标题,Teideal an amhráin
+KEY_ENTER_SONG_TITLE,Enter song title...,Titre du morceau...,输入歌曲标题...,Iontráil teideal...
+KEY_ARTIST,Artist,Artiste,艺术家,Ealaíontóir
+KEY_CHOOSE_ARTIST,Choose Artist,Choisir un artiste,选择艺术家,Roghnaigh ealaíontóir
+KEY_CHOOSE_EXISTING_ARTISTS,Choose from already existing Artists...,Artistes existants...,从已有艺术家中选择...,Ealaíontóirí atá ann cheana...
+KEY_ADD_NEW_ARTIST_OPTION,+ Add a new Artist!,+ Nouvel artiste !,+ 添加新艺术家！,+ Ealaíontóir nua!
+KEY_NEW_ARTIST_NAME_LABEL,New Artist Name,Nom du nouvel artiste,新艺术家名称,Ainm an ealaíontóra nua
+KEY_ENTER_NEW_ARTIST_NAME,Enter New Artist Name...,Nom de l'artiste...,输入新艺术家名称...,Iontráil ainm...
+KEY_ALBUM,Album,Album,专辑,Albam
+KEY_CHOOSE_ALBUM,Choose Album,Choisir un album,选择专辑,Roghnaigh albam
+KEY_CHOOSE_EXISTING_ALBUMS,Choose from already existing Albums...,Albums existants...,从已有专辑中选择...,Albaim atá ann cheana...
+KEY_ADD_NEW_ALBUM_OPTION,+ Add a new Album!,+ Nouvel album !,+ 添加新专辑！,+ Albam nua!
+KEY_NEW_ALBUM_NAME_LABEL,New Album Name,Nom du nouvel album,新专辑名称,Ainm an albaim nua
+KEY_ENTER_NEW_ALBUM_NAME,Enter New Album Name..,Nom de l'album...,输入新专辑名称...,Iontráil ainm an albaim...
+KEY_TRACK_BPM_LABEL,Track BPM:,BPM :,曲目 BPM：,BPM an rian:
+KEY_ROOT_NOTE,Root Note,Note fondamentale,根音,Bunchloch
+KEY_ROOT_SCALE,Root Scale,Gamme,音阶,scála
+KEY_USER_NOTE_LABEL,User note: ,Note : ,用户备注：,Nóta: 
+KEY_USER_NOTE_PLACEHOLDER,Bass drop comes in at 25 second mark,Ex.: drop de basse à 25 s,例如：低音在 25 秒进入,Sampla: an bass ag 25 soic
+KEY_TAGS_GENRES,Tags / Genres,Tags / Genres,标签 / 流派,Clibeanna / Seánraí
+KEY_SELECT_GENRE,Select a Genre,Choisir un genre,选择流派,Roghnaigh seánra
+KEY_SAVE_TO_LIBRARY,Save to library,Enregistrer,保存到曲库,Sábháil sa leabharlann
+KEY_CHOOSE_AUDIO_FILE,Choose an audio file (MP3 / WAV / OGG),Choisir un fichier audio,选择音频文件（MP3/WAV/OGG）,Roghnaigh comhad fuaime
+KEY_OPEN,Open,Ouvrir,打开,Oscail
+KEY_FILETYPE_MP3,MP3,MP3,MP3,MP3
+KEY_FILETYPE_WAV,WAV,WAV,WAV,WAV
+KEY_FILETYPE_OGG,OGG Vorbis,OGG Vorbis,OGG Vorbis,OGG Vorbis
+KEY_GENRE_UNKNOWN,Unknown,Inconnu,未知,Anaithnid
+KEY_SONG_ADDED_SUCCESS,Song added successfully,Morceau ajouté,歌曲已添加,Amhrán curtha leis
+KEY_ERROR_WITH_MESSAGE,Error,Erreur,错误,Earráid
+KEY_ERR_NO_SONG,No song selected. Pick a file first.,Aucun fichier audio.,未选择歌曲，请先选择文件。,Níl comhad roghnaithe.
+KEY_ERR_FAILED_ARTIST,Failed to create Artist resource.,Création de l'artiste impossible.,无法创建艺术家资源。,Theip ar ealaíontóir a chruthú.
+KEY_ERR_ARTIST_EMPTY,Artist name is empty.,Nom d'artiste vide.,艺术家名称为空。,Ainm ealaíontóir folamh.
+KEY_ERR_ARTIST_INVALID,Invalid artist selection.,Sélection d'artiste invalide.,艺术家选择无效。,Roghnú ealaíontóir neamhbhailí.
+KEY_ERR_FAILED_ALBUM,Failed to create Album resource.,Création de l'album impossible.,无法创建专辑资源。,Theip ar albam a chruthú.
+KEY_ERR_ALBUM_EMPTY,Album name is empty.,Nom d'album vide.,专辑名称为空。,Ainm albaim folamh.
+KEY_ERR_ALBUM_INVALID,Invalid album selection.,Sélection d'album invalide.,专辑选择无效。,Roghnú albaim neamhbhailí.
+KEY_ERR_IMPORT_AUDIO,Imported audio could not be loaded. Please try a different file.,Impossible de charger l'audio.,无法加载导入的音频，请尝试其他文件。,Níorbh fhéidir an fhuaim a lódáil.
+KEY_ERR_SAVE_FAILED,Failed to save,Échec de l'enregistrement,保存失败,Theip ar shábháil
+KEY_CROSSFADE_STATUS,Crossfade,Crossfade,交叉渐变,Crosbhá
+KEY_REMOVE_LIBRARY_CONFIRM,"Remove ""%s"" from your library?",Retirer « %s » de la bibliothèque ?,从曲库中移除「%s」？,Bain « %s » den leabharlann?
+KEY_UNTITLED,Untitled,Sans titre,无标题,Gan teideal
+KEY_NO_TRACK,No track,Aucune piste,无轨道,Gan rian
+KEY_ACTIVE_FX,Active FX: ,Effets actifs : ,当前效果：,Éifeachtaí gníomhacha: 
+KEY_NO_FX_ALLOWED_1,"No FX allowed for Track 1, can be changed from FX Panel",Pas d'effets pour la piste 1 (panneau FX),轨道 1 不允许使用效果（可在效果面板更改）,Gan éifeacht ar rian 1 (painéal FX)
+KEY_NO_FX_ALLOWED_2,"No FX allowed for Track 2, can be changed from FX Panel",Pas d'effets pour la piste 2 (panneau FX),轨道 2 不允许使用效果（可在效果面板更改）,Gan éifeacht ar rian 2 (painéal FX)
+KEY_REMOVE_TRACK_TITLE,Remove track?,Retirer la piste ?,移除轨道？,Bain an rian?
+KEY_REMOVE_TRACK_BODY,Are you sure you want to remove this track from your library?,Retirer cette piste de votre bibliothèque ?,确定要从曲库中移除此轨道吗？,An bhfuil tú cinnte gur mian leat an rian seo a bhaint den leabharlann?
+KEY_NO,No,Non,否,Níl
+KEY_YES,Yes,Oui,是,Sea
+KEY_SONG_TITLE_PLACEHOLDER,Song Title - N/A,Titre - N/D,歌曲标题 - 无,Teideal - N/A
+KEY_ARTIST_PLACEHOLDER,Artist - N/A,Artiste - N/D,艺术家 - 无,Ealaíontóir - N/A
+KEY_ALBUM_PLACEHOLDER,Album - N/A,Album - N/D,专辑 - 无,Albam - N/A
+KEY_BASE_BPM,Base BPM,BPM de base,基础 BPM,BPM bunaidh
+KEY_BASE_KEY,Base Key,Tonalité de base,基础调性,Eochair bhunaidh
+KEY_PERSONAL_NOTE,Personal Note,Note personnelle,个人备注,Nóta pearsanta
+KEY_SIDENOTE_PLACEHOLDER,Song sidenote and extra information - N/A,Note et infos - N/D,备注与其他信息 - 无,Nóta breise - N/A
+KEY_TIME_LABEL,Time,Durée,时长,Am
+KEY_KEY_LABEL,Key,Tonalité,调性,Eochair
+KEY_GENRE_PLACEHOLDER,Genre - N/A,Genre - N/D,流派 - 无,Seánra - N/A
+KEY_INFO,Info,Infos,信息,Eolas
+KEY_SCALE_UNKNOWN,Unknown,Inconnu,未知,Anaithnid
+KEY_SCALE_MAJOR,Major,Majeur,大调,Mór
+KEY_SCALE_NATURAL_MINOR,Natural Minor,Mineur naturel,自然小调,Mion nádúrtha
+KEY_SCALE_HARMONIC_MINOR,Harmonic Minor,Mineur harmonique,和声小调,Mion armónach
+KEY_SCALE_MELODIC_MINOR,Melodic Minor,Mineur mélodique,旋律小调,Mion meilidiseach
+KEY_SCALE_GYPSY_MINOR,Gypsy Minor,Mineur tsigane,吉普赛小调,Mion Giúiseach
+KEY_SCALE_NEAPOLITAN_MINOR,Neapolitan Minor,Mineur napolitain,那不勒斯小调,Mion Napailíoch
+KEY_SCALE_HUNGARIAN_MINOR,Hungarian Minor,Mineur hongrois,匈牙利小调,Mion Ungárach
+KEY_SCALE_MAJOR_PENTATONIC,Major Pentatonic,Pentatonique majeur,大调五声音阶,Piniteac Mór
+KEY_SCALE_MINOR_PENTATONIC,Minor Pentatonic,Pentatonique mineur,小调五声音阶,Piniteac Mion
+KEY_SCALE_BLUES,Blues,Blues,布鲁斯,Blues
+KEY_SCALE_DORIAN,Dorian,Dorien,多利亚,Dórach
+KEY_SCALE_PHRYGIAN,Phrygian,Phrygien,弗里吉亚,Frígeach
+KEY_SCALE_LYDIAN,Lydian,Lydien,利底亚,Lídeach
+KEY_SCALE_MIXOLYDIAN,Mixolydian,Mixolydien,混合利底亚,Meascólaideach
+KEY_SCALE_LOCRIAN,Locrian,Locrien,洛克里亚,Lócriach
+KEY_SCALE_CHROMATIC,Chromatic,Chromatique,半音,Croimatach
+KEY_SCALE_WHOLE_TONE,Whole Tone,Ton entier,全音,Ton iomlán
+KEY_SCALE_OCTATONIC,Octatonic,Octatonique,八声音阶,Ochtatonach
+KEY_SCALE_ARABIC,Arabic,Arabe,阿拉伯,Arabach

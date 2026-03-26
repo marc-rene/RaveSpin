@@ -26,8 +26,8 @@ boot_splash/minimum_display_time=2000
 [audio]
 
 buses/default_bus_layout="uid://bic3rqdmr3ryj"
-driver/output_latency=20
-buses/channel_disable_time=180.0
+driver/output_latency=25
+buses/channel_disable_time=300.0
 
 [autoload]
 
@@ -55,7 +55,12 @@ player/standard_height=1.75
 
 locale/translation_remaps={}
 locale/translations=PackedStringArray("res://Language/LANG_Translation.en.translation", "res://Language/LANG_Translation.fr.translation", "res://Language/LANG_Translation.ga.translation", "res://Language/LANG_Translation.zh_CN.translation")
+locale/translation_add_builtin_strings_to_pot=true
 locale/locale_filter_mode=1
+
+[memory]
+
+limits/message_queue/max_size_mb=64
 
 [physics]
 

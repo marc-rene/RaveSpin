@@ -59,24 +59,24 @@ grow_vertical = 2
 alignment = 1
 
 [node name="Label" type="Label" parent="Base BPM Tip/VBoxContainer" unique_id=1146926193]
+auto_translate_mode = 1
 layout_mode = 2
-auto_translate = true
-text = "BPM"
+text = "KEY_BPM_LABEL"
 label_settings = ExtResource("4_ufylg")
 horizontal_alignment = 1
 vertical_alignment = 3
 
 [node name="Current BPM var label" type="Label" parent="Base BPM Tip/VBoxContainer" unique_id=1446260282]
+auto_translate_mode = 1
 layout_mode = 2
-auto_translate = true
 text = "NaN"
 label_settings = ExtResource("5_wnun6")
 horizontal_alignment = 1
 vertical_alignment = 3
 
 [node name="Offset percent var label" type="Label" parent="Base BPM Tip/VBoxContainer" unique_id=328809510]
+auto_translate_mode = 1
 layout_mode = 2
-auto_translate = true
 text = "..."
 label_settings = ExtResource("6_wnun6")
 horizontal_alignment = 1

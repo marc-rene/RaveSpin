@@ -22,10 +22,7 @@ theme_override_constants/margin_bottom = 8
 auto_translate_mode = 1
 layout_mode = 2
 theme = ExtResource("1_yamdy")
-text = "Allow Poly FX?
-- - - - - - - - - - - - - -
-Note: Turn Off if
-Audible crackling"
+text = "KEY_ALLOW_POLY_FX"
 icon = ExtResource("1_fymdp")
 expand_icon = true
 script = ExtResource("3_2tbig")

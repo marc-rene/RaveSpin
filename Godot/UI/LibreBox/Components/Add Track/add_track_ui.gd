@@ -6,6 +6,30 @@ class_name Add_Track
 ## Placeholder row in genre OptionButtons; not written to Song_Genres.
 const GENRE_OPTION_ID_NONE: int = -1
 
+## Order matches EMusicKey.m_scales_str (Language/LANG_Translation.csv).
+const _SCALE_I18N_KEYS: Array[String] = [
+    "KEY_SCALE_UNKNOWN",
+    "KEY_SCALE_MAJOR",
+    "KEY_SCALE_NATURAL_MINOR",
+    "KEY_SCALE_HARMONIC_MINOR",
+    "KEY_SCALE_MELODIC_MINOR",
+    "KEY_SCALE_GYPSY_MINOR",
+    "KEY_SCALE_NEAPOLITAN_MINOR",
+    "KEY_SCALE_HUNGARIAN_MINOR",
+    "KEY_SCALE_MAJOR_PENTATONIC",
+    "KEY_SCALE_MINOR_PENTATONIC",
+    "KEY_SCALE_BLUES",
+    "KEY_SCALE_DORIAN",
+    "KEY_SCALE_PHRYGIAN",
+    "KEY_SCALE_LYDIAN",
+    "KEY_SCALE_MIXOLYDIAN",
+    "KEY_SCALE_LOCRIAN",
+    "KEY_SCALE_CHROMATIC",
+    "KEY_SCALE_WHOLE_TONE",
+    "KEY_SCALE_OCTATONIC",
+    "KEY_SCALE_ARABIC",
+]
+
 var _pending_song: Song
 var _pending_audio_path: String
 var _picking_file: bool = false
@@ -49,16 +73,6 @@ func close_window() -> void:
     Parent_XR_2D_3D_Node.set_enabled(false)
 
 
-func _notification(what: int) -> void:
-    if what == NOTIFICATION_TRANSLATION_CHANGED:
-        _fill_choose_artist_dropdown()
-        _fill_choose_album_dropdown()
-        _fill_music_key_dropdowns()
-        if _pending_song != null:
-            _select_music_key_dropdowns(_pending_song.Track_Key_Note, _pending_song.Track_Scale)
-        _refresh_all_genre_dropdowns()
-
-
 func _ready() -> void:
     if _album_art_rect != null and _album_art_rect.texture != null:
         _default_album_art = _album_art_rect.texture
@@ -92,12 +106,12 @@ func _setup_fallback_file_dialog() -> void:
     _fallback_file_dialog = FileDialog.new()
     _fallback_file_dialog.file_mode = FileDialog.FILE_MODE_OPEN_FILE
     _fallback_file_dialog.access = FileDialog.ACCESS_FILESYSTEM
-    _fallback_file_dialog.title = tr("Choose an audio file (MP3 / WAV / OGG)")
+    _fallback_file_dialog.title = tr("KEY_CHOOSE_AUDIO_FILE")
     _fallback_file_dialog.min_size = Vector2i(1000, 1000)
-    _fallback_file_dialog.ok_button_text = tr("Open")
-    _fallback_file_dialog.add_filter("*.mp3", tr("MP3"))
-    _fallback_file_dialog.add_filter("*.wav", tr("WAV"))
-    _fallback_file_dialog.add_filter("*.ogg", tr("OGG Vorbis"))
+    _fallback_file_dialog.ok_button_text = tr("KEY_OPEN")
+    _fallback_file_dialog.add_filter("*.mp3", tr("KEY_FILETYPE_MP3"))
+    _fallback_file_dialog.add_filter("*.wav", tr("KEY_FILETYPE_WAV"))
+    _fallback_file_dialog.add_filter("*.ogg", tr("KEY_FILETYPE_OGG"))
     _fallback_file_dialog.file_selected.connect(_on_fallback_file_dialog_file_selected)
     _fallback_file_dialog.canceled.connect(_on_fallback_file_dialog_canceled)
     get_tree().root.add_child(_fallback_file_dialog)
@@ -108,12 +122,12 @@ func _fill_music_key_dropdowns() -> void:
         _music_key_note_option.clear()
         var note_labels: Array[StringName] = EMusicKey.m_notes_str
         for note_index: int in range(note_labels.size()):
-            _music_key_note_option.add_item(tr(String(note_labels[note_index])), note_index)
+            _music_key_note_option.add_item(String(note_labels[note_index]), note_index)
     if _music_key_scale_option != null:
         _music_key_scale_option.clear()
         var scale_labels: Array[StringName] = EMusicKey.m_scales_str
         for scale_index: int in range(scale_labels.size()):
-            _music_key_scale_option.add_item(tr(String(scale_labels[scale_index])), scale_index)
+            _music_key_scale_option.add_item(tr(_SCALE_I18N_KEYS[scale_index]), scale_index)
 
 
 func _select_music_key_dropdowns(note_enum: EMusicKey.m_notes_enum, scale_enum: EMusicKey.m_scales_enum) -> void:
@@ -214,11 +228,11 @@ func _fill_choose_artist_dropdown() -> void:
     if _choose_artist_opt == null:
         return
     _choose_artist_opt.clear()
-    _choose_artist_opt.add_item(tr("Choose from already existing Artists..."), 0)
+    _choose_artist_opt.add_item(tr("KEY_CHOOSE_EXISTING_ARTISTS"), 0)
     _choose_artist_opt.set_item_disabled(0, true)
     _choose_artist_opt.add_separator()
     var next_id: int = 1
-    _choose_artist_opt.add_item(tr("+ Add a new Artist!"), next_id)
+    _choose_artist_opt.add_item(tr("KEY_ADD_NEW_ARTIST_OPTION"), next_id)
     next_id += 1
     for artist_index: int in range(_artists_sorted.size()):
         var artist: Artist = _artists_sorted[artist_index]
@@ -231,11 +245,11 @@ func _fill_choose_album_dropdown() -> void:
     if _choose_album_opt == null:
         return
     _choose_album_opt.clear()
-    _choose_album_opt.add_item(tr("Choose from already existing Albums..."), 0)
+    _choose_album_opt.add_item(tr("KEY_CHOOSE_EXISTING_ALBUMS"), 0)
     _choose_album_opt.set_item_disabled(0, true)
     _choose_album_opt.add_separator()
     var next_id: int = 1
-    _choose_album_opt.add_item(tr("+ Add a new Album!"), next_id)
+    _choose_album_opt.add_item(tr("KEY_ADD_NEW_ALBUM_OPTION"), next_id)
     next_id += 1
     for album_index: int in range(_albums_sorted.size()):
         var album: Album = _albums_sorted[album_index]
@@ -260,7 +274,7 @@ func _on_choose_artist_selected(_unused_index: int) -> void:
     if selected_id <= 0:
         return
     if selected_id == _artist_id_for_add_new():
-        artist_line_edit.placeholder_text = tr("Enter New Artist Name...")
+        artist_line_edit.placeholder_text = tr("KEY_ENTER_NEW_ARTIST_NAME")
         return
     var metadata_value: Variant = _choose_artist_opt.get_item_metadata(_choose_artist_opt.selected)
     if metadata_value is Artist:
@@ -276,7 +290,7 @@ func _on_choose_album_selected(_unused_index: int) -> void:
     if selected_id <= 0:
         return
     if selected_id == _album_id_for_add_new():
-        album_line_edit.placeholder_text = tr("Enter New Album Name..")
+        album_line_edit.placeholder_text = tr("KEY_ENTER_NEW_ALBUM_NAME")
         return
     var metadata_value: Variant = _choose_album_opt.get_item_metadata(_choose_album_opt.selected)
     if metadata_value is Album:
@@ -295,7 +309,7 @@ func _on_add_local_song_pressed() -> void:
     ])
     if _should_use_native_file_dialog():
         DisplayServer.file_dialog_show(
-            tr("Choose an audio file (MP3 / WAV / OGG)"),
+            tr("KEY_CHOOSE_AUDIO_FILE"),
             "",
             "",
             false,
@@ -809,7 +823,15 @@ func _selected_id3_genre_ids_excluding(genre_option: OptionButton) -> Array[int]
             taken_ids.append(other_selected_id)
     return taken_ids
 
-
+func _notification(what: int) -> void:
+    if what == NOTIFICATION_TRANSLATION_CHANGED:
+        _fill_choose_artist_dropdown()
+        _fill_choose_album_dropdown()
+        _fill_music_key_dropdowns()
+        if _pending_song != null:
+            _select_music_key_dropdowns(_pending_song.Track_Key_Note, _pending_song.Track_Scale)
+        _refresh_all_genre_dropdowns()
+        
 func _refresh_all_genre_dropdowns() -> void:
     for picker_index: int in range(_genre_pickers.size()):
         var genre_option: OptionButton = _genre_pickers[picker_index]
@@ -818,7 +840,7 @@ func _refresh_all_genre_dropdowns() -> void:
         var current_selection_id: int = genre_option.get_item_id(genre_option.selected)
         var exclude_ids: Array[int] = _selected_id3_genre_ids_excluding(genre_option)
         genre_option.clear()
-        genre_option.add_item(tr("Unknown"), GENRE_OPTION_ID_NONE)
+        genre_option.add_item(tr("KEY_GENRE_UNKNOWN"), GENRE_OPTION_ID_NONE)
         for row_index: int in range(_id3_genre_catalog_rows.size()):
             var row: Dictionary = _id3_genre_catalog_rows[row_index]
             var catalog_id: int = int(row.get("id", GENRE_OPTION_ID_NONE))
@@ -886,18 +908,18 @@ func _on_save_to_library_pressed() -> void:
     var error_message: String = _save_internal()
     var succeeded: bool = error_message.is_empty()
     if succeeded:
-        _save_to_library_btn.text = tr("Song added successfully")
+        _save_to_library_btn.text = tr("KEY_SONG_ADDED_SUCCESS")
         _reset_form_after_success()
     else:
-        _save_to_library_btn.text = tr("Error: %s") % error_message
+        _save_to_library_btn.text = tr("KEY_ERROR_WITH_MESSAGE") + ": " + error_message
     await get_tree().create_timer(2.5).timeout
     if is_instance_valid(_save_to_library_btn):
-        _save_to_library_btn.text = tr("Save to library")
+        _save_to_library_btn.text = tr("KEY_SAVE_TO_LIBRARY")
 
 
 func _save_internal() -> String:
     if _pending_song == null or _pending_audio_path.is_empty():
-        return tr("No song selected. Pick a file first.")
+        return tr("KEY_ERR_NO_SONG")
 
     var title_edit: LineEdit = _details_container.get_node_or_null("Song Title Row/SongTitleLineEdit") as LineEdit
     if title_edit != null and title_edit.text.strip_edges().length() > 0:
@@ -915,15 +937,15 @@ func _save_internal() -> String:
             if _pending_song.Main_Artist == null:
                 _pending_song.Main_Artist = _create_or_get_artist(new_artist_name)
             if _pending_song.Main_Artist == null:
-                return tr("Failed to create Artist resource.")
+                return tr("KEY_ERR_FAILED_ARTIST")
         else:
-            return tr("Artist name is empty.")
+            return tr("KEY_ERR_ARTIST_EMPTY")
     else:
         var artist_pick: Variant = _choose_artist_opt.get_item_metadata(_choose_artist_opt.selected)
         if artist_pick is Artist:
             _pending_song.Main_Artist = artist_pick as Artist
         else:
-            return tr("Invalid artist selection.")
+            return tr("KEY_ERR_ARTIST_INVALID")
 
     var album_line_edit: LineEdit = _details_container.get_node_or_null("New Album Name/New ArtistName") as LineEdit
     var album_choice_id: int = -1
@@ -937,15 +959,15 @@ func _save_internal() -> String:
             if _pending_song.Song_Album == null:
                 _pending_song.Song_Album = _create_or_get_album(new_album_name)
             if _pending_song.Song_Album == null:
-                return tr("Failed to create Album resource.")
+                return tr("KEY_ERR_FAILED_ALBUM")
         else:
-            return tr("Album name is empty.")
+            return tr("KEY_ERR_ALBUM_EMPTY")
     else:
         var album_pick: Variant = _choose_album_opt.get_item_metadata(_choose_album_opt.selected)
         if album_pick is Album:
             _pending_song.Song_Album = album_pick as Album
         else:
-            return tr("Invalid album selection.")
+            return tr("KEY_ERR_ALBUM_INVALID")
 
     # Persist extracted cover art onto the selected album resource (if the album has none yet).
     if _pending_song.Song_Album != null and _pending_album_artwork_texture != null and _pending_song.Song_Album.Album_Artwork == null:
@@ -973,7 +995,7 @@ func _save_internal() -> String:
 
     var audio_stream_to_validate: AudioStream = _pending_song.get_audio_stream()
     if audio_stream_to_validate == null:
-        return tr("Imported audio could not be loaded. Please try a different file.")
+        return tr("KEY_ERR_IMPORT_AUDIO")
 
     var safe_name: String = String(_pending_song.Song_Title)
     safe_name = safe_name.replace("/", "-").replace("\\", "-").strip_edges()
@@ -995,7 +1017,8 @@ func _save_internal() -> String:
 
     var save_result: Error = ResourceSaver.save(_pending_song, save_path)
     if save_result != OK:
-        return tr("Failed to save (%d)") % save_result
+        var output: String = tr("KEY_ERR_SAVE_FAILED") + ": " + str(save_result)
+        return output
 
     _refresh_artist_album_lists()
     _fill_choose_artist_dropdown()

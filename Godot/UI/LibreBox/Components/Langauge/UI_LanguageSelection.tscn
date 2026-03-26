@@ -1,64 +1,161 @@
 [gd_scene format=3 uid="uid://b6ltbvcirle8v"]
 
-[ext_resource type="LabelSettings" uid="uid://bl11km7ja4u0h" path="res://Art/Themes/Heading.tres" id="1_l3kav"]
-[ext_resource type="Script" uid="uid://ct7wkp8nq0hm3" path="res://UI/LibreBox/Components/Langauge/ui_language_selection.gd" id="1_langui"]
-[ext_resource type="Theme" uid="uid://ds0dxmwlq5niw" path="res://Art/Themes/Default_Theme.tres" id="3_ohaok"]
-[ext_resource type="Texture2D" uid="uid://cy3y288lelwgu" path="res://Art/Icon/T_Flag_UK.png" id="4_rtn16"]
-[ext_resource type="Texture2D" uid="uid://d1e4qf5gy4sxm" path="res://Art/Icon/T_Flag_Irish.png" id="5_tlslu"]
-[ext_resource type="Texture2D" uid="uid://dc4hphmepdp1p" path="res://Art/Icon/T_Flag_France.png" id="6_d5mix"]
-[ext_resource type="Texture2D" uid="uid://bpmmopmfaay6m" path="res://Art/Icon/T_Flag_China.png" id="7_uejvg"]
+[ext_resource type="Script" uid="uid://cu88cv23bkqfq" path="res://UI/LibreBox/LibreBox_Manager.gd" id="1_uejvg"]
+[ext_resource type="PackedScene" uid="uid://clujaf3u776a3" path="res://addons/godot-xr-tools/objects/viewport_2d_in_3d.tscn" id="2_jop8w"]
+[ext_resource type="PackedScene" uid="uid://dcbkr50uhlp42" path="res://UI/LibreBox/Components/Main_Hub/MainHub_UI.tscn" id="3_qgriq"]
+[ext_resource type="Script" uid="uid://bnckdx4e6k3hk" path="res://Scripts/Viewport2DIn3DHandTouch.gd" id="4_jt2ex"]
+[ext_resource type="FontFile" uid="uid://di6oaehdwb84i" path="res://Art/Fonts/FONT_Roboto.ttf" id="5_cps3p"]
+[ext_resource type="PackedScene" uid="uid://d3vfyxnqa8u8p" path="res://UI/LibreBox/Components/Track Selection/Track_Selection.tscn" id="6_s8mt2"]
+[ext_resource type="PackedScene" uid="uid://cdx5rxkmy32p5" path="res://UI/LibreBox/Components/Track Selection/Track_Delete_Confirm_UI.tscn" id="7_5i6ky"]
+[ext_resource type="PackedScene" uid="uid://cprhr6myydno5" path="res://UI/LibreBox/Components/FX Selection/FX_Selection_Menu.tscn" id="8_ib6yv"]
+[ext_resource type="PackedScene" uid="uid://7kyk88qnftlr" path="res://UI/LibreBox/Components/Add Track/Add_Track_UI.tscn" id="9_txuhl"]
+[ext_resource type="PackedScene" uid="uid://bowim16kwtx7w" path="res://UI/LibreBox/Components/FX Selection/FX_Allow_More.tscn" id="10_sxl5e"]
 
-[node name="UiLanguageSelection" type="PanelContainer" unique_id=1869812151]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-script = ExtResource("1_langui")
+[node name="LibreboxScene" type="Node3D" unique_id=889702823]
+script = ExtResource("1_uejvg")
 
-[node name="MarginContainer" type="MarginContainer" parent="." unique_id=895492894]
-layout_mode = 2
-theme_override_constants/margin_left = 12
-theme_override_constants/margin_top = 12
-theme_override_constants/margin_right = 12
-theme_override_constants/margin_bottom = 12
+[node name="HUB" parent="." unique_id=1761191025 instance=ExtResource("2_jop8w")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.093685865, -0.053591132)
+screen_size = Vector2(1.155, 0.98)
+scene = ExtResource("3_qgriq")
+viewport_size = Vector2(1650, 1400)
+unshaded = true
+scene_properties_keys = PackedStringArray("LibreBox_HUB.gd", "Track_1", "Track_2")
+Track_1 = null
+Track_2 = null
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=793031695]
-layout_mode = 2
+[node name="HandTouch" type="Node" parent="HUB" unique_id=1535056161]
+script = ExtResource("4_jt2ex")
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer" unique_id=110362687]
+[node name="HUB Label" type="Label3D" parent="HUB" unique_id=1127725628]
 auto_translate_mode = 1
-layout_mode = 2
-size_flags_vertical = 3
-text = "KEY_CHANGE_LANGUAGE"
-label_settings = ExtResource("1_l3kav")
-horizontal_alignment = 1
-vertical_alignment = 1
+transform = Transform3D(1, 0, 0, 0, 0.8660254, -0.5, 0, 0.5, 0.8660254, 0, 0.6143331, 0.051016763)
+pixel_size = 0.004
+text = "KEY_HUB"
+font = ExtResource("5_cps3p")
+font_size = 40
+outline_size = 0
 
-[node name="LangBTN_English" type="Button" parent="MarginContainer/VBoxContainer" unique_id=1132323857]
-layout_mode = 2
-size_flags_vertical = 3
-theme = ExtResource("3_ohaok")
-text = "English"
-icon = ExtResource("4_rtn16")
+[node name="Track 1 Selection" parent="." unique_id=900064892 node_paths=PackedStringArray("Add_Track_UI_node", "Delete_Confirm_Viewport") instance=ExtResource("2_jop8w")]
+transform = Transform3D(0.34202015, -0.081899606, 0.9361168, 0, 0.9961947, 0.08715574, -0.9396926, -0.029809019, 0.34071866, -0.72, -0.2, 0.33)
+screen_size = Vector2(0.7, 0.7)
+scene = ExtResource("6_s8mt2")
+viewport_size = Vector2(1280, 1280)
+unshaded = true
+scene_properties_keys = PackedStringArray("Track_Selection.gd", "Add_Track_UI_node", "hover_scroll_speed", "Delete_Confirm_Viewport")
+Add_Track_UI_node = NodePath("../Add Song")
+hover_scroll_speed = 50.0
+Delete_Confirm_Viewport = NodePath("../Track Delete Confirm")
 
-[node name="LangBTN_Irish" type="Button" parent="MarginContainer/VBoxContainer" unique_id=1065833754]
-layout_mode = 2
-size_flags_vertical = 3
-theme = ExtResource("3_ohaok")
-text = "Gaeilge"
-icon = ExtResource("5_tlslu")
+[node name="Track Select Label" type="Label3D" parent="Track 1 Selection" unique_id=61489553]
+auto_translate_mode = 1
+transform = Transform3D(1, 2.2351742e-08, 0, -3.7252903e-09, 0.90630776, -0.42261827, 0, 0.42261833, 0.9063078, 0, 0.4018476, 0.035157084)
+pixel_size = 0.002
+texture_filter = 0
+text = "KEY_TRACK_1_SELECTION"
+font = ExtResource("5_cps3p")
+font_size = 40
+outline_size = 0
 
-[node name="LangBTN_French" type="Button" parent="MarginContainer/VBoxContainer" unique_id=1609481916]
-layout_mode = 2
-size_flags_vertical = 3
-theme = ExtResource("3_ohaok")
-text = "Français"
-icon = ExtResource("6_d5mix")
+[node name="HandTouch" type="Node" parent="Track 1 Selection" unique_id=1106380327]
+script = ExtResource("4_jt2ex")
+scroll_sensitivity = 0.2
 
-[node name="LangBTN_Chinese" type="Button" parent="MarginContainer/VBoxContainer" unique_id=1025202625]
-layout_mode = 2
-size_flags_vertical = 3
-theme = ExtResource("3_ohaok")
-text = "简体中文"
-icon = ExtResource("7_uejvg")
+[node name="Track 2 Selection" parent="." unique_id=187553533 node_paths=PackedStringArray("Add_Track_UI_node", "Delete_Confirm_Viewport") instance=ExtResource("2_jop8w")]
+transform = Transform3D(0.34202015, 0.081899606, -0.9361168, 0, 0.9961947, 0.08715574, 0.9396926, -0.029809019, 0.34071866, 0.72, -0.2, 0.33)
+screen_size = Vector2(0.7, 0.7)
+scene = ExtResource("6_s8mt2")
+viewport_size = Vector2(1280, 1280)
+unshaded = true
+scene_properties_keys = PackedStringArray("Track_Selection.gd", "Add_Track_UI_node", "hover_scroll_speed", "Delete_Confirm_Viewport")
+Add_Track_UI_node = NodePath("../Add Song")
+hover_scroll_speed = 50.0
+Delete_Confirm_Viewport = NodePath("../Track Delete Confirm")
+
+[node name="Track Select Label" type="Label3D" parent="Track 2 Selection" unique_id=1008893548]
+auto_translate_mode = 1
+transform = Transform3D(1, -2.2351742e-08, 0, 3.7252903e-09, 0.90630776, -0.42261827, 0, 0.42261833, 0.9063078, 0, 0.4018476, 0.035157084)
+pixel_size = 0.002
+texture_filter = 0
+text = "KEY_TRACK_2_SELECTION"
+font = ExtResource("5_cps3p")
+font_size = 40
+outline_size = 0
+
+[node name="HandTouch" type="Node" parent="Track 2 Selection" unique_id=1070256822]
+script = ExtResource("4_jt2ex")
+scroll_sensitivity = 0.2
+
+[node name="Track Delete Confirm" parent="." unique_id=491399500 instance=ExtResource("2_jop8w")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10, 0.42)
+screen_size = Vector2(0.55, 0.32)
+enabled = false
+scene = ExtResource("7_5i6ky")
+viewport_size = Vector2(800, 480)
+unshaded = true
+scene_properties_keys = PackedStringArray("track_delete_confirm_ui.gd")
+
+[node name="HandTouch" type="Node" parent="Track Delete Confirm" unique_id=1814810397]
+script = ExtResource("4_jt2ex")
+scroll_enabled = false
+scroll_pose_index_pinch = false
+scroll_pose_fist = false
+
+[node name="FX Selection" parent="." unique_id=1120781123 instance=ExtResource("2_jop8w")]
+transform = Transform3D(1, -6.238468e-17, 9.9801465e-17, -6.238469e-17, 0.43808877, 0.8989317, -9.980147e-17, -0.89893174, 0.43808877, 0.5887204, -0.72288305, 0.61940217)
+screen_size = Vector2(0.455, 0.35)
+scene = ExtResource("8_ib6yv")
+viewport_size = Vector2(650, 500)
+unshaded = true
+scene_properties_keys = PackedStringArray("fx_selection_menu.gd")
+
+[node name="HandTouch" type="Node" parent="FX Selection" unique_id=728653650]
+script = ExtResource("4_jt2ex")
+click_cooldown_seconds = 0.2
+scroll_enabled = false
+scroll_pose_index_pinch = false
+scroll_pose_fist = false
+
+[node name="Add Song" parent="." unique_id=357377217 instance=ExtResource("2_jop8w")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10, 0.357)
+screen_size = Vector2(0.7, 0.7)
+enabled = false
+scene = ExtResource("9_txuhl")
+viewport_size = Vector2(1050, 1050)
+throttle_fps = 20.0
+unshaded = true
+scene_properties_keys = PackedStringArray("add_track_ui.gd")
+
+[node name="HandTouch" type="Node" parent="Add Song" unique_id=1884731617]
+script = ExtResource("4_jt2ex")
+enable_double = true
+scroll_sensitivity = 0.3
+
+[node name="AllowMoreFX" parent="." unique_id=52213427 instance=ExtResource("2_jop8w")]
+transform = Transform3D(0.870622, 1.4901161e-08, -0.49195263, 0.44216406, 0.43837115, 0.78250986, 0.21565783, -0.89879405, 0.38165557, 0.937826, -0.73622274, 0.80204165)
+screen_size = Vector2(0.2, 0.1)
+scene = ExtResource("10_sxl5e")
+viewport_size = Vector2(400, 200)
+
+[node name="HandTouch" type="Node" parent="AllowMoreFX" unique_id=142616372]
+script = ExtResource("4_jt2ex")
+click_cooldown_seconds = 0.5
+scroll_enabled = false
+scroll_pose_index_pinch = false
+scroll_pose_fist = false
+scroll_sensitivity = 0.3
+
+[node name="Language Select" parent="." unique_id=605638321 instance=ExtResource("2_jop8w")]
+transform = Transform3D(0.17364821, -0.08583164, 0.98106027, 0, 0.9961947, 0.08715574, -0.98480767, -0.015134439, 0.17298745, -0.87379867, -0.21653448, 0.9154934)
+screen_size = Vector2(0.4, 0.5)
+scene = null
+viewport_size = Vector2(600, 750)
+scene_properties_keys = PackedStringArray("ui_language_selection.gd")
+
+[node name="HandTouch" type="Node" parent="Language Select" unique_id=727519343]
+script = ExtResource("4_jt2ex")
+click_cooldown_seconds = 0.5
+scroll_enabled = false
+scroll_pose_index_pinch = false
+scroll_pose_fist = false
+scroll_sensitivity = 0.3

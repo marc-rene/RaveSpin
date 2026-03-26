@@ -11,7 +11,6 @@ extends PanelContainer
 
 
 func _ready() -> void:
-    _refresh_title()
     Lang_English.pressed.connect(_on_Lang_English_clicked)
     Lang_Irish.pressed.connect(_on_Lang_Irish_clicked)
     Lang_French.pressed.connect(_on_Lang_French_clicked)
@@ -27,14 +26,7 @@ func _on_Lang_Chinese_clicked():
     _on_pick_language("zh_CN")
 
 
-func _notification(what: int) -> void:
-    if what == NOTIFICATION_TRANSLATION_CHANGED:
-        _refresh_title()
 
-
-func _refresh_title() -> void:
-    if _title:
-        _title.text = tr("Change Language")
 
 
 func _on_pick_language(locale: String) -> void:

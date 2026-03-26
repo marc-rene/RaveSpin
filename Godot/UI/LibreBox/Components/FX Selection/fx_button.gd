@@ -7,13 +7,8 @@ const Inactive_Colour_Mod : Color = Color8(100, 100, 140)
 const Active_Colour_Mod : Color = Color8(255, 255, 255)
 
 
-func _notification(what: int) -> void:
-    if what == NOTIFICATION_TRANSLATION_CHANGED:
-        text = tr(BUS_MANAGER.Beat_FX_Names[FX_Type])
-
-
 func _ready() -> void:
-    text = tr(BUS_MANAGER.Beat_FX_Names[FX_Type])
+    text = tr(BUS_MANAGER.beat_fx_translation_key(FX_Type))
     pressed.connect(_on_pressed)
     refresh_state()
 
