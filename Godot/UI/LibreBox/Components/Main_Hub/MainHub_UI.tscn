@@ -26,17 +26,17 @@ offset_right = 115.0
 offset_bottom = 1396.0
 
 [node name="Label" type="Label" parent="VBoxContainer" unique_id=159718642]
+auto_translate_mode = 1
 layout_mode = 2
 size_flags_vertical = 3
-auto_translate = true
 text = "KEY_HUB"
 label_settings = ExtResource("4_v1ksm")
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Track 1 Label" type="Label" parent="VBoxContainer" unique_id=1508323206]
+auto_translate_mode = 1
 layout_mode = 2
-auto_translate = true
 text = "KEY_LEFT"
 label_settings = ExtResource("4_v1ksm")
 horizontal_alignment = 1
@@ -88,8 +88,8 @@ Track_ID = 1
 Title = "KEY_DB_METER_2"
 
 [node name="Track 2 Label" type="Label" parent="VBoxContainer" unique_id=1096811934]
+auto_translate_mode = 1
 layout_mode = 2
-auto_translate = true
 text = "KEY_RIGHT"
 label_settings = ExtResource("4_v1ksm")
 horizontal_alignment = 1

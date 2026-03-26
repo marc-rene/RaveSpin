@@ -16,7 +16,7 @@
 script = ExtResource("1_al4tx")
 
 [node name="HUB" parent="." unique_id=1761191025 instance=ExtResource("1_ebwc8")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.093685865, -0.053591132)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.27216923, -0.095581174)
 screen_size = Vector2(1.155, 0.98)
 scene = ExtResource("2_bg1lp")
 viewport_size = Vector2(1650, 1400)
@@ -38,7 +38,7 @@ font_size = 40
 outline_size = 0
 
 [node name="Track 1 Selection" parent="." unique_id=900064892 node_paths=PackedStringArray("Add_Track_UI_node", "Delete_Confirm_Viewport") instance=ExtResource("1_ebwc8")]
-transform = Transform3D(0.34202015, -0.081899606, 0.9361168, 0, 0.9961947, 0.08715574, -0.9396926, -0.029809019, 0.34071866, -0.72, -0.2, 0.33)
+transform = Transform3D(0.34202015, -0.081899606, 0.9361168, 0, 0.9961947, 0.08715574, -0.9396926, -0.029809019, 0.34071866, -0.7, -0.2, 0.33)
 screen_size = Vector2(0.7, 0.7)
 scene = ExtResource("4_vnbwf")
 viewport_size = Vector2(1280, 1280)
@@ -63,7 +63,7 @@ script = ExtResource("5_hand")
 scroll_sensitivity = 0.2
 
 [node name="Track 2 Selection" parent="." unique_id=187553533 node_paths=PackedStringArray("Add_Track_UI_node", "Delete_Confirm_Viewport") instance=ExtResource("1_ebwc8")]
-transform = Transform3D(0.34202015, 0.081899606, -0.9361168, 0, 0.9961947, 0.08715574, 0.9396926, -0.029809019, 0.34071866, 0.72, -0.2, 0.33)
+transform = Transform3D(0.34202015, 0.081899606, -0.9361168, 0, 0.9961947, 0.08715574, 0.9396926, -0.029809019, 0.34071866, 0.7, -0.2, 0.33)
 screen_size = Vector2(0.7, 0.7)
 scene = ExtResource("4_vnbwf")
 viewport_size = Vector2(1280, 1280)
@@ -151,11 +151,7 @@ transform = Transform3D(0.17364821, -0.08583164, 0.98106027, 0, 0.9961947, 0.087
 screen_size = Vector2(0.4, 0.5)
 scene = ExtResource("11_6xn47")
 viewport_size = Vector2(600, 750)
-scene_properties_keys = PackedStringArray("LibreBox_Manager.gd", "Track_1_Song", "Track_2_Song", "Track_3_Song", "Track_4_Song")
-Track_1_Song = null
-Track_2_Song = null
-Track_3_Song = null
-Track_4_Song = null
+scene_properties_keys = PackedStringArray("ui_language_selection.gd")
 
 [node name="HandTouch" type="Node" parent="Language Select" unique_id=727519343]
 script = ExtResource("5_hand")

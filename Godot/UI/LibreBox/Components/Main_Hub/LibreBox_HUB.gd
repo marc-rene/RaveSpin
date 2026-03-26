@@ -123,5 +123,44 @@ func _on_track_2_beat(_current_beat: int) -> void:
 
 
 func _process(_delta: float) -> void:
-    _waveform_mat_1.set_shader_parameter("alpha", LibreBox.Get_Track_Playback_Alpha(0))
-    _waveform_mat_2.set_shader_parameter("alpha", LibreBox.Get_Track_Playback_Alpha(1))
+    var a1: float = LibreBox.Get_Track_Playback_Alpha(0)
+    var a2: float = LibreBox.Get_Track_Playback_Alpha(1)
+    _waveform_mat_1.set_shader_parameter("alpha", a1)
+    _waveform_mat_2.set_shader_parameter("alpha", a2)
+
+    _update_loop_markers(0, _waveform_mat_1)
+    _update_loop_markers(1, _waveform_mat_2)
+
+
+func _update_loop_markers(which_track: int, mat: ShaderMaterial) -> void:
+    if mat == null:
+        return
+    which_track = Utility.Clamp_to_Valid_TrackID(which_track)
+    var player: AudioStreamPlayer = DJ_Controller.Get_Track_Playback_Player(which_track)
+    if player == null or player.stream == null:
+        mat.set_shader_parameter("loop_start_visible", 0.0)
+        mat.set_shader_parameter("loop_end_visible", 0.0)
+        return
+
+    var len_sec: float = float(player.stream.get_length())
+    if len_sec <= 0.001:
+        mat.set_shader_parameter("loop_start_visible", 0.0)
+        mat.set_shader_parameter("loop_end_visible", 0.0)
+        return
+
+    var start_visible: bool = DJ_Controller.Is_Loop_Start_Armed(which_track) or DJ_Controller.Is_Loop_Enabled(which_track)
+    var end_visible: bool = DJ_Controller.Is_Loop_End_Armed(which_track) or DJ_Controller.Is_Loop_Enabled(which_track)
+
+    if start_visible:
+        var start_alpha: float = clampf(DJ_Controller.Get_Loop_Start_Sec(which_track) / len_sec, 0.0, 1.0)
+        mat.set_shader_parameter("loop_start_alpha", start_alpha)
+        mat.set_shader_parameter("loop_start_visible", 1.0)
+    else:
+        mat.set_shader_parameter("loop_start_visible", 0.0)
+
+    if end_visible:
+        var end_alpha: float = clampf(DJ_Controller.Get_Loop_End_Sec(which_track) / len_sec, 0.0, 1.0)
+        mat.set_shader_parameter("loop_end_alpha", end_alpha)
+        mat.set_shader_parameter("loop_end_visible", 1.0)
+    else:
+        mat.set_shader_parameter("loop_end_visible", 0.0)

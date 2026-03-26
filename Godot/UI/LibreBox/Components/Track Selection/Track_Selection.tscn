@@ -39,16 +39,17 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Track Selection Label" type="Label" parent="VBoxContainer" unique_id=845195395]
+auto_translate_mode = 1
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-auto_translate = true
 text = "KEY_TRACK_SELECT"
 label_settings = ExtResource("2_1m280")
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="ADD ZE TRACK" type="Button" parent="VBoxContainer" unique_id=86367898]
+auto_translate_mode = 1
 z_index = 2
 layout_mode = 2
 size_flags_horizontal = 3
@@ -56,7 +57,6 @@ size_flags_vertical = 3
 size_flags_stretch_ratio = 0.6
 theme = ExtResource("2_hu467")
 theme_override_font_sizes/font_size = 44
-auto_translate = true
 text = "KEY_ADD_NEW_TRACK"
 
 [node name="Scroll Up" type="Panel" parent="VBoxContainer" unique_id=485159804]
@@ -66,6 +66,7 @@ layout_mode = 2
 size_flags_vertical = 3
 
 [node name="Label" type="Label" parent="VBoxContainer/Scroll Up" unique_id=44387498]
+auto_translate_mode = 1
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -75,7 +76,6 @@ grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
 size_flags_stretch_ratio = 0.8
-auto_translate = true
 text = "KEY_SCROLL_UP"
 label_settings = ExtResource("4_khk6l")
 horizontal_alignment = 1
@@ -102,6 +102,7 @@ layout_mode = 2
 size_flags_vertical = 3
 
 [node name="Label" type="Label" parent="VBoxContainer/Scroll Down" unique_id=872832941]
+auto_translate_mode = 1
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -111,7 +112,6 @@ grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
 size_flags_stretch_ratio = 0.8
-auto_translate = true
 text = "KEY_SCROLL_DOWN"
 label_settings = ExtResource("4_khk6l")
 horizontal_alignment = 1

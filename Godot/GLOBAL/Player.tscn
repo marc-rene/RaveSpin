@@ -48,7 +48,7 @@ hand_pose_set = ExtResource("3_bt0ox")
 
 [node name="LeftHandMesh" parent="XR_LeftHand" unique_id=1076283010 instance=ExtResource("5_u77ky")]
 
-[node name="Left_Label3D" type="Label3D" parent="XR_LeftHand/LeftHandMesh/LeftHandHumanoid/Skeleton3D" parent_id_path=PackedInt32Array(1076283010, 168005976) index="0" unique_id=699070044]
+[node name="Left_Label3D" type="Label3D" parent="XR_LeftHand/LeftHandMesh/LeftHandHumanoid/Skeleton3D" parent_id_path=PackedInt32Array(1076283010, 272695271) index="0" unique_id=699070044]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.007993251, -0.019674644, -0.07545796)
 billboard = 2
@@ -58,12 +58,12 @@ text = "Test"
 font_size = 12
 outline_size = 0
 
-[node name="LeftHandHumanoidMesh" parent="XR_LeftHand/LeftHandMesh/LeftHandHumanoid/Skeleton3D" parent_id_path=PackedInt32Array(1076283010, 168005976) index="1" unique_id=875672536]
+[node name="LeftHandHumanoidMesh" parent="XR_LeftHand/LeftHandMesh/LeftHandHumanoid/Skeleton3D" parent_id_path=PackedInt32Array(1076283010, 272695271) index="1" unique_id=1184176559]
 surface_material_override/0 = ExtResource("6_lyv0n")
 
-[node name="XRHandModifier3D" type="XRHandModifier3D" parent="XR_LeftHand/LeftHandMesh/LeftHandHumanoid/Skeleton3D" parent_id_path=PackedInt32Array(1076283010, 168005976) index="2" unique_id=364111967]
+[node name="XRHandModifier3D" type="XRHandModifier3D" parent="XR_LeftHand/LeftHandMesh/LeftHandHumanoid/Skeleton3D" parent_id_path=PackedInt32Array(1076283010, 272695271) index="2" unique_id=364111967]
 
-[node name="Left_Index_Finger" type="BoneAttachment3D" parent="XR_LeftHand/LeftHandMesh/LeftHandHumanoid/Skeleton3D" parent_id_path=PackedInt32Array(1076283010, 168005976) index="3" unique_id=1651982462]
+[node name="Left_Index_Finger" type="BoneAttachment3D" parent="XR_LeftHand/LeftHandMesh/LeftHandHumanoid/Skeleton3D" parent_id_path=PackedInt32Array(1076283010, 272695271) index="3" unique_id=1651982462]
 transform = Transform3D(0.051258016, 0.1878995, 0.9808498, -0.9749955, 0.22206397, 0.008411678, -0.21623076, -0.9567551, 0.19458377, -0.016196424, 0.036920153, -0.14566463)
 bone_name = "LeftIndexDistal"
 bone_idx = 8
@@ -96,7 +96,7 @@ hand_pose_set = ExtResource("3_bt0ox")
 
 [node name="RightHandMesh" parent="XR_RightHand" unique_id=594923881 instance=ExtResource("7_u77ky")]
 
-[node name="Right_Label3D" type="Label3D" parent="XR_RightHand/RightHandMesh/RightHandHumanoid/Skeleton3D" parent_id_path=PackedInt32Array(594923881, 846611444) index="0" unique_id=769796289]
+[node name="Right_Label3D" type="Label3D" parent="XR_RightHand/RightHandMesh/RightHandHumanoid/Skeleton3D" parent_id_path=PackedInt32Array(594923881, 559108018) index="0" unique_id=769796289]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.007993251, -0.019674644, -0.07545796)
 billboard = 2
@@ -106,14 +106,14 @@ text = "Test"
 font_size = 12
 outline_size = 0
 
-[node name="RightHandHumanoidMesh" parent="XR_RightHand/RightHandMesh/RightHandHumanoid/Skeleton3D" parent_id_path=PackedInt32Array(594923881, 846611444) index="1" unique_id=1236805100]
+[node name="RightHandHumanoidMesh" parent="XR_RightHand/RightHandMesh/RightHandHumanoid/Skeleton3D" parent_id_path=PackedInt32Array(594923881, 559108018) index="1" unique_id=1187280693]
 surface_material_override/0 = ExtResource("6_lyv0n")
 
-[node name="XRHandModifier3D" type="XRHandModifier3D" parent="XR_RightHand/RightHandMesh/RightHandHumanoid/Skeleton3D" parent_id_path=PackedInt32Array(594923881, 846611444) index="2" unique_id=929880382]
+[node name="XRHandModifier3D" type="XRHandModifier3D" parent="XR_RightHand/RightHandMesh/RightHandHumanoid/Skeleton3D" parent_id_path=PackedInt32Array(594923881, 559108018) index="2" unique_id=929880382]
 transform = Transform3D(0.99999994, 0, 0, 0, 0.99999994, 0, 0, 0, 1, -0.43492123, 0, 0)
 hand_tracker = &"/user/hand_tracker/right"
 
-[node name="Right_Index_Finger" type="BoneAttachment3D" parent="XR_RightHand/RightHandMesh/RightHandHumanoid/Skeleton3D" parent_id_path=PackedInt32Array(594923881, 846611444) index="3" unique_id=1828012557]
+[node name="Right_Index_Finger" type="BoneAttachment3D" parent="XR_RightHand/RightHandMesh/RightHandHumanoid/Skeleton3D" parent_id_path=PackedInt32Array(594923881, 559108018) index="3" unique_id=1828012557]
 transform = Transform3D(0.051410556, -0.18790838, -0.9808402, 0.97499365, 0.22206675, 0.008560741, 0.21620327, -0.9567527, 0.19462611, 0.016196424, 0.036920153, -0.14566463)
 bone_name = "RightIndexDistal"
 bone_idx = 8

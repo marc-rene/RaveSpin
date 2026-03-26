@@ -13,6 +13,16 @@ uniform vec4 force_colour : source_color = vec4(1.0,1.0,1.0,1.0);
 uniform vec4 line_color : source_color = vec4(1.0, 1.0, 1.0, 0.5);
 uniform float line_width : hint_range(0.0, 0.01) = 0.002; // in UV (0.5 = half the rect)
 
+// Loop markers (absolute position in the waveform texture 0..1).
+// They are rendered relative to the current `alpha` (playhead at center).
+uniform float loop_start_alpha : hint_range(0.0, 1.0) = 0.0;
+uniform float loop_end_alpha : hint_range(0.0, 1.0) = 0.0;
+uniform float loop_start_visible : hint_range(0.0, 1.0) = 0.0; // 0/1
+uniform float loop_end_visible : hint_range(0.0, 1.0) = 0.0;   // 0/1
+uniform vec4 loop_start_color : source_color = vec4(0.2, 0.8, 0.4, 1.0);
+uniform vec4 loop_end_color : source_color = vec4(0.9, 0.3, 0.2, 1.0);
+uniform float loop_marker_width : hint_range(0.0, 0.02) = 0.003;
+
 void fragment() {
     // Map rect UV so that center (0.5) == alpha on the texture
     vec2 uv = UV;
@@ -31,17 +41,47 @@ void fragment() {
     
     //COLOR.a = texture(TEXTURE, uv).a;
 
-    // Draw a skinny vertical line down the middle
-    float dist_from_center = abs(UV.x - 0.5);
-    if (dist_from_center < line_width) 
-    {
-        COLOR.r = line_color.r * final_colour.r;
-        COLOR.g = line_color.g * final_colour.g;
-        COLOR.b = line_color.b * final_colour.b;
-        COLOR.a = 1.0 - final_colour.a;
+    // Default output
+    COLOR = final_colour;
+
+    // Loop markers are at screen-x where the sampled waveform u == marker_alpha.
+    // Since u = UV.x - 0.5 + alpha, we solve for UV.x:
+    // UV.x = marker_alpha - alpha + 0.5
+    float loop_start_x = loop_start_alpha - alpha + 0.5;
+    float loop_end_x = loop_end_alpha - alpha + 0.5;
+
+    bool should_continue = true;
+    
+    if (loop_start_visible > 0.5 && loop_start_x >= 0.0 && loop_start_x <= 1.0) {
+        float d = abs(UV.x - loop_start_x);
+        if (d < loop_marker_width) {
+            COLOR.rgb = loop_start_color.rgb * final_colour.rgb;
+            COLOR.a = 1.0 - final_colour.a;
+            should_continue = false;
+        }
     }
-    else
+    if (should_continue)
     {
-        COLOR = final_colour;
+        if (loop_end_visible > 0.5 && loop_end_x >= 0.0 && loop_end_x <= 1.0) {
+            float d = abs(UV.x - loop_end_x);
+            if (d < loop_marker_width) {
+                COLOR.rgb = loop_end_color.rgb * final_colour.rgb;
+                COLOR.a = 1.0 - final_colour.a;
+                should_continue = false;
+            }
+        }
+    }
+
+        
+    if (should_continue)
+    {
+        // Draw a skinny vertical line down the middle (playhead). Render on top.
+        float dist_from_center = abs(UV.x - 0.5);
+        if (dist_from_center < line_width) {
+            COLOR.r = line_color.r * final_colour.r;
+            COLOR.g = line_color.g * final_colour.g;
+            COLOR.b = line_color.b * final_colour.b;
+            COLOR.a = 1.0 - final_colour.a;
+        }
     }
 }

@@ -107,6 +107,219 @@ static func Get_Track_Playback_Player(which_track : int) -> AudioStreamPlayer:
     return Controller_Instance.AudioPlayerList[which_track]
 
 
+# --- Loop management (per track) ---
+# Loop points are in *stream seconds* (same space as get_playback_position()).
+# Beat snapping uses the track's *base BPM* from metadata (LibreBox.Get_Track_BPM),
+# consistent with beat sync and other beat-derived UI.
+@export var Use_Multi_threaded_looping : bool = false
+var Loop_Point_Snapping_Enabled: Array[bool] = [true, true, true, true]
+var Loop_Enabled: Array[bool] = [false, false, false, false]
+var Loop_Start_Sec: Array[float] = [0.0, 0.0, 0.0, 0.0]
+var Loop_End_Sec: Array[float] = [0.0, 0.0, 0.0, 0.0]
+var Loop_Start_Armed: Array[bool] = [false, false, false, false]
+var Loop_End_Armed: Array[bool] = [false, false, false, false]
+
+var _loop_threads: Array[Thread] = [null, null, null, null]
+var _loop_thread_run: Array[bool] = [false, false, false, false]
+var _loop_last_seek_ms: Array[int] = [0, 0, 0, 0]
+const LOOP_SEEK_COOLDOWN_MS: int = 40
+
+const LOOP_MIN_BEATS: float = 1.0 / 16.0
+const LOOP_MAX_BEATS: float = 128.0
+
+static func Is_Loop_Enabled(which_track: int) -> bool:
+    which_track = Utility.Clamp_to_Valid_TrackID(which_track)
+    return DJ_Controller.Get_Instance().Loop_Enabled[which_track]
+
+static func Get_Loop_Start_Sec(which_track: int) -> float:
+    which_track = Utility.Clamp_to_Valid_TrackID(which_track)
+    return DJ_Controller.Get_Instance().Loop_Start_Sec[which_track]
+
+static func Get_Loop_End_Sec(which_track: int) -> float:
+    which_track = Utility.Clamp_to_Valid_TrackID(which_track)
+    return DJ_Controller.Get_Instance().Loop_End_Sec[which_track]
+
+static func Is_Loop_Start_Armed(which_track: int) -> bool:
+    which_track = Utility.Clamp_to_Valid_TrackID(which_track)
+    return DJ_Controller.Get_Instance().Loop_Start_Armed[which_track]
+
+static func Is_Loop_End_Armed(which_track: int) -> bool:
+    which_track = Utility.Clamp_to_Valid_TrackID(which_track)
+    return DJ_Controller.Get_Instance().Loop_End_Armed[which_track]
+
+static func Is_Loop_Point_Snapping_Enabled(which_track: int) -> bool:
+    which_track = Utility.Clamp_to_Valid_TrackID(which_track)
+    return DJ_Controller.Get_Instance().Loop_Point_Snapping_Enabled[which_track]
+
+static func Set_Loop_Point_Snapping_Enabled(which_track: int, enabled: bool) -> void:
+    which_track = Utility.Clamp_to_Valid_TrackID(which_track)
+    DJ_Controller.Get_Instance().Loop_Point_Snapping_Enabled[which_track] = enabled
+
+static func Clear_Loop(which_track: int) -> void:
+    which_track = Utility.Clamp_to_Valid_TrackID(which_track)
+    var inst := DJ_Controller.Get_Instance()
+    inst.Loop_Enabled[which_track] = false
+    inst.Loop_Start_Armed[which_track] = false
+    inst.Loop_End_Armed[which_track] = false
+
+
+func _beat_len_stream_sec(which_track: int) -> float:
+    which_track = Utility.Clamp_to_Valid_TrackID(which_track)
+    var base_bpm: float = LibreBox.Get_Track_BPM(which_track)
+    if base_bpm <= 0.0:
+        return 0.0
+    return 60.0 / base_bpm
+
+
+func _stream_len_sec(which_track: int) -> float:
+    which_track = Utility.Clamp_to_Valid_TrackID(which_track)
+    if AudioPlayerList[which_track] == null or AudioPlayerList[which_track].stream == null:
+        return 0.0
+    return float(AudioPlayerList[which_track].stream.get_length())
+
+
+func _get_loop_quantized_point_sec(which_track: int, use_beat_start: bool, use_beat_end: bool) -> float:
+    which_track = Utility.Clamp_to_Valid_TrackID(which_track)
+    var pos: float = Utility.Return_Valid(AudioPlayerList[which_track].get_playback_position(), 0.0)
+    if not Loop_Point_Snapping_Enabled[which_track]:
+        return pos
+
+    var beat_len: float = _beat_len_stream_sec(which_track)
+    if beat_len <= 0.0:
+        return pos
+
+    var beat_index: int = int(floor(pos / beat_len))
+    if use_beat_end:
+        return (beat_index + 1) * beat_len
+    if use_beat_start:
+        return beat_index * beat_len
+    return pos
+
+
+func _set_loop_points_sec(which_track: int, start_sec: float, end_sec: float) -> void:
+    which_track = Utility.Clamp_to_Valid_TrackID(which_track)
+    var stream_len: float = _stream_len_sec(which_track)
+    if stream_len <= 0.0:
+        Loop_Enabled[which_track] = false
+        Loop_Start_Sec[which_track] = 0.0
+        Loop_End_Sec[which_track] = 0.0
+        return
+
+    start_sec = clampf(start_sec, 0.0, maxf(0.0, stream_len - 0.001))
+    end_sec = clampf(end_sec, 0.0, maxf(0.0, stream_len - 0.001))
+
+    var beat_len: float = _beat_len_stream_sec(which_track)
+    var min_len_sec: float = 0.01
+    if beat_len > 0.0:
+        min_len_sec = maxf(0.01, beat_len * LOOP_MIN_BEATS)
+
+    if end_sec < start_sec + min_len_sec:
+        end_sec = clampf(start_sec + min_len_sec, 0.0, maxf(0.0, stream_len - 0.001))
+
+    Loop_Start_Sec[which_track] = start_sec
+    Loop_End_Sec[which_track] = end_sec
+    Loop_Enabled[which_track] = true
+    Loop_Start_Armed[which_track] = true
+    Loop_End_Armed[which_track] = true
+
+
+func _loop_seek_on_main(which_track: int) -> void:
+    which_track = Utility.Clamp_to_Valid_TrackID(which_track)
+    if not Loop_Enabled[which_track]:
+        return
+    if AudioPlayerList[which_track] == null or AudioPlayerList[which_track].stream == null:
+        Loop_Enabled[which_track] = false
+        return
+    if not AudioPlayerList[which_track].playing:
+        return
+
+    var now_ms: int = Time.get_ticks_msec()
+    if now_ms - _loop_last_seek_ms[which_track] < LOOP_SEEK_COOLDOWN_MS:
+        return
+    _loop_last_seek_ms[which_track] = now_ms
+
+    if AudioPlayerList[which_track].has_stream_playback():
+        #AudioPlayerList[which_track].seek(Loop_Start_Sec[which_track])
+        AudioPlayerList[which_track].call_deferred("seek", Loop_Start_Sec[which_track] )
+    else:
+        AudioPlayerList[which_track].play(Loop_Start_Sec[which_track])
+
+
+func _loop_thread_main(which_track: int) -> void:
+    which_track = Utility.Clamp_to_Valid_TrackID(which_track)
+
+    while _loop_thread_run[which_track] or not Use_Multi_threaded_looping:
+        if (Loop_Enabled[which_track] or not Use_Multi_threaded_looping) and AudioPlayerList[which_track] != null and AudioPlayerList[which_track].stream != null:
+            if AudioPlayerList[which_track].playing:
+                var pos: float = Utility.Return_Valid(AudioPlayerList[which_track].get_playback_position(), 0.0)
+                if pos >= Loop_End_Sec[which_track]:
+                    #call_deferred("_loop_seek_on_main", which_track)
+                    _loop_seek_on_main(which_track)
+                        
+        #OS.delay_msec(6)
+
+
+func Loop_Set_Start_Point(which_track: int) -> void:
+    which_track = Utility.Clamp_to_Valid_TrackID(which_track)
+    var start_sec: float = _get_loop_quantized_point_sec(which_track, true, false)
+    Loop_Start_Sec[which_track] = start_sec
+    Loop_Start_Armed[which_track] = true
+    # Do NOT enable loop until end point is armed too.
+    if Loop_End_Armed[which_track]:
+        _set_loop_points_sec(which_track, Loop_Start_Sec[which_track], Loop_End_Sec[which_track])
+
+
+func Loop_Set_End_Point(which_track: int) -> void:
+    which_track = Utility.Clamp_to_Valid_TrackID(which_track)
+    var end_sec: float = _get_loop_quantized_point_sec(which_track, false, true)
+    Loop_End_Sec[which_track] = end_sec
+    Loop_End_Armed[which_track] = true
+    # Do NOT enable loop until start point is armed too.
+    if Loop_Start_Armed[which_track]:
+        _set_loop_points_sec(which_track, Loop_Start_Sec[which_track], Loop_End_Sec[which_track])
+
+
+func Loop_Make_4_Beat_Toggle(which_track: int) -> void:
+    which_track = Utility.Clamp_to_Valid_TrackID(which_track)
+    # Pressing again should *exit* the loop and keep playing normally.
+    if Loop_Enabled[which_track]:
+        Loop_Enabled[which_track] = false
+        return
+
+    var beat_len: float = _beat_len_stream_sec(which_track)
+    var start_sec: float = _get_loop_quantized_point_sec(which_track, true, false) if Loop_Point_Snapping_Enabled[which_track] else Utility.Return_Valid(AudioPlayerList[which_track].get_playback_position(), 0.0)
+    var end_sec: float = start_sec + (4.0 * beat_len if beat_len > 0.0 else 2.0)
+    _set_loop_points_sec(which_track, start_sec, end_sec)
+
+
+func Loop_Shorten(which_track: int) -> void:
+    which_track = Utility.Clamp_to_Valid_TrackID(which_track)
+    if not Loop_Enabled[which_track]:
+        return
+    var beat_len: float = _beat_len_stream_sec(which_track)
+    if beat_len <= 0.0:
+        return
+    var cur_len_sec: float = maxf(0.0, Loop_End_Sec[which_track] - Loop_Start_Sec[which_track])
+    var cur_beats: float = cur_len_sec / beat_len
+    var new_beats: float = maxf(LOOP_MIN_BEATS, cur_beats * 0.5)
+    var new_end: float = Loop_Start_Sec[which_track] + new_beats * beat_len
+    _set_loop_points_sec(which_track, Loop_Start_Sec[which_track], new_end)
+
+
+func Loop_Extend(which_track: int) -> void:
+    which_track = Utility.Clamp_to_Valid_TrackID(which_track)
+    if not Loop_Enabled[which_track]:
+        return
+    var beat_len: float = _beat_len_stream_sec(which_track)
+    if beat_len <= 0.0:
+        return
+    var cur_len_sec: float = maxf(0.0, Loop_End_Sec[which_track] - Loop_Start_Sec[which_track])
+    var cur_beats: float = cur_len_sec / beat_len
+    var new_beats: float = minf(LOOP_MAX_BEATS, cur_beats * 2.0)
+    var new_end: float = Loop_Start_Sec[which_track] + new_beats * beat_len
+    _set_loop_points_sec(which_track, Loop_Start_Sec[which_track], new_end)
+
+
 func LoadTrackIntoMemory(which_track : int, which_song : Song):
     which_track = Utility.Clamp_to_Valid_TrackID(which_track)
     print("Spawned Player for Track ", which_track)
@@ -169,7 +382,30 @@ func _ready() -> void:
     _on_reset_area_area_entered(null)
     all_ready.emit()
     #CreateInteractableControl(btn_PausePlay_ref, E_CONTROLTYPE.BUTTON)
+    if Use_Multi_threaded_looping:
+        _start_loop_threads()
     
+
+func _exit_tree() -> void:
+    _stop_loop_threads()
+
+
+func _start_loop_threads() -> void:
+    for i in range(0, 2):
+        if _loop_threads[i] != null:
+            continue
+        _loop_thread_run[i] = true
+        _loop_threads[i] = Thread.new()
+        _loop_threads[i].start(_loop_thread_main.bind(i), Thread.PRIORITY_HIGH)
+
+
+func _stop_loop_threads() -> void:
+    for i in range(0, _loop_threads.size()):
+        if _loop_threads[i] == null:
+            continue
+        _loop_thread_run[i] = false
+        _loop_threads[i].wait_to_finish()
+        _loop_threads[i] = null
 
 
 func _on_left_play_on_activated() -> void:
@@ -329,7 +565,10 @@ func Update_Channel_Tempo_Adjusts():
     
     
 func _physics_process(delta: float) -> void:
-           
+    if not Use_Multi_threaded_looping:
+        _loop_thread_main(0)
+        _loop_thread_main(1)
+    
     Update_Channel_Tempo_Adjusts()
     Update_Channel_DBs() # crossfades and stuff
     Update_Channel_Trim_EQ_CFX() # trim, EQ hi/mid/low, CFX per track
@@ -338,7 +577,6 @@ func _physics_process(delta: float) -> void:
     BUS_MANAGER.Apply_Beat_FX_Level(1, Beat_FX_Knob.Value)
 
     $"General Status".text = tr("KEY_CROSSFADE_STATUS") + ": " + str("%0.3f" % remap(Crossfade_Alpha, 0.0, 1.0, -1.0, 1.0))
-
     
 
 func _on_reset_area_area_entered(area: Area3D) -> void:
@@ -369,7 +607,8 @@ func _on_reset_area_area_entered(area: Area3D) -> void:
     $"Controls/Beat FX".UpdateAlpha(0.0)
 
     for child in $Controls.get_children():
-        child.reset_highlight()
+        if child is Base_Control:
+            child.reset_highlight()
 
 
 
@@ -411,6 +650,46 @@ func _on_right_beat_sync_on_activated():
             BeatSyncState = E_BPM_Lock_Status.RIGHT_TRACK_SYNCED_TO_LEFT
             _seek_track_phase_to_match(1, 0)  # Track 2 seeks to match track 1's beat
         Sync_RightTrackBPM_to_LeftTrackBPM.emit()
+
+
+func _on_left_loop_start_on_activated() -> void:
+    Loop_Set_Start_Point(0)
+
+
+func _on_left_loop_end_on_activated() -> void:
+    Loop_Set_End_Point(0)
+
+
+func _on_left_make_4_beat_loop_on_activated() -> void:
+    Loop_Make_4_Beat_Toggle(0)
+
+
+func _on_left_shorten_loop_on_activated() -> void:
+    Loop_Shorten(0)
+
+
+func _on_left_extend_loop_on_activated() -> void:
+    Loop_Extend(0)
+
+
+func _on_right_loop_start_on_activated() -> void:
+    Loop_Set_Start_Point(1)
+
+
+func _on_right_loop_end_on_activated() -> void:
+    Loop_Set_End_Point(1)
+
+
+func _on_right_make_4_beat_loop_on_activated() -> void:
+    Loop_Make_4_Beat_Toggle(1)
+
+
+func _on_right_shorten_loop_on_activated() -> void:
+    Loop_Shorten(1)
+
+
+func _on_right_extend_loop_on_activated() -> void:
+    Loop_Extend(1)
 
 
 

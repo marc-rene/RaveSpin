@@ -147,3 +147,12 @@ KEY_SCALE_CHROMATIC,Chromatic,Chromatique,半音,Croimatach
 KEY_SCALE_WHOLE_TONE,Whole Tone,Ton entier,全音,Ton iomlán
 KEY_SCALE_OCTATONIC,Octatonic,Octatonique,八声音阶,Ochtatonach
 KEY_SCALE_ARABIC,Arabic,Arabe,阿拉伯,Arabach
+KEY_LOOP_STATUS,Loop Status,Loop Status,Loop Status,Loop Status
+KEY_LOOP_STATUS_NO_LOOP,No active loop,No active loop,No active loop,No active loop
+KEY_LOOP_STATUS_ACTIVE,Loop active,Loop active,Loop active,Loop active
+KEY_LOOP_LENGTH_SECONDS,Length (seconds),Length (seconds),Length (seconds),Length (seconds)
+KEY_LOOP_LENGTH_BEATS,Length (beats),Length (beats),Length (beats),Length (beats)
+KEY_CANCEL_LOOP,Cancel Loop,Cancel Loop,Cancel Loop,Cancel Loop
+KEY_CANCEL_LOOP_EXPLAIN,Delete the current loop (if any),Delete the current loop (if any),Delete the current loop (if any),Delete the current loop (if any)
+KEY_ENABLE_BEAT_SNAPPING,Enable beat snapping,Enable beat snapping,Enable beat snapping,Enable beat snapping
+KEY_ENABLE_BEAT_SNAPPING_EXPLAIN,Align loop points to beats,Align loop points to beats,Align loop points to beats,Align loop points to beats
