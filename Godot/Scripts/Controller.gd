@@ -107,11 +107,22 @@ static func Get_Track_Playback_Player(which_track : int) -> AudioStreamPlayer:
     return Controller_Instance.AudioPlayerList[which_track]
 
 
+# I can NOT STRESS THIS ENOUGH
+# NEVER ever change this to false... 
+# I thought multithreading would be risky, but sweet jesus no, 
+# if we dont multithread... everything refuses to launch... godot say "YES" but the meta quest 3 says "NO"
+# I am not sure what causes this, Godot? Meta? This is confusing malicious compliance at its PEAK
+# That is an entire day of work... when I am already stress-cramming... just to realise... Multithreading can't be avoid...WHY?
+const Use_Multi_threaded_looping : bool = true # DO NOT CHANGE THIS EVER
+
+
+
+
+
 # --- Loop management (per track) ---
 # Loop points are in *stream seconds* (same space as get_playback_position()).
 # Beat snapping uses the track's *base BPM* from metadata (LibreBox.Get_Track_BPM),
 # consistent with beat sync and other beat-derived UI.
-@export var Use_Multi_threaded_looping : bool = false
 var Loop_Point_Snapping_Enabled: Array[bool] = [true, true, true, true]
 var Loop_Enabled: Array[bool] = [false, false, false, false]
 var Loop_Start_Sec: Array[float] = [0.0, 0.0, 0.0, 0.0]
