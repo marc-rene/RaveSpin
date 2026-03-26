@@ -151,7 +151,11 @@ transform = Transform3D(0.17364821, -0.08583164, 0.98106027, 0, 0.9961947, 0.087
 screen_size = Vector2(0.4, 0.5)
 scene = ExtResource("11_6xn47")
 viewport_size = Vector2(600, 750)
-scene_properties_keys = PackedStringArray("ui_language_selection.gd")
+scene_properties_keys = PackedStringArray("LibreBox_Manager.gd", "Track_1_Song", "Track_2_Song", "Track_3_Song", "Track_4_Song")
+Track_1_Song = null
+Track_2_Song = null
+Track_3_Song = null
+Track_4_Song = null
 
 [node name="HandTouch" type="Node" parent="Language Select" unique_id=727519343]
 script = ExtResource("5_hand")

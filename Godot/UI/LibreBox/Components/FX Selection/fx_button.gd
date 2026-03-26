@@ -48,6 +48,8 @@ func refresh_state() -> void:
             BUS_MANAGER.remove_beat_fx(FX_Type, 1)
     else:
         button_pressed = false
+        
+    text = tr(BUS_MANAGER.Beat_FX_Translation_Keys.get(FX_Type))
     
     
     self_modulate = Active_Colour_Mod if _any_track_can_take_fx() else Inactive_Colour_Mod

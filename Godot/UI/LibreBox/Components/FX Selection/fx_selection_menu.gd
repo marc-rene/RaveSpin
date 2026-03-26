@@ -40,10 +40,16 @@ func _update_track_fx_policy() -> void:
     BUS_MANAGER.Set_Track_2_can_take_FX(can_track_2)
 
 
+func _notification(what: int) -> void:
+    if what == NOTIFICATION_TRANSLATION_CHANGED:
+        _refresh_all_fx_buttons()
+        
+
 func _refresh_all_fx_buttons() -> void:
     for child in $"MarginContainer/VBoxContainer/FX Containers/VBoxContainer_L".get_children():
         if child is FX_Button_Select:
             child.refresh_state()
+        
     for child in $"MarginContainer/VBoxContainer/FX Containers/VBoxContainer_R".get_children():
         if child is FX_Button_Select:
             child.refresh_state()

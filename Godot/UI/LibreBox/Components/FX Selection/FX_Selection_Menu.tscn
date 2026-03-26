@@ -29,10 +29,10 @@ size_flags_vertical = 3
 size_flags_stretch_ratio = 0.2
 
 [node name="Enable_Track_1_fx_btn" type="CheckButton" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=1700108077]
+auto_translate_mode = 1
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("1_4boa5")
-auto_translate = true
 text = "KEY_ENABLE_TRACK_1_FX"
 alignment = 1
 
@@ -42,10 +42,10 @@ size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.2
 
 [node name="Enable_Track_2_fx_btn" type="CheckButton" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=1698200999]
+auto_translate_mode = 1
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("1_4boa5")
-auto_translate = true
 text = "KEY_ENABLE_TRACK_2_FX"
 alignment = 1
 
@@ -64,20 +64,20 @@ layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="Delay btn" type="CheckButton" parent="MarginContainer/VBoxContainer/FX Containers/VBoxContainer_L" unique_id=1439730519]
+auto_translate_mode = 1
 layout_mode = 2
 size_flags_vertical = 3
 theme = ExtResource("1_4boa5")
-auto_translate = true
 text = "KEY_FX_DELAY"
 alignment = 1
 script = ExtResource("2_ecric")
 metadata/_custom_type_script = "uid://c06quswvaif2s"
 
 [node name="Echo btn" type="CheckButton" parent="MarginContainer/VBoxContainer/FX Containers/VBoxContainer_L" unique_id=357511108]
+auto_translate_mode = 1
 layout_mode = 2
 size_flags_vertical = 3
 theme = ExtResource("1_4boa5")
-auto_translate = true
 text = "KEY_FX_ECHO"
 alignment = 1
 script = ExtResource("2_ecric")
@@ -85,10 +85,10 @@ FX_Type = 1
 metadata/_custom_type_script = "uid://c06quswvaif2s"
 
 [node name="Reverb btn" type="CheckButton" parent="MarginContainer/VBoxContainer/FX Containers/VBoxContainer_L" unique_id=1295891712]
+auto_translate_mode = 1
 layout_mode = 2
 size_flags_vertical = 3
 theme = ExtResource("1_4boa5")
-auto_translate = true
 text = "KEY_FX_REVERB"
 alignment = 1
 script = ExtResource("2_ecric")
@@ -96,10 +96,10 @@ FX_Type = 2
 metadata/_custom_type_script = "uid://c06quswvaif2s"
 
 [node name="Trans btn" type="CheckButton" parent="MarginContainer/VBoxContainer/FX Containers/VBoxContainer_L" unique_id=719771817]
+auto_translate_mode = 1
 layout_mode = 2
 size_flags_vertical = 3
 theme = ExtResource("1_4boa5")
-auto_translate = true
 text = "KEY_FX_TRANS"
 alignment = 1
 script = ExtResource("2_ecric")
@@ -107,10 +107,10 @@ FX_Type = 3
 metadata/_custom_type_script = "uid://c06quswvaif2s"
 
 [node name="Flanger btn" type="CheckButton" parent="MarginContainer/VBoxContainer/FX Containers/VBoxContainer_L" unique_id=1031185254]
+auto_translate_mode = 1
 layout_mode = 2
 size_flags_vertical = 3
 theme = ExtResource("1_4boa5")
-auto_translate = true
 text = "KEY_FX_FLANGER"
 alignment = 1
 script = ExtResource("2_ecric")
@@ -118,10 +118,10 @@ FX_Type = 4
 metadata/_custom_type_script = "uid://c06quswvaif2s"
 
 [node name="Phaser btn" type="CheckButton" parent="MarginContainer/VBoxContainer/FX Containers/VBoxContainer_L" unique_id=505092784]
+auto_translate_mode = 1
 layout_mode = 2
 size_flags_vertical = 3
 theme = ExtResource("1_4boa5")
-auto_translate = true
 text = "KEY_FX_PHASER"
 alignment = 1
 script = ExtResource("2_ecric")
@@ -129,10 +129,10 @@ FX_Type = 5
 metadata/_custom_type_script = "uid://c06quswvaif2s"
 
 [node name="Pitch btn" type="CheckButton" parent="MarginContainer/VBoxContainer/FX Containers/VBoxContainer_L" unique_id=969591213]
+auto_translate_mode = 1
 layout_mode = 2
 size_flags_vertical = 3
 theme = ExtResource("1_4boa5")
-auto_translate = true
 text = "KEY_FX_PITCH"
 alignment = 1
 script = ExtResource("2_ecric")
@@ -149,10 +149,10 @@ layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="Crush btn" type="CheckButton" parent="MarginContainer/VBoxContainer/FX Containers/VBoxContainer_R" unique_id=618116849]
+auto_translate_mode = 1
 layout_mode = 2
 size_flags_vertical = 3
 theme = ExtResource("1_4boa5")
-auto_translate = true
 text = "KEY_FX_CRUSH"
 alignment = 1
 script = ExtResource("2_ecric")
@@ -160,10 +160,10 @@ FX_Type = 7
 metadata/_custom_type_script = "uid://c06quswvaif2s"
 
 [node name="Compressor btn" type="CheckButton" parent="MarginContainer/VBoxContainer/FX Containers/VBoxContainer_R" unique_id=768391135]
+auto_translate_mode = 1
 layout_mode = 2
 size_flags_vertical = 3
 theme = ExtResource("1_4boa5")
-auto_translate = true
 text = "KEY_FX_COMPRESSOR"
 alignment = 1
 script = ExtResource("2_ecric")
@@ -171,10 +171,10 @@ FX_Type = 8
 metadata/_custom_type_script = "uid://c06quswvaif2s"
 
 [node name="Limiter btn" type="CheckButton" parent="MarginContainer/VBoxContainer/FX Containers/VBoxContainer_R" unique_id=1481597424]
+auto_translate_mode = 1
 layout_mode = 2
 size_flags_vertical = 3
 theme = ExtResource("1_4boa5")
-auto_translate = true
 text = "KEY_FX_LIMITER"
 alignment = 1
 script = ExtResource("2_ecric")
@@ -182,10 +182,10 @@ FX_Type = 9
 metadata/_custom_type_script = "uid://c06quswvaif2s"
 
 [node name="BandPass btn" type="CheckButton" parent="MarginContainer/VBoxContainer/FX Containers/VBoxContainer_R" unique_id=35460357]
+auto_translate_mode = 1
 layout_mode = 2
 size_flags_vertical = 3
 theme = ExtResource("1_4boa5")
-auto_translate = true
 text = "KEY_FX_BAND_PASS"
 alignment = 1
 script = ExtResource("2_ecric")
@@ -193,10 +193,10 @@ FX_Type = 10
 metadata/_custom_type_script = "uid://c06quswvaif2s"
 
 [node name="Panner btn" type="CheckButton" parent="MarginContainer/VBoxContainer/FX Containers/VBoxContainer_R" unique_id=196773560]
+auto_translate_mode = 1
 layout_mode = 2
 size_flags_vertical = 3
 theme = ExtResource("1_4boa5")
-auto_translate = true
 text = "KEY_FX_PANNER"
 alignment = 1
 script = ExtResource("2_ecric")
@@ -204,10 +204,10 @@ FX_Type = 11
 metadata/_custom_type_script = "uid://c06quswvaif2s"
 
 [node name="StereoEnhance btn" type="CheckButton" parent="MarginContainer/VBoxContainer/FX Containers/VBoxContainer_R" unique_id=1395355475]
+auto_translate_mode = 1
 layout_mode = 2
 size_flags_vertical = 3
 theme = ExtResource("1_4boa5")
-auto_translate = true
 text = "KEY_FX_STEREO_ENHANCE"
 alignment = 1
 script = ExtResource("2_ecric")
@@ -215,10 +215,10 @@ FX_Type = 12
 metadata/_custom_type_script = "uid://c06quswvaif2s"
 
 [node name="Distortion btn" type="CheckButton" parent="MarginContainer/VBoxContainer/FX Containers/VBoxContainer_R" unique_id=561039208]
+auto_translate_mode = 1
 layout_mode = 2
 size_flags_vertical = 3
 theme = ExtResource("1_4boa5")
-auto_translate = true
 text = "KEY_FX_DISTORTION"
 alignment = 1
 script = ExtResource("2_ecric")
