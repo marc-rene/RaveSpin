@@ -179,11 +179,12 @@ func Refresh_Details() -> bool:
     return true
     
 
-
+var i : int = 0
 func Update_runtime_text():
-    if AudioPlayer_ref and AudioPlayer_ref.stream:
-        $"VBoxContainer/Time Remaining Container/Current Runtime".text = Utility.Seconds_to_MM_SS_MS(AudioPlayer_ref.get_playback_position(), false, true)
-        $"VBoxContainer/Time Remaining Container/Max Runtime".text = Utility.Seconds_to_MM_SS_MS( AudioPlayer_ref.stream.get_length(), false, true)
-    
+    if i % 4 == 0:
+        if AudioPlayer_ref and AudioPlayer_ref.stream:
+            $"VBoxContainer/Time Remaining Container/Current Runtime".text = Utility.Seconds_to_MM_SS_MS(DJ_Controller.Get_Instance().Track_1_playback_pos if Track_ID == 0 else DJ_Controller.Get_Instance().Track_2_playback_pos, false, true)
+            $"VBoxContainer/Time Remaining Container/Max Runtime".text = Utility.Seconds_to_MM_SS_MS( DJ_Controller.Get_Instance().Track_1_playback_length if Track_ID == 0 else DJ_Controller.Get_Instance().Track_2_playback_length, false, true)
+    i += 1
     
     #$"VBoxContainer/Time Remaining Container/Max Runtime".text = Utility.Seconds_to_MM_SS_MS( (Song_Resource.Audio_File.get_length() * DJ_Controller.Get_Track_Speed_Mult(Track_ID)) , false, true)

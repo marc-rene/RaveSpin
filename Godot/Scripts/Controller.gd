@@ -5,6 +5,11 @@ class_name DJ_Controller
 # Too many issues with Init'ing
 #var AudioSourceList : Array[AudioStream] = [Track_1_AudioSource, Track_2_AudioSource, Track_3_AudioSource, Track_4_AudioSource]
 
+# Have these here because everyframe get_trackplayback_position is hell, cache it once here
+@export var Track_1_playback_pos : float
+@export var Track_2_playback_pos : float
+@export var Track_1_playback_length : float
+@export var Track_2_playback_length : float
 
 signal all_ready
 
@@ -559,13 +564,13 @@ func _get_jogwheel_touch_angle_radians(which_track: int, which_finger: Player_Fi
 
 func _apply_track_seek(which_track: int, seek_seconds: float) -> void:
     which_track = Utility.Clamp_to_Valid_TrackID(which_track)
-    if AudioPlayerList[which_track] == null:
+    if AudioPlayerList[which_track] == null or AudioPlayerList[which_track].stream == null:
         return
-    if AudioPlayerList[which_track].stream == null:
-        return
-    if _jog_touch_active[which_track]:
+    if _jog_touch_active[which_track] and AudioPlayerList[which_track].has_stream_playback():
         # During vinyl touch, force an explicit reposition so movement is always audible.
-        AudioPlayerList[which_track].play(seek_seconds)
+        AudioPlayerList[which_track].seek(seek_seconds)
+        AudioPlayerList[which_track].stream_paused = false
+        #AudioPlayerList[which_track].play(seek_seconds)
         return
     if AudioPlayerList[which_track].has_stream_playback():
         AudioPlayerList[which_track].seek(seek_seconds)
@@ -729,7 +734,7 @@ func _update_jogwheel_track(which_track: int, delta: float) -> void:
                 AudioPlayerList[which_track].stream_paused = true
             return
 
-        # User clockwise movement should move audio forward.
+        # clockwise spin should move audio forward
         delta_angle_radians *= -1.0
 
         if AudioPlayerList[which_track] != null and AudioPlayerList[which_track].playing:
@@ -953,7 +958,16 @@ func Update_Channel_Tempo_Adjusts():
       
     
     # TODO: Do AudioPlayerList[2] + [3]
-    
+ 
+var i : int = 0
+func _process(delta: float) -> void:
+    if i % 8 == 0:
+        Track_1_playback_pos = AudioPlayerList.get(0).get_playback_position()   
+        Track_2_playback_pos = AudioPlayerList.get(1).get_playback_position()   
+        
+        Track_1_playback_length = AudioPlayerList.get(0).stream.get_length() if AudioPlayerList.get(0).stream else -1.0   
+        Track_2_playback_length = AudioPlayerList.get(1).stream.get_length() if AudioPlayerList.get(1).stream else -1.0
+    i += 1
     
 func _physics_process(delta: float) -> void:
     if not Use_Multi_threaded_looping:

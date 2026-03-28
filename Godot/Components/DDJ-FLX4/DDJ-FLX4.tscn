@@ -25,7 +25,6 @@ size = Vector3(0.1, 0.1, 0.1)
 transform = Transform3D(1.2, 0, 0, 0, 1.2, 0, 0, 0, 1.2, 0, 0, 0)
 script = ExtResource("2_3ugcv")
 BPM_Adjust_Range = 0.2
-Use_Multi_Threaded_Jog_Warp = true
 
 [node name="Crossfade Slider" parent="." index="6" unique_id=1449749422]
 transform = Transform3D(1.4190836e-07, 0, -1, 0, 1, 0, 0.7288296, 0, 1.9470718e-07, 0.2408275, 0.042000003, 0.2543439)
