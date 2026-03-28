@@ -21,6 +21,7 @@ enum E_POSES
     SPOCK,  # Index & Middle jointed together away from Ring & Pinky
     METAL,  # Devil horns - Eminem
     INDEX_THUMB_PINCH,
+    HARAM,
     NONE    # Open Hand # Nevermind this NEVER triggers
 }
 
@@ -164,6 +165,8 @@ func Set_Finger_Active_Status(New_Pose : E_POSES):
         E_POSES.INDEX_THUMB_PINCH:
             if Which_Finger == E_FINGER.SECOND: # Thumb and Index are so close and I dont want tomfoolery
                  is_ok_to_activate = true
+        E_POSES.HARAM:
+            is_ok_to_activate = false
         E_POSES.NONE:
             is_ok_to_activate = true
             
@@ -190,6 +193,8 @@ static func translate_pose_name_to_enum(pose_name : String) -> E_POSES:
             return E_POSES.METAL 
         "Index Pinch":
             return E_POSES.INDEX_THUMB_PINCH 
+        "Naughty Naughty":
+            return E_POSES.HARAM
         _:
             return E_POSES.NONE
 
@@ -211,10 +216,14 @@ func _on_hand_pose_detector_pose_started_L(p_name: String) -> void:
     Set_Finger_Active_Status(CURRENT_LEFT_HAND_POSE)
         
 func _on_hand_pose_detector_pose_ended_L(p_name: String) -> void:
+    var ended_pose: E_POSES = translate_pose_name_to_enum(p_name)
+    if CURRENT_LEFT_HAND_POSE == ended_pose:
+        CURRENT_LEFT_HAND_POSE = E_POSES.NONE
     if is_main_signaller:
-        if translate_pose_name_to_enum(p_name) == E_POSES.FIST:
+        DEBUG_Left_Label.text = "..."
+        if ended_pose == E_POSES.FIST:
             pass
-        elif translate_pose_name_to_enum(p_name) in Acceptable_Selection_Poses :
+        elif ended_pose in Acceptable_Selection_Poses:
             ThumbsUp_Pose_End_L.emit()
         else:
             Fist_Pose_End_L.emit()
@@ -240,11 +249,14 @@ func _on_hand_pose_detector_pose_started_R(p_name: String) -> void:
     Set_Finger_Active_Status(CURRENT_RIGHT_HAND_POSE)
         
 func _on_hand_pose_detector_pose_ended_R(p_name: String) -> void:
+    var ended_pose: E_POSES = translate_pose_name_to_enum(p_name)
+    if CURRENT_RIGHT_HAND_POSE == ended_pose:
+        CURRENT_RIGHT_HAND_POSE = E_POSES.NONE
     if is_main_signaller:
-        print("STOPPED DOING A " + p_name)
-        if translate_pose_name_to_enum(p_name) == E_POSES.FIST:
+        DEBUG_Right_Label.text = "..."
+        if ended_pose == E_POSES.FIST:
             pass
-        elif translate_pose_name_to_enum(p_name) in Acceptable_Selection_Poses :
+        elif ended_pose in Acceptable_Selection_Poses:
             ThumbsUp_Pose_End_R.emit()
         else:
             Fist_Pose_End_R.emit()

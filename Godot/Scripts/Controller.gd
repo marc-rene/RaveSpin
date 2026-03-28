@@ -45,6 +45,13 @@ var Bus_Layout : AudioBusLayout
 @onready var Channel_3_LeftALT_Bus_Index = BUS_MANAGER.Get_Channel_Index_e(BUS_MANAGER.E_AUDIO_BUSSES.CHANNEL_THREE_INPUT)
 @onready var Channel_4_RightALT_Bus_Index = BUS_MANAGER.Get_Channel_Index_e(BUS_MANAGER.E_AUDIO_BUSSES.CHANNEL_FOUR_INPUT)
 
+@onready var Left_Jogwheel_Node: Node3D = $"Controls/Left Jogwheel"
+@onready var Right_Jogwheel_Node: Node3D = $"Controls/Right Jogwheel"
+@onready var Left_Jogwheel_Activation: Area3D = $"Controls/Left Jogwheel/Activation"
+@onready var Right_Jogwheel_Activation: Area3D = $"Controls/Right Jogwheel/Activation"
+@onready var Left_Jogwheel_Collision_Shape: CollisionShape3D = $"Controls/Left Jogwheel/Activation/CollisionShape3D"
+@onready var Right_Jogwheel_Collision_Shape: CollisionShape3D = $"Controls/Right Jogwheel/Activation/CollisionShape3D"
+
 #@onready var Channel_1_FX_Bus_Index := BUS_MANAGER.Get_Channel_Index(BUS_MANAGER.E_AUDIO_BUSSES.CHANNEL_ONE_FX)
 #@onready var Channel_2_FX_Bus_Index := BUS_MANAGER.Get_Channel_Index(BUS_MANAGER.E_AUDIO_BUSSES.CHANNEL_TWO_FX)
 
@@ -78,6 +85,29 @@ var Crossfade_Alpha = 0.5
 
 # Default is 10% Tempo Adjust Range
 @export var BPM_Adjust_Range = 0.1
+@export var Restrict_Jogwheel_To_Matching_Hand: bool = false
+# How many seconds of track time one FULL jogwheel turn should move.
+# Example: 1.0 means 1 full rotation moves playback by 1 second.
+@export var Jogwheel_Audio_Warp_Seconds_Per_Full_Rotation: float = 1.0
+@export var Jogwheel_Auto_Spin_Rotations_Per_Second_At_Normal_Speed: float = 1.0
+@export var Jogwheel_Grab_Radius_Meters: float = 0.06
+@export var Use_Multi_Threaded_Jog_Warp: bool = false
+@export var Use_Snap_Style_Jogwheel_Grab: bool = false
+
+var Left_Jogwheel_Mesh: MeshInstance3D = null
+var Right_Jogwheel_Mesh: MeshInstance3D = null
+var Left_Jogwheel_Finger: Player_Finger = null
+var Right_Jogwheel_Finger: Player_Finger = null
+var _jog_last_angle_radians: Array[float] = [0.0, 0.0]
+var _jog_has_last_angle: Array[bool] = [false, false]
+var _jog_seek_threads: Array[Thread] = [null, null]
+var _jog_seek_thread_run: Array[bool] = [false, false]
+var _jog_pending_seek_seconds: Array[float] = [-1.0, -1.0]
+var _jog_touch_active: Array[bool] = [false, false]
+var _jog_resume_after_touch: Array[bool] = [false, false]
+var _jog_virtual_position_seconds: Array[float] = [0.0, 0.0]
+var _jog_has_virtual_position: Array[bool] = [false, false]
+var _all_player_fingers: Array[Player_Finger] = []
    
 
 
@@ -391,14 +421,18 @@ func _ready() -> void:
     AudioPlayerList[3].stream_paused = true
      
     _on_reset_area_area_entered(null)
+    _setup_jogwheel_targets()
     all_ready.emit()
     #CreateInteractableControl(btn_PausePlay_ref, E_CONTROLTYPE.BUTTON)
     if Use_Multi_threaded_looping:
         _start_loop_threads()
+    if Use_Multi_Threaded_Jog_Warp:
+        _start_jog_seek_threads()
     
 
 func _exit_tree() -> void:
     _stop_loop_threads()
+    _stop_jog_seek_threads()
 
 
 func _start_loop_threads() -> void:
@@ -408,6 +442,352 @@ func _start_loop_threads() -> void:
         _loop_thread_run[i] = true
         _loop_threads[i] = Thread.new()
         _loop_threads[i].start(_loop_thread_main.bind(i), Thread.PRIORITY_HIGH)
+
+
+func _start_jog_seek_threads() -> void:
+    for track_index: int in range(0, 2):
+        if _jog_seek_threads[track_index] != null:
+            continue
+        _jog_seek_thread_run[track_index] = true
+        _jog_seek_threads[track_index] = Thread.new()
+        _jog_seek_threads[track_index].start(_jog_seek_thread_main.bind(track_index), Thread.PRIORITY_HIGH)
+
+
+func _stop_jog_seek_threads() -> void:
+    for track_index: int in range(0, _jog_seek_threads.size()):
+        if _jog_seek_threads[track_index] == null:
+            continue
+        _jog_seek_thread_run[track_index] = false
+        _jog_seek_threads[track_index].wait_to_finish()
+        _jog_seek_threads[track_index] = null
+
+
+func _jog_seek_thread_main(which_track: int) -> void:
+    which_track = Utility.Clamp_to_Valid_TrackID(which_track)
+    while _jog_seek_thread_run[which_track]:
+        var pending_seek_seconds: float = _jog_pending_seek_seconds[which_track]
+        if pending_seek_seconds >= 0.0:
+            _jog_pending_seek_seconds[which_track] = -1.0
+            call_deferred("_apply_track_seek", which_track, pending_seek_seconds)
+        OS.delay_msec(2)
+
+
+func _setup_jogwheel_targets() -> void:
+    Left_Jogwheel_Mesh = find_child("Left Spin", true, false) as MeshInstance3D
+    Right_Jogwheel_Mesh = find_child("Right Spin", true, false) as MeshInstance3D
+
+    if Left_Jogwheel_Mesh != null:
+        Left_Jogwheel_Node.global_position = Left_Jogwheel_Mesh.global_position
+    if Right_Jogwheel_Mesh != null:
+        Right_Jogwheel_Node.global_position = Right_Jogwheel_Mesh.global_position
+
+    if Left_Jogwheel_Collision_Shape.shape is CylinderShape3D:
+        var left_cylinder_shape: CylinderShape3D = Left_Jogwheel_Collision_Shape.shape as CylinderShape3D
+        left_cylinder_shape.radius = Jogwheel_Grab_Radius_Meters
+    if Right_Jogwheel_Collision_Shape.shape is CylinderShape3D:
+        var right_cylinder_shape: CylinderShape3D = Right_Jogwheel_Collision_Shape.shape as CylinderShape3D
+        right_cylinder_shape.radius = Jogwheel_Grab_Radius_Meters
+    _all_player_fingers.clear()
+    _collect_player_fingers(get_tree().current_scene)
+
+
+func _collect_player_fingers(root_node: Node) -> void:
+    if root_node == null:
+        return
+    if root_node is Player_Finger:
+        _all_player_fingers.append(root_node as Player_Finger)
+    var child_nodes: Array[Node] = root_node.get_children()
+    for child_node: Node in child_nodes:
+        _collect_player_fingers(child_node)
+
+
+func _is_pose_allowed_for_jogwheel(which_finger: Player_Finger) -> bool:
+    if which_finger == null:
+        return false
+    if which_finger.is_right_hand:
+        return Player_Finger.CURRENT_RIGHT_HAND_POSE == Player_Finger.E_POSES.FIST or Player_Finger.CURRENT_RIGHT_HAND_POSE == Player_Finger.E_POSES.INDEX_THUMB_PINCH
+    return Player_Finger.CURRENT_LEFT_HAND_POSE == Player_Finger.E_POSES.FIST or Player_Finger.CURRENT_LEFT_HAND_POSE == Player_Finger.E_POSES.INDEX_THUMB_PINCH
+
+
+func _is_finger_allowed_for_track(which_track: int, which_finger: Player_Finger) -> bool:
+    if which_finger == null:
+        return false
+    if not Restrict_Jogwheel_To_Matching_Hand:
+        return true
+    if which_track == 0:
+        return not which_finger.is_right_hand
+    return which_finger.is_right_hand
+
+
+func _get_jogwheel_mesh_for_track(which_track: int) -> MeshInstance3D:
+    if which_track == 0:
+        return Left_Jogwheel_Mesh
+    return Right_Jogwheel_Mesh
+
+
+func _get_jogwheel_finger_for_track(which_track: int) -> Player_Finger:
+    if which_track == 0:
+        return Left_Jogwheel_Finger
+    return Right_Jogwheel_Finger
+
+
+func _set_jogwheel_finger_for_track(which_track: int, which_finger: Player_Finger) -> void:
+    if which_track == 0:
+        Left_Jogwheel_Finger = which_finger
+        return
+    Right_Jogwheel_Finger = which_finger
+
+
+func _clear_jog_angle_tracking(which_track: int) -> void:
+    _jog_last_angle_radians[which_track] = 0.0
+    _jog_has_last_angle[which_track] = false
+
+
+func _get_jogwheel_anchor_for_track(which_track: int) -> Node3D:
+    if which_track == 0:
+        return Left_Jogwheel_Node
+    return Right_Jogwheel_Node
+
+
+func _get_jogwheel_touch_angle_radians(which_track: int, which_finger: Player_Finger) -> float:
+    var jog_anchor: Node3D = _get_jogwheel_anchor_for_track(which_track)
+    if jog_anchor == null or which_finger == null:
+        return 0.0
+    var local_finger_position: Vector3 = jog_anchor.to_local(which_finger.global_position)
+    return atan2(local_finger_position.x, local_finger_position.z)
+
+
+func _apply_track_seek(which_track: int, seek_seconds: float) -> void:
+    which_track = Utility.Clamp_to_Valid_TrackID(which_track)
+    if AudioPlayerList[which_track] == null:
+        return
+    if AudioPlayerList[which_track].stream == null:
+        return
+    if _jog_touch_active[which_track]:
+        # During vinyl touch, force an explicit reposition so movement is always audible.
+        AudioPlayerList[which_track].play(seek_seconds)
+        return
+    if AudioPlayerList[which_track].has_stream_playback():
+        AudioPlayerList[which_track].seek(seek_seconds)
+    else:
+        AudioPlayerList[which_track].play(seek_seconds)
+
+
+func _warp_track_from_jogwheel(which_track: int, rotation_radians: float) -> void:
+    which_track = Utility.Clamp_to_Valid_TrackID(which_track)
+    if absf(rotation_radians) <= 0.0001:
+        return
+    if AudioPlayerList[which_track] == null or AudioPlayerList[which_track].stream == null:
+        return
+
+    var stream_length_seconds: float = AudioPlayerList[which_track].stream.get_length()
+    var current_position_seconds: float = Utility.Return_Valid(AudioPlayerList[which_track].get_playback_position(), 0.0)
+    if _jog_touch_active[which_track] and _jog_has_virtual_position[which_track]:
+        current_position_seconds = _jog_virtual_position_seconds[which_track]
+    var stream_delta_seconds: float = (-rotation_radians / TAU) * Jogwheel_Audio_Warp_Seconds_Per_Full_Rotation
+    var unclamped_position_seconds: float = current_position_seconds + stream_delta_seconds
+    var new_position_seconds: float = maxf(0.0, unclamped_position_seconds)
+    if stream_length_seconds > 0.0:
+        new_position_seconds = clampf(new_position_seconds, 0.0, maxf(0.0, stream_length_seconds - 0.001))
+    if _jog_touch_active[which_track]:
+        _jog_virtual_position_seconds[which_track] = new_position_seconds
+        _jog_has_virtual_position[which_track] = true
+
+    if _jog_touch_active[which_track]:
+        _apply_track_seek(which_track, new_position_seconds)
+    elif Use_Multi_Threaded_Jog_Warp:
+        _jog_pending_seek_seconds[which_track] = new_position_seconds
+    else:
+        _apply_track_seek(which_track, new_position_seconds)
+
+
+func _rotate_jogwheel_mesh_visual(which_track: int, rotation_radians: float) -> void:
+    var target_mesh: MeshInstance3D = _get_jogwheel_mesh_for_track(which_track)
+    if target_mesh == null:
+        return
+    target_mesh.rotate_y(-rotation_radians)
+
+
+func _get_jogwheel_activation_for_track(which_track: int) -> Area3D:
+    if which_track == 0:
+        return Left_Jogwheel_Activation
+    return Right_Jogwheel_Activation
+
+
+func _release_jogwheel_finger_if_out_of_snap_range(which_track: int) -> void:
+    if not Use_Snap_Style_Jogwheel_Grab:
+        return
+    var active_finger: Player_Finger = _get_jogwheel_finger_for_track(which_track)
+    var target_mesh: MeshInstance3D = _get_jogwheel_mesh_for_track(which_track)
+    if active_finger == null or target_mesh == null:
+        return
+    var distance_from_wheel_center: float = active_finger.global_position.distance_to(target_mesh.global_position)
+    var release_distance: float = Jogwheel_Grab_Radius_Meters * 2.5
+    if distance_from_wheel_center > release_distance:
+        _set_jogwheel_finger_for_track(which_track, null)
+        _clear_jog_angle_tracking(which_track)
+
+
+func _try_acquire_jogwheel_finger_from_overlap(which_track: int) -> void:
+    if _get_jogwheel_finger_for_track(which_track) != null:
+        return
+
+    if Use_Snap_Style_Jogwheel_Grab:
+        var target_mesh: MeshInstance3D = _get_jogwheel_mesh_for_track(which_track)
+        if target_mesh == null:
+            return
+        var snap_distance: float = Jogwheel_Grab_Radius_Meters * 1.6
+        var best_distance: float = INF
+        var best_finger: Player_Finger = null
+        for candidate_finger: Player_Finger in _all_player_fingers:
+            if candidate_finger == null or not is_instance_valid(candidate_finger):
+                continue
+            if not _is_finger_allowed_for_track(which_track, candidate_finger):
+                continue
+            if not _is_pose_allowed_for_jogwheel(candidate_finger):
+                continue
+            var candidate_distance: float = candidate_finger.global_position.distance_to(target_mesh.global_position)
+            if candidate_distance <= snap_distance and candidate_distance < best_distance:
+                best_distance = candidate_distance
+                best_finger = candidate_finger
+        if best_finger != null:
+            _set_jogwheel_finger_for_track(which_track, best_finger)
+            _clear_jog_angle_tracking(which_track)
+        return
+
+    var activation_area: Area3D = _get_jogwheel_activation_for_track(which_track)
+    if activation_area == null:
+        return
+
+    var overlapping_areas: Array[Area3D] = activation_area.get_overlapping_areas()
+    for overlapping_area: Area3D in overlapping_areas:
+        if not (overlapping_area is Player_Finger):
+            continue
+        var candidate_finger_from_overlap: Player_Finger = overlapping_area as Player_Finger
+        if not _is_finger_allowed_for_track(which_track, candidate_finger_from_overlap):
+            continue
+        if not _is_pose_allowed_for_jogwheel(candidate_finger_from_overlap):
+            continue
+        _set_jogwheel_finger_for_track(which_track, candidate_finger_from_overlap)
+        _clear_jog_angle_tracking(which_track)
+        return
+
+
+func _resume_track_after_jog_touch(which_track: int) -> void:
+    if AudioPlayerList[which_track] == null or AudioPlayerList[which_track].stream == null:
+        return
+
+    var resume_position_seconds: float = Utility.Return_Valid(AudioPlayerList[which_track].get_playback_position(), 0.0)
+    if _jog_has_virtual_position[which_track]:
+        resume_position_seconds = _jog_virtual_position_seconds[which_track]
+
+    if _jog_resume_after_touch[which_track]:
+        AudioPlayerList[which_track].seek(resume_position_seconds)
+        AudioPlayerList[which_track].stream_paused = false
+    else:
+        _apply_track_seek(which_track, resume_position_seconds)
+        if AudioPlayerList[which_track].playing:
+            AudioPlayerList[which_track].stream_paused = true
+
+
+func _update_jogwheel_track(which_track: int, delta: float) -> void:
+    _try_acquire_jogwheel_finger_from_overlap(which_track)
+    var active_finger: Player_Finger = _get_jogwheel_finger_for_track(which_track)
+    var target_mesh: MeshInstance3D = _get_jogwheel_mesh_for_track(which_track)
+    if target_mesh == null:
+        return
+
+    if active_finger != null:
+        if not is_instance_valid(active_finger) or not _is_pose_allowed_for_jogwheel(active_finger):
+            _set_jogwheel_finger_for_track(which_track, null)
+            _clear_jog_angle_tracking(which_track)
+            active_finger = null
+        else:
+            _release_jogwheel_finger_if_out_of_snap_range(which_track)
+            active_finger = _get_jogwheel_finger_for_track(which_track)
+
+    if active_finger != null:
+        if not _jog_touch_active[which_track]:
+            _jog_touch_active[which_track] = true
+            _jog_resume_after_touch[which_track] = AudioPlayerList[which_track] != null and AudioPlayerList[which_track].playing and not AudioPlayerList[which_track].stream_paused
+            _jog_virtual_position_seconds[which_track] = Utility.Return_Valid(AudioPlayerList[which_track].get_playback_position(), 0.0)
+            _jog_has_virtual_position[which_track] = true
+
+        var current_angle_radians: float = _get_jogwheel_touch_angle_radians(which_track, active_finger)
+        if not _jog_has_last_angle[which_track]:
+            _jog_last_angle_radians[which_track] = current_angle_radians
+            _jog_has_last_angle[which_track] = true
+            if AudioPlayerList[which_track] != null and AudioPlayerList[which_track].playing:
+                AudioPlayerList[which_track].stream_paused = true
+            return
+
+        var delta_angle_radians: float = wrapf(current_angle_radians - _jog_last_angle_radians[which_track], -PI, PI)
+        _jog_last_angle_radians[which_track] = current_angle_radians
+
+        if absf(delta_angle_radians) <= 0.0001:
+            if AudioPlayerList[which_track] != null and AudioPlayerList[which_track].playing:
+                AudioPlayerList[which_track].stream_paused = true
+            return
+
+        # User clockwise movement should move audio forward.
+        delta_angle_radians *= -1.0
+
+        if AudioPlayerList[which_track] != null and AudioPlayerList[which_track].playing:
+            AudioPlayerList[which_track].stream_paused = false
+        _rotate_jogwheel_mesh_visual(which_track, delta_angle_radians)
+        _warp_track_from_jogwheel(which_track, delta_angle_radians)
+        return
+    elif _jog_touch_active[which_track]:
+        _resume_track_after_jog_touch(which_track)
+        _jog_touch_active[which_track] = false
+        _jog_resume_after_touch[which_track] = false
+        _jog_has_virtual_position[which_track] = false
+        _clear_jog_angle_tracking(which_track)
+
+    if AudioPlayerList[which_track] != null and AudioPlayerList[which_track].stream != null and AudioPlayerList[which_track].playing and not AudioPlayerList[which_track].stream_paused:
+        var track_speed_multiplier: float = maxf(0.0, AudioPlayerList[which_track].pitch_scale)
+        var auto_spin_radians: float = TAU * Jogwheel_Auto_Spin_Rotations_Per_Second_At_Normal_Speed * track_speed_multiplier * delta
+        _rotate_jogwheel_mesh_visual(which_track, auto_spin_radians)
+
+
+func _on_left_jog_activation_area_entered(area: Area3D) -> void:
+    if not (area is Player_Finger):
+        return
+    var target_finger: Player_Finger = area as Player_Finger
+    if not _is_finger_allowed_for_track(0, target_finger):
+        return
+    if not _is_pose_allowed_for_jogwheel(target_finger):
+        return
+    Left_Jogwheel_Finger = target_finger
+    _clear_jog_angle_tracking(0)
+
+
+func _on_left_jog_activation_area_exited(area: Area3D) -> void:
+    if Use_Snap_Style_Jogwheel_Grab:
+        return
+    if area == Left_Jogwheel_Finger:
+        Left_Jogwheel_Finger = null
+        _clear_jog_angle_tracking(0)
+
+
+func _on_right_jog_activation_area_entered(area: Area3D) -> void:
+    if not (area is Player_Finger):
+        return
+    var target_finger: Player_Finger = area as Player_Finger
+    if not _is_finger_allowed_for_track(1, target_finger):
+        return
+    if not _is_pose_allowed_for_jogwheel(target_finger):
+        return
+    Right_Jogwheel_Finger = target_finger
+    _clear_jog_angle_tracking(1)
+
+
+func _on_right_jog_activation_area_exited(area: Area3D) -> void:
+    if Use_Snap_Style_Jogwheel_Grab:
+        return
+    if area == Right_Jogwheel_Finger:
+        Right_Jogwheel_Finger = null
+        _clear_jog_angle_tracking(1)
 
 
 func _stop_loop_threads() -> void:
@@ -586,6 +966,8 @@ func _physics_process(delta: float) -> void:
     # Beat FX "power": 0 = inaudible, 1 = full effect
     BUS_MANAGER.Apply_Beat_FX_Level(0, Beat_FX_Knob.Value)
     BUS_MANAGER.Apply_Beat_FX_Level(1, Beat_FX_Knob.Value)
+    _update_jogwheel_track(0, delta)
+    _update_jogwheel_track(1, delta)
 
     $"General Status".text = tr("KEY_CROSSFADE_STATUS") + ": " + str("%0.3f" % remap(Crossfade_Alpha, 0.0, 1.0, -1.0, 1.0))
     
@@ -616,6 +998,16 @@ func _on_reset_area_area_entered(area: Area3D) -> void:
     $"Controls/Left Colour FX".UpdateAlpha(0.5)
     $"Controls/Right Colour FX".UpdateAlpha(0.5)
     $"Controls/Beat FX".UpdateAlpha(0.0)
+    Left_Jogwheel_Finger = null
+    Right_Jogwheel_Finger = null
+    _clear_jog_angle_tracking(0)
+    _clear_jog_angle_tracking(1)
+    _jog_touch_active[0] = false
+    _jog_touch_active[1] = false
+    _jog_resume_after_touch[0] = false
+    _jog_resume_after_touch[1] = false
+    _jog_has_virtual_position[0] = false
+    _jog_has_virtual_position[1] = false
 
     for child in $Controls.get_children():
         if child is Base_Control:

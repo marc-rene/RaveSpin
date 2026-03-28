@@ -10,6 +10,14 @@
 [ext_resource type="FontFile" uid="uid://di6oaehdwb84i" path="res://Art/Fonts/FONT_Roboto.ttf" id="7_c5t0g"]
 [ext_resource type="Script" uid="uid://bnckdx4e6k3hk" path="res://Scripts/Viewport2DIn3DHandTouch.gd" id="8_2wmyo"]
 
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_left_jogwheel"]
+height = 0.03
+radius = 0.06
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_right_jogwheel"]
+height = 0.03
+radius = 0.06
+
 [sub_resource type="BoxShape3D" id="BoxShape3D_eg1xv"]
 size = Vector3(0.1, 0.1, 0.1)
 
@@ -17,8 +25,9 @@ size = Vector3(0.1, 0.1, 0.1)
 transform = Transform3D(1.2, 0, 0, 0, 1.2, 0, 0, 0, 1.2, 0, 0, 0)
 script = ExtResource("2_3ugcv")
 BPM_Adjust_Range = 0.2
+Use_Multi_Threaded_Jog_Warp = true
 
-[node name="Crossfade Slider" parent="." index="6" unique_id=822728972]
+[node name="Crossfade Slider" parent="." index="6" unique_id=1449749422]
 transform = Transform3D(1.4190836e-07, 0, -1, 0, 1, 0, 0.7288296, 0, 1.9470718e-07, 0.2408275, 0.042000003, 0.2543439)
 
 [node name="Controls" type="Node3D" parent="." index="53" unique_id=839374979]
@@ -192,6 +201,24 @@ scroll_pose_index_pinch = false
 scroll_pose_fist = false
 scroll_sensitivity = 0.3
 
+[node name="Left Jogwheel" type="Node3D" parent="Controls" index="36" unique_id=343219871]
+transform = Transform3D(0.99999994, 0, 0, 0, 0.99999994, 0, 0, 0, 0.99999994, 0.08312226, 0.041, 0.113997966)
+
+[node name="Activation" type="Area3D" parent="Controls/Left Jogwheel" index="0" unique_id=101734511]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Controls/Left Jogwheel/Activation" index="0" unique_id=1373657893]
+shape = SubResource("CylinderShape3D_left_jogwheel")
+debug_color = Color(0.1882353, 0.8039216, 0.44313726, 0.6)
+
+[node name="Right Jogwheel" type="Node3D" parent="Controls" index="37" unique_id=896533212]
+transform = Transform3D(0.99999994, 0, 0, 0, 0.99999994, 0, 0, 0, 0.99999994, 0.39819542, 0.041, 0.113997966)
+
+[node name="Activation" type="Area3D" parent="Controls/Right Jogwheel" index="0" unique_id=1152256649]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Controls/Right Jogwheel/Activation" index="0" unique_id=808617345]
+shape = SubResource("CylinderShape3D_right_jogwheel")
+debug_color = Color(0.1882353, 0.8039216, 0.44313726, 0.6)
+
 [node name="LEFT Status Text" type="Label3D" parent="." index="54" unique_id=636863678]
 transform = Transform3D(0.9659256, -1.4894286e-09, 0.25881898, -0.25881898, -1.1313338e-08, 0.9659256, 1.4894287e-09, -0.99999976, -1.1313339e-08, -0.027975252, 0.017303567, 0.27337757)
 visible = false
@@ -296,5 +323,9 @@ outline_size = 0
 [connection signal="on_activated" from="Controls/Right_ExtendLoop" to="." method="_on_right_extend_loop_on_activated"]
 [connection signal="on_activated" from="Controls/Crossfade" to="." method="_on_crossfade_on_activated"]
 [connection signal="on_unhovered" from="Controls/Crossfade" to="." method="_on_crossfade_on_unhovered"]
+[connection signal="area_entered" from="Controls/Left Jogwheel/Activation" to="." method="_on_left_jog_activation_area_entered"]
+[connection signal="area_exited" from="Controls/Left Jogwheel/Activation" to="." method="_on_left_jog_activation_area_exited"]
+[connection signal="area_entered" from="Controls/Right Jogwheel/Activation" to="." method="_on_right_jog_activation_area_entered"]
+[connection signal="area_exited" from="Controls/Right Jogwheel/Activation" to="." method="_on_right_jog_activation_area_exited"]
 [connection signal="area_entered" from="Node3D/ResetArea" to="." method="_on_reset_area_area_entered"]
 [connection signal="area_entered" from="Node3D/DisableDebigShapes" to="." method="_on_disable_debig_shapes_area_entered"]

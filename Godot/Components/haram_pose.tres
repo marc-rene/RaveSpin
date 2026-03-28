@@ -1,0 +1,45 @@
+[gd_resource type="Resource" script_class="HandPose" format=3 uid="uid://8en0dv4wvq26"]
+
+[ext_resource type="Script" uid="uid://dx3plfhe5jm2h" path="res://addons/hand_pose_detector/fitness_function.gd" id="1_br0he"]
+[ext_resource type="Script" uid="uid://lsxgm3ddwhxr" path="res://addons/hand_pose_detector/hand_pose.gd" id="1_cibbp"]
+
+[sub_resource type="Resource" id="Resource_p5ihd"]
+script = ExtResource("1_br0he")
+from = 60.0
+to = 80.0
+metadata/_custom_type_script = "uid://dx3plfhe5jm2h"
+
+[sub_resource type="Resource" id="Resource_br0he"]
+script = ExtResource("1_br0he")
+from = 45.0
+to = 25.0
+metadata/_custom_type_script = "uid://dx3plfhe5jm2h"
+
+[sub_resource type="Resource" id="Resource_wod1s"]
+script = ExtResource("1_br0he")
+from = 80.0
+to = 110.0
+metadata/_custom_type_script = "uid://dx3plfhe5jm2h"
+
+[sub_resource type="Resource" id="Resource_vdf5d"]
+script = ExtResource("1_br0he")
+from = 80.0
+to = 110.0
+metadata/_custom_type_script = "uid://dx3plfhe5jm2h"
+
+[sub_resource type="Resource" id="Resource_wjb45"]
+script = ExtResource("1_br0he")
+from = 20.0
+to = 40.0
+metadata/_custom_type_script = "uid://dx3plfhe5jm2h"
+
+[resource]
+script = ExtResource("1_cibbp")
+pose_name = "Naughty Naughty"
+threshold = 0.3
+flexion_middle = SubResource("Resource_wjb45")
+curl_index = SubResource("Resource_p5ihd")
+curl_middle = SubResource("Resource_br0he")
+curl_ring = SubResource("Resource_vdf5d")
+curl_pinky = SubResource("Resource_wod1s")
+metadata/_custom_type_script = "uid://lsxgm3ddwhxr"
