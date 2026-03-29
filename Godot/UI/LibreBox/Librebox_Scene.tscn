@@ -103,10 +103,10 @@ scroll_pose_index_pinch = false
 scroll_pose_fist = false
 
 [node name="FX Selection" parent="." unique_id=1120781123 instance=ExtResource("1_ebwc8")]
-transform = Transform3D(1, -6.238468e-17, 9.9801465e-17, -6.238469e-17, 0.43808877, 0.8989317, -9.980147e-17, -0.89893174, 0.43808877, 0.5887204, -0.72288305, 0.61940217)
-screen_size = Vector2(0.455, 0.35)
+transform = Transform3D(1, -6.238468e-17, 9.9801465e-17, -6.238469e-17, 0.43808877, 0.8989317, -9.980147e-17, -0.89893174, 0.43808877, 0.6604344, -0.81697464, 0.8124724)
+screen_size = Vector2(0.325, 0.6)
 scene = ExtResource("8_83nvb")
-viewport_size = Vector2(650, 500)
+viewport_size = Vector2(650, 1200)
 unshaded = true
 scene_properties_keys = PackedStringArray("fx_selection_menu.gd")
 
@@ -133,7 +133,7 @@ enable_double = true
 scroll_sensitivity = 0.3
 
 [node name="AllowMoreFX" parent="." unique_id=52213427 instance=ExtResource("1_ebwc8")]
-transform = Transform3D(0.870622, 1.4901161e-08, -0.49195263, 0.44216406, 0.43837115, 0.78250986, 0.21565783, -0.89879405, 0.38165557, 0.937826, -0.73622274, 0.80204165)
+transform = Transform3D(0.870622, 1.4901161e-08, -0.49195263, 0.44216406, 0.43837115, 0.78250986, 0.21565783, -0.89879405, 0.38165557, 0.91035724, -0.7542699, 0.80204165)
 screen_size = Vector2(0.2, 0.1)
 scene = ExtResource("10_j0p6t")
 viewport_size = Vector2(400, 200)

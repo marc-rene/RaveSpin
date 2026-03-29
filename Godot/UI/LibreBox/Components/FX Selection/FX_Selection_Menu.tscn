@@ -11,6 +11,8 @@ anchor_right = 0.564
 anchor_bottom = 0.772
 offset_right = -159.72803
 offset_bottom = -196.25601
+size_flags_horizontal = 3
+size_flags_vertical = 3
 script = ExtResource("1_10h13")
 
 [node name="MarginContainer" type="MarginContainer" parent="." unique_id=479472714]
@@ -139,16 +141,7 @@ script = ExtResource("2_ecric")
 FX_Type = 6
 metadata/_custom_type_script = "uid://c06quswvaif2s"
 
-[node name="padding" type="Control" parent="MarginContainer/VBoxContainer/FX Containers" unique_id=871874107]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_stretch_ratio = 0.05
-
-[node name="VBoxContainer_R" type="VBoxContainer" parent="MarginContainer/VBoxContainer/FX Containers" unique_id=1276800628]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="Crush btn" type="CheckButton" parent="MarginContainer/VBoxContainer/FX Containers/VBoxContainer_R" unique_id=618116849]
+[node name="Crush btn" type="CheckButton" parent="MarginContainer/VBoxContainer/FX Containers/VBoxContainer_L" unique_id=618116849]
 auto_translate_mode = 1
 layout_mode = 2
 size_flags_vertical = 3
@@ -159,7 +152,7 @@ script = ExtResource("2_ecric")
 FX_Type = 7
 metadata/_custom_type_script = "uid://c06quswvaif2s"
 
-[node name="Compressor btn" type="CheckButton" parent="MarginContainer/VBoxContainer/FX Containers/VBoxContainer_R" unique_id=768391135]
+[node name="Compressor btn" type="CheckButton" parent="MarginContainer/VBoxContainer/FX Containers/VBoxContainer_L" unique_id=768391135]
 auto_translate_mode = 1
 layout_mode = 2
 size_flags_vertical = 3
@@ -170,7 +163,7 @@ script = ExtResource("2_ecric")
 FX_Type = 8
 metadata/_custom_type_script = "uid://c06quswvaif2s"
 
-[node name="Limiter btn" type="CheckButton" parent="MarginContainer/VBoxContainer/FX Containers/VBoxContainer_R" unique_id=1481597424]
+[node name="Limiter btn" type="CheckButton" parent="MarginContainer/VBoxContainer/FX Containers/VBoxContainer_L" unique_id=1481597424]
 auto_translate_mode = 1
 layout_mode = 2
 size_flags_vertical = 3
@@ -181,7 +174,7 @@ script = ExtResource("2_ecric")
 FX_Type = 9
 metadata/_custom_type_script = "uid://c06quswvaif2s"
 
-[node name="BandPass btn" type="CheckButton" parent="MarginContainer/VBoxContainer/FX Containers/VBoxContainer_R" unique_id=35460357]
+[node name="BandPass btn" type="CheckButton" parent="MarginContainer/VBoxContainer/FX Containers/VBoxContainer_L" unique_id=35460357]
 auto_translate_mode = 1
 layout_mode = 2
 size_flags_vertical = 3
@@ -192,7 +185,7 @@ script = ExtResource("2_ecric")
 FX_Type = 10
 metadata/_custom_type_script = "uid://c06quswvaif2s"
 
-[node name="Panner btn" type="CheckButton" parent="MarginContainer/VBoxContainer/FX Containers/VBoxContainer_R" unique_id=196773560]
+[node name="Panner btn" type="CheckButton" parent="MarginContainer/VBoxContainer/FX Containers/VBoxContainer_L" unique_id=196773560]
 auto_translate_mode = 1
 layout_mode = 2
 size_flags_vertical = 3
@@ -203,7 +196,7 @@ script = ExtResource("2_ecric")
 FX_Type = 11
 metadata/_custom_type_script = "uid://c06quswvaif2s"
 
-[node name="StereoEnhance btn" type="CheckButton" parent="MarginContainer/VBoxContainer/FX Containers/VBoxContainer_R" unique_id=1395355475]
+[node name="StereoEnhance btn" type="CheckButton" parent="MarginContainer/VBoxContainer/FX Containers/VBoxContainer_L" unique_id=1395355475]
 auto_translate_mode = 1
 layout_mode = 2
 size_flags_vertical = 3
@@ -214,7 +207,7 @@ script = ExtResource("2_ecric")
 FX_Type = 12
 metadata/_custom_type_script = "uid://c06quswvaif2s"
 
-[node name="Distortion btn" type="CheckButton" parent="MarginContainer/VBoxContainer/FX Containers/VBoxContainer_R" unique_id=561039208]
+[node name="Distortion btn" type="CheckButton" parent="MarginContainer/VBoxContainer/FX Containers/VBoxContainer_L" unique_id=561039208]
 auto_translate_mode = 1
 layout_mode = 2
 size_flags_vertical = 3

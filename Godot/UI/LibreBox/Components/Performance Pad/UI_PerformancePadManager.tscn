@@ -1,0 +1,31 @@
+[gd_scene format=3 uid="uid://bukotgtuqys7"]
+
+[ext_resource type="Theme" uid="uid://ds0dxmwlq5niw" path="res://Art/Themes/Default_Theme.tres" id="1_i5e5f"]
+
+[node name="UiPerformancePadManager" type="PanelContainer" unique_id=225313690]
+theme = ExtResource("1_i5e5f")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1986910629]
+layout_mode = 2
+
+[node name="GridContainer" type="GridContainer" parent="MarginContainer" unique_id=782043926]
+layout_mode = 2
+theme_override_constants/h_separation = 12
+theme_override_constants/v_separation = 12
+columns = 2
+
+[node name="CheckButton" type="CheckButton" parent="MarginContainer/GridContainer" unique_id=48176194]
+layout_mode = 2
+theme = ExtResource("1_i5e5f")
+
+[node name="CheckButton2" type="CheckButton" parent="MarginContainer/GridContainer" unique_id=631879409]
+layout_mode = 2
+theme = ExtResource("1_i5e5f")
+
+[node name="CheckButton3" type="CheckButton" parent="MarginContainer/GridContainer" unique_id=1336981864]
+layout_mode = 2
+theme = ExtResource("1_i5e5f")
+
+[node name="CheckButton4" type="CheckButton" parent="MarginContainer/GridContainer" unique_id=546019910]
+layout_mode = 2
+theme = ExtResource("1_i5e5f")
