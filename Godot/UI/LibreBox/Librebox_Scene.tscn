@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://cdx5rxkmy32p5" path="res://UI/LibreBox/Components/Track Selection/Track_Delete_Confirm_UI.tscn" id="7_4oknt"]
 [ext_resource type="PackedScene" uid="uid://cprhr6myydno5" path="res://UI/LibreBox/Components/FX Selection/FX_Selection_Menu.tscn" id="8_83nvb"]
 [ext_resource type="PackedScene" uid="uid://7kyk88qnftlr" path="res://UI/LibreBox/Components/Add Track/Add_Track_UI.tscn" id="9_83nvb"]
+[ext_resource type="PackedScene" uid="uid://bukotgtuqys7" path="res://UI/LibreBox/Components/Performance Pad/UI_PerformancePadManager.tscn" id="9_yqoip"]
 [ext_resource type="PackedScene" uid="uid://bowim16kwtx7w" path="res://UI/LibreBox/Components/FX Selection/FX_Allow_More.tscn" id="10_j0p6t"]
 [ext_resource type="PackedScene" uid="uid://b6ltbvcirle8v" path="res://UI/LibreBox/Components/Langauge/UI_LanguageSelection.tscn" id="11_6xn47"]
 
@@ -103,14 +104,44 @@ scroll_pose_index_pinch = false
 scroll_pose_fist = false
 
 [node name="FX Selection" parent="." unique_id=1120781123 instance=ExtResource("1_ebwc8")]
-transform = Transform3D(1, -6.238468e-17, 9.9801465e-17, -6.238469e-17, 0.43808877, 0.8989317, -9.980147e-17, -0.89893174, 0.43808877, 0.6604344, -0.81697464, 0.8124724)
-screen_size = Vector2(0.325, 0.6)
+transform = Transform3D(1, -6.238468e-17, 9.9801465e-17, -6.238469e-17, 0.43808877, 0.8989317, -9.980147e-17, -0.89893174, 0.43808877, 0.631277, -0.71787345, 0.60990256)
+screen_size = Vector2(0.25, 0.4)
 scene = ExtResource("8_83nvb")
-viewport_size = Vector2(650, 1200)
+viewport_size = Vector2(750, 1200)
 unshaded = true
 scene_properties_keys = PackedStringArray("fx_selection_menu.gd")
 
 [node name="HandTouch" type="Node" parent="FX Selection" unique_id=728653650]
+script = ExtResource("5_hand")
+click_cooldown_seconds = 0.2
+scroll_enabled = false
+scroll_pose_index_pinch = false
+scroll_pose_fist = false
+
+[node name="Performance Pad Manager Right" parent="." unique_id=747871373 instance=ExtResource("1_ebwc8")]
+transform = Transform3D(1, -6.238468e-17, 9.9801465e-17, -6.238469e-17, 0.43808877, 0.8989317, -9.980147e-17, -0.89893174, 0.43808877, 0.33850116, -0.6911277, 0.55533403)
+screen_size = Vector2(0.2, 0.2)
+scene = ExtResource("9_yqoip")
+viewport_size = Vector2(750, 750)
+unshaded = true
+scene_properties_keys = PackedStringArray("gd_performance_pad_manager.gd")
+
+[node name="HandTouch" type="Node" parent="Performance Pad Manager Right" unique_id=157391506]
+script = ExtResource("5_hand")
+click_cooldown_seconds = 0.2
+scroll_enabled = false
+scroll_pose_index_pinch = false
+scroll_pose_fist = false
+
+[node name="Performance Pad Manager Left" parent="." unique_id=871519027 instance=ExtResource("1_ebwc8")]
+transform = Transform3D(1, -6.238468e-17, 9.9801465e-17, -6.238469e-17, 0.43808877, 0.8989317, -9.980147e-17, -0.89893174, 0.43808877, -0.29110116, -0.6911277, 0.55533403)
+screen_size = Vector2(0.2, 0.2)
+scene = ExtResource("9_yqoip")
+viewport_size = Vector2(750, 750)
+unshaded = true
+scene_properties_keys = PackedStringArray("gd_performance_pad_manager.gd")
+
+[node name="HandTouch" type="Node" parent="Performance Pad Manager Left" unique_id=597213661]
 script = ExtResource("5_hand")
 click_cooldown_seconds = 0.2
 scroll_enabled = false
@@ -133,7 +164,7 @@ enable_double = true
 scroll_sensitivity = 0.3
 
 [node name="AllowMoreFX" parent="." unique_id=52213427 instance=ExtResource("1_ebwc8")]
-transform = Transform3D(0.870622, 1.4901161e-08, -0.49195263, 0.44216406, 0.43837115, 0.78250986, 0.21565783, -0.89879405, 0.38165557, 0.91035724, -0.7542699, 0.80204165)
+transform = Transform3D(0.870622, 1.4901161e-08, -0.49195263, 0.44216406, 0.43837115, 0.78250986, 0.21565783, -0.89879405, 0.38165557, 0.91065305, -0.70745903, 0.70684403)
 screen_size = Vector2(0.2, 0.1)
 scene = ExtResource("10_j0p6t")
 viewport_size = Vector2(400, 200)

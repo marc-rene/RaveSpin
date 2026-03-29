@@ -6,11 +6,11 @@
 
 [node name="FxSelectionMenu" type="PanelContainer" unique_id=1774675461]
 custom_minimum_size = Vector2(650, 500)
-anchors_preset = -1
-anchor_right = 0.564
-anchor_bottom = 0.772
-offset_right = -159.72803
-offset_bottom = -196.25601
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("1_10h13")
@@ -28,7 +28,7 @@ layout_mode = 2
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1833640721]
 layout_mode = 2
 size_flags_vertical = 3
-size_flags_stretch_ratio = 0.2
+size_flags_stretch_ratio = 0.25
 
 [node name="Enable_Track_1_fx_btn" type="CheckButton" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=1700108077]
 auto_translate_mode = 1
@@ -38,10 +38,10 @@ theme = ExtResource("1_4boa5")
 text = "KEY_ENABLE_TRACK_1_FX"
 alignment = 1
 
-[node name="padding" type="Control" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=153950082]
+[node name="Control" type="Control" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=737233222]
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_stretch_ratio = 0.2
+size_flags_stretch_ratio = 0.33
 
 [node name="Enable_Track_2_fx_btn" type="CheckButton" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=1698200999]
 auto_translate_mode = 1

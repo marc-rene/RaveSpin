@@ -62,6 +62,20 @@ autoplay = true
 mix_target = 1
 bus = &"Channel 1 Input"
 
+[node name="Performance Pad Samples Left" type="AudioStreamPlayer" parent="." unique_id=2121451287]
+unique_name_in_owner = true
+autoplay = true
+mix_target = 1
+bus = &"Channel 1 Input"
+playback_type = 2
+
+[node name="Performance Pad Samples Right" type="AudioStreamPlayer" parent="." unique_id=319667178]
+unique_name_in_owner = true
+autoplay = true
+mix_target = 1
+bus = &"Channel 2 Input"
+playback_type = 2
+
 [node name="Track Stream Player Right" type="AudioStreamPlayer" parent="." unique_id=234223147]
 unique_name_in_owner = true
 autoplay = true

@@ -1,31 +1,130 @@
 [gd_scene format=3 uid="uid://bukotgtuqys7"]
 
 [ext_resource type="Theme" uid="uid://ds0dxmwlq5niw" path="res://Art/Themes/Default_Theme.tres" id="1_i5e5f"]
+[ext_resource type="Script" uid="uid://btp28xatuh3nt" path="res://UI/LibreBox/Components/Performance Pad/gd_performance_pad_manager.gd" id="2_t32uo"]
 
 [node name="UiPerformancePadManager" type="PanelContainer" unique_id=225313690]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 theme = ExtResource("1_i5e5f")
+script = ExtResource("2_t32uo")
 
 [node name="MarginContainer" type="MarginContainer" parent="." unique_id=1986910629]
 layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
 
 [node name="GridContainer" type="GridContainer" parent="MarginContainer" unique_id=782043926]
 layout_mode = 2
 theme_override_constants/h_separation = 12
 theme_override_constants/v_separation = 12
-columns = 2
+columns = 3
 
-[node name="CheckButton" type="CheckButton" parent="MarginContainer/GridContainer" unique_id=48176194]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/GridContainer" unique_id=1220578424]
 layout_mode = 2
-theme = ExtResource("1_i5e5f")
+size_flags_horizontal = 3
+size_flags_vertical = 3
 
-[node name="CheckButton2" type="CheckButton" parent="MarginContainer/GridContainer" unique_id=631879409]
+[node name="Jump to Hot Cue Mode" type="Button" parent="MarginContainer/GridContainer/VBoxContainer" unique_id=938056061]
 layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 6
 theme = ExtResource("1_i5e5f")
+toggle_mode = true
+text = "KEY_ACTIVATE_HOT_CUE_MODE"
 
-[node name="CheckButton3" type="CheckButton" parent="MarginContainer/GridContainer" unique_id=1336981864]
+[node name="Hot Cue Mode BTN" type="CheckButton" parent="MarginContainer/GridContainer/VBoxContainer" unique_id=121520649]
 layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 theme = ExtResource("1_i5e5f")
+button_pressed = true
+text = "KEY_HOT_CUE_MODE"
 
-[node name="CheckButton4" type="CheckButton" parent="MarginContainer/GridContainer" unique_id=546019910]
+[node name="VSeparator" type="VSeparator" parent="MarginContainer/GridContainer" unique_id=1214267744]
 layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.1
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/GridContainer" unique_id=1322491713]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Jump to FX-Set 1" type="Button" parent="MarginContainer/GridContainer/VBoxContainer2" unique_id=1325677286]
+layout_mode = 2
+size_flags_horizontal = 5
+size_flags_vertical = 7
 theme = ExtResource("1_i5e5f")
+toggle_mode = true
+text = "KEY_USE_FX_SET_1"
+
+[node name="Jump to FX-Set 2" type="Button" parent="MarginContainer/GridContainer/VBoxContainer2" unique_id=2049879819]
+layout_mode = 2
+size_flags_horizontal = 5
+size_flags_vertical = 7
+theme = ExtResource("1_i5e5f")
+toggle_mode = true
+text = "KEY_USE_FX_SET_2"
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/GridContainer" unique_id=2083866953]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.1
+
+[node name="HSeparator2" type="Control" parent="MarginContainer/GridContainer" unique_id=1703335761]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.1
+
+[node name="HSeparator3" type="HSeparator" parent="MarginContainer/GridContainer" unique_id=207368928]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.1
+
+[node name="VBoxContainer3" type="VBoxContainer" parent="MarginContainer/GridContainer" unique_id=1774981222]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Jump to Beat Jump Mode" type="Button" parent="MarginContainer/GridContainer/VBoxContainer3" unique_id=184793486]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 6
+theme = ExtResource("1_i5e5f")
+toggle_mode = true
+text = "KEY_ACTIVATE_BEAT_JUMP_OR_BEAT_LOOP_MODE"
+
+[node name="Beat Jump Mode Toggle BTN" type="CheckButton" parent="MarginContainer/GridContainer/VBoxContainer3" unique_id=1336981864]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource("1_i5e5f")
+text = "KEY_BEAT_JUMP_MODE"
+
+[node name="VSeparator2" type="VSeparator" parent="MarginContainer/GridContainer" unique_id=1930886450]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.1
+
+[node name="VBoxContainer4" type="VBoxContainer" parent="MarginContainer/GridContainer" unique_id=326132594]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Key Shift Mode" type="CheckButton" parent="MarginContainer/GridContainer/VBoxContainer4" unique_id=546019910]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource("1_i5e5f")
+text = "KEY_SHIFT_MODE"
