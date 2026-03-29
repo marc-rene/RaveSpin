@@ -98,6 +98,7 @@ var Crossfade_Alpha = 0.5
 @export var Jogwheel_Grab_Radius_Meters: float = 0.06
 @export var Use_Multi_Threaded_Jog_Warp: bool = false
 @export var Use_Snap_Style_Jogwheel_Grab: bool = false
+@export var Jogwheel_Enable_Audible_Scratching: bool = true
 
 var Left_Jogwheel_Mesh: MeshInstance3D = null
 var Right_Jogwheel_Mesh: MeshInstance3D = null
@@ -271,17 +272,21 @@ func _set_loop_points_sec(which_track: int, start_sec: float, end_sec: float) ->
 
 func _loop_seek_on_main(which_track: int) -> void:
     which_track = Utility.Clamp_to_Valid_TrackID(which_track)
+    
     if not Loop_Enabled[which_track]:
         return
+        
     if AudioPlayerList[which_track] == null or AudioPlayerList[which_track].stream == null:
         Loop_Enabled[which_track] = false
         return
+    
     if not AudioPlayerList[which_track].playing:
         return
 
     var now_ms: int = Time.get_ticks_msec()
     if now_ms - _loop_last_seek_ms[which_track] < LOOP_SEEK_COOLDOWN_MS:
         return
+        
     _loop_last_seek_ms[which_track] = now_ms
 
     if AudioPlayerList[which_track].has_stream_playback():
@@ -297,12 +302,12 @@ func _loop_thread_main(which_track: int) -> void:
     while _loop_thread_run[which_track] or not Use_Multi_threaded_looping:
         if (Loop_Enabled[which_track] or not Use_Multi_threaded_looping) and AudioPlayerList[which_track] != null and AudioPlayerList[which_track].stream != null:
             if AudioPlayerList[which_track].playing:
-                var pos: float = Utility.Return_Valid(AudioPlayerList[which_track].get_playback_position(), 0.0)
-                if pos >= Loop_End_Sec[which_track]:
-                    #call_deferred("_loop_seek_on_main", which_track)
-                    _loop_seek_on_main(which_track)
+                if (Track_1_playback_pos if which_track == 0 else Track_2_playback_pos) >= Loop_End_Sec[which_track]:
+                    call_deferred("_loop_seek_on_main", which_track)
+                    #_loop_seek_on_main(which_track)
                         
-        #OS.delay_msec(6)
+        OS.delay_msec(6)
+                
 
 
 func Loop_Set_Start_Point(which_track: int) -> void:
@@ -566,11 +571,25 @@ func _apply_track_seek(which_track: int, seek_seconds: float) -> void:
     which_track = Utility.Clamp_to_Valid_TrackID(which_track)
     if AudioPlayerList[which_track] == null or AudioPlayerList[which_track].stream == null:
         return
-    if _jog_touch_active[which_track] and AudioPlayerList[which_track].has_stream_playback():
-        # During vinyl touch, force an explicit reposition so movement is always audible.
-        AudioPlayerList[which_track].seek(seek_seconds)
-        AudioPlayerList[which_track].stream_paused = false
-        #AudioPlayerList[which_track].play(seek_seconds)
+        
+    if _jog_touch_active[which_track]:
+        if Jogwheel_Enable_Audible_Scratching:
+            # Explicit play-at-position each jog sample gives audible scratch and prevents drift.
+            #AudioPlayerList[which_track].play(seek_seconds)
+            if AudioPlayerList[which_track].stream_paused:
+                AudioPlayerList[which_track].play(seek_seconds)
+            else:
+                AudioPlayerList[which_track].stream_paused = false
+                AudioPlayerList[which_track].seek(seek_seconds)
+            
+            
+        elif AudioPlayerList[which_track].has_stream_playback():
+            AudioPlayerList[which_track].seek(seek_seconds)
+            AudioPlayerList[which_track].stream_paused = true
+            
+        else:
+            AudioPlayerList[which_track].play(seek_seconds)
+            
         return
     if AudioPlayerList[which_track].has_stream_playback():
         AudioPlayerList[which_track].seek(seek_seconds)
@@ -580,28 +599,34 @@ func _apply_track_seek(which_track: int, seek_seconds: float) -> void:
 
 func _warp_track_from_jogwheel(which_track: int, rotation_radians: float) -> void:
     which_track = Utility.Clamp_to_Valid_TrackID(which_track)
-    if absf(rotation_radians) <= 0.0001:
+    if absf(rotation_radians) <= 0.001:
         return
     if AudioPlayerList[which_track] == null or AudioPlayerList[which_track].stream == null:
         return
 
-    var stream_length_seconds: float = AudioPlayerList[which_track].stream.get_length()
-    var current_position_seconds: float = Utility.Return_Valid(AudioPlayerList[which_track].get_playback_position(), 0.0)
+    var stream_length_seconds: float = Track_1_playback_length if which_track == 0 else Track_2_playback_length
+    var current_position_seconds: float = Track_1_playback_pos if which_track == 0 else Track_2_playback_pos
+    
     if _jog_touch_active[which_track] and _jog_has_virtual_position[which_track]:
         current_position_seconds = _jog_virtual_position_seconds[which_track]
+        
     var stream_delta_seconds: float = (-rotation_radians / TAU) * Jogwheel_Audio_Warp_Seconds_Per_Full_Rotation
     var unclamped_position_seconds: float = current_position_seconds + stream_delta_seconds
     var new_position_seconds: float = maxf(0.0, unclamped_position_seconds)
+    
     if stream_length_seconds > 0.0:
         new_position_seconds = clampf(new_position_seconds, 0.0, maxf(0.0, stream_length_seconds - 0.001))
+        
     if _jog_touch_active[which_track]:
         _jog_virtual_position_seconds[which_track] = new_position_seconds
         _jog_has_virtual_position[which_track] = true
 
     if _jog_touch_active[which_track]:
         _apply_track_seek(which_track, new_position_seconds)
+        
     elif Use_Multi_Threaded_Jog_Warp:
         _jog_pending_seek_seconds[which_track] = new_position_seconds
+        
     else:
         _apply_track_seek(which_track, new_position_seconds)
 
@@ -730,15 +755,14 @@ func _update_jogwheel_track(which_track: int, delta: float) -> void:
         _jog_last_angle_radians[which_track] = current_angle_radians
 
         if absf(delta_angle_radians) <= 0.0001:
-            if AudioPlayerList[which_track] != null and AudioPlayerList[which_track].playing:
-                AudioPlayerList[which_track].stream_paused = true
+            # Keep hard-holding current sample position while hand is touching.
+            if _jog_has_virtual_position[which_track]:
+                _apply_track_seek(which_track, _jog_virtual_position_seconds[which_track])
             return
 
         # clockwise spin should move audio forward
         delta_angle_radians *= -1.0
 
-        if AudioPlayerList[which_track] != null and AudioPlayerList[which_track].playing:
-            AudioPlayerList[which_track].stream_paused = false
         _rotate_jogwheel_mesh_visual(which_track, delta_angle_radians)
         _warp_track_from_jogwheel(which_track, delta_angle_radians)
         return
@@ -961,7 +985,7 @@ func Update_Channel_Tempo_Adjusts():
  
 var i : int = 0
 func _process(delta: float) -> void:
-    if i % 8 == 0:
+    if i % 3 == 0:
         Track_1_playback_pos = AudioPlayerList.get(0).get_playback_position()   
         Track_2_playback_pos = AudioPlayerList.get(1).get_playback_position()   
         

@@ -22,9 +22,13 @@ radius = 0.06
 size = Vector3(0.1, 0.1, 0.1)
 
 [node name="FLX4" unique_id=836749725 instance=ExtResource("1_mrnpa")]
+process_thread_group = 1
+process_thread_group_order = 0
+process_thread_messages = 1
 transform = Transform3D(1.2, 0, 0, 0, 1.2, 0, 0, 0, 1.2, 0, 0, 0)
 script = ExtResource("2_3ugcv")
 BPM_Adjust_Range = 0.2
+Jogwheel_Audio_Warp_Seconds_Per_Full_Rotation = 2.0
 
 [node name="Crossfade Slider" parent="." index="6" unique_id=1449749422]
 transform = Transform3D(1.4190836e-07, 0, -1, 0, 1, 0, 0.7288296, 0, 1.9470718e-07, 0.2408275, 0.042000003, 0.2543439)
@@ -33,35 +37,35 @@ transform = Transform3D(1.4190836e-07, 0, -1, 0, 1, 0, 0.7288296, 0, 1.9470718e-
 transform = Transform3D(0.99999994, 0, 0, 0, 0.99999994, 0, 0, 0, 0.99999994, 0, 0, 0)
 
 [node name="L Channel Fader" parent="Controls" index="0" unique_id=655477152 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("3_ic1ra")]
-transform = Transform3D(-1, 0, 1.4344602e-07, 0, 1, 0, -1.509958e-07, 0, -0.95, 0.22063504, 0.042000003, 0.20519964)
+transform = Transform3D(-1, 0, 4.5298744e-08, 0, 1, 0, -1.509958e-07, 0, -0.3, 0.22063504, 0.042000003, 0.20519964)
 Target_Mesh = NodePath("../../L_Channel Fader")
 
 [node name="R Channel Fader" parent="Controls" index="1" unique_id=1404039826 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("3_ic1ra")]
-transform = Transform3D(-0.99999994, 0, 1.4344602e-07, 0, 0.99999994, 0, -1.509958e-07, 0, -0.94999987, 0.26073554, 0.042000003, 0.20519964)
+transform = Transform3D(-1, 0, 4.5298744e-08, 0, 1, 0, -1.509958e-07, 0, -0.3, 0.26073554, 0.042000003, 0.20519964)
 Target_Mesh = NodePath("../../R_Channel Fader")
 
 [node name="L Tempo Adjust" parent="Controls" index="2" unique_id=1791213895 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("3_ic1ra")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1.3, 0.14376481, 0.042000003, 0.21629128)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 0.5, 0.14376481, 0.042000003, 0.21629128)
 Target_Mesh = NodePath("../../L_Tempo Adjust")
 
 [node name="R Tempo Adjust" parent="Controls" index="3" unique_id=935990254 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("3_ic1ra")]
-transform = Transform3D(0.99999994, 0, 0, 0, 0.99999994, 0, 0, 0, 1.3, 0.4590193, 0.042000003, 0.21629128)
+transform = Transform3D(0.99999994, 0, 0, 0, 0.99999994, 0, 0, 0, 0.5, 0.4590193, 0.042000003, 0.21629128)
 Target_Mesh = NodePath("../../R_Tempo Adjust")
 
 [node name="Left_Play" parent="Controls" index="4" unique_id=143429027 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("3_pj43g")]
-transform = Transform3D(0.2455869, 0, 0, 0, 0.2455869, 0, 0, 0, 0.2455869, 0.022395022, 0.038957693, 0.2416024)
+transform = Transform3D(0.2455869, 0, 0, 0, 0.2455869, 0, 0, 0, 0.2455869, 0.022395022, 0.026096553, 0.2416024)
 Target_Mesh = NodePath("../../L_Play Left Track")
 
 [node name="Right_Play" parent="Controls" index="5" unique_id=60119450 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("3_pj43g")]
-transform = Transform3D(0.24558696, 0, 0, 0, 0.24558696, 0, 0, 0, 0.24558696, 0.33739507, 0.038957693, 0.24160239)
+transform = Transform3D(0.24558696, 0, 0, 0, 0.24558696, 0, 0, 0, 0.24558696, 0.33739507, 0.026096549, 0.24160239)
 Target_Mesh = NodePath("../../R_Play Right Track")
 
 [node name="Left_CUE" parent="Controls" index="6" unique_id=2116356022 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("3_pj43g")]
-transform = Transform3D(0.24558689, 0, 0, 0, 0.24558689, 0, 0, 0, 0.24558689, 0.022395022, 0.03895769, 0.21261929)
+transform = Transform3D(0.24558689, 0, 0, 0, 0.24558689, 0, 0, 0, 0.24558689, 0.022395022, 0.026096549, 0.21261929)
 Target_Mesh = NodePath("../../L_Cue Left Track")
 
 [node name="Right_CUE" parent="Controls" index="7" unique_id=1999071315 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("3_pj43g")]
-transform = Transform3D(0.24558696, 0, 0, 0, 0.24558696, 0, 0, 0, 0.24558696, 0.33739507, 0.03895769, 0.212481)
+transform = Transform3D(0.24558696, 0, 0, 0, 0.24558696, 0, 0, 0, 0.24558696, 0.33739507, 0.026096545, 0.212481)
 Target_Mesh = NodePath("../../R_Cue Right Track")
 
 [node name="Left Trim" parent="Controls" index="8" unique_id=1241828804 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("5_eg1xv")]
@@ -153,11 +157,11 @@ transform = Transform3D(-0.15, 0, 3.019916e-08, 0, 0.15, 0, -2.2649372e-08, 0, -
 Target_Mesh = NodePath("../../R_Cue loop advance")
 
 [node name="Beat FX" parent="Controls" index="30" unique_id=1829892089 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("5_eg1xv")]
-transform = Transform3D(-0.7, 0, -1.0569706e-07, 0, 0.7, 0, 1.0569706e-07, 0, -0.7, 0.2979233, 0.038605843, 0.19556488)
+transform = Transform3D(-1, 0, -1.509958e-07, 0, 1, 0, 1.509958e-07, 0, -1, 0.2979233, 0.038605843, 0.19556488)
 Target_Mesh = NodePath("../../Beat FX Parameter")
 
 [node name="Crossfade" parent="Controls" index="31" unique_id=1967443421 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("3_ic1ra")]
-transform = Transform3D(-4.3711385e-08, 0, 1.1999998, 0, 0.99999994, 0, -0.99999994, 0, -5.2453657e-08, 0.24082747, 0.042, 0.25434384)
+transform = Transform3D(-4.371139e-08, 0, 0.32, 0, 1, 0, -1, 0, -1.3987644e-08, 0.24082747, 0.042, 0.25434384)
 Target_Mesh = NodePath("../../Crossfade Slider")
 
 [node name="Master Volume" parent="Controls" index="32" unique_id=436933577 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("5_eg1xv")]
