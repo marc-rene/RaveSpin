@@ -70,42 +70,94 @@ Target_Mesh = NodePath("../../R_Cue Right Track")
 
 [node name="Left Trim" parent="Controls" index="8" unique_id=1241828804 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("5_eg1xv")]
 transform = Transform3D(-0.79999995, 0, -1.2079664e-07, 0, 0.99999976, 0, 1.2079664e-07, 0, -0.79999995, 0.22071464, 0.038605843, 0.0384887)
+knob_label_key = "KEY_KNOB_TRIM"
+knob_memory_key = "TRIM L"
+value_display_mode = 1
+normalized_decimal_places = 1
+decibel_linear_min = -6.0
+decibel_linear_max = 6.0
 Target_Mesh = NodePath("../../L_Trim")
 
 [node name="Right Trim" parent="Controls" index="9" unique_id=1985872117 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("5_eg1xv")]
 transform = Transform3D(-0.8, 0, -1.2079664e-07, 0, 0.99999976, 0, 1.2079664e-07, 0, -0.8, 0.26064044, 0.038605843, 0.0384887)
+knob_label_key = "KEY_KNOB_TRIM"
+knob_memory_key = "TRIM R"
+value_display_mode = 1
+normalized_decimal_places = 1
+decibel_linear_min = -6.0
+decibel_linear_max = 6.0
 Target_Mesh = NodePath("../../R_Trim")
 
 [node name="Left High Gain" parent="Controls" index="10" unique_id=903259895 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("5_eg1xv")]
 transform = Transform3D(-0.7, 0, -1.0569706e-07, 0, 0.7, 0, 1.0569706e-07, 0, -0.7, 0.22071464, 0.038605843, 0.063578665)
+knob_label_key = "KEY_KNOB_EQ_HI"
+knob_memory_key = "EQ HI L"
+value_display_mode = 1
+normalized_decimal_places = 1
+decibel_linear_min = -6.0
+decibel_linear_max = 6.0
 Target_Mesh = NodePath("../../L_High Gain")
 
 [node name="Right High Gain" parent="Controls" index="11" unique_id=1964382903 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("5_eg1xv")]
 transform = Transform3D(-0.7, 0, -1.0569706e-07, 0, 0.7, 0, 1.0569706e-07, 0, -0.7, 0.2607247, 0.038605843, 0.06357866)
+knob_label_key = "KEY_KNOB_EQ_HI"
+knob_memory_key = "EQ HI R"
+value_display_mode = 1
+normalized_decimal_places = 1
+decibel_linear_min = -6.0
+decibel_linear_max = 6.0
 Target_Mesh = NodePath("../../R_High Gain")
 
 [node name="Left Medium Gain" parent="Controls" index="12" unique_id=715839658 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("5_eg1xv")]
 transform = Transform3D(-0.7, 0, -1.0569706e-07, 0, 0.7, 0, 1.0569706e-07, 0, -0.7, 0.22071464, 0.038605843, 0.08877772)
+knob_label_key = "KEY_KNOB_EQ_MID"
+knob_memory_key = "EQ MID L"
+value_display_mode = 1
+normalized_decimal_places = 1
+decibel_linear_min = -6.0
+decibel_linear_max = 6.0
 Target_Mesh = NodePath("../../L_Mid Gain")
 
 [node name="Right Medium Gain" parent="Controls" index="13" unique_id=33383194 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("5_eg1xv")]
 transform = Transform3D(-0.7, 0, -1.0569706e-07, 0, 0.7, 0, 1.0569706e-07, 0, -0.7, 0.2607247, 0.038605843, 0.08877771)
+knob_label_key = "KEY_KNOB_EQ_MID"
+knob_memory_key = "EQ MID R"
+value_display_mode = 1
+normalized_decimal_places = 1
+decibel_linear_min = -6.0
+decibel_linear_max = 6.0
 Target_Mesh = NodePath("../../R_Mid Gain")
 
 [node name="Left Low Gain" parent="Controls" index="14" unique_id=2033031456 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("5_eg1xv")]
 transform = Transform3D(-0.7, 0, -1.0569706e-07, 0, 0.7, 0, 1.0569706e-07, 0, -0.7, 0.22071464, 0.038605843, 0.11397676)
+knob_label_key = "KEY_KNOB_EQ_LOW"
+knob_memory_key = "EQ LOW L"
+value_display_mode = 1
+normalized_decimal_places = 1
+decibel_linear_min = -6.0
+decibel_linear_max = 6.0
 Target_Mesh = NodePath("../../L_Low Gain")
 
 [node name="Right Low Gain" parent="Controls" index="15" unique_id=1696461623 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("5_eg1xv")]
 transform = Transform3D(-0.7, 0, -1.0569706e-07, 0, 0.7, 0, 1.0569706e-07, 0, -0.7, 0.2607247, 0.038605843, 0.11397676)
+knob_label_key = "KEY_KNOB_EQ_LOW"
+knob_memory_key = "EQ LOW R"
+value_display_mode = 1
+normalized_decimal_places = 1
+decibel_linear_min = -6.0
+decibel_linear_max = 6.0
 Target_Mesh = NodePath("../../R_Low Gain")
 
 [node name="Left Colour FX" parent="Controls" index="16" unique_id=1746038056 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("5_eg1xv")]
 transform = Transform3D(-0.85, 0, -1.2834644e-07, 0, 0.85, 0, 1.2834644e-07, 0, -0.85, 0.22071464, 0.038605843, 0.13982153)
+knob_label_key = "KEY_KNOB_CFX"
+knob_memory_key = "CFX L"
 Target_Mesh = NodePath("../../L_Sound Colour FX (Smart CFX)")
 
 [node name="Right Colour FX" parent="Controls" index="17" unique_id=1955597727 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("5_eg1xv")]
 transform = Transform3D(-0.7, 0, -1.0569706e-07, 0, 0.7, 0, 1.0569706e-07, 0, -0.7, 0.26072466, 0.038605843, 0.13982153)
+knob_label_key = "KEY_KNOB_CFX"
+knob_memory_key = "CFX R"
 Target_Mesh = NodePath("../../R_Sound Colour FX (Smart CFX)")
 
 [node name="Left_BeatSync" parent="Controls" index="18" unique_id=180992908 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("3_pj43g")]
@@ -158,6 +210,8 @@ Target_Mesh = NodePath("../../R_Cue loop advance")
 
 [node name="Beat FX" parent="Controls" index="30" unique_id=1829892089 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("5_eg1xv")]
 transform = Transform3D(-1, 0, -1.509958e-07, 0, 1, 0, 1.509958e-07, 0, -1, 0.2979233, 0.038605843, 0.19556488)
+knob_label_key = "KEY_KNOB_BEAT_FX_PARAM"
+knob_memory_key = "BEAT FX AMOUNT"
 Target_Mesh = NodePath("../../Beat FX Parameter")
 
 [node name="Crossfade" parent="Controls" index="31" unique_id=1967443421 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("3_ic1ra")]
@@ -167,6 +221,10 @@ Target_Mesh = NodePath("../../Crossfade Slider")
 [node name="Master Volume" parent="Controls" index="32" unique_id=436933577 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("5_eg1xv")]
 transform = Transform3D(-0.99999994, 0, -8.742277e-08, 0, 0.99999994, 0, 8.742277e-08, 0, -0.99999994, 0.2977116, 0.038605843, 0.03848871)
 knob_label_key = "KEY_KNOB_MASTER"
+knob_memory_key = "MASTER LEVEL"
+value_display_mode = 1
+decibel_linear_min = -6.0
+decibel_linear_max = 6.0
 Target_Mesh = NodePath("../../Master Volume")
 
 [node name="Mic Level" parent="Controls" index="33" unique_id=103727725 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("5_eg1xv")]

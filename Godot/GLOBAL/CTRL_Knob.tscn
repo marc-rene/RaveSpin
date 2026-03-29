@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://bipqrqt7kgspn" path="res://Scripts/Highlight_Mesh_Knob.gd" id="1_2lspa"]
 [ext_resource type="Material" uid="uid://d18y5golid0sq" path="res://Art/Materials/M_Item_Hovered.tres" id="2_nx18d"]
+[ext_resource type="FontFile" uid="uid://di6oaehdwb84i" path="res://Art/Fonts/FONT_Roboto.ttf" id="3_nlhk3"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_minsn"]
 height = 0.05
@@ -60,13 +61,14 @@ debug_color = Color(0, 0.60038817, 0.70000815, 1)
 
 [node name="Label3D" type="Label3D" parent="Slider Spawn Point" unique_id=188094012]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 0.333, 0, 0.005836487, 0.04540357)
+pixel_size = 0.0005
 billboard = 1
-alpha_cut = 1
 texture_filter = 0
-modulate = Color(0.9137255, 0.30980393, 0.21568628, 1)
-outline_modulate = Color(0, 0, 0, 0)
-font_size = 11
-outline_size = 0
+modulate = Color(0.26666668, 0.73333335, 0.6431373, 1)
+outline_modulate = Color(0.9137255, 0.30980393, 0.21568628, 1)
+font = ExtResource("3_nlhk3")
+font_size = 60
+outline_size = 4
 
 [connection signal="area_entered" from="Highlight" to="." method="_on_BASE_highlight_area_entered"]
 [connection signal="area_exited" from="Highlight" to="." method="_on_BASE_highlight_area_exited"]

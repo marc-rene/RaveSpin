@@ -405,7 +405,8 @@ func _update_knob_value_label() -> void:
 
 func _get_formatted_value_text() -> String:
     if value_display_mode == E_Knob_Value_Display_Mode.DECIBEL:
-        var linear_value: float = remap(Value, 0.0, 1.0, decibel_linear_min, decibel_linear_max)
-        var decibel_value: float = linear_to_db(linear_value)
-        return str("%0.*f dB" % [decibel_decimal_places, decibel_value])
+        #var linear_value: float = linear_to_db(Value)
+        var decibel_value: float = linear_to_db(remap(Value, 0,1,0.001, 2))
+        
+        return str("%0.*f dB" % [decibel_decimal_places, clampf(decibel_value, BUS_MANAGER.EQ_DB_MIN, BUS_MANAGER.EQ_DB_MAX)])
     return str("%0.*f" % [normalized_decimal_places, Value])
