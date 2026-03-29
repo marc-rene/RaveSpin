@@ -3,16 +3,18 @@ class_name Slider_Control
 
 enum E_Slider_Mode
 {
-    NORMAL,
-    KNOB_POPUP
+    NORMAL = 2,
+    KNOB_POPUP = 5
 }
+
+
 
 var active = false
 var hand_ref : Area3D
 var starting_pos : Vector3
-@export var Value = 0.5
-@export var snap_to_middle_tolerance = 0.1
-@export var slider_mode: E_Slider_Mode = E_Slider_Mode.NORMAL
+@export var Value : float# = 0.5
+@export var snap_to_middle_tolerance = 0.05
+@export var slider_mode: E_Slider_Mode = E_Slider_Mode.KNOB_POPUP
 @export var popup_rail_radius_meters: float = 0.005
 @export var popup_handle_radius_meters: float = 0.01
 @export var popup_handle_height_meters: float = 0.01
@@ -30,6 +32,10 @@ var _time_since_interaction : float = 0.0
 var _popup_visual_root: Node3D = null
 var _popup_rail_mesh_instance: MeshInstance3D = null
 var _popup_handle_mesh_instance: MeshInstance3D = null
+@export var popup_drag_start_deadzone_meters: float = 0.012
+var _popup_entry_anchor_local_z: float = 0.0
+var _popup_has_entry_anchor: bool = false
+var _popup_drag_is_armed: bool = false
 
 func _ready() -> void:
     super._ready()
@@ -62,33 +68,49 @@ func Reset_Runtime_State() -> void:
     active = false
     hand_ref = null
     fully_exited = true
+    _popup_has_entry_anchor = false
+    _popup_drag_is_armed = false
     HighLight(E_ActivationStates.Exited)
     
     
 func _on_activation_area_entered(area: Area3D) -> void:
-    if (Utility.is_all_ready()):
-        if area is Player_Finger:
-            var source_finger: Player_Finger = area as Player_Finger
-            if not _can_activate_from_area(source_finger):
-                HighLight(E_ActivationStates.InvalidPose)
-                return
-            (area as Player_Finger).notify_entered_slider()
-        active = true
-        hand_ref = area
-        if Target_Mesh != null:
-            starting_pos = Target_Mesh.position
-        HighLight(E_ActivationStates.Pressed)
-        if fully_exited:
-            HighLight(E_ActivationStates.Exited)
-        elif active == false:
-            HighLight(E_ActivationStates.Hoovered)
-        else:
-            pass
+    if not Utility.is_all_ready():
+        return
+    if not (area is Player_Finger):
+        return
+
+    var source_finger: Player_Finger = area as Player_Finger
+    if not _can_activate_from_area(source_finger):
+        HighLight(E_ActivationStates.InvalidPose)
+        return
+
+    source_finger.notify_entered_slider()
+    if slider_mode == E_Slider_Mode.KNOB_POPUP:
+        var local_finger_position: Vector3 = to_local(source_finger.global_position)
+        _popup_entry_anchor_local_z = local_finger_position.z
+        _popup_has_entry_anchor = true
+        _popup_drag_is_armed = false
+
+    active = true
+    hand_ref = source_finger
+    if Target_Mesh != null:
+        starting_pos = Target_Mesh.position
+    HighLight(E_ActivationStates.Pressed)
+    if fully_exited:
+        HighLight(E_ActivationStates.Exited)
+    elif active == false:
+        HighLight(E_ActivationStates.Hoovered)
+    else:
+        pass
     
 
 func _on_activation_area_exited(area: Area3D) -> void:
-    if area is Player_Finger:
-        (area as Player_Finger).notify_exited_slider()
+    if not (area is Player_Finger):
+        return
+    var source_finger: Player_Finger = area as Player_Finger
+    source_finger.notify_exited_slider()
+    if hand_ref != source_finger:
+        return
     # We only want to stop tracking the hand here.
     # Let the base highlight logic decide whether we are
     # still hovered or fully exited.
@@ -98,6 +120,12 @@ func _on_activation_area_exited(area: Area3D) -> void:
         HighLight(E_ActivationStates.Exited)
     else:
         HighLight(E_ActivationStates.Hoovered)
+    
+    if absf(0.5 - Value) < snap_to_middle_tolerance: #and slider_mode == E_Slider_Mode.NORMAL and Knob_Control.current_slider_L != self and Knob_Control.current_slider_R != self:
+        #Value = 0.5
+        #UpdateAlpha(Value)
+        pass
+
 
 func _process(delta: float) -> void:
     var max_pos = $"Highlight/Max point".position.z
@@ -116,23 +144,40 @@ func _process(delta: float) -> void:
         $Highlight/Activation.position.z = max_pos
         
     if (active and hand_ref != null and hand_pos != Vector3.ZERO):
-        activation_node.position = to_local(hand_pos)
-        activation_node.position.x = 0
-        activation_node.position.y = -0.025
-        # Clamp immediately so a hand leaving quickly (e.g. out the side) never
-        # overwrites our position with a mid-track z — that was causing snap to 0.5.
-        activation_node.position.z = clampf(activation_node.position.z, min_pos, max_pos)
-    elif absf(0.5 - Value) < snap_to_middle_tolerance:
-        Value = 0.5
-        UpdateAlpha(Value)
-
+        var local_hand_position: Vector3 = to_local(hand_pos)
+        var should_apply_drag_position: bool = true
+        if slider_mode == E_Slider_Mode.KNOB_POPUP:
+            if _popup_has_entry_anchor and not _popup_drag_is_armed:
+                var popup_movement_from_entry_meters: float = absf(local_hand_position.z - _popup_entry_anchor_local_z)
+                if popup_movement_from_entry_meters >= popup_drag_start_deadzone_meters:
+                    _popup_drag_is_armed = true
+                else:
+                    should_apply_drag_position = false
+        if should_apply_drag_position:
+            activation_node.position = local_hand_position
+            activation_node.position.x = 0
+            activation_node.position.y = -0.025
+            # Clamp immediately so a hand leaving quickly (e.g. out the side) never
+            # overwrites our position with a mid-track z — that was causing snap to 0.5.
+            activation_node.position.z = clampf(activation_node.position.z, min_pos, max_pos)
+        
+    # THIS WILL STILL FAIL SOMEHOW
+    #elif absf(0.5 - Value) < snap_to_middle_tolerance and slider_mode == E_Slider_Mode.NORMAL and Knob_Control.current_slider_L != self and Knob_Control.current_slider_R != self:
+        #Value = 0.5
+        #UpdateAlpha(Value)
+        
     if slider_mode == E_Slider_Mode.NORMAL and Target_Mesh != null:
         Target_Mesh.global_position = activation_node.global_position
+           
     _refresh_popup_visual_geometry()
-
-    var alpha = remap(activation_node.position.z, min_pos, max_pos, 0, 1)
-    #print("New_ALPHA is ", alpha)
-    Value = clampf(alpha, 0, 1)
+    
+    var should_sample_activation_value: bool = active or slider_mode == E_Slider_Mode.NORMAL
+    if should_sample_activation_value:
+        var alpha = remap(activation_node.position.z, min_pos, max_pos, 0, 1)
+        Value = clampf(alpha, 0, 1)
+    else:
+        # Keep popup slider at remembered value while idle/open.
+        UpdateAlpha(Value)
         #print("Moving Slider, min_pos: ", min_pos * 0.9, " max_pos: ", max_pos * 0.9, " Alpha = ", alpha)
         #$Highlight/Activation.global_position = Target_Mesh.global_position
 

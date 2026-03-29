@@ -156,3 +156,15 @@ KEY_CANCEL_LOOP,Cancel Loop,Cancel Loop,Cancel Loop,Cancel Loop
 KEY_CANCEL_LOOP_EXPLAIN,Delete the current loop (if any),Delete the current loop (if any),Delete the current loop (if any),Delete the current loop (if any)
 KEY_ENABLE_BEAT_SNAPPING,Enable beat snapping,Enable beat snapping,Enable beat snapping,Enable beat snapping
 KEY_ENABLE_BEAT_SNAPPING_EXPLAIN,Align loop points to beats,Align loop points to beats,Align loop points to beats,Align loop points to beats
+KEY_KNOB_NAME,Knob,Potard,旋钮,Cnap
+KEY_KNOB_TRIM,Trim,Trim,增益,Trim
+KEY_KNOB_TRIM_LEFT,Trim L,Trim G,左增益,Trim C
+KEY_KNOB_TRIM_RIGHT,Trim R,Trim D,右增益,Trim D
+KEY_KNOB_EQ_HI,EQ Hi,EQ Aigu,高频EQ,EQ Ard
+KEY_KNOB_EQ_MID,EQ Mid,EQ Méd,中频EQ,EQ Lár
+KEY_KNOB_EQ_LOW,EQ Low,EQ Grave,低频EQ,EQ Íseal
+KEY_KNOB_CFX,Colour FX,Color FX,色彩FX,Dath FX
+KEY_KNOB_BEAT_FX_PARAM,Beat FX,Beat FX,节拍FX,Beat FX
+KEY_KNOB_BEAT_FX_AMOUNT,FX Amount,FX Qté,FX强度,Méid FX
+KEY_KNOB_MASTER,Master Boost,Master,主音量,Máistir
+KEY_KNOB_MIC,Mic Level, Mic NV,Mic. 电平,Mic leibhéal 

@@ -7,6 +7,12 @@ enum E_Knob_Value_Display_Mode
     DECIBEL
 }
 
+var all_good : bool = false
+
+func ok_NOW_ready(yes := true, is_left_hand:bool = true):
+    # Keep side-effect free to avoid async races.
+    all_good = yes
+
 # 0..1 normalised knob value
 @export var Value: float = 0.5
 @export var slider_spawn_tween_seconds: float = 0.12
@@ -34,6 +40,7 @@ var active = false
 
 func UpdateAlpha(new_alpha : float):
     Value = new_alpha
+    _persistent_popup_value = Value
     _remember_current_value()
 
 # Shared popup slider support
@@ -44,18 +51,20 @@ static var current_knob_L : Knob_Control = null
 static var current_knob_R : Knob_Control = null
 static var slider_closing_L: bool = false
 static var slider_closing_R: bool = false
+static var slider_opening_L: bool = false
+static var slider_opening_R: bool = false
 static var popup_slider_pool_initialized: bool = false
 static var remembered_knob_values: Dictionary = {}
 var _left_slider_far_timer_seconds: float = 0.0
 var _right_slider_far_timer_seconds: float = 0.0
 var _left_index_finger_ref: Player_Finger = null
 var _right_index_finger_ref: Player_Finger = null
+var _persistent_popup_value: float = -1.0
 
 
 func _ready() -> void:
     super._ready()
     enable_press_feedback_tween = false
-    _restore_remembered_value_if_any()
     # If you didn’t set these in the editor, default them to the current rotation
     if min_quat == Quaternion():
         min_quat = activation_area.quaternion.normalized()
@@ -66,6 +75,9 @@ func _ready() -> void:
         max_quat = activation_area.quaternion.normalized()
     else:
         max_quat = max_quat.normalized()
+    _restore_remembered_value_if_any()
+    if _persistent_popup_value < 0.0:
+        _persistent_popup_value = Value
     await get_tree().create_timer(4).timeout # TODO: Jank fix for node race condition
     _ensure_popup_slider_pool_initialized()
 
@@ -102,9 +114,12 @@ func _process(delta: float) -> void:
     # If a popup slider is currently controlling this knob,
     # drive our value from the slider instead of hand rotation.
     if current_knob_L == self and current_slider_L != null:
-        Value = clampf(current_slider_L.Value, 0.0, 1.0)
-        _remember_current_value()
+            
+        if not slider_opening_L and not slider_closing_L:
+            Value = clampf(current_slider_L.Value, 0.0, 1.0)
+            
         _update_knob_value_label()
+        
         # knob rot between min and max
         var knob_quat: Quaternion = min_quat.slerp(max_quat, Value).normalized()
         
@@ -114,12 +129,18 @@ func _process(delta: float) -> void:
             Target_Mesh.global_transform.basis = activation_area.global_transform.basis
         _update_popup_slider_distance_timeout(false, delta)
         _update_popup_slider_distance_timeout(true, delta)
+        _persistent_popup_value = Value
+        if not slider_opening_L and not slider_closing_L:
+            _remember_current_value()
         return
 
     elif current_knob_R == self and current_slider_R != null:
-        Value = clampf(current_slider_R.Value, 0.0, 1.0)
-        _remember_current_value()
+           
+        if not slider_opening_R and not slider_closing_R:
+            Value = clampf(current_slider_R.Value, 0.0, 1.0)
+            
         _update_knob_value_label()
+    
         # knob rot between min and max
         var knob_quat: Quaternion = min_quat.slerp(max_quat, Value).normalized()
         
@@ -129,6 +150,9 @@ func _process(delta: float) -> void:
             Target_Mesh.global_transform.basis = activation_area.global_transform.basis
         _update_popup_slider_distance_timeout(false, delta)
         _update_popup_slider_distance_timeout(true, delta)
+        _persistent_popup_value = Value
+        if not slider_opening_R and not slider_closing_R:
+            _remember_current_value()
         return
     else:
         $"Slider Spawn Point/Label3D".text = ""
@@ -177,41 +201,66 @@ func alpha_from_quat(q: Quaternion, q_min: Quaternion, q_max: Quaternion) -> flo
 
 
 func _show_popup_slider(use_right_slider : bool) -> void:
+    ok_NOW_ready(false, false)
     await _close_current_slider_if_other_knob(use_right_slider)
-    _ensure_popup_slider_pool_initialized()
+    
     _restore_remembered_value_if_any()
+    _ensure_popup_slider_pool_initialized()
+    var remembered_value: float = clampf(_persistent_popup_value if _persistent_popup_value >= 0.0 else Value, 0.0, 1.0)
 
     if use_right_slider:
         current_knob_R = self
+        slider_opening_R = true
+        #current_slider_R.process_mode = Node.PROCESS_MODE_DISABLED
         current_slider_R.global_transform = slider_global_spawn_node.global_transform
         current_slider_R.Target_Mesh = null
         current_slider_R.Set_Slider_Mode(Slider_Control.E_Slider_Mode.KNOB_POPUP)
-
+        current_slider_R.slider_mode = Slider_Control.E_Slider_Mode.KNOB_POPUP
+        current_slider_R.UpdateAlpha(remembered_value)
+        current_slider_R.Value = remembered_value
+        
         _set_popup_slider_active(current_slider_R, true)
         await _animate_slider_spawn(current_slider_R)
-        current_slider_R.UpdateAlpha(Value)
+        #current_slider_R.UpdateAlpha(Value)
+        #current_slider_R.Value = Value
         _update_knob_value_label()
         _right_slider_far_timer_seconds = 0.0
+        await get_tree().process_frame
+        slider_opening_R = false
+        ok_NOW_ready(true, false)
+        
     else:
         current_knob_L = self
+        slider_opening_L = true
+        #current_slider_L.process_mode = Node.PROCESS_MODE_DISABLED
         current_slider_L.global_transform = slider_global_spawn_node.global_transform
         current_slider_L.Target_Mesh = null
         current_slider_L.Set_Slider_Mode(Slider_Control.E_Slider_Mode.KNOB_POPUP)
-
+        current_slider_L.slider_mode = Slider_Control.E_Slider_Mode.KNOB_POPUP
+        current_slider_L.UpdateAlpha(remembered_value)
+        current_slider_L.Value = remembered_value
+        
         _set_popup_slider_active(current_slider_L, true)
         await _animate_slider_spawn(current_slider_L)
-        current_slider_L.UpdateAlpha(Value)
+        #current_slider_L.UpdateAlpha(Value)
+        #current_slider_L.Value = Value
         _update_knob_value_label()
         _left_slider_far_timer_seconds = 0.0
+        await get_tree().process_frame
+        slider_opening_L = false
+        ok_NOW_ready(true, true)
+    
    
 
 
 
 func _on_popup_slider_request_close(use_right_slider : bool) -> void:
+    ok_NOW_ready(false, false)
     await _request_close_popup_slider(use_right_slider)
 
 
 func _request_close_popup_slider(use_right_slider: bool) -> void:
+    ok_NOW_ready(false, false)
     if use_right_slider:
         if slider_closing_R:
             return
@@ -222,17 +271,21 @@ func _request_close_popup_slider(use_right_slider: bool) -> void:
         slider_closing_L = true
 
     if use_right_slider and current_knob_R != self:
+        slider_opening_R = false
         slider_closing_R = false
         return
     elif (use_right_slider == false) and current_knob_L != self:
+        slider_opening_L = false
         slider_closing_L = false
         return
 
     if use_right_slider and current_slider_R != null and is_instance_valid(current_slider_R):
         Value = clampf(current_slider_R.Value, 0.0, 1.0)
+        _persistent_popup_value = Value
         _remember_current_value()
     elif (use_right_slider == false) and current_slider_L != null and is_instance_valid(current_slider_L):
         Value = clampf(current_slider_L.Value, 0.0, 1.0)
+        _persistent_popup_value = Value
         _remember_current_value()
 
     if use_right_slider and current_slider_R != null and is_instance_valid(current_slider_R):
@@ -245,10 +298,12 @@ func _request_close_popup_slider(use_right_slider: bool) -> void:
     if use_right_slider:
         current_knob_R = null
         _right_slider_far_timer_seconds = 0.0
+        slider_opening_R = false
         slider_closing_R = false
     else:
         current_knob_L = null
         _left_slider_far_timer_seconds = 0.0
+        slider_opening_L = false
         slider_closing_L = false
 
 
@@ -262,6 +317,7 @@ func _close_current_slider_if_other_knob(use_right_slider: bool) -> void:
 
 
 func _animate_slider_spawn(target_slider: Slider_Control) -> void:
+    ok_NOW_ready(false, false)
     if target_slider == null:
         return
     var target_scale: Vector3 = Vector3.ONE
@@ -272,6 +328,7 @@ func _animate_slider_spawn(target_slider: Slider_Control) -> void:
 
 
 func _set_popup_slider_active(target_slider: Slider_Control, is_enabled: bool) -> void:
+    ok_NOW_ready(false, false)
     if target_slider == null:
         return
     target_slider.visible = is_enabled
@@ -300,27 +357,38 @@ func _ensure_popup_slider_pool_initialized() -> void:
         return
     if get_tree() == null or get_tree().current_scene == null:
         return
-
+    _restore_remembered_value_if_any()
     if current_slider_L == null or not is_instance_valid(current_slider_L):
         current_slider_L = SLIDER_SCENE.instantiate()
+        #current_slider_L.process_mode = Node.PROCESS_MODE_DISABLED
+        current_slider_L.set_process(false)
         current_slider_L.request_close.connect(_on_popup_slider_request_close.bind(false))
         current_slider_L.Set_Slider_Mode(Slider_Control.E_Slider_Mode.KNOB_POPUP)
         current_slider_L.Target_Mesh = null
+        current_slider_L.Value = Value
         get_tree().current_scene.add_child(current_slider_L)
+        #current_slider_L.process_mode = Node.PROCESS_MODE_DISABLED
+        current_slider_L.UpdateAlpha(Value)
         _set_popup_slider_active(current_slider_L, false)
 
     if current_slider_R == null or not is_instance_valid(current_slider_R):
         current_slider_R = SLIDER_SCENE.instantiate()
+        #current_slider_R.process_mode = Node.PROCESS_MODE_DISABLED
+        current_slider_R.set_process(false)
         current_slider_R.request_close.connect(_on_popup_slider_request_close.bind(true))
         current_slider_R.Set_Slider_Mode(Slider_Control.E_Slider_Mode.KNOB_POPUP)
         current_slider_R.Target_Mesh = null
+        current_slider_R.Value = Value
         get_tree().current_scene.add_child(current_slider_R)
+        #current_slider_R.process_mode = Node.PROCESS_MODE_DISABLED
+        current_slider_R.UpdateAlpha(Value)
         _set_popup_slider_active(current_slider_R, false)
 
     popup_slider_pool_initialized = true
 
 
 func _animate_slider_despawn(target_slider: Slider_Control) -> void:
+    ok_NOW_ready(false, false)
     if target_slider == null:
         return
     var despawn_tween: Tween = target_slider.create_tween()
@@ -371,19 +439,37 @@ func _update_popup_slider_distance_timeout(use_right_slider: bool, delta: float)
 func _get_index_finger_for_side(use_right_slider: bool) -> Player_Finger:
     if use_right_slider:
         if _right_index_finger_ref == null or not is_instance_valid(_right_index_finger_ref):
-            _right_index_finger_ref = get_tree().current_scene.find_child("Right_Index_Finger", true, false) as Player_Finger
+            _right_index_finger_ref = _find_index_finger_for_side(true)
         return _right_index_finger_ref
 
     if _left_index_finger_ref == null or not is_instance_valid(_left_index_finger_ref):
-        _left_index_finger_ref = get_tree().current_scene.find_child("Left_IndexFinger", true, false) as Player_Finger
+        _left_index_finger_ref = _find_index_finger_for_side(false)
     return _left_index_finger_ref
 
 
+func _find_index_finger_for_side(use_right_slider: bool) -> Player_Finger:
+    if get_tree() == null or get_tree().current_scene == null:
+        return null
+
+    var pending_nodes: Array[Node] = [get_tree().current_scene]
+    while pending_nodes.size() > 0:
+        var current_node: Node = pending_nodes.pop_back()
+        if current_node is Player_Finger:
+            var candidate_finger: Player_Finger = current_node as Player_Finger
+            if candidate_finger.Which_Finger == Player_Finger.E_FINGER.SECOND and candidate_finger.is_right_hand == use_right_slider:
+                return candidate_finger
+        var child_nodes: Array[Node] = current_node.get_children()
+        for child_node: Node in child_nodes:
+            pending_nodes.append(child_node)
+
+    return null
+
+
 func _get_knob_memory_id() -> String:
-    if knob_memory_key != "":
+    if not knob_memory_key.is_empty():
         return knob_memory_key
-    if knob_label_key != "":
-        return knob_label_key + "::" + name
+    if not knob_label_key.is_empty():
+        return knob_label_key + "::" + str(get_path())
     return str(get_path())
 
 
@@ -391,11 +477,15 @@ func _restore_remembered_value_if_any() -> void:
     var memory_id: String = _get_knob_memory_id()
     if remembered_knob_values.has(memory_id):
         Value = clampf(float(remembered_knob_values[memory_id]), 0.0, 1.0)
+        _persistent_popup_value = Value
 
 
 func _remember_current_value() -> void:
     var memory_id: String = _get_knob_memory_id()
-    remembered_knob_values[memory_id] = Value
+    remembered_knob_values.set(memory_id, clampf(Value, 0.0, 1.0))
+    
+    #for i in remembered_knob_values.keys():
+        #print(i + " : " + str(remembered_knob_values.get(i)))
 
 
 func _update_knob_value_label() -> void:

@@ -38,18 +38,26 @@ transform = Transform3D(0.99999994, 0, 0, 0, 0.99999994, 0, 0, 0, 0.99999994, 0,
 
 [node name="L Channel Fader" parent="Controls" index="0" unique_id=655477152 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("3_ic1ra")]
 transform = Transform3D(-1, 0, 4.5298744e-08, 0, 1, 0, -1.509958e-07, 0, -0.3, 0.22063504, 0.042000003, 0.20519964)
+Value = 0.5
+slider_mode = 2
 Target_Mesh = NodePath("../../L_Channel Fader")
 
 [node name="R Channel Fader" parent="Controls" index="1" unique_id=1404039826 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("3_ic1ra")]
 transform = Transform3D(-1, 0, 4.5298744e-08, 0, 1, 0, -1.509958e-07, 0, -0.3, 0.26073554, 0.042000003, 0.20519964)
+Value = 0.5
+slider_mode = 2
 Target_Mesh = NodePath("../../R_Channel Fader")
 
 [node name="L Tempo Adjust" parent="Controls" index="2" unique_id=1791213895 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("3_ic1ra")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 0.5, 0.14376481, 0.042000003, 0.21629128)
+Value = 0.5
+slider_mode = 2
 Target_Mesh = NodePath("../../L_Tempo Adjust")
 
 [node name="R Tempo Adjust" parent="Controls" index="3" unique_id=935990254 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("3_ic1ra")]
 transform = Transform3D(0.99999994, 0, 0, 0, 0.99999994, 0, 0, 0, 0.5, 0.4590193, 0.042000003, 0.21629128)
+Value = 0.5
+slider_mode = 2
 Target_Mesh = NodePath("../../R_Tempo Adjust")
 
 [node name="Left_Play" parent="Controls" index="4" unique_id=143429027 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("3_pj43g")]
@@ -216,6 +224,7 @@ Target_Mesh = NodePath("../../Beat FX Parameter")
 
 [node name="Crossfade" parent="Controls" index="31" unique_id=1967443421 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("3_ic1ra")]
 transform = Transform3D(-4.371139e-08, 0, 0.32, 0, 1, 0, -1, 0, -1.3987644e-08, 0.24082747, 0.042, 0.25434384)
+slider_mode = 2
 Target_Mesh = NodePath("../../Crossfade Slider")
 
 [node name="Master Volume" parent="Controls" index="32" unique_id=436933577 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("5_eg1xv")]
@@ -229,6 +238,8 @@ Target_Mesh = NodePath("../../Master Volume")
 
 [node name="Mic Level" parent="Controls" index="33" unique_id=103727725 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("5_eg1xv")]
 transform = Transform3D(-0.85, 0, -1.2834643e-07, 0, 0.85, 0, 1.2834643e-07, 0, -0.85, 0.18364322, 0.038605843, 0.0887777)
+knob_label_key = "KEY_KNOB_MIC"
+knob_memory_key = "MIC LEVEL"
 Target_Mesh = NodePath("../../Microphone Level")
 
 [node name="Left Loop Manangment UI" parent="Controls" index="34" unique_id=187553533 instance=ExtResource("6_k66ed")]

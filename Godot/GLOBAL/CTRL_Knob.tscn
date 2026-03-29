@@ -21,6 +21,8 @@ size = Vector3(0.02, 0.02, 0.03)
 
 [node name="CtrlKnob" type="Area3D" unique_id=675621963]
 script = ExtResource("1_2lspa")
+slider_far_distance_meters = 0.2
+slider_far_timeout_seconds = 3.0
 
 [node name="Highlight" type="Area3D" parent="." unique_id=1809041154]
 
@@ -60,15 +62,16 @@ shape = SubResource("BoxShape3D_nx18d")
 debug_color = Color(0, 0.60038817, 0.70000815, 1)
 
 [node name="Label3D" type="Label3D" parent="Slider Spawn Point" unique_id=188094012]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 0.333, 0, 0.005836487, 0.04540357)
-pixel_size = 0.0005
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 0.333, 0, 0.005836487, 0.064028144)
+pixel_size = 0.0003
 billboard = 1
+double_sided = false
+alpha_cut = 2
 texture_filter = 0
 modulate = Color(0.26666668, 0.73333335, 0.6431373, 1)
-outline_modulate = Color(0.9137255, 0.30980393, 0.21568628, 1)
 font = ExtResource("3_nlhk3")
-font_size = 60
-outline_size = 4
+font_size = 72
+outline_size = 3
 
 [connection signal="area_entered" from="Highlight" to="." method="_on_BASE_highlight_area_entered"]
 [connection signal="area_exited" from="Highlight" to="." method="_on_BASE_highlight_area_exited"]
