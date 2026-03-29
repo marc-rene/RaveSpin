@@ -432,12 +432,34 @@ func _ready() -> void:
      
     _on_reset_area_area_entered(null)
     _setup_jogwheel_targets()
+    _configure_knob_popup_labels()
     all_ready.emit()
     #CreateInteractableControl(btn_PausePlay_ref, E_CONTROLTYPE.BUTTON)
     if Use_Multi_threaded_looping:
         _start_loop_threads()
     if Use_Multi_Threaded_Jog_Warp:
         _start_jog_seek_threads()
+
+
+func _configure_knob_popup_labels() -> void:
+    Core_FX_Knobs_TRIM_L.knob_label_key = "KEY_KNOB_TRIM_LEFT"
+    Core_FX_Knobs_TRIM_L.knob_memory_key = "trim_left"
+    Core_FX_Knobs_TRIM_L.value_display_mode = Knob_Control.E_Knob_Value_Display_Mode.DECIBEL
+    Core_FX_Knobs_TRIM_L.decibel_linear_min = 0.001
+    Core_FX_Knobs_TRIM_L.decibel_linear_max = 2.0
+    Core_FX_Knobs_TRIM_L.decibel_decimal_places = 1
+
+    Core_FX_Knobs_TRIM_R.knob_label_key = "KEY_KNOB_TRIM_RIGHT"
+    Core_FX_Knobs_TRIM_R.knob_memory_key = "trim_right"
+    Core_FX_Knobs_TRIM_R.value_display_mode = Knob_Control.E_Knob_Value_Display_Mode.DECIBEL
+    Core_FX_Knobs_TRIM_R.decibel_linear_min = 0.001
+    Core_FX_Knobs_TRIM_R.decibel_linear_max = 2.0
+    Core_FX_Knobs_TRIM_R.decibel_decimal_places = 1
+
+    Beat_FX_Knob.knob_label_key = "KEY_KNOB_BEAT_FX_AMOUNT"
+    Beat_FX_Knob.knob_memory_key = "beat_fx_amount"
+    Beat_FX_Knob.value_display_mode = Knob_Control.E_Knob_Value_Display_Mode.NORMALIZED
+    Beat_FX_Knob.normalized_decimal_places = 2
     
 
 func _exit_tree() -> void:

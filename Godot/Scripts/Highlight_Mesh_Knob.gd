@@ -1,12 +1,25 @@
 extends "res://Scripts/Highlight_Mesh.gd"
 class_name Knob_Control
 
+enum E_Knob_Value_Display_Mode
+{
+    NORMALIZED,
+    DECIBEL
+}
+
 # 0..1 normalised knob value
 @export var Value: float = 0.5
 @export var slider_spawn_tween_seconds: float = 0.12
 @export var slider_despawn_tween_seconds: float = 0.10
 @export var slider_far_distance_meters: float = 0.25
 @export var slider_far_timeout_seconds: float = 5.0
+@export var knob_label_key: String = "KEY_KNOB_NAME"
+@export var knob_memory_key: String = ""
+@export var value_display_mode: E_Knob_Value_Display_Mode = E_Knob_Value_Display_Mode.NORMALIZED
+@export var normalized_decimal_places: int = 2
+@export var decibel_decimal_places: int = 1
+@export var decibel_linear_min: float = 0.001
+@export var decibel_linear_max: float = 2.0
 
 var active = false
 # Local-space min and max rotations for the knob
@@ -21,6 +34,7 @@ var active = false
 
 func UpdateAlpha(new_alpha : float):
     Value = new_alpha
+    _remember_current_value()
 
 # Shared popup slider support
 const SLIDER_SCENE : Resource = preload("res://GLOBAL/CTRL_Slider.tscn")
@@ -31,6 +45,7 @@ static var current_knob_R : Knob_Control = null
 static var slider_closing_L: bool = false
 static var slider_closing_R: bool = false
 static var popup_slider_pool_initialized: bool = false
+static var remembered_knob_values: Dictionary = {}
 var _left_slider_far_timer_seconds: float = 0.0
 var _right_slider_far_timer_seconds: float = 0.0
 var _left_index_finger_ref: Player_Finger = null
@@ -40,6 +55,7 @@ var _right_index_finger_ref: Player_Finger = null
 func _ready() -> void:
     super._ready()
     enable_press_feedback_tween = false
+    _restore_remembered_value_if_any()
     # If you didn’t set these in the editor, default them to the current rotation
     if min_quat == Quaternion():
         min_quat = activation_area.quaternion.normalized()
@@ -87,7 +103,8 @@ func _process(delta: float) -> void:
     # drive our value from the slider instead of hand rotation.
     if current_knob_L == self and current_slider_L != null:
         Value = clampf(current_slider_L.Value, 0.0, 1.0)
-        $"Slider Spawn Point/Label3D".text = str("%.2f" % Value)
+        _remember_current_value()
+        _update_knob_value_label()
         # knob rot between min and max
         var knob_quat: Quaternion = min_quat.slerp(max_quat, Value).normalized()
         
@@ -101,7 +118,8 @@ func _process(delta: float) -> void:
 
     elif current_knob_R == self and current_slider_R != null:
         Value = clampf(current_slider_R.Value, 0.0, 1.0)
-        $"Slider Spawn Point/Label3D".text = str("%.2f" % Value)
+        _remember_current_value()
+        _update_knob_value_label()
         # knob rot between min and max
         var knob_quat: Quaternion = min_quat.slerp(max_quat, Value).normalized()
         
@@ -161,6 +179,7 @@ func alpha_from_quat(q: Quaternion, q_min: Quaternion, q_max: Quaternion) -> flo
 func _show_popup_slider(use_right_slider : bool) -> void:
     await _close_current_slider_if_other_knob(use_right_slider)
     _ensure_popup_slider_pool_initialized()
+    _restore_remembered_value_if_any()
 
     if use_right_slider:
         current_knob_R = self
@@ -171,6 +190,7 @@ func _show_popup_slider(use_right_slider : bool) -> void:
         _set_popup_slider_active(current_slider_R, true)
         await _animate_slider_spawn(current_slider_R)
         current_slider_R.UpdateAlpha(Value)
+        _update_knob_value_label()
         _right_slider_far_timer_seconds = 0.0
     else:
         current_knob_L = self
@@ -181,6 +201,7 @@ func _show_popup_slider(use_right_slider : bool) -> void:
         _set_popup_slider_active(current_slider_L, true)
         await _animate_slider_spawn(current_slider_L)
         current_slider_L.UpdateAlpha(Value)
+        _update_knob_value_label()
         _left_slider_far_timer_seconds = 0.0
    
 
@@ -206,6 +227,13 @@ func _request_close_popup_slider(use_right_slider: bool) -> void:
     elif (use_right_slider == false) and current_knob_L != self:
         slider_closing_L = false
         return
+
+    if use_right_slider and current_slider_R != null and is_instance_valid(current_slider_R):
+        Value = clampf(current_slider_R.Value, 0.0, 1.0)
+        _remember_current_value()
+    elif (use_right_slider == false) and current_slider_L != null and is_instance_valid(current_slider_L):
+        Value = clampf(current_slider_L.Value, 0.0, 1.0)
+        _remember_current_value()
 
     if use_right_slider and current_slider_R != null and is_instance_valid(current_slider_R):
         await _animate_slider_despawn(current_slider_R)
@@ -349,3 +377,35 @@ func _get_index_finger_for_side(use_right_slider: bool) -> Player_Finger:
     if _left_index_finger_ref == null or not is_instance_valid(_left_index_finger_ref):
         _left_index_finger_ref = get_tree().current_scene.find_child("Left_IndexFinger", true, false) as Player_Finger
     return _left_index_finger_ref
+
+
+func _get_knob_memory_id() -> String:
+    if knob_memory_key != "":
+        return knob_memory_key
+    if knob_label_key != "":
+        return knob_label_key + "::" + name
+    return str(get_path())
+
+
+func _restore_remembered_value_if_any() -> void:
+    var memory_id: String = _get_knob_memory_id()
+    if remembered_knob_values.has(memory_id):
+        Value = clampf(float(remembered_knob_values[memory_id]), 0.0, 1.0)
+
+
+func _remember_current_value() -> void:
+    var memory_id: String = _get_knob_memory_id()
+    remembered_knob_values[memory_id] = Value
+
+
+func _update_knob_value_label() -> void:
+    var localized_knob_name: String = tr(knob_label_key) if knob_label_key != "" else name
+    $"Slider Spawn Point/Label3D".text = localized_knob_name + ": " + _get_formatted_value_text()
+
+
+func _get_formatted_value_text() -> String:
+    if value_display_mode == E_Knob_Value_Display_Mode.DECIBEL:
+        var linear_value: float = remap(Value, 0.0, 1.0, decibel_linear_min, decibel_linear_max)
+        var decibel_value: float = linear_to_db(linear_value)
+        return str("%0.*f dB" % [decibel_decimal_places, decibel_value])
+    return str("%0.*f" % [normalized_decimal_places, Value])
