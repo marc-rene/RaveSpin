@@ -124,7 +124,8 @@ screen_size = Vector2(0.2, 0.2)
 scene = ExtResource("9_yqoip")
 viewport_size = Vector2(750, 750)
 unshaded = true
-scene_properties_keys = PackedStringArray("gd_performance_pad_manager.gd")
+scene_properties_keys = PackedStringArray("gd_performance_pad_manager.gd", "Which_track_are_we_targetting")
+Which_track_are_we_targetting = 0
 
 [node name="HandTouch" type="Node" parent="Performance Pad Manager Right" unique_id=157391506]
 script = ExtResource("5_hand")
@@ -137,9 +138,10 @@ scroll_pose_fist = false
 transform = Transform3D(1, -6.238468e-17, 9.9801465e-17, -6.238469e-17, 0.43808877, 0.8989317, -9.980147e-17, -0.89893174, 0.43808877, -0.29110116, -0.6911277, 0.55533403)
 screen_size = Vector2(0.2, 0.2)
 scene = ExtResource("9_yqoip")
-viewport_size = Vector2(750, 750)
+viewport_size = Vector2(600, 600)
 unshaded = true
-scene_properties_keys = PackedStringArray("gd_performance_pad_manager.gd")
+scene_properties_keys = PackedStringArray("gd_performance_pad_manager.gd", "Which_track_are_we_targetting")
+Which_track_are_we_targetting = 0
 
 [node name="HandTouch" type="Node" parent="Performance Pad Manager Left" unique_id=597213661]
 script = ExtResource("5_hand")

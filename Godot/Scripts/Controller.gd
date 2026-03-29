@@ -174,6 +174,93 @@ const LOOP_SEEK_COOLDOWN_MS: int = 40
 const LOOP_MIN_BEATS: float = 1.0 / 16.0
 const LOOP_MAX_BEATS: float = 128.0
 
+const PERFORMANCE_PAD_COUNT: int = 8
+const HOT_CUE_UNSET_SEC: float = -1.0
+# FLX4 manual default Beat Jump mapping:
+# pad 1/2 = -/+1 beat, 3/4 = -/+2 beats, 5/6 = -/+4 beats, 7/8 = -/+8 beats.
+const BEAT_JUMP_STEPS_BEATS: Array[float] = [-1.0, 1.0, -2.0, 2.0, -4.0, 4.0, -8.0, 8.0]
+# FLX4 manual default Key Shift mapping:
+# pads 1..8 = +4, +5, +6, +7, 0, +1, +2, +3 semitones.
+const KEY_SHIFT_STEPS_SEMITONES: Array[int] = [4, 5, 6, 7, 0, 1, 2, 3]
+const FX_SET_1_TYPES: Array[BUS_MANAGER.E_BEAT_FX_TYPE] = [
+    BUS_MANAGER.E_BEAT_FX_TYPE.DELAY,
+    BUS_MANAGER.E_BEAT_FX_TYPE.ECHO,
+    BUS_MANAGER.E_BEAT_FX_TYPE.REVERB,
+    BUS_MANAGER.E_BEAT_FX_TYPE.TRANS,
+    BUS_MANAGER.E_BEAT_FX_TYPE.FLANGER,
+    BUS_MANAGER.E_BEAT_FX_TYPE.PHASER,
+    BUS_MANAGER.E_BEAT_FX_TYPE.PITCH,
+    BUS_MANAGER.E_BEAT_FX_TYPE.CRUSH,
+]
+const FX_SET_2_TYPES: Array[BUS_MANAGER.E_BEAT_FX_TYPE] = [
+    BUS_MANAGER.E_BEAT_FX_TYPE.COMPRESSOR,
+    BUS_MANAGER.E_BEAT_FX_TYPE.LIMITER,
+    BUS_MANAGER.E_BEAT_FX_TYPE.BAND_PASS,
+    BUS_MANAGER.E_BEAT_FX_TYPE.PANNER,
+    BUS_MANAGER.E_BEAT_FX_TYPE.STEREO_ENHANCE,
+    BUS_MANAGER.E_BEAT_FX_TYPE.DISTORTION,
+    BUS_MANAGER.E_BEAT_FX_TYPE.DELAY,
+    BUS_MANAGER.E_BEAT_FX_TYPE.REVERB,
+]
+
+enum E_Performance_Pad_Mode
+{
+    HOT_CUE,
+    SAMPLER,
+    FX_SET_1,
+    FX_SET_2,
+    BEAT_JUMP,
+    KEY_SHIFT,
+}
+
+var Performance_Pad_Mode_By_Track: Array[int] = [E_Performance_Pad_Mode.HOT_CUE, E_Performance_Pad_Mode.HOT_CUE]
+var Hot_Cue_Add_Mode_By_Track: Array[bool] = [true, true]
+var Selected_FX_Set_By_Track: Array[int] = [1, 1]
+var Key_Shift_Semitones_By_Track: Array[int] = [0, 0]
+var Hot_Cue_Sec_By_Track: Array = []
+var _performance_pad_controls_by_track: Array = [[], []]
+var _performance_pad_sampler_players_by_track: Array = [[], []]
+
+static func Get_Performance_Pad_Mode(which_track: int) -> int:
+    which_track = Utility.Clamp_to_Valid_TrackID(which_track)
+    return DJ_Controller.Get_Instance().Performance_Pad_Mode_By_Track[which_track]
+
+static func Set_Performance_Pad_Mode(which_track: int, mode: int) -> void:
+    which_track = Utility.Clamp_to_Valid_TrackID(which_track)
+    mode = clampi(mode, E_Performance_Pad_Mode.HOT_CUE, E_Performance_Pad_Mode.KEY_SHIFT)
+    DJ_Controller.Get_Instance().Performance_Pad_Mode_By_Track[which_track] = mode
+    if mode == E_Performance_Pad_Mode.FX_SET_1:
+        DJ_Controller.Get_Instance().Selected_FX_Set_By_Track[which_track] = 1
+    elif mode == E_Performance_Pad_Mode.FX_SET_2:
+        DJ_Controller.Get_Instance().Selected_FX_Set_By_Track[which_track] = 2
+
+static func Get_Hot_Cue_Add_Mode(which_track: int) -> bool:
+    which_track = Utility.Clamp_to_Valid_TrackID(which_track)
+    return DJ_Controller.Get_Instance().Hot_Cue_Add_Mode_By_Track[which_track]
+
+static func Set_Hot_Cue_Add_Mode(which_track: int, add_mode_enabled: bool) -> void:
+    which_track = Utility.Clamp_to_Valid_TrackID(which_track)
+    DJ_Controller.Get_Instance().Hot_Cue_Add_Mode_By_Track[which_track] = add_mode_enabled
+
+static func Get_Selected_FX_Set(which_track: int) -> int:
+    which_track = Utility.Clamp_to_Valid_TrackID(which_track)
+    return DJ_Controller.Get_Instance().Selected_FX_Set_By_Track[which_track]
+
+static func Has_Hot_Cue(which_track: int, cue_index: int) -> bool:
+    which_track = Utility.Clamp_to_Valid_TrackID(which_track)
+    cue_index = clampi(cue_index, 0, PERFORMANCE_PAD_COUNT - 1)
+    return DJ_Controller.Get_Instance().Hot_Cue_Sec_By_Track[which_track][cue_index] >= 0.0
+
+static func Get_Hot_Cue_Sec(which_track: int, cue_index: int) -> float:
+    which_track = Utility.Clamp_to_Valid_TrackID(which_track)
+    cue_index = clampi(cue_index, 0, PERFORMANCE_PAD_COUNT - 1)
+    return DJ_Controller.Get_Instance().Hot_Cue_Sec_By_Track[which_track][cue_index]
+
+static func Clear_All_Hot_Cues(which_track: int) -> void:
+    which_track = Utility.Clamp_to_Valid_TrackID(which_track)
+    for cue_index: int in range(PERFORMANCE_PAD_COUNT):
+        DJ_Controller.Get_Instance().Hot_Cue_Sec_By_Track[which_track][cue_index] = HOT_CUE_UNSET_SEC
+
 static func Is_Loop_Enabled(which_track: int) -> bool:
     which_track = Utility.Clamp_to_Valid_TrackID(which_track)
     return DJ_Controller.Get_Instance().Loop_Enabled[which_track]
@@ -209,6 +296,149 @@ static func Clear_Loop(which_track: int) -> void:
     inst.Loop_Start_Armed[which_track] = false
     inst.Loop_End_Armed[which_track] = false
 
+
+func _setup_performance_pad_defaults() -> void:
+    Hot_Cue_Sec_By_Track.clear()
+    for which_track: int in range(0, 2):
+        var cue_slots: Array[float] = []
+        cue_slots.resize(PERFORMANCE_PAD_COUNT)
+        for cue_index: int in range(PERFORMANCE_PAD_COUNT):
+            cue_slots[cue_index] = HOT_CUE_UNSET_SEC
+        Hot_Cue_Sec_By_Track.append(cue_slots)
+
+    Performance_Pad_Mode_By_Track = [E_Performance_Pad_Mode.HOT_CUE, E_Performance_Pad_Mode.HOT_CUE]
+    Hot_Cue_Add_Mode_By_Track = [true, true]
+    Selected_FX_Set_By_Track = [1, 1]
+    Key_Shift_Semitones_By_Track = [0, 0]
+    _performance_pad_controls_by_track = [[], []]
+    _performance_pad_sampler_players_by_track = [[], []]
+
+
+func _setup_performance_pad_nodes_and_signals() -> void:
+    var left_group: Node = get_node_or_null("Controls/Performance Pads Left")
+    var right_group: Node = get_node_or_null("Controls/Performance Pads Right")
+
+    _cache_and_connect_performance_pads_for_track(0, left_group)
+    _cache_and_connect_performance_pads_for_track(1, right_group)
+
+    var legacy_left_pad_1: Base_Control = get_node_or_null("Controls/Performance Pads Left/Left Pad 1_A")
+    if legacy_left_pad_1 != null:
+        var legacy_callable := Callable(self, "_on_left_play_on_activated")
+        if legacy_left_pad_1.is_connected("on_activated", legacy_callable):
+            legacy_left_pad_1.disconnect("on_activated", legacy_callable)
+
+
+func _cache_and_connect_performance_pads_for_track(which_track: int, pad_group: Node) -> void:
+    which_track = Utility.Clamp_to_Valid_TrackID(which_track)
+    if pad_group == null:
+        return
+
+    var controls_for_track: Array[Base_Control] = []
+    var players_for_track: Array[AudioStreamPlayer] = []
+
+    for child_node: Node in pad_group.get_children():
+        var pad_control: Base_Control = child_node as Base_Control
+        if pad_control == null:
+            continue
+        controls_for_track.append(pad_control)
+
+    controls_for_track.sort_custom(func(a: Base_Control, b: Base_Control) -> bool:
+        return String(a.name).naturalnocasecmp_to(String(b.name)) < 0
+    )
+
+    for pad_index: int in range(min(PERFORMANCE_PAD_COUNT, controls_for_track.size())):
+        var pad_control: Base_Control = controls_for_track[pad_index]
+        if pad_control == null:
+            continue
+
+        var on_activated_callable := Callable(self, "_on_performance_pad_on_activated").bind(which_track, pad_index)
+        if not pad_control.is_connected("on_activated", on_activated_callable):
+            pad_control.connect("on_activated", on_activated_callable)
+
+        var sampler_player: AudioStreamPlayer = pad_control.get_node_or_null("Performance Pad Sampler StreamPlayer") as AudioStreamPlayer
+        players_for_track.append(sampler_player)
+
+    _performance_pad_controls_by_track[which_track] = controls_for_track
+    _performance_pad_sampler_players_by_track[which_track] = players_for_track
+
+
+func _on_performance_pad_on_activated(which_track: int, pad_index: int) -> void:
+    which_track = Utility.Clamp_to_Valid_TrackID(which_track)
+    pad_index = clampi(pad_index, 0, PERFORMANCE_PAD_COUNT - 1)
+
+    var selected_mode: int = Performance_Pad_Mode_By_Track[which_track]
+    match selected_mode:
+        E_Performance_Pad_Mode.HOT_CUE:
+            _performance_pad_handle_hot_cue(which_track, pad_index)
+        E_Performance_Pad_Mode.SAMPLER:
+            _performance_pad_handle_sampler(which_track, pad_index)
+        E_Performance_Pad_Mode.FX_SET_1, E_Performance_Pad_Mode.FX_SET_2:
+            _performance_pad_handle_fx_toggle(which_track, pad_index)
+        E_Performance_Pad_Mode.BEAT_JUMP:
+            _performance_pad_handle_beat_jump(which_track, pad_index)
+        E_Performance_Pad_Mode.KEY_SHIFT:
+            _performance_pad_handle_key_shift(which_track, pad_index)
+
+
+func _performance_pad_handle_hot_cue(which_track: int, pad_index: int) -> void:
+    if AudioPlayerList[which_track] == null or AudioPlayerList[which_track].stream == null:
+        return
+
+    if Hot_Cue_Add_Mode_By_Track[which_track]:
+        if Has_Hot_Cue(which_track, pad_index):
+            var cue_sec: float = Hot_Cue_Sec_By_Track[which_track][pad_index]
+            _apply_track_seek(which_track, cue_sec)
+        else:
+            Hot_Cue_Sec_By_Track[which_track][pad_index] = Utility.Return_Valid(AudioPlayerList[which_track].get_playback_position(), 0.0)
+    else:
+        Hot_Cue_Sec_By_Track[which_track][pad_index] = HOT_CUE_UNSET_SEC
+
+
+func _performance_pad_handle_sampler(which_track: int, pad_index: int) -> void:
+    var players_for_track: Array = _performance_pad_sampler_players_by_track[which_track]
+    if players_for_track.is_empty():
+        return
+    if pad_index < 0 or pad_index >= players_for_track.size():
+        return
+    var sampler_player: AudioStreamPlayer = players_for_track[pad_index] as AudioStreamPlayer
+    if sampler_player == null or sampler_player.stream == null:
+        return
+    sampler_player.play()
+
+
+func _performance_pad_handle_fx_toggle(which_track: int, pad_index: int) -> void:
+    var selected_set: int = Selected_FX_Set_By_Track[which_track]
+    var fx_list: Array[BUS_MANAGER.E_BEAT_FX_TYPE] = FX_SET_1_TYPES if selected_set == 1 else FX_SET_2_TYPES
+    if pad_index < 0 or pad_index >= fx_list.size():
+        return
+    BUS_MANAGER.toggle_beat_fx(fx_list[pad_index], which_track)
+
+
+func _performance_pad_handle_beat_jump(which_track: int, pad_index: int) -> void:
+    if AudioPlayerList[which_track] == null or AudioPlayerList[which_track].stream == null:
+        return
+
+    var beat_len_stream_sec: float = _beat_len_stream_sec(which_track)
+    if beat_len_stream_sec <= 0.0:
+        return
+
+    var jump_beats: float = BEAT_JUMP_STEPS_BEATS[pad_index]
+    var current_pos_sec: float = Utility.Return_Valid(AudioPlayerList[which_track].get_playback_position(), 0.0)
+    var stream_len_sec: float = _stream_len_sec(which_track)
+    var new_pos_sec: float = current_pos_sec + (jump_beats * beat_len_stream_sec)
+    if stream_len_sec > 0.0:
+        new_pos_sec = clampf(new_pos_sec, 0.0, maxf(0.0, stream_len_sec - 0.001))
+    _apply_track_seek(which_track, new_pos_sec)
+
+
+func _performance_pad_handle_key_shift(which_track: int, pad_index: int) -> void:
+    var semitones: int = KEY_SHIFT_STEPS_SEMITONES[pad_index]
+    Key_Shift_Semitones_By_Track[which_track] = semitones
+
+    if not BUS_MANAGER.is_beat_fx_active(BUS_MANAGER.E_BEAT_FX_TYPE.PITCH, which_track):
+        BUS_MANAGER.add_beat_fx(BUS_MANAGER.E_BEAT_FX_TYPE.PITCH, which_track)
+
+    BUS_MANAGER.Set_Pitch_Shift_Semitone_Override(which_track, semitones)
 
 func _beat_len_stream_sec(which_track: int) -> float:
     which_track = Utility.Clamp_to_Valid_TrackID(which_track)
@@ -374,6 +604,9 @@ func Loop_Extend(which_track: int) -> void:
 func LoadTrackIntoMemory(which_track : int, which_song : Song):
     which_track = Utility.Clamp_to_Valid_TrackID(which_track)
     print("Spawned Player for Track ", which_track)
+    Clear_All_Hot_Cues(which_track)
+    BUS_MANAGER.Clear_Pitch_Shift_Semitone_Override(which_track)
+    Key_Shift_Semitones_By_Track[which_track] = 0
     if which_song == null:
         AudioPlayerList[which_track].stream = null
         AudioPlayerList[which_track].stream_paused = true
@@ -425,6 +658,8 @@ func _ready() -> void:
         #LoadTrackIntoMemory(2)
         #LoadTrackIntoMemory(3)
     Controller_Instance = self
+    _setup_performance_pad_defaults()
+    _setup_performance_pad_nodes_and_signals()
     AudioPlayerList[0].stream_paused = true
     AudioPlayerList[1].stream_paused = true
     AudioPlayerList[2].stream_paused = true
@@ -1068,6 +1303,16 @@ func _on_reset_area_area_entered(area: Area3D) -> void:
     _jog_resume_after_touch[1] = false
     _jog_has_virtual_position[0] = false
     _jog_has_virtual_position[1] = false
+    Performance_Pad_Mode_By_Track[0] = E_Performance_Pad_Mode.HOT_CUE
+    Performance_Pad_Mode_By_Track[1] = E_Performance_Pad_Mode.HOT_CUE
+    Hot_Cue_Add_Mode_By_Track[0] = true
+    Hot_Cue_Add_Mode_By_Track[1] = true
+    Selected_FX_Set_By_Track[0] = 1
+    Selected_FX_Set_By_Track[1] = 1
+    Key_Shift_Semitones_By_Track[0] = 0
+    Key_Shift_Semitones_By_Track[1] = 0
+    BUS_MANAGER.Clear_Pitch_Shift_Semitone_Override(0)
+    BUS_MANAGER.Clear_Pitch_Shift_Semitone_Override(1)
 
     for child in $Controls.get_children():
         if child is Base_Control:

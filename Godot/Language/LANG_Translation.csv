@@ -168,3 +168,13 @@ KEY_KNOB_BEAT_FX_PARAM,Beat FX,Beat FX,节拍FX,Beat FX
 KEY_KNOB_BEAT_FX_AMOUNT,FX Amount,FX Qté,FX强度,Méid FX
 KEY_KNOB_MASTER,Master Boost,Master,主音量,Máistir
 KEY_KNOB_MIC,Mic Level, Mic NV,Mic. 电平,Mic leibhéal 
+KEY_ACTIVATE_HOT_CUE_MODE,Jump to Hot Cue Mode,Aller au mode Hot Cue,切换到热提示模式,Léim go mód Hot Cue
+KEY_HOT_CUE_MODE,Hot Cue Mode,Mode Hot Cue,热提示模式,Mód Hot Cue
+KEY_USE_FX_SET_1,Jump to FX Set 1,Aller au set FX 1,切换到效果组 1,Léim go FX Set 1
+KEY_USE_FX_SET_2,Jump to FX Set 2,Aller au set FX 2,切换到效果组 2,Léim go FX Set 2
+KEY_ACTIVATE_BEAT_JUMP_MODE,Jump to Beat Jump Mode,Aller au mode Beat Jump,切换到节拍跳转模式,Léim go mód Beat Jump
+KEY_BEAT_JUMP_MODE,Beat Jump Mode,Mode Beat Jump,节拍跳转模式,Mód Beat Jump
+KEY_ACTIVATE_SAMPLER_MODE,Jump to Sampler Mode,Aller au mode Sampler,切换到采样器模式,Léim go mód Sampler
+KEY_KEY_SHIFT_MODE,Key Shift Mode,Mode de décalage tonal,移调模式,Mód Aistrithe Eochrach
+KEY_PAD_ADD_CUE_POINT,Add cue point,Ajouter un point de repère,添加提示点,Cuir pointe cue leis
+KEY_PAD_DELETE_CUE_POINT,Delete cue point,Supprimer un point de repère,删除提示点,Scrios pointe cue
