@@ -170,7 +170,7 @@ func _process(delta: float) -> void:
         #UpdateAlpha(Value)
     if not active or hand_ref == null:
         label_tween = create_tween()
-        label_tween.set_ease(Tween.EASE_OUT)
+        label_tween.set_ease(Tween.EASE_IN)
         label_tween.set_trans(Tween.TRANS_BACK)
         label_tween.tween_property($Highlight/Activation/Label3D, "scale", Vector3(0.0001, 0.0001, 0.0001), 1.2)
     else:

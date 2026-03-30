@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="Song" format=3 uid="uid://bo2cc3nokf6qd"]
 
-[ext_resource type="AudioStream" uid="uid://dc63ctah0ho33" path="res://Music/Song Data/Death Grips/Exmilitary/Audio/Death Grips - Exmilitary - 9 - 5D.mp3" id="1_0tyea"]
+[ext_resource type="AudioStream" uid="uid://bm31t1nlo3g1q" path="res://Music/Song Data/Death Grips/Exmilitary/Audio/Death Grips - Exmilitary - 9 - 5D.wav" id="1_yqkxs"]
 [ext_resource type="Texture2D" uid="uid://dl3l1pm5y4g7b" path="res://Music/Song Data/Death Grips/Exmilitary/Audio/Death Grips - Exmilitary - 9 - 5D_WAVEFORM.png" id="2_v1nt2"]
 [ext_resource type="Script" uid="uid://djtjflwqyy3me" path="res://GLOBAL/Audio/Artist.gd" id="2_yqkxs"]
 [ext_resource type="Resource" uid="uid://60crt6v1xddt" path="res://Music/Artists/DeathGrips_Artist.tres" id="3_v1nt2"]
@@ -13,7 +13,7 @@ Song_Title = &"5D"
 Main_Artist = ExtResource("3_v1nt2")
 Song_Album = ExtResource("4_3xq31")
 Song_Genres = Array[int]([19, 31, 20, 30, 6])
-Audio_File = ExtResource("1_0tyea")
+Audio_File = ExtResource("1_yqkxs")
 Audio_File_Waveform = ExtResource("2_v1nt2")
 Track_BPM = 104.0
 Track_Key_Note = 10

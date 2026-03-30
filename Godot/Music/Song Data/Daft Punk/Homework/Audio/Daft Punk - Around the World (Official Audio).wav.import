@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://b3552vwry7q5y"
+path="res://.godot/imported/Daft Punk - Around the World (Official Audio).wav-26c4550f829d92eff1eefb300e59aaf4.sample"
+
+[deps]
+
+source_file="res://Music/Song Data/Daft Punk/Homework/Audio/Daft Punk - Around the World (Official Audio).wav"
+dest_files=["res://.godot/imported/Daft Punk - Around the World (Official Audio).wav-26c4550f829d92eff1eefb300e59aaf4.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

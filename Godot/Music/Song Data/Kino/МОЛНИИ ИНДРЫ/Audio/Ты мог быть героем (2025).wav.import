@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://bllr03xdbtdv7"
+path="res://.godot/imported/Ты мог быть героем (2025).wav-129114ac505e374623c7400e933034f5.sample"
+
+[deps]
+
+source_file="res://Music/Song Data/Kino/МОЛНИИ ИНДРЫ/Audio/Ты мог быть героем (2025).wav"
+dest_files=["res://.godot/imported/Ты мог быть героем (2025).wav-129114ac505e374623c7400e933034f5.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

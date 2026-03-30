@@ -67,12 +67,14 @@ func refresh_runtime_label(
     fx_variant_index: int = 0
 ) -> void:
     var new_label: String = ""
+    $Label3D.pixel_size = 0.0018
     match active_mode:
         MODE_HOT_CUE:
             var cue_letter: String = char(65 + clampi(PAD_INDEX, 0, 7))
             new_label = ("Cue " if hot_cue_add_mode else "Del ") + cue_letter
         MODE_SAMPLER:
             new_label = Sampler_Sound_Nickname if Sampler_Sound_Nickname != "" else "Samp %d" % (PAD_INDEX + 1)
+            $Label3D.pixel_size = 0.001
         MODE_FX_SET_1, MODE_FX_SET_2:
             new_label = _fx_label(fx_type, fx_variant_index)
         MODE_BEAT_JUMP:

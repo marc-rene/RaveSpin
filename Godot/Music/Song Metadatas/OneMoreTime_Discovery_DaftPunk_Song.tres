@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="Song" format=3 uid="uid://dpalh4ahjx2gs"]
 
-[ext_resource type="AudioStream" uid="uid://bxksb55rh560n" path="res://Music/Song Data/Daft Punk/Discovery/Audio/Daft Punk - One More Time (Official Audio).mp3" id="1_1ex88"]
 [ext_resource type="Script" uid="uid://djtjflwqyy3me" path="res://GLOBAL/Audio/Artist.gd" id="1_cn7fp"]
+[ext_resource type="AudioStream" uid="uid://dc6jp1l8qiw3m" path="res://Music/Song Data/Daft Punk/Discovery/Audio/Daft Punk - One More Time (Official Audio).wav" id="1_tt5dl"]
 [ext_resource type="Script" uid="uid://b5ydxvk0vbgsi" path="res://GLOBAL/Audio/Song.gd" id="2_7rn7v"]
 [ext_resource type="Texture2D" uid="uid://btwbwb25778yk" path="res://Music/Song Data/Daft Punk/Discovery/Audio/Daft Punk - One More Time (Official Audio)_WAVEFORM.png" id="2_tt5dl"]
 [ext_resource type="Resource" uid="uid://gj2xf04y1cap" path="res://Music/Artists/DaftPunk_Artist.tres" id="3_pacs6"]
@@ -12,7 +12,7 @@ script = ExtResource("2_7rn7v")
 Song_Title = &"One More Time"
 Main_Artist = ExtResource("3_pacs6")
 Song_Album = ExtResource("4_u4o2u")
-Audio_File = ExtResource("1_1ex88")
+Audio_File = ExtResource("1_tt5dl")
 Audio_File_Waveform = ExtResource("2_tt5dl")
 Track_BPM = 123.0
 Track_Key_Note = 2

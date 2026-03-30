@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="Song" format=3 uid="uid://bune2hgwolui0"]
 
+[ext_resource type="AudioStream" uid="uid://bl7i4pph5705u" path="res://Music/Song Data/Alla Pugacheva/Поднимись над суетой/Audio/Звёздное лето.wav" id="1_0c173"]
 [ext_resource type="Script" uid="uid://djtjflwqyy3me" path="res://GLOBAL/Audio/Artist.gd" id="1_ohrjl"]
-[ext_resource type="AudioStream" uid="uid://cqob2jb2ctiv3" path="res://Music/Song Data/Alla Pugacheva/Поднимись над суетой/Audio/Звёздное лето.mp3" id="1_xirw5"]
 [ext_resource type="Texture2D" uid="uid://dsa1lha4oby6t" path="res://Music/Song Data/Alla Pugacheva/Поднимись над суетой/Audio/Звёздное лето_WAVEFORM.png" id="2_0c173"]
 [ext_resource type="Script" uid="uid://b5ydxvk0vbgsi" path="res://GLOBAL/Audio/Song.gd" id="2_8txly"]
 [ext_resource type="Resource" uid="uid://b1mjetc6ucb8" path="res://Music/Artists/AllaPugacheva_Artist.tres" id="3_i3bfw"]
@@ -12,7 +12,7 @@ script = ExtResource("2_8txly")
 Song_Title = &"Starry summer (Звёздное лето)"
 Main_Artist = ExtResource("3_i3bfw")
 Song_Album = ExtResource("4_5q6j3")
-Audio_File = ExtResource("1_xirw5")
+Audio_File = ExtResource("1_0c173")
 Audio_File_Waveform = ExtResource("2_0c173")
 Track_BPM = 96.0
 Track_Key_Note = 9
