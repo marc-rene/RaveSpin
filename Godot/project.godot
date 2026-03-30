@@ -27,6 +27,7 @@ boot_splash/minimum_display_time=2000
 
 buses/default_bus_layout="uid://bic3rqdmr3ryj"
 driver/output_latency=30
+driver/enable_input=true
 buses/channel_disable_time=300.0
 
 [autoload]

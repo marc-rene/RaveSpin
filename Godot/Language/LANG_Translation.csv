@@ -178,3 +178,13 @@ KEY_ACTIVATE_SAMPLER_MODE,Jump to Sampler Mode,Aller au mode Sampler,切换到�
 KEY_KEY_SHIFT_MODE,Key Shift Mode,Mode de décalage tonal,移调模式,Mód Aistrithe Eochrach
 KEY_PAD_ADD_CUE_POINT,Add cue point,Ajouter un point de repère,添加提示点,Cuir pointe cue leis
 KEY_PAD_DELETE_CUE_POINT,Delete cue point,Supprimer un point de repère,删除提示点,Scrios pointe cue
+KEY_RECORDING_STATUS,Recording ready,Enregistrement prêt,录音就绪,Taifeadadh réidh
+KEY_START_RECORDING,Start recording,Démarrer enregistrement,开始录音,Tosaigh taifeadadh
+KEY_STOP_RECORDING,Stop recording,Arrêter enregistrement,停止录音,Stop taifeadadh
+KEY_ENABLE_MICROPHONE,Enable microphone,Activer microphone,启用麦克风,Cumasaigh micreafón
+KEY_WHERE_WILL_RECORDING_BE_SAVED_TO,Save location,Emplacement sauvegarde,保存位置,Suíomh sábhála
+KEY_RECORDING_SAVE_LOCATION,Save location,Emplacement sauvegarde,保存位置,Suíomh sábhála
+KEY_RECORDING_STARTED,Recording started,Enregistrement démarré,录音已开始,Taifeadadh tosaithe
+KEY_RECORDING_SAVING,Saving recording,Enregistrement en sauvegarde,正在保存录音,Taifeadadh á shábháil
+KEY_RECORDING_SAVED_TO,Recording saved to,Fichier enregistré dans,录音已保存到,Taifeadadh sábháilte chuig
+KEY_RECORDING_SAVE_IN_PROGRESS,Save in progress please wait,Sauvegarde en cours veuillez patienter,正在保存请稍候,Tá sábháil ar siúl fan le do thoil

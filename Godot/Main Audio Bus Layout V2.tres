@@ -1,8 +1,5 @@
 [gd_resource type="AudioBusLayout" format=3 uid="uid://bic3rqdmr3ryj"]
 
-[sub_resource type="AudioEffectRecord" id="AudioEffectRecord_hv4lm"]
-resource_name = "Record"
-
 [sub_resource type="AudioEffectAmplify" id="AudioEffectAmplify_ul6oe"]
 resource_name = "Amplify"
 
@@ -32,8 +29,6 @@ resource_name = "HighPassFilter"
 resonance = 1.0
 
 [resource]
-bus/0/effect/0/effect = SubResource("AudioEffectRecord_hv4lm")
-bus/0/effect/0/enabled = false
 bus/1/name = &"Microphone Input"
 bus/1/solo = false
 bus/1/mute = true

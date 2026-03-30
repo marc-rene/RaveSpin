@@ -325,10 +325,10 @@ knob_memory_key = "MIC LEVEL"
 Target_Mesh = NodePath("../../Microphone Level")
 
 [node name="Left Loop Manangment UI" parent="Controls" index="35" unique_id=187553533 instance=ExtResource("6_k66ed")]
-transform = Transform3D(0.99999976, 0, 0, 0, 0.7071067, 0.70710653, 0, -0.7071067, 0.70710653, 0.09, 0.07421277, -0.02900673)
-screen_size = Vector2(0.15, 0.08)
+transform = Transform3D(0.99999976, 0, 0, 0, 0.7071067, 0.70710653, 0, -0.7071067, 0.70710653, 0.09, 0.098687604, -0.05348157)
+screen_size = Vector2(0.15, 0.15)
 scene = ExtResource("7_2wmyo")
-viewport_size = Vector2(525, 280)
+viewport_size = Vector2(500, 500)
 unshaded = true
 scene_properties_keys = PackedStringArray("ui_loop_management.gd", "Which_track_are_we_targetting")
 Which_track_are_we_targetting = 0
@@ -341,10 +341,10 @@ scroll_pose_fist = false
 scroll_sensitivity = 0.3
 
 [node name="Right Loop Manangment UI" parent="Controls" index="36" unique_id=1478917854 instance=ExtResource("6_k66ed")]
-transform = Transform3D(0.99999976, 0, 0, 0, 0.7071067, 0.70710653, 0, -0.7071067, 0.70710653, 0.4, 0.07421277, -0.02900673)
-screen_size = Vector2(0.15, 0.08)
+transform = Transform3D(0.99999976, 0, 0, 0, 0.7071067, 0.70710653, 0, -0.7071067, 0.70710653, 0.4, 0.098687604, -0.05348157)
+screen_size = Vector2(0.15, 0.15)
 scene = ExtResource("7_2wmyo")
-viewport_size = Vector2(525, 280)
+viewport_size = Vector2(500, 500)
 unshaded = true
 scene_properties_keys = PackedStringArray("ui_loop_management.gd", "Which_track_are_we_targetting")
 Which_track_are_we_targetting = 1
