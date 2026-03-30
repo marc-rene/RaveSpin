@@ -323,6 +323,8 @@ func _animate_slider_spawn(target_slider: Slider_Control) -> void:
     var target_scale: Vector3 = Vector3.ONE
     target_slider.scale = Vector3(0.03, 0.03, 0.03)
     var spawn_tween: Tween = target_slider.create_tween()
+    spawn_tween.set_ease(Tween.EASE_IN_OUT)
+    spawn_tween.set_trans(Tween.TRANS_BACK)
     spawn_tween.tween_property(target_slider, "scale", target_scale, slider_spawn_tween_seconds)
     await spawn_tween.finished
 
