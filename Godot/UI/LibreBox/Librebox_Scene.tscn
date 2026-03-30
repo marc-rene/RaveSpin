@@ -105,9 +105,9 @@ scroll_pose_fist = false
 
 [node name="FX Selection" parent="." unique_id=1120781123 instance=ExtResource("1_ebwc8")]
 transform = Transform3D(1, -6.238468e-17, 9.9801465e-17, -6.238469e-17, 0.43808877, 0.8989317, -9.980147e-17, -0.89893174, 0.43808877, 0.631277, -0.71787345, 0.60990256)
-screen_size = Vector2(0.25, 0.4)
+screen_size = Vector2(0.25, 0.5)
 scene = ExtResource("8_83nvb")
-viewport_size = Vector2(750, 1200)
+viewport_size = Vector2(750, 1500)
 unshaded = true
 scene_properties_keys = PackedStringArray("fx_selection_menu.gd")
 
@@ -119,10 +119,10 @@ scroll_pose_index_pinch = false
 scroll_pose_fist = false
 
 [node name="Performance Pad Manager Right" parent="." unique_id=747871373 instance=ExtResource("1_ebwc8")]
-transform = Transform3D(1, -6.238468e-17, 9.9801465e-17, -6.238469e-17, 0.43808877, 0.8989317, -9.980147e-17, -0.89893174, 0.43808877, 0.33850116, -0.6911277, 0.55533403)
-screen_size = Vector2(0.2, 0.2)
+transform = Transform3D(1, -6.238468e-17, 9.9801465e-17, -6.238469e-17, 0.43808877, 0.8989317, -9.980147e-17, -0.89893174, 0.43808877, 0.33850116, -0.68158597, 0.535755)
+screen_size = Vector2(0.2, 0.17)
 scene = ExtResource("9_yqoip")
-viewport_size = Vector2(750, 750)
+viewport_size = Vector2(700, 595)
 unshaded = true
 scene_properties_keys = PackedStringArray("gd_performance_pad_manager.gd", "Which_track_are_we_targetting")
 Which_track_are_we_targetting = 0
@@ -135,10 +135,10 @@ scroll_pose_index_pinch = false
 scroll_pose_fist = false
 
 [node name="Performance Pad Manager Left" parent="." unique_id=871519027 instance=ExtResource("1_ebwc8")]
-transform = Transform3D(1, -6.238468e-17, 9.9801465e-17, -6.238469e-17, 0.43808877, 0.8989317, -9.980147e-17, -0.89893174, 0.43808877, -0.29110116, -0.6911277, 0.55533403)
-screen_size = Vector2(0.2, 0.2)
+transform = Transform3D(1, -6.238468e-17, 9.9801465e-17, -6.238469e-17, 0.43808877, 0.8989317, -9.980147e-17, -0.89893174, 0.43808877, -0.29110116, -0.68158597, 0.535755)
+screen_size = Vector2(0.2, 0.17)
 scene = ExtResource("9_yqoip")
-viewport_size = Vector2(600, 600)
+viewport_size = Vector2(700, 595)
 unshaded = true
 scene_properties_keys = PackedStringArray("gd_performance_pad_manager.gd", "Which_track_are_we_targetting")
 Which_track_are_we_targetting = 0
@@ -166,7 +166,7 @@ enable_double = true
 scroll_sensitivity = 0.3
 
 [node name="AllowMoreFX" parent="." unique_id=52213427 instance=ExtResource("1_ebwc8")]
-transform = Transform3D(0.870622, 1.4901161e-08, -0.49195263, 0.44216406, 0.43837115, 0.78250986, 0.21565783, -0.89879405, 0.38165557, 0.91065305, -0.70745903, 0.70684403)
+transform = Transform3D(0.870622, 1.4901161e-08, -0.49195263, 0.44216406, 0.43837115, 0.78250986, 0.21565783, -0.89879405, 0.38165557, 0.8602655, -0.6962364, 0.6838341)
 screen_size = Vector2(0.2, 0.1)
 scene = ExtResource("10_j0p6t")
 viewport_size = Vector2(400, 200)

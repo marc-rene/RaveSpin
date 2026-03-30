@@ -6,9 +6,26 @@
 [ext_resource type="PackedScene" uid="uid://dg8kwgbyu3vcf" path="res://GLOBAL/CTRL_Button.tscn" id="3_pj43g"]
 [ext_resource type="PackedScene" uid="uid://c0e0trme6fmbs" path="res://GLOBAL/CTRL_Knob.tscn" id="5_eg1xv"]
 [ext_resource type="PackedScene" uid="uid://clujaf3u776a3" path="res://addons/godot-xr-tools/objects/viewport_2d_in_3d.tscn" id="6_k66ed"]
+[ext_resource type="AudioStream" uid="uid://bkwlhf77wt6pg" path="res://Components/Controls/Performance Pads Audio/AnimeWowSoundEffect_WAV.wav" id="6_vykib"]
 [ext_resource type="PackedScene" uid="uid://ymlpxb82tf0s" path="res://UI/LibreBox/Components/Loop Management/UI_Loop Management.tscn" id="7_2wmyo"]
+[ext_resource type="AudioStream" uid="uid://c4ywulx605tav" path="res://Components/Controls/Performance Pads Audio/AnotherOne_WAV.wav" id="7_6a4pf"]
 [ext_resource type="FontFile" uid="uid://di6oaehdwb84i" path="res://Art/Fonts/FONT_Roboto.ttf" id="7_c5t0g"]
 [ext_resource type="Script" uid="uid://bnckdx4e6k3hk" path="res://Scripts/Viewport2DIn3DHandTouch.gd" id="8_2wmyo"]
+[ext_resource type="AudioStream" uid="uid://b2ksauram3qx1" path="res://Components/Controls/Performance Pads Audio/BetterOffAlone_WAV.wav" id="8_81h6x"]
+[ext_resource type="AudioStream" uid="uid://cbnlyh4rj87yr" path="res://Components/Controls/Performance Pads Audio/DjAirhornSoundEffectKingbeatz1_WAV.wav" id="9_7e3qe"]
+[ext_resource type="AudioStream" uid="uid://cw6vaxlskwp5" path="res://Components/Controls/Performance Pads Audio/LamourToujours_WAV.wav" id="10_4htee"]
+[ext_resource type="AudioStream" uid="uid://dirxkbo16dtfj" path="res://Components/Controls/Performance Pads Audio/DjCatOiiAIi_WAV.wav" id="11_0f5kv"]
+[ext_resource type="AudioStream" uid="uid://6edl0ejiokha" path="res://Components/Controls/Performance Pads Audio/OhDjango_WAV.wav" id="12_1ahak"]
+[ext_resource type="AudioStream" uid="uid://bby1beu0hqcue" path="res://Components/Controls/Performance Pads Audio/DjScratch_WAV.wav" id="13_bfvtq"]
+[ext_resource type="AudioStream" uid="uid://b75banlxfty3" path="res://Components/Controls/Performance Pads Audio/VineBoom_WAV.wav" id="18_8xpbh"]
+[ext_resource type="AudioStream" uid="uid://wx68jj2teq5w" path="res://Components/Controls/Performance Pads Audio/VengaboysBoomBoomBoomBoom_WAV.wav" id="19_0x0mi"]
+[ext_resource type="AudioStream" uid="uid://c1tju871cckkd" path="res://Components/Controls/Performance Pads Audio/UyuuuiHuaso2Weno_WAV.wav" id="20_auuyu"]
+[ext_resource type="AudioStream" uid="uid://cns328l2k5iwj" path="res://Components/Controls/Performance Pads Audio/TurnItDownForWhat_WAV.wav" id="21_abbme"]
+[ext_resource type="AudioStream" uid="uid://d24drdvkmarqw" path="res://Components/Controls/Performance Pads Audio/SoundOfThePolice_WAV.wav" id="22_0va5d"]
+[ext_resource type="AudioStream" uid="uid://b8myvds5spkyh" path="res://Components/Controls/Performance Pads Audio/SkibidiToilet_WAV.wav" id="23_wwx2u"]
+[ext_resource type="AudioStream" uid="uid://l0b5l0xroe2d" path="res://Components/Controls/Performance Pads Audio/Saxroll1_WAV.wav" id="24_ndmxk"]
+[ext_resource type="AudioStream" uid="uid://blgiwta2bju42" path="res://Components/Controls/Performance Pads Audio/Rehehehe_WAV.wav" id="25_18urt"]
+[ext_resource type="PackedScene" uid="uid://dn66qy2gbvlyp" path="res://GLOBAL/CTRL_PerformancePad.tscn" id="25_padctrl"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_left_jogwheel"]
 height = 0.03
@@ -66,77 +83,60 @@ Target_Mesh = NodePath("../../L_Play Left Track")
 
 [node name="Performance Pads Left" type="Node3D" parent="Controls" index="5" unique_id=611693304]
 
-[node name="Left Pad 1_A" parent="Controls/Performance Pads Left" index="0" unique_id=2116356022 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("3_pj43g")]
-transform = Transform3D(0.18, 0, 0, 0, 0.1, 0, 0, 0, 0.18, 0.049945205, 0.04117032, 0.22417504)
+[node name="Left Pad 1_A" parent="Controls/Performance Pads Left" index="0" unique_id=2116356022 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("25_padctrl")]
+transform = Transform3D(0.12, 0, 0, 0, 0.1, 0, 0, 0, 0.12, 0.049945205, 0.04117032, 0.22417504)
+AudioStreamSample = ExtResource("6_vykib")
+which_track_we_targetting = 0
 Target_Mesh = NodePath("../../../L_Pad 1-A")
 
-[node name="Performance Pad Sampler StreamPlayer" type="AudioStreamPlayer" parent="Controls/Performance Pads Left/Left Pad 1_A" index="2" unique_id=194974327]
-max_polyphony = 5
-bus = &"Channel 1 Input"
-playback_type = 2
-
-[node name="Left Pad 2_B" parent="Controls/Performance Pads Left" index="1" unique_id=1973218801 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("3_pj43g")]
-transform = Transform3D(0.18, 0, 0, 0, 0.1, 0, 0, 0, 0.18, 0.0721952, 0.04117032, 0.22417504)
+[node name="Left Pad 2_B" parent="Controls/Performance Pads Left" index="1" unique_id=1973218801 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("25_padctrl")]
+transform = Transform3D(0.12, 0, 0, 0, 0.1, 0, 0, 0, 0.12, 0.0721952, 0.04117032, 0.22417504)
+AudioStreamSample = ExtResource("7_6a4pf")
+which_track_we_targetting = 0
+PAD_INDEX = 1
 Target_Mesh = NodePath("../../../L_Pad 2-B")
 
-[node name="Performance Pad Sampler StreamPlayer" type="AudioStreamPlayer" parent="Controls/Performance Pads Left/Left Pad 2_B" index="2" unique_id=92259319]
-max_polyphony = 5
-bus = &"Channel 1 Input"
-playback_type = 2
-
-[node name="Left Pad 3_C" parent="Controls/Performance Pads Left" index="2" unique_id=623451987 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("3_pj43g")]
-transform = Transform3D(0.18, 0, 0, 0, 0.1, 0, 0, 0, 0.18, 0.0944452, 0.04117032, 0.22417504)
+[node name="Left Pad 3_C" parent="Controls/Performance Pads Left" index="2" unique_id=623451987 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("25_padctrl")]
+transform = Transform3D(0.12, 0, 0, 0, 0.1, 0, 0, 0, 0.12, 0.0944452, 0.04117032, 0.22417504)
+AudioStreamSample = ExtResource("8_81h6x")
+which_track_we_targetting = 0
+PAD_INDEX = 2
 Target_Mesh = NodePath("../../../L_Pad 3-C")
 
-[node name="Performance Pad Sampler StreamPlayer" type="AudioStreamPlayer" parent="Controls/Performance Pads Left/Left Pad 3_C" index="2" unique_id=446537840]
-max_polyphony = 5
-bus = &"Channel 1 Input"
-playback_type = 2
-
-[node name="Left Pad 4_D" parent="Controls/Performance Pads Left" index="3" unique_id=1437720058 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("3_pj43g")]
-transform = Transform3D(0.18, 0, 0, 0, 0.1, 0, 0, 0, 0.18, 0.116695195, 0.04117032, 0.22417504)
+[node name="Left Pad 4_D" parent="Controls/Performance Pads Left" index="3" unique_id=1437720058 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("25_padctrl")]
+transform = Transform3D(0.12, 0, 0, 0, 0.1, 0, 0, 0, 0.12, 0.116695195, 0.04117032, 0.22417504)
+AudioStreamSample = ExtResource("9_7e3qe")
+which_track_we_targetting = 0
+PAD_INDEX = 3
 Target_Mesh = NodePath("../../../L_Pad 4-D")
 
-[node name="Performance Pad Sampler StreamPlayer" type="AudioStreamPlayer" parent="Controls/Performance Pads Left/Left Pad 4_D" index="2" unique_id=137946970]
-max_polyphony = 5
-bus = &"Channel 1 Input"
-playback_type = 2
-
-[node name="Left Pad 5_E" parent="Controls/Performance Pads Left" index="4" unique_id=1058897612 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("3_pj43g")]
-transform = Transform3D(0.18, 0, 0, 0, 0.1, 0, 0, 0, 0.18, 0.049945205, 0.04117032, 0.24687503)
+[node name="Left Pad 5_E" parent="Controls/Performance Pads Left" index="4" unique_id=1058897612 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("25_padctrl")]
+transform = Transform3D(0.12, 0, 0, 0, 0.1, 0, 0, 0, 0.12, 0.049945205, 0.04117032, 0.24687503)
+AudioStreamSample = ExtResource("10_4htee")
+which_track_we_targetting = 0
+PAD_INDEX = 4
 Target_Mesh = NodePath("../../../L_Pad 5-E")
 
-[node name="Performance Pad Sampler StreamPlayer" type="AudioStreamPlayer" parent="Controls/Performance Pads Left/Left Pad 5_E" index="2" unique_id=1537689885]
-max_polyphony = 5
-bus = &"Channel 1 Input"
-playback_type = 2
-
-[node name="Left Pad 6_F" parent="Controls/Performance Pads Left" index="5" unique_id=200348967 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("3_pj43g")]
-transform = Transform3D(0.18, 0, 0, 0, 0.1, 0, 0, 0, 0.18, 0.0721952, 0.04117032, 0.24687503)
+[node name="Left Pad 6_F" parent="Controls/Performance Pads Left" index="5" unique_id=200348967 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("25_padctrl")]
+transform = Transform3D(0.12, 0, 0, 0, 0.1, 0, 0, 0, 0.12, 0.0721952, 0.04117032, 0.24687503)
+AudioStreamSample = ExtResource("11_0f5kv")
+which_track_we_targetting = 0
+PAD_INDEX = 5
 Target_Mesh = NodePath("../../../L_Pad 6-F")
 
-[node name="Performance Pad Sampler StreamPlayer" type="AudioStreamPlayer" parent="Controls/Performance Pads Left/Left Pad 6_F" index="2" unique_id=1441757299]
-max_polyphony = 5
-bus = &"Channel 1 Input"
-playback_type = 2
-
-[node name="Left Pad 7_G" parent="Controls/Performance Pads Left" index="6" unique_id=977361084 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("3_pj43g")]
-transform = Transform3D(0.18, 0, 0, 0, 0.1, 0, 0, 0, 0.18, 0.0944452, 0.04117032, 0.24687503)
+[node name="Left Pad 7_G" parent="Controls/Performance Pads Left" index="6" unique_id=977361084 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("25_padctrl")]
+transform = Transform3D(0.12, 0, 0, 0, 0.1, 0, 0, 0, 0.12, 0.0944452, 0.04117032, 0.24687503)
+AudioStreamSample = ExtResource("12_1ahak")
+which_track_we_targetting = 0
+PAD_INDEX = 6
 Target_Mesh = NodePath("../../../L_Pad 7-G")
 
-[node name="Performance Pad Sampler StreamPlayer" type="AudioStreamPlayer" parent="Controls/Performance Pads Left/Left Pad 7_G" index="2" unique_id=564455571]
-max_polyphony = 5
-bus = &"Channel 1 Input"
-playback_type = 2
-
-[node name="Left Pad 8_H" parent="Controls/Performance Pads Left" index="7" unique_id=1712035546 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("3_pj43g")]
-transform = Transform3D(0.18, 0, 0, 0, 0.1, 0, 0, 0, 0.18, 0.116695195, 0.04117032, 0.24687503)
+[node name="Left Pad 8_H" parent="Controls/Performance Pads Left" index="7" unique_id=1712035546 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("25_padctrl")]
+transform = Transform3D(0.12, 0, 0, 0, 0.1, 0, 0, 0, 0.12, 0.116695195, 0.04117032, 0.24687503)
+AudioStreamSample = ExtResource("13_bfvtq")
+which_track_we_targetting = 0
+PAD_INDEX = 7
 Target_Mesh = NodePath("../../../L_Pad 8-H")
-
-[node name="Performance Pad Sampler StreamPlayer" type="AudioStreamPlayer" parent="Controls/Performance Pads Left/Left Pad 8_H" index="2" unique_id=1651482698]
-max_polyphony = 5
-bus = &"Channel 1 Input"
-playback_type = 2
 
 [node name="Right_Play" parent="Controls" index="6" unique_id=60119450 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("3_pj43g")]
 transform = Transform3D(0.24558696, 0, 0, 0, 0.24558696, 0, 0, 0, 0.24558696, 0.33739507, 0.026096549, 0.24160239)
@@ -368,77 +368,60 @@ debug_color = Color(0.1882353, 0.8039216, 0.44313726, 0.6)
 
 [node name="Performance Pads Right" type="Node3D" parent="Controls" index="39" unique_id=1548209375]
 
-[node name="Right Pad 9_A" parent="Controls/Performance Pads Right" index="0" unique_id=892166410 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("3_pj43g")]
-transform = Transform3D(0.18, 0, 0, 0, 0.1, 0, 0, 0, 0.18, 0.36494523, 0.04117032, 0.22417504)
+[node name="Right Pad 9_A" parent="Controls/Performance Pads Right" index="0" unique_id=892166410 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("25_padctrl")]
+transform = Transform3D(0.12, 0, 0, 0, 0.1, 0, 0, 0, 0.12, 0.36494523, 0.04117032, 0.22417504)
+AudioStreamSample = ExtResource("18_8xpbh")
+which_track_we_targetting = 1
 Target_Mesh = NodePath("../../../R_Pad 9-A")
 
-[node name="Performance Pad Sampler StreamPlayer" type="AudioStreamPlayer" parent="Controls/Performance Pads Right/Right Pad 9_A" index="2" unique_id=1257235240]
-max_polyphony = 5
-bus = &"Channel 2 Input"
-playback_type = 2
-
-[node name="Right Pad 10_B" parent="Controls/Performance Pads Right" index="1" unique_id=413286720 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("3_pj43g")]
-transform = Transform3D(0.18, 0, 0, 0, 0.1, 0, 0, 0, 0.18, 0.38719523, 0.04117032, 0.22417504)
+[node name="Right Pad 10_B" parent="Controls/Performance Pads Right" index="1" unique_id=413286720 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("25_padctrl")]
+transform = Transform3D(0.12, 0, 0, 0, 0.1, 0, 0, 0, 0.12, 0.38719523, 0.04117032, 0.22417504)
+AudioStreamSample = ExtResource("19_0x0mi")
+which_track_we_targetting = 1
+PAD_INDEX = 1
 Target_Mesh = NodePath("../../../R_Pad 10-B")
 
-[node name="Performance Pad Sampler StreamPlayer" type="AudioStreamPlayer" parent="Controls/Performance Pads Right/Right Pad 10_B" index="2" unique_id=1004225544]
-max_polyphony = 5
-bus = &"Channel 2 Input"
-playback_type = 2
-
-[node name="Right Pad 11_C" parent="Controls/Performance Pads Right" index="2" unique_id=1673951484 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("3_pj43g")]
-transform = Transform3D(0.18, 0, 0, 0, 0.1, 0, 0, 0, 0.18, 0.40944523, 0.04117032, 0.22417504)
+[node name="Right Pad 11_C" parent="Controls/Performance Pads Right" index="2" unique_id=1673951484 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("25_padctrl")]
+transform = Transform3D(0.12, 0, 0, 0, 0.1, 0, 0, 0, 0.12, 0.40944523, 0.04117032, 0.22417504)
+AudioStreamSample = ExtResource("20_auuyu")
+which_track_we_targetting = 1
+PAD_INDEX = 2
 Target_Mesh = NodePath("../../../R_Pad 11-C")
 
-[node name="Performance Pad Sampler StreamPlayer" type="AudioStreamPlayer" parent="Controls/Performance Pads Right/Right Pad 11_C" index="2" unique_id=117552828]
-max_polyphony = 5
-bus = &"Channel 2 Input"
-playback_type = 2
-
-[node name="Right Pad 12_D" parent="Controls/Performance Pads Right" index="3" unique_id=702579012 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("3_pj43g")]
-transform = Transform3D(0.18, 0, 0, 0, 0.1, 0, 0, 0, 0.18, 0.43169522, 0.04117032, 0.22417504)
+[node name="Right Pad 12_D" parent="Controls/Performance Pads Right" index="3" unique_id=702579012 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("25_padctrl")]
+transform = Transform3D(0.12, 0, 0, 0, 0.1, 0, 0, 0, 0.12, 0.43169522, 0.04117032, 0.22417504)
+AudioStreamSample = ExtResource("21_abbme")
+which_track_we_targetting = 1
+PAD_INDEX = 3
 Target_Mesh = NodePath("../../../R_Pad 12-D")
 
-[node name="Performance Pad Sampler StreamPlayer" type="AudioStreamPlayer" parent="Controls/Performance Pads Right/Right Pad 12_D" index="2" unique_id=1230944288]
-max_polyphony = 5
-bus = &"Channel 2 Input"
-playback_type = 2
-
-[node name="Right Pad 13_E" parent="Controls/Performance Pads Right" index="4" unique_id=1338406251 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("3_pj43g")]
-transform = Transform3D(0.18, 0, 0, 0, 0.1, 0, 0, 0, 0.18, 0.36494523, 0.04117032, 0.24687503)
+[node name="Right Pad 13_E" parent="Controls/Performance Pads Right" index="4" unique_id=1338406251 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("25_padctrl")]
+transform = Transform3D(0.12, 0, 0, 0, 0.1, 0, 0, 0, 0.12, 0.36494523, 0.04117032, 0.24687503)
+AudioStreamSample = ExtResource("22_0va5d")
+which_track_we_targetting = 1
+PAD_INDEX = 4
 Target_Mesh = NodePath("../../../R_Pad 13-E")
 
-[node name="Performance Pad Sampler StreamPlayer" type="AudioStreamPlayer" parent="Controls/Performance Pads Right/Right Pad 13_E" index="2" unique_id=1946162248]
-max_polyphony = 5
-bus = &"Channel 2 Input"
-playback_type = 2
-
-[node name="Right Pad 14_F" parent="Controls/Performance Pads Right" index="5" unique_id=1856241783 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("3_pj43g")]
-transform = Transform3D(0.18, 0, 0, 0, 0.1, 0, 0, 0, 0.18, 0.38719523, 0.04117032, 0.24687503)
+[node name="Right Pad 14_F" parent="Controls/Performance Pads Right" index="5" unique_id=1856241783 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("25_padctrl")]
+transform = Transform3D(0.12, 0, 0, 0, 0.1, 0, 0, 0, 0.12, 0.38719523, 0.04117032, 0.24687503)
+AudioStreamSample = ExtResource("23_wwx2u")
+which_track_we_targetting = 1
+PAD_INDEX = 5
 Target_Mesh = NodePath("../../../R_Pad 14-F")
 
-[node name="Performance Pad Sampler StreamPlayer" type="AudioStreamPlayer" parent="Controls/Performance Pads Right/Right Pad 14_F" index="2" unique_id=1106092727]
-max_polyphony = 5
-bus = &"Channel 2 Input"
-playback_type = 2
-
-[node name="Right Pad 15_G" parent="Controls/Performance Pads Right" index="6" unique_id=521096894 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("3_pj43g")]
-transform = Transform3D(0.18, 0, 0, 0, 0.1, 0, 0, 0, 0.18, 0.40944523, 0.04117032, 0.24687503)
+[node name="Right Pad 15_G" parent="Controls/Performance Pads Right" index="6" unique_id=521096894 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("25_padctrl")]
+transform = Transform3D(0.12, 0, 0, 0, 0.1, 0, 0, 0, 0.12, 0.40944523, 0.04117032, 0.24687503)
+AudioStreamSample = ExtResource("24_ndmxk")
+which_track_we_targetting = 1
+PAD_INDEX = 6
 Target_Mesh = NodePath("../../../R_Pad 15-G")
 
-[node name="Performance Pad Sampler StreamPlayer" type="AudioStreamPlayer" parent="Controls/Performance Pads Right/Right Pad 15_G" index="2" unique_id=795427045]
-max_polyphony = 5
-bus = &"Channel 2 Input"
-playback_type = 2
-
-[node name="Right Pad 16_H" parent="Controls/Performance Pads Right" index="7" unique_id=1796431134 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("3_pj43g")]
-transform = Transform3D(0.18, 0, 0, 0, 0.1, 0, 0, 0, 0.18, 0.43169522, 0.04117032, 0.24687503)
+[node name="Right Pad 16_H" parent="Controls/Performance Pads Right" index="7" unique_id=1796431134 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("25_padctrl")]
+transform = Transform3D(0.12, 0, 0, 0, 0.1, 0, 0, 0, 0.12, 0.43169522, 0.04117032, 0.24687503)
+AudioStreamSample = ExtResource("25_18urt")
+which_track_we_targetting = 1
+PAD_INDEX = 7
 Target_Mesh = NodePath("../../../R_Pad 16-H")
-
-[node name="Performance Pad Sampler StreamPlayer" type="AudioStreamPlayer" parent="Controls/Performance Pads Right/Right Pad 16_H" index="2" unique_id=1411421077]
-max_polyphony = 5
-bus = &"Channel 2 Input"
-playback_type = 2
 
 [node name="LEFT Status Text" type="Label3D" parent="." index="54" unique_id=636863678]
 transform = Transform3D(0.9659256, -1.4894286e-09, 0.25881898, -0.25881898, -1.1313338e-08, 0.9659256, 1.4894287e-09, -0.99999976, -1.1313339e-08, -0.027975252, 0.017303567, 0.27337757)
@@ -527,7 +510,6 @@ outline_size = 0
 [connection signal="on_activated" from="Controls/R Tempo Adjust" to="." method="_on_RIGHT_tempo_adjust_on_activated"]
 [connection signal="on_unhovered" from="Controls/R Tempo Adjust" to="." method="_on_RIGHT_tempo_adjust_on_unhovered"]
 [connection signal="on_activated" from="Controls/Left_Play" to="." method="_on_left_play_on_activated"]
-[connection signal="on_activated" from="Controls/Performance Pads Left/Left Pad 1_A" to="." method="_on_left_play_on_activated"]
 [connection signal="on_activated" from="Controls/Right_Play" to="." method="_on_right_play_on_activated"]
 [connection signal="on_activated" from="Controls/Left_CUE" to="." method="_on_left_play_on_activated"]
 [connection signal="on_activated" from="Controls/Right_CUE" to="." method="_on_right_play_on_activated"]

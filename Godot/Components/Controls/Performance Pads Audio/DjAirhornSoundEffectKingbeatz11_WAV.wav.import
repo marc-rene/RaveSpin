@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://dd7vardj7gruu"
+path="res://.godot/imported/DjAirhornSoundEffectKingbeatz11_WAV.wav-af6c1eac902427326c9ec1d9d3caac4e.sample"
+
+[deps]
+
+source_file="res://Components/Controls/Performance Pads Audio/DjAirhornSoundEffectKingbeatz11_WAV.wav"
+dest_files=["res://.godot/imported/DjAirhornSoundEffectKingbeatz11_WAV.wav-af6c1eac902427326c9ec1d9d3caac4e.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

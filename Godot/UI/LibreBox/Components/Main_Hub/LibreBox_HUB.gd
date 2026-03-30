@@ -22,17 +22,6 @@ const M_HORIZONTAL_PAN : ShaderMaterial = preload("res://Art/Materials/UI/M_Hori
 const BEAT_PULSE_DURATION : float = 0.2
 const LINE_COLOR_WHITE : Color = Color(1.0, 1.0, 1.0, 1.0)
 const LINE_COLOR_BEAT : Color = Color(1.0, 0.2, 0.2, 1.0)
-const HOT_CUE_MARKER_WIDTH_PX: float = 2.0
-const HOT_CUE_MARKER_COLOURS: Array[Color] = [
-    Color(0.99, 0.46, 0.24, 1.0),
-    Color(0.99, 0.73, 0.21, 1.0),
-    Color(0.98, 0.93, 0.31, 1.0),
-    Color(0.53, 0.91, 0.35, 1.0),
-    Color(0.30, 0.86, 0.78, 1.0),
-    Color(0.35, 0.64, 0.98, 1.0),
-    Color(0.66, 0.47, 0.96, 1.0),
-    Color(0.94, 0.37, 0.72, 1.0),
-]
 
 #@onready var _waveform_mat_1: ShaderMaterial = %"Track 1 Waveform preview".material
 #@onready var _waveform_mat_2: ShaderMaterial = %"Track 2 Waveform preview".material
@@ -41,8 +30,6 @@ const HOT_CUE_MARKER_COLOURS: Array[Color] = [
 
 var _rhythm_1: RhythmNotifier
 var _rhythm_2: RhythmNotifier
-var _hot_cue_markers_track_1: Array[ColorRect] = []
-var _hot_cue_markers_track_2: Array[ColorRect] = []
 
 
 
@@ -90,19 +77,28 @@ func _ready() -> void:
     # gotta do this horribleness because "local to scene" did nothing for some reason
     _waveform_mat_1 = M_HORIZONTAL_PAN.duplicate()
     Track_1_waveformVis.material = _waveform_mat_1
+    _configure_hot_cue_shader_colours(_waveform_mat_1)
     
     _waveform_mat_2 = M_HORIZONTAL_PAN.duplicate()
     Track_2_waveformVis.material = _waveform_mat_2
+    _configure_hot_cue_shader_colours(_waveform_mat_2)
     
 
     $"VBoxContainer/Track 1 Container/Track 1 Card".Song_Resource = Track_1
     $"VBoxContainer/Track 2 Container/Track 2 Card".Song_Resource = Track_2
-    _create_hot_cue_markers_for_waveform(Track_1_waveformVis, _hot_cue_markers_track_1)
-    _create_hot_cue_markers_for_waveform(Track_2_waveformVis, _hot_cue_markers_track_2)
     Refresh(true)
     Refresh(false)
 
     _setup_rhythm_notifiers()
+
+
+func _configure_hot_cue_shader_colours(mat: ShaderMaterial) -> void:
+    if mat == null:
+        return
+    for cue_index: int in range(DJ_Controller.PERFORMANCE_PAD_COUNT):
+        var cue_idx: int = cue_index + 1
+        var cue_color: Color = DJ_Controller.Get_Performance_Pad_Color(cue_index)
+        mat.set_shader_parameter("hot_cue_%d_color" % cue_idx, cue_color)
 
 func _setup_rhythm_notifiers() -> void:
     await LibreBox.Get_Instance_await()
@@ -145,8 +141,8 @@ func _process(_delta: float) -> void:
 
     _update_loop_markers(0, _waveform_mat_1)
     _update_loop_markers(1, _waveform_mat_2)
-    _update_hot_cue_markers(0, Track_1_waveformVis, _hot_cue_markers_track_1, a1)
-    _update_hot_cue_markers(1, Track_2_waveformVis, _hot_cue_markers_track_2, a2)
+    _update_hot_cue_markers(0, _waveform_mat_1)
+    _update_hot_cue_markers(1, _waveform_mat_2)
 
 
 func _update_loop_markers(which_track: int, mat: ShaderMaterial) -> void:
@@ -183,53 +179,30 @@ func _update_loop_markers(which_track: int, mat: ShaderMaterial) -> void:
         mat.set_shader_parameter("loop_end_visible", 0.0)
 
 
-func _create_hot_cue_markers_for_waveform(waveform_rect: TextureRect, output_markers: Array[ColorRect]) -> void:
-    output_markers.clear()
-    if waveform_rect == null:
-        return
-    for cue_index: int in range(DJ_Controller.PERFORMANCE_PAD_COUNT):
-        var marker := ColorRect.new()
-        marker.mouse_filter = Control.MOUSE_FILTER_IGNORE
-        marker.color = HOT_CUE_MARKER_COLOURS[cue_index % HOT_CUE_MARKER_COLOURS.size()]
-        marker.visible = false
-        waveform_rect.add_child(marker)
-        output_markers.append(marker)
-
-
-func _update_hot_cue_markers(which_track: int, waveform_rect: TextureRect, markers: Array[ColorRect], playback_alpha: float) -> void:
-    if waveform_rect == null or markers.is_empty():
+func _update_hot_cue_markers(which_track: int, mat: ShaderMaterial) -> void:
+    if mat == null:
         return
 
     which_track = Utility.Clamp_to_Valid_TrackID(which_track)
     var player: AudioStreamPlayer = DJ_Controller.Get_Track_Playback_Player(which_track)
     if player == null or player.stream == null:
-        for marker: ColorRect in markers:
-            marker.visible = false
+        for cue_idx: int in range(1, DJ_Controller.PERFORMANCE_PAD_COUNT + 1):
+            mat.set_shader_parameter("hot_cue_%d_visible" % cue_idx, 0.0)
         return
 
     var stream_len_sec: float = float(player.stream.get_length())
     if stream_len_sec <= 0.001:
-        for marker: ColorRect in markers:
-            marker.visible = false
+        for cue_idx: int in range(1, DJ_Controller.PERFORMANCE_PAD_COUNT + 1):
+            mat.set_shader_parameter("hot_cue_%d_visible" % cue_idx, 0.0)
         return
 
-    var rect_size: Vector2 = waveform_rect.size
-    if rect_size.x <= 0.0 or rect_size.y <= 0.0:
-        return
-
-    for cue_index: int in range(min(markers.size(), DJ_Controller.PERFORMANCE_PAD_COUNT)):
-        var marker: ColorRect = markers[cue_index]
+    for cue_index: int in range(DJ_Controller.PERFORMANCE_PAD_COUNT):
         var cue_sec: float = DJ_Controller.Get_Hot_Cue_Sec(which_track, cue_index)
+        var cue_shader_idx: int = cue_index + 1
         if cue_sec < 0.0:
-            marker.visible = false
+            mat.set_shader_parameter("hot_cue_%d_visible" % cue_shader_idx, 0.0)
             continue
 
         var cue_alpha: float = clampf(cue_sec / stream_len_sec, 0.0, 1.0)
-        var x_norm: float = cue_alpha - playback_alpha + 0.5
-        if x_norm < 0.0 or x_norm > 1.0:
-            marker.visible = false
-            continue
-
-        marker.visible = true
-        marker.position = Vector2(x_norm * rect_size.x - (HOT_CUE_MARKER_WIDTH_PX * 0.5), 0.0)
-        marker.size = Vector2(HOT_CUE_MARKER_WIDTH_PX, rect_size.y)
+        mat.set_shader_parameter("hot_cue_%d_alpha" % cue_shader_idx, cue_alpha)
+        mat.set_shader_parameter("hot_cue_%d_visible" % cue_shader_idx, 1.0)

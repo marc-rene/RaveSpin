@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://bkwlhf77wt6pg"
+path="res://.godot/imported/AnimeWowSoundEffect_WAV.wav-fb387e572842d03e81df24bdad5501dc.sample"
+
+[deps]
+
+source_file="res://Components/Controls/Performance Pads Audio/AnimeWowSoundEffect_WAV.wav"
+dest_files=["res://.godot/imported/AnimeWowSoundEffect_WAV.wav-fb387e572842d03e81df24bdad5501dc.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

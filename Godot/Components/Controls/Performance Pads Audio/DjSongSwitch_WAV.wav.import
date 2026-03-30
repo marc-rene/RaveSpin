@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://b0p5pxj3qexxn"
+path="res://.godot/imported/DjSongSwitch_WAV.wav-4d35d9a35b0561ac0f70029cd89f47aa.sample"
+
+[deps]
+
+source_file="res://Components/Controls/Performance Pads Audio/DjSongSwitch_WAV.wav"
+dest_files=["res://.godot/imported/DjSongSwitch_WAV.wav-4d35d9a35b0561ac0f70029cd89f47aa.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

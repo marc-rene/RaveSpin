@@ -182,6 +182,16 @@ const BEAT_JUMP_STEPS_BEATS: Array[float] = [-1.0, 1.0, -2.0, 2.0, -4.0, 4.0, -8
 # FLX4 manual default Key Shift mapping:
 # pads 1..8 = +4, +5, +6, +7, 0, +1, +2, +3 semitones.
 const KEY_SHIFT_STEPS_SEMITONES: Array[int] = [4, 5, 6, 7, 0, 1, 2, 3]
+const PERFORMANCE_PAD_COLOURS: Array[Color] = [
+    Color(0.99, 0.46, 0.24, 1.0),
+    Color(0.99, 0.73, 0.21, 1.0),
+    Color(0.98, 0.93, 0.31, 1.0),
+    Color(0.53, 0.91, 0.35, 1.0),
+    Color(0.30, 0.86, 0.78, 1.0),
+    Color(0.35, 0.64, 0.98, 1.0),
+    Color(0.66, 0.47, 0.96, 1.0),
+    Color(0.94, 0.37, 0.72, 1.0),
+]
 const FX_SET_1_TYPES: Array[BUS_MANAGER.E_BEAT_FX_TYPE] = [
     BUS_MANAGER.E_BEAT_FX_TYPE.DELAY,
     BUS_MANAGER.E_BEAT_FX_TYPE.ECHO,
@@ -220,6 +230,8 @@ var Key_Shift_Semitones_By_Track: Array[int] = [0, 0]
 var Hot_Cue_Sec_By_Track: Array = []
 var _performance_pad_controls_by_track: Array = [[], []]
 var _performance_pad_sampler_players_by_track: Array = [[], []]
+var _performance_pad_pulse_materials_by_track: Array = [[], []]
+var _performance_pad_pulse_time: float = 0.0
 
 static func Get_Performance_Pad_Mode(which_track: int) -> int:
     which_track = Utility.Clamp_to_Valid_TrackID(which_track)
@@ -260,6 +272,11 @@ static func Clear_All_Hot_Cues(which_track: int) -> void:
     which_track = Utility.Clamp_to_Valid_TrackID(which_track)
     for cue_index: int in range(PERFORMANCE_PAD_COUNT):
         DJ_Controller.Get_Instance().Hot_Cue_Sec_By_Track[which_track][cue_index] = HOT_CUE_UNSET_SEC
+
+
+static func Get_Performance_Pad_Color(pad_index: int) -> Color:
+    pad_index = clampi(pad_index, 0, PERFORMANCE_PAD_COLOURS.size() - 1)
+    return PERFORMANCE_PAD_COLOURS[pad_index]
 
 static func Is_Loop_Enabled(which_track: int) -> bool:
     which_track = Utility.Clamp_to_Valid_TrackID(which_track)
@@ -312,6 +329,8 @@ func _setup_performance_pad_defaults() -> void:
     Key_Shift_Semitones_By_Track = [0, 0]
     _performance_pad_controls_by_track = [[], []]
     _performance_pad_sampler_players_by_track = [[], []]
+    _performance_pad_pulse_materials_by_track = [[], []]
+    _performance_pad_pulse_time = 0.0
 
 
 func _setup_performance_pad_nodes_and_signals() -> void:
@@ -321,11 +340,6 @@ func _setup_performance_pad_nodes_and_signals() -> void:
     _cache_and_connect_performance_pads_for_track(0, left_group)
     _cache_and_connect_performance_pads_for_track(1, right_group)
 
-    var legacy_left_pad_1: Base_Control = get_node_or_null("Controls/Performance Pads Left/Left Pad 1_A")
-    if legacy_left_pad_1 != null:
-        var legacy_callable := Callable(self, "_on_left_play_on_activated")
-        if legacy_left_pad_1.is_connected("on_activated", legacy_callable):
-            legacy_left_pad_1.disconnect("on_activated", legacy_callable)
 
 
 func _cache_and_connect_performance_pads_for_track(which_track: int, pad_group: Node) -> void:
@@ -335,6 +349,7 @@ func _cache_and_connect_performance_pads_for_track(which_track: int, pad_group: 
 
     var controls_for_track: Array[Base_Control] = []
     var players_for_track: Array[AudioStreamPlayer] = []
+    var pulse_materials_for_track: Array[StandardMaterial3D] = []
 
     for child_node: Node in pad_group.get_children():
         var pad_control: Base_Control = child_node as Base_Control
@@ -350,16 +365,33 @@ func _cache_and_connect_performance_pads_for_track(which_track: int, pad_group: 
         var pad_control: Base_Control = controls_for_track[pad_index]
         if pad_control == null:
             continue
+        var perf_pad_control: Performance_Pad_Control = pad_control as Performance_Pad_Control
+        if perf_pad_control != null:
+            perf_pad_control.PAD_INDEX = pad_index
+            perf_pad_control.which_track_we_targetting = which_track
 
         var on_activated_callable := Callable(self, "_on_performance_pad_on_activated").bind(which_track, pad_index)
         if not pad_control.is_connected("on_activated", on_activated_callable):
             pad_control.connect("on_activated", on_activated_callable)
 
-        var sampler_player: AudioStreamPlayer = pad_control.get_node_or_null("Performance Pad Sampler StreamPlayer") as AudioStreamPlayer
+        var sampler_player: AudioStreamPlayer = pad_control.get_sampler_player()
+        if not sampler_player:
+            sampler_player = pad_control.get_node_or_null("AudioStreamPlayer") as AudioStreamPlayer
+        
+        if sampler_player == null:
+            sampler_player = pad_control.get_node_or_null("Performance Pad Sampler StreamPlayer") as AudioStreamPlayer
         players_for_track.append(sampler_player)
+
+        # TODO: Figure out someway to preload this
+        var pulse_mat : StandardMaterial3D = StandardMaterial3D.new()
+        pulse_mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+        pulse_mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+        pulse_mat.albedo_color = Color(1.0, 1.0, 1.0, 0.0)
+        pulse_materials_for_track.append(pulse_mat)
 
     _performance_pad_controls_by_track[which_track] = controls_for_track
     _performance_pad_sampler_players_by_track[which_track] = players_for_track
+    _performance_pad_pulse_materials_by_track[which_track] = pulse_materials_for_track
 
 
 func _on_performance_pad_on_activated(which_track: int, pad_index: int) -> void:
@@ -439,6 +471,78 @@ func _performance_pad_handle_key_shift(which_track: int, pad_index: int) -> void
         BUS_MANAGER.add_beat_fx(BUS_MANAGER.E_BEAT_FX_TYPE.PITCH, which_track)
 
     BUS_MANAGER.Set_Pitch_Shift_Semitone_Override(which_track, semitones)
+
+
+func _update_performance_pad_feedback(delta: float) -> void:
+    _performance_pad_pulse_time += delta
+    var pulse_wave: float = 0.5 + 0.5 * sin(_performance_pad_pulse_time * TAU * 0.9)
+    var pulse_alpha: float = lerpf(0.16, 0.34, pulse_wave)
+
+    for which_track: int in range(0, 2):
+        var controls_for_track: Array = _performance_pad_controls_by_track[which_track]
+        var pulse_materials_for_track: Array = _performance_pad_pulse_materials_by_track[which_track]
+        var hot_cue_mode_active: bool = Performance_Pad_Mode_By_Track[which_track] == E_Performance_Pad_Mode.HOT_CUE
+
+        for pad_index: int in range(min(PERFORMANCE_PAD_COUNT, controls_for_track.size(), pulse_materials_for_track.size())):
+            var pad_control: Base_Control = controls_for_track[pad_index] as Base_Control
+            var pulse_mat: StandardMaterial3D = pulse_materials_for_track[pad_index] as StandardMaterial3D
+            if pad_control == null or pulse_mat == null or pad_control.Target_Mesh == null:
+                continue
+
+            var should_pulse: bool = hot_cue_mode_active and Has_Hot_Cue(which_track, pad_index)
+            if should_pulse and pad_control.fully_exited:
+                var pad_color: Color = Get_Performance_Pad_Color(pad_index)
+                pulse_mat.albedo_color = Color(pad_color.r, pad_color.g, pad_color.b, pulse_alpha)
+                pad_control.Target_Mesh.material_overlay = pulse_mat
+            else:
+                if pad_control.Target_Mesh.material_overlay == pulse_mat:
+                    pad_control.Target_Mesh.material_overlay = null
+            _update_performance_pad_label(which_track, pad_index, pad_control)
+
+
+func _update_performance_pad_label(which_track: int, pad_index: int, pad_control: Base_Control) -> void:
+    if pad_control == null:
+        return
+
+    var perf_pad_control: Performance_Pad_Control = pad_control as Performance_Pad_Control
+    if perf_pad_control != null:
+        var mode: int = Performance_Pad_Mode_By_Track[which_track]
+        var jump_beats: float = BEAT_JUMP_STEPS_BEATS[pad_index]
+        var key_shift_semis: int = KEY_SHIFT_STEPS_SEMITONES[pad_index]
+        var fx_context: Dictionary = _get_fx_context_for_pad(which_track, pad_index)
+        perf_pad_control.refresh_runtime_label(
+            mode,
+            Hot_Cue_Add_Mode_By_Track[which_track],
+            jump_beats,
+            key_shift_semis,
+            fx_context["fx_type"],
+            fx_context["variant_index"]
+        )
+        return
+
+    var fallback_text: String = "Samp %d" % (pad_index + 1)
+    var label_3d: Label3D = pad_control.get_node_or_null("Label3D") as Label3D
+    if label_3d != null and label_3d.text != fallback_text:
+        label_3d.text = fallback_text
+
+
+func _get_fx_context_for_pad(which_track: int, pad_index: int) -> Dictionary:
+    var selected_set: int = Selected_FX_Set_By_Track[which_track]
+    var fx_list: Array[BUS_MANAGER.E_BEAT_FX_TYPE] = FX_SET_1_TYPES if selected_set == 1 else FX_SET_2_TYPES
+    if pad_index < 0 or pad_index >= fx_list.size():
+        return {"fx_type": -1, "variant_index": 0}
+
+    var fx_type: BUS_MANAGER.E_BEAT_FX_TYPE = fx_list[pad_index]
+
+    var duplicate_indices: Array[int] = []
+    for fx_idx: int in range(fx_list.size()):
+        if fx_list[fx_idx] == fx_type:
+            duplicate_indices.append(fx_idx)
+
+    var variant_index: int = 0
+    if duplicate_indices.size() > 1:
+        variant_index = duplicate_indices.find(pad_index) + 1
+    return {"fx_type": int(fx_type), "variant_index": variant_index}
 
 func _beat_len_stream_sec(which_track: int) -> float:
     which_track = Utility.Clamp_to_Valid_TrackID(which_track)
@@ -831,14 +935,13 @@ func _apply_track_seek(which_track: int, seek_seconds: float) -> void:
         
     if _jog_touch_active[which_track]:
         if Jogwheel_Enable_Audible_Scratching:
-            # Explicit play-at-position each jog sample gives audible scratch and prevents drift.
+            # Explicit play-at-position each jog sample gives audible scratch and prevents drift
             #AudioPlayerList[which_track].play(seek_seconds)
             if AudioPlayerList[which_track].stream_paused:
                 AudioPlayerList[which_track].play(seek_seconds)
             else:
                 AudioPlayerList[which_track].stream_paused = false
                 AudioPlayerList[which_track].seek(seek_seconds)
-            
             
         elif AudioPlayerList[which_track].has_stream_playback():
             AudioPlayerList[which_track].seek(seek_seconds)
@@ -1263,6 +1366,7 @@ func _physics_process(delta: float) -> void:
     BUS_MANAGER.Apply_Beat_FX_Level(1, Beat_FX_Knob.Value)
     _update_jogwheel_track(0, delta)
     _update_jogwheel_track(1, delta)
+    _update_performance_pad_feedback(delta)
 
     $"General Status".text = tr("KEY_CROSSFADE_STATUS") + ": " + str("%0.3f" % remap(Crossfade_Alpha, 0.0, 1.0, -1.0, 1.0))
     
