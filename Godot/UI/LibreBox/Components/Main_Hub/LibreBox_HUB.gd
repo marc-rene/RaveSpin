@@ -99,6 +99,7 @@ func _configure_hot_cue_shader_colours(mat: ShaderMaterial) -> void:
         var cue_idx: int = cue_index + 1
         var cue_color: Color = DJ_Controller.Get_Performance_Pad_Color(cue_index)
         mat.set_shader_parameter("hot_cue_%d_color" % cue_idx, cue_color)
+    mat.set_shader_parameter("cue_visible", 0.0)
 
 func _setup_rhythm_notifiers() -> void:
     await LibreBox.Get_Instance_await()
@@ -143,6 +144,8 @@ func _process(_delta: float) -> void:
     _update_loop_markers(1, _waveform_mat_2)
     _update_hot_cue_markers(0, _waveform_mat_1)
     _update_hot_cue_markers(1, _waveform_mat_2)
+    _update_regular_cue_marker(0, _waveform_mat_1)
+    _update_regular_cue_marker(1, _waveform_mat_2)
 
 
 func _update_loop_markers(which_track: int, mat: ShaderMaterial) -> void:
@@ -206,3 +209,28 @@ func _update_hot_cue_markers(which_track: int, mat: ShaderMaterial) -> void:
         var cue_alpha: float = clampf(cue_sec / stream_len_sec, 0.0, 1.0)
         mat.set_shader_parameter("hot_cue_%d_alpha" % cue_shader_idx, cue_alpha)
         mat.set_shader_parameter("hot_cue_%d_visible" % cue_shader_idx, 1.0)
+
+
+func _update_regular_cue_marker(which_track: int, mat: ShaderMaterial) -> void:
+    if mat == null:
+        return
+
+    which_track = Utility.Clamp_to_Valid_TrackID(which_track)
+    var player: AudioStreamPlayer = DJ_Controller.Get_Track_Playback_Player(which_track)
+    if player == null or player.stream == null:
+        mat.set_shader_parameter("cue_visible", 0.0)
+        return
+
+    if not DJ_Controller.Has_Regular_Cue(which_track):
+        mat.set_shader_parameter("cue_visible", 0.0)
+        return
+
+    var stream_len_sec: float = float(player.stream.get_length())
+    if stream_len_sec <= 0.001:
+        mat.set_shader_parameter("cue_visible", 0.0)
+        return
+
+    var cue_sec: float = DJ_Controller.Get_Regular_Cue_Sec(which_track)
+    var cue_alpha: float = clampf(cue_sec / stream_len_sec, 0.0, 1.0)
+    mat.set_shader_parameter("cue_alpha", cue_alpha)
+    mat.set_shader_parameter("cue_visible", 1.0)

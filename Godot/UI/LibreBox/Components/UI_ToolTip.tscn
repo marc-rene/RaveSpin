@@ -1,10 +1,24 @@
 [gd_scene format=3 uid="uid://28cxpignjg2r"]
 
 [ext_resource type="Texture2D" uid="uid://2cy2nto57l4j" path="res://Art/Icon/T_Idea_Dark.png" id="1_4ud02"]
-[ext_resource type="LabelSettings" uid="uid://bl11km7ja4u0h" path="res://Art/Themes/Heading.tres" id="1_b036b"]
 [ext_resource type="Theme" uid="uid://ds0dxmwlq5niw" path="res://Art/Themes/Default_Theme.tres" id="1_ox1wk"]
 [ext_resource type="Script" uid="uid://c7iaw7jw2brxh" path="res://UI/LibreBox/Components/gd_tool_tip.gd" id="2_d6p2e"]
 [ext_resource type="Material" uid="uid://c0yo4nmoxvy32" path="res://Art/Materials/UI/Emissive/Simple_Emmisive.tres" id="2_o4tip"]
+[ext_resource type="FontFile" uid="uid://di6oaehdwb84i" path="res://Art/Fonts/FONT_Roboto.ttf" id="6_d6p2e"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_o4tip"]
+line_spacing = 12.0
+paragraph_spacing = 12.0
+font = ExtResource("6_d6p2e")
+font_size = 32
+font_color = Color(0.92941177, 0.68235296, 0.28627452, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_86jvp"]
+line_spacing = 10.0
+paragraph_spacing = 10.0
+font = ExtResource("6_d6p2e")
+font_size = 36
+font_color = Color(0.9647059, 0.96862745, 0.92156863, 1)
 
 [node name="UiToolTip" type="PanelContainer" unique_id=1424792887]
 anchors_preset = 15
@@ -38,30 +52,33 @@ texture = ExtResource("1_4ud02")
 expand_mode = 3
 stretch_mode = 5
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/BoxContainer" unique_id=249495499]
+[node name="Current Tip Label" type="Label" parent="MarginContainer/VBoxContainer/BoxContainer" unique_id=249495499]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "KEY_TOOLTIP_TITLE"
-label_settings = ExtResource("1_b036b")
+label_settings = SubResource("LabelSettings_o4tip")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="TextureButton" type="Button" parent="MarginContainer/VBoxContainer/BoxContainer" unique_id=1527205250]
+[node name="DISABLE TOOLTIPS btn" type="Button" parent="MarginContainer/VBoxContainer/BoxContainer" unique_id=1527205250]
 custom_minimum_size = Vector2(60, 60)
 layout_mode = 2
 size_flags_horizontal = 8
 text = "Disable ToolTips"
 
 [node name="Actual Help Text" type="Label" parent="MarginContainer/VBoxContainer" unique_id=720312042]
+custom_minimum_size = Vector2(200, 200)
 layout_mode = 2
 size_flags_vertical = 3
+theme = ExtResource("1_ox1wk")
+text = "asdfasdfasdfasdfasdfasdfasdfasdfa"
+label_settings = SubResource("LabelSettings_86jvp")
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
 
 [node name="BoxContainer2" type="BoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1377946766]
 layout_mode = 2
-alignment = 1
 
 [node name="OK_Close Btn" type="Button" parent="MarginContainer/VBoxContainer/BoxContainer2" unique_id=913876042]
 custom_minimum_size = Vector2(80, 60)

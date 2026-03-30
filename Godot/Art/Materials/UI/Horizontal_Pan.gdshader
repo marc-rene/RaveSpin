@@ -47,6 +47,10 @@ uniform float hot_cue_5_visible : hint_range(0.0, 1.0) = 0.0;
 uniform float hot_cue_6_visible : hint_range(0.0, 1.0) = 0.0;
 uniform float hot_cue_7_visible : hint_range(0.0, 1.0) = 0.0;
 uniform float hot_cue_8_visible : hint_range(0.0, 1.0) = 0.0;
+uniform float cue_alpha : hint_range(0.0, 1.0) = 0.0;
+uniform float cue_visible : hint_range(0.0, 1.0) = 0.0;
+uniform vec4 cue_color : source_color = vec4(0.15, 0.75, 1.0, 1.0);
+uniform float cue_marker_width : hint_range(0.0, 0.02) = 0.0025;
 
 void fragment() {
     // Map rect UV so that center (0.5) == alpha on the texture
@@ -157,6 +161,15 @@ void fragment() {
         float hot_cue_x = hot_cue_8_alpha - alpha + 0.5;
         if (hot_cue_8_visible > 0.5 && hot_cue_x >= 0.0 && hot_cue_x <= 1.0 && abs(UV.x - hot_cue_x) < hot_cue_marker_width) {
             COLOR.rgb = hot_cue_8_color.rgb * final_colour.rgb;
+            COLOR.a = 1.0 - final_colour.a;
+            should_continue = false;
+        }
+    }
+
+    if (should_continue) {
+        float cue_x = cue_alpha - alpha + 0.5;
+        if (cue_visible > 0.5 && cue_x >= 0.0 && cue_x <= 1.0 && abs(UV.x - cue_x) < cue_marker_width) {
+            COLOR.rgb = cue_color.rgb * final_colour.rgb;
             COLOR.a = 1.0 - final_colour.a;
             should_continue = false;
         }

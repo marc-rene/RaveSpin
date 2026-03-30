@@ -188,3 +188,74 @@ KEY_RECORDING_STARTED,Recording started,Enregistrement démarré,录音已开始
 KEY_RECORDING_SAVING,Saving recording,Enregistrement en sauvegarde,正在保存录音,Taifeadadh á shábháil
 KEY_RECORDING_SAVED_TO,Recording saved to,Fichier enregistré dans,录音已保存到,Taifeadadh sábháilte chuig
 KEY_RECORDING_SAVE_IN_PROGRESS,Save in progress please wait,Sauvegarde en cours veuillez patienter,正在保存请稍候,Tá sábháil ar siúl fan le do thoil
+KEY_TOOLTIP_DISABLE_BUTTON,Disable tooltips,Disable tooltips,Disable tooltips,Disable tooltips
+KEY_TOOLTIP_IDLE_BODY,Hover over a control and I will explain what it does,Hover over a control and I will explain what it does,Hover over a control and I will explain what it does,Hover over a control and I will explain what it does
+KEY_TOOLTIP_NAME_L_CHANNEL_FADER,Left Channel Fader,Left Channel Fader,Left Channel Fader,Left Channel Fader
+KEY_TOOLTIP_DESC_L_CHANNEL_FADER,Controls deck one volume into the master mix,Controls deck one volume into the master mix,Controls deck one volume into the master mix,Controls deck one volume into the master mix
+KEY_TOOLTIP_NAME_R_CHANNEL_FADER,Right Channel Fader,Right Channel Fader,Right Channel Fader,Right Channel Fader
+KEY_TOOLTIP_DESC_R_CHANNEL_FADER,Controls deck two volume into the master mix,Controls deck two volume into the master mix,Controls deck two volume into the master mix,Controls deck two volume into the master mix
+KEY_TOOLTIP_NAME_L_TEMPO_ADJUST,Left Tempo Slider,Left Tempo Slider,Left Tempo Slider,Left Tempo Slider
+KEY_TOOLTIP_DESC_L_TEMPO_ADJUST,Nudges deck one tempo up or down for beat matching,Nudges deck one tempo up or down for beat matching,Nudges deck one tempo up or down for beat matching,Nudges deck one tempo up or down for beat matching
+KEY_TOOLTIP_NAME_R_TEMPO_ADJUST,Right Tempo Slider,Right Tempo Slider,Right Tempo Slider,Right Tempo Slider
+KEY_TOOLTIP_DESC_R_TEMPO_ADJUST,Nudges deck two tempo up or down for beat matching,Nudges deck two tempo up or down for beat matching,Nudges deck two tempo up or down for beat matching,Nudges deck two tempo up or down for beat matching
+KEY_TOOLTIP_NAME_LEFT_PLAY,Left Play,Left Play,Left Play,Left Play
+KEY_TOOLTIP_DESC_LEFT_PLAY,Starts or pauses deck one playback,Starts or pauses deck one playback,Starts or pauses deck one playback,Starts or pauses deck one playback
+KEY_TOOLTIP_NAME_RIGHT_PLAY,Right Play,Right Play,Right Play,Right Play
+KEY_TOOLTIP_DESC_RIGHT_PLAY,Starts or pauses deck two playback,Starts or pauses deck two playback,Starts or pauses deck two playback,Starts or pauses deck two playback
+KEY_TOOLTIP_NAME_LEFT_CUE,Left Cue,Left Cue,Left Cue,Left Cue
+KEY_TOOLTIP_DESC_LEFT_CUE,Returns deck one to its cue point for timing practice,Returns deck one to its cue point for timing practice,Returns deck one to its cue point for timing practice,Returns deck one to its cue point for timing practice
+KEY_TOOLTIP_NAME_RIGHT_CUE,Right Cue,Right Cue,Right Cue,Right Cue
+KEY_TOOLTIP_DESC_RIGHT_CUE,Returns deck two to its cue point for timing practice,Returns deck two to its cue point for timing practice,Returns deck two to its cue point for timing practice,Returns deck two to its cue point for timing practice
+KEY_TOOLTIP_NAME_LEFT_TRIM,Left Trim,Left Trim,Left Trim,Left Trim
+KEY_TOOLTIP_DESC_LEFT_TRIM,Sets deck one input gain before EQ and effects,Sets deck one input gain before EQ and effects,Sets deck one input gain before EQ and effects,Sets deck one input gain before EQ and effects
+KEY_TOOLTIP_NAME_RIGHT_TRIM,Right Trim,Right Trim,Right Trim,Right Trim
+KEY_TOOLTIP_DESC_RIGHT_TRIM,Sets deck two input gain before EQ and effects,Sets deck two input gain before EQ and effects,Sets deck two input gain before EQ and effects,Sets deck two input gain before EQ and effects
+KEY_TOOLTIP_NAME_LEFT_EQ_HIGH,Left EQ High,Left EQ High,Left EQ High,Left EQ High
+KEY_TOOLTIP_DESC_LEFT_EQ_HIGH,Adjusts deck one high frequencies and brightness,Adjusts deck one high frequencies and brightness,Adjusts deck one high frequencies and brightness,Adjusts deck one high frequencies and brightness
+KEY_TOOLTIP_NAME_RIGHT_EQ_HIGH,Right EQ High,Right EQ High,Right EQ High,Right EQ High
+KEY_TOOLTIP_DESC_RIGHT_EQ_HIGH,Adjusts deck two high frequencies and brightness,Adjusts deck two high frequencies and brightness,Adjusts deck two high frequencies and brightness,Adjusts deck two high frequencies and brightness
+KEY_TOOLTIP_NAME_LEFT_EQ_MID,Left EQ Mid,Left EQ Mid,Left EQ Mid,Left EQ Mid
+KEY_TOOLTIP_DESC_LEFT_EQ_MID,Adjusts deck one mid frequencies where vocals sit,Adjusts deck one mid frequencies where vocals sit,Adjusts deck one mid frequencies where vocals sit,Adjusts deck one mid frequencies where vocals sit
+KEY_TOOLTIP_NAME_RIGHT_EQ_MID,Right EQ Mid,Right EQ Mid,Right EQ Mid,Right EQ Mid
+KEY_TOOLTIP_DESC_RIGHT_EQ_MID,Adjusts deck two mid frequencies where vocals sit,Adjusts deck two mid frequencies where vocals sit,Adjusts deck two mid frequencies where vocals sit,Adjusts deck two mid frequencies where vocals sit
+KEY_TOOLTIP_NAME_LEFT_EQ_LOW,Left EQ Low,Left EQ Low,Left EQ Low,Left EQ Low
+KEY_TOOLTIP_DESC_LEFT_EQ_LOW,Adjusts deck one bass and low end weight,Adjusts deck one bass and low end weight,Adjusts deck one bass and low end weight,Adjusts deck one bass and low end weight
+KEY_TOOLTIP_NAME_RIGHT_EQ_LOW,Right EQ Low,Right EQ Low,Right EQ Low,Right EQ Low
+KEY_TOOLTIP_DESC_RIGHT_EQ_LOW,Adjusts deck two bass and low end weight,Adjusts deck two bass and low end weight,Adjusts deck two bass and low end weight,Adjusts deck two bass and low end weight
+KEY_TOOLTIP_NAME_LEFT_COLOUR_FX,Left Colour FX,Left Colour FX,Left Colour FX,Left Colour FX
+KEY_TOOLTIP_DESC_LEFT_COLOUR_FX,Shapes deck one tone with smart colour FX filtering,Shapes deck one tone with smart colour FX filtering,Shapes deck one tone with smart colour FX filtering,Shapes deck one tone with smart colour FX filtering
+KEY_TOOLTIP_NAME_RIGHT_COLOUR_FX,Right Colour FX,Right Colour FX,Right Colour FX,Right Colour FX
+KEY_TOOLTIP_DESC_RIGHT_COLOUR_FX,Shapes deck two tone with smart colour FX filtering,Shapes deck two tone with smart colour FX filtering,Shapes deck two tone with smart colour FX filtering,Shapes deck two tone with smart colour FX filtering
+KEY_TOOLTIP_NAME_LEFT_BEAT_SYNC,Left Beat Sync,Left Beat Sync,Left Beat Sync,Left Beat Sync
+KEY_TOOLTIP_DESC_LEFT_BEAT_SYNC,Synchronises deck one tempo and phase to the opposite deck,Synchronises deck one tempo and phase to the opposite deck,Synchronises deck one tempo and phase to the opposite deck,Synchronises deck one tempo and phase to the opposite deck
+KEY_TOOLTIP_NAME_RIGHT_BEAT_SYNC,Right Beat Sync,Right Beat Sync,Right Beat Sync,Right Beat Sync
+KEY_TOOLTIP_DESC_RIGHT_BEAT_SYNC,Synchronises deck two tempo and phase to the opposite deck,Synchronises deck two tempo and phase to the opposite deck,Synchronises deck two tempo and phase to the opposite deck,Synchronises deck two tempo and phase to the opposite deck
+KEY_TOOLTIP_NAME_LEFT_LOOP_START,Left Loop In,Left Loop In,Left Loop In,Left Loop In
+KEY_TOOLTIP_DESC_LEFT_LOOP_START,Sets loop start on deck one,Sets loop start on deck one,Sets loop start on deck one,Sets loop start on deck one
+KEY_TOOLTIP_NAME_RIGHT_LOOP_START,Right Loop In,Right Loop In,Right Loop In,Right Loop In
+KEY_TOOLTIP_DESC_RIGHT_LOOP_START,Sets loop start on deck two,Sets loop start on deck two,Sets loop start on deck two,Sets loop start on deck two
+KEY_TOOLTIP_NAME_LEFT_LOOP_END,Left Loop Out,Left Loop Out,Left Loop Out,Left Loop Out
+KEY_TOOLTIP_DESC_LEFT_LOOP_END,Sets loop end on deck one,Sets loop end on deck one,Sets loop end on deck one,Sets loop end on deck one
+KEY_TOOLTIP_NAME_RIGHT_LOOP_END,Right Loop Out,Right Loop Out,Right Loop Out,Right Loop Out
+KEY_TOOLTIP_DESC_RIGHT_LOOP_END,Sets loop end on deck two,Sets loop end on deck two,Sets loop end on deck two,Sets loop end on deck two
+KEY_TOOLTIP_NAME_LEFT_MAKE_4_BEAT_LOOP,Left 4 Beat Loop,Left 4 Beat Loop,Left 4 Beat Loop,Left 4 Beat Loop
+KEY_TOOLTIP_DESC_LEFT_MAKE_4_BEAT_LOOP,Creates or toggles a four beat loop on deck one,Creates or toggles a four beat loop on deck one,Creates or toggles a four beat loop on deck one,Creates or toggles a four beat loop on deck one
+KEY_TOOLTIP_NAME_RIGHT_MAKE_4_BEAT_LOOP,Right 4 Beat Loop,Right 4 Beat Loop,Right 4 Beat Loop,Right 4 Beat Loop
+KEY_TOOLTIP_DESC_RIGHT_MAKE_4_BEAT_LOOP,Creates or toggles a four beat loop on deck two,Creates or toggles a four beat loop on deck two,Creates or toggles a four beat loop on deck two,Creates or toggles a four beat loop on deck two
+KEY_TOOLTIP_NAME_LEFT_SHORTEN_LOOP,Left Loop Halve,Left Loop Halve,Left Loop Halve,Left Loop Halve
+KEY_TOOLTIP_DESC_LEFT_SHORTEN_LOOP,Halves the active loop length on deck one,Halves the active loop length on deck one,Halves the active loop length on deck one,Halves the active loop length on deck one
+KEY_TOOLTIP_NAME_RIGHT_SHORTEN_LOOP,Right Loop Halve,Right Loop Halve,Right Loop Halve,Right Loop Halve
+KEY_TOOLTIP_DESC_RIGHT_SHORTEN_LOOP,Halves the active loop length on deck two,Halves the active loop length on deck two,Halves the active loop length on deck two,Halves the active loop length on deck two
+KEY_TOOLTIP_NAME_LEFT_EXTEND_LOOP,Left Loop Double,Left Loop Double,Left Loop Double,Left Loop Double
+KEY_TOOLTIP_DESC_LEFT_EXTEND_LOOP,Doubles the active loop length on deck one,Doubles the active loop length on deck one,Doubles the active loop length on deck one,Doubles the active loop length on deck one
+KEY_TOOLTIP_NAME_RIGHT_EXTEND_LOOP,Right Loop Double,Right Loop Double,Right Loop Double,Right Loop Double
+KEY_TOOLTIP_DESC_RIGHT_EXTEND_LOOP,Doubles the active loop length on deck two,Doubles the active loop length on deck two,Doubles the active loop length on deck two,Doubles the active loop length on deck two
+KEY_TOOLTIP_NAME_BEAT_FX,Beat FX Amount,Beat FX Amount,Beat FX Amount,Beat FX Amount
+KEY_TOOLTIP_DESC_BEAT_FX,Controls how intense the active beat FX sounds,Controls how intense the active beat FX sounds,Controls how intense the active beat FX sounds,Controls how intense the active beat FX sounds
+KEY_TOOLTIP_NAME_CROSSFADER,Crossfader,Crossfader,Crossfader,Crossfader
+KEY_TOOLTIP_DESC_CROSSFADER,Blends audio between left and right decks,Blends audio between left and right decks,Blends audio between left and right decks,Blends audio between left and right decks
+KEY_TOOLTIP_NAME_MASTER_VOLUME,Master Volume,Master Volume,Master Volume,Master Volume
+KEY_TOOLTIP_DESC_MASTER_VOLUME,Sets overall output loudness of the controller,Sets overall output loudness of the controller,Sets overall output loudness of the controller,Sets overall output loudness of the controller
+KEY_TOOLTIP_NAME_MIC_LEVEL,Microphone Level,Microphone Level,Microphone Level,Microphone Level
+KEY_TOOLTIP_DESC_MIC_LEVEL,Sets microphone loudness into the mix,Sets microphone loudness into the mix,Sets microphone loudness into the mix,Sets microphone loudness into the mix
+KEY_OK,Ok,OK,HaoHao,Ok

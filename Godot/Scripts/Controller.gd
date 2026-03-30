@@ -228,6 +228,10 @@ var Hot_Cue_Add_Mode_By_Track: Array[bool] = [true, true]
 var Selected_FX_Set_By_Track: Array[int] = [1, 1]
 var Key_Shift_Semitones_By_Track: Array[int] = [0, 0]
 var Hot_Cue_Sec_By_Track: Array = []
+var Regular_Cue_Sec_By_Track: Array[float] = [0.0, 0.0]
+var _regular_cue_is_set_by_track: Array[bool] = [false, false]
+var _regular_cue_hold_active_by_track: Array[bool] = [false, false]
+var _regular_cue_hold_was_playing_by_track: Array[bool] = [false, false]
 var _performance_pad_controls_by_track: Array = [[], []]
 var _performance_pad_sampler_players_by_track: Array = [[], []]
 var _performance_pad_pulse_materials_by_track: Array = [[], []]
@@ -265,6 +269,16 @@ static func Set_Hot_Cue_Add_Mode(which_track: int, add_mode_enabled: bool) -> vo
 static func Get_Selected_FX_Set(which_track: int) -> int:
     which_track = Utility.Clamp_to_Valid_TrackID(which_track)
     return DJ_Controller.Get_Instance().Selected_FX_Set_By_Track[which_track]
+
+
+static func Has_Regular_Cue(which_track: int) -> bool:
+    which_track = Utility.Clamp_to_Valid_TrackID(which_track)
+    return DJ_Controller.Get_Instance()._regular_cue_is_set_by_track[which_track]
+
+
+static func Get_Regular_Cue_Sec(which_track: int) -> float:
+    which_track = Utility.Clamp_to_Valid_TrackID(which_track)
+    return DJ_Controller.Get_Instance().Regular_Cue_Sec_By_Track[which_track]
 
 static func Has_Hot_Cue(which_track: int, cue_index: int) -> bool:
     which_track = Utility.Clamp_to_Valid_TrackID(which_track)
@@ -779,6 +793,10 @@ func LoadTrackIntoMemory(which_track : int, which_song : Song):
     which_track = Utility.Clamp_to_Valid_TrackID(which_track)
     print("Spawned Player for Track ", which_track)
     Clear_All_Hot_Cues(which_track)
+    Regular_Cue_Sec_By_Track[which_track] = 0.0
+    _regular_cue_is_set_by_track[which_track] = false
+    _regular_cue_hold_active_by_track[which_track] = false
+    _regular_cue_hold_was_playing_by_track[which_track] = false
     BUS_MANAGER.Clear_Pitch_Shift_Semitone_Override(which_track)
     Key_Shift_Semitones_By_Track[which_track] = 0
     if which_song == null:
@@ -1266,6 +1284,84 @@ func _on_right_play_on_activated() -> void:
     Play_Pause(1)
 
 
+func _on_left_cue_on_pressed() -> void:
+    _on_cue_pressed(0)
+
+
+func _on_right_cue_on_pressed() -> void:
+    _on_cue_pressed(1)
+
+
+func _on_left_cue_on_released() -> void:
+    _on_cue_released(0)
+
+
+func _on_right_cue_on_released() -> void:
+    _on_cue_released(1)
+
+
+func _on_cue_pressed(which_track: int) -> void:
+    which_track = Utility.Clamp_to_Valid_TrackID(which_track)
+    var target_player: AudioStreamPlayer = AudioPlayerList[which_track]
+    if target_player == null or target_player.stream == null:
+        return
+
+    const CUE_REARM_TOLERANCE_SECONDS: float = 0.02
+    var current_position_seconds: float = Utility.Return_Valid(target_player.get_playback_position(), 0.0)
+    var was_paused_before_press: bool = (not target_player.playing) or target_player.stream_paused
+    var should_rearm_cue_while_paused: bool = false
+    if was_paused_before_press:
+        if not _regular_cue_is_set_by_track[which_track]:
+            should_rearm_cue_while_paused = true
+        else:
+            should_rearm_cue_while_paused = absf(current_position_seconds - Regular_Cue_Sec_By_Track[which_track]) > CUE_REARM_TOLERANCE_SECONDS
+
+    if should_rearm_cue_while_paused:
+        Regular_Cue_Sec_By_Track[which_track] = current_position_seconds
+        _regular_cue_is_set_by_track[which_track] = true
+        _regular_cue_hold_active_by_track[which_track] = false
+        _regular_cue_hold_was_playing_by_track[which_track] = false
+        return
+
+    if not _regular_cue_is_set_by_track[which_track]:
+        Regular_Cue_Sec_By_Track[which_track] = 0.0
+        _regular_cue_is_set_by_track[which_track] = true
+
+    var cue_position_seconds: float = clampf(Regular_Cue_Sec_By_Track[which_track], 0.0, float(target_player.stream.get_length()))
+    _apply_track_seek(which_track, cue_position_seconds)
+
+    _regular_cue_hold_active_by_track[which_track] = true
+    _regular_cue_hold_was_playing_by_track[which_track] = not was_paused_before_press
+
+    if target_player.playing:
+        target_player.stream_paused = false
+    else:
+        target_player.play(cue_position_seconds)
+
+
+func _on_cue_released(which_track: int) -> void:
+    which_track = Utility.Clamp_to_Valid_TrackID(which_track)
+    if not _regular_cue_hold_active_by_track[which_track]:
+        return
+
+    var target_player: AudioStreamPlayer = AudioPlayerList[which_track]
+    if target_player == null or target_player.stream == null:
+        _regular_cue_hold_active_by_track[which_track] = false
+        _regular_cue_hold_was_playing_by_track[which_track] = false
+        return
+
+    if not _regular_cue_is_set_by_track[which_track]:
+        _regular_cue_hold_active_by_track[which_track] = false
+        _regular_cue_hold_was_playing_by_track[which_track] = false
+        return
+
+    var cue_position_seconds: float = clampf(Regular_Cue_Sec_By_Track[which_track], 0.0, float(target_player.stream.get_length()))
+    _apply_track_seek(which_track, cue_position_seconds)
+    target_player.stream_paused = true
+    _regular_cue_hold_active_by_track[which_track] = false
+    _regular_cue_hold_was_playing_by_track[which_track] = false
+
+
         
 
 
@@ -1483,6 +1579,14 @@ func _on_reset_area_area_entered(area: Area3D) -> void:
     Performance_Pad_Mode_By_Track[1] = E_Performance_Pad_Mode.HOT_CUE
     Hot_Cue_Add_Mode_By_Track[0] = true
     Hot_Cue_Add_Mode_By_Track[1] = true
+    Regular_Cue_Sec_By_Track[0] = 0.0
+    Regular_Cue_Sec_By_Track[1] = 0.0
+    _regular_cue_is_set_by_track[0] = false
+    _regular_cue_is_set_by_track[1] = false
+    _regular_cue_hold_active_by_track[0] = false
+    _regular_cue_hold_active_by_track[1] = false
+    _regular_cue_hold_was_playing_by_track[0] = false
+    _regular_cue_hold_was_playing_by_track[1] = false
     Selected_FX_Set_By_Track[0] = 1
     Selected_FX_Set_By_Track[1] = 1
     Key_Shift_Semitones_By_Track[0] = 0

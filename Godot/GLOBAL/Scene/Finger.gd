@@ -30,8 +30,8 @@ const Acceptable_Selection_Poses : Array[E_POSES] = [E_POSES.THUMBS_UP, E_POSES.
 @onready var DEBUG_Left_Label : Label3D = %Left_Label3D
 @onready var DEBUG_Right_Label : Label3D = %Right_Label3D
 
-# Collision scale when finger is inside a slider (30% bigger)
-const SLIDER_COLLISION_SCALE := 1.3
+# Collision scale when finger is inside a slider (50% bigger)
+const SLIDER_COLLISION_SCALE := 1.5
 @onready var _collision_shape: CollisionShape3D = $CollisionShape3D
 var _default_collision_scale := Vector3.ONE
 var _slider_overlap_count: int = 0

@@ -10,9 +10,17 @@ class_name Base_Control
 @export var press_tween_duration_seconds: float = 0.06
 @export var enable_press_feedback_tween: bool = true
 
+# What's the name of this control? like "Left Track Play Button"
+@export var Control_Display_Name : String
+
+#what does this thing do?
+@export var Control_Description : String
+
 signal on_hovered
 signal on_unhovered
 signal on_activated
+signal on_pressed
+signal on_released
 signal on_flashing_start
 signal on_flashing_end
 
@@ -102,6 +110,7 @@ func _on_BASE_highlight_area_exited(area: Area3D) -> void:
 func _on_BASE_activation_area_entered(area: Area3D) -> void:
     if (LibreBox.LibreBox_instance != null):
         if _can_activate_from_area(area):
+            on_pressed.emit()
             HighLight(E_ActivationStates.Pressed)
         else:
             HighLight(E_ActivationStates.InvalidPose)
@@ -109,6 +118,7 @@ func _on_BASE_activation_area_entered(area: Area3D) -> void:
 
 
 func _on_BASE_activation_area_exited(area: Area3D) -> void:
+    on_released.emit()
     if (fully_exited):
         HighLight(E_ActivationStates.Exited)
     else:
