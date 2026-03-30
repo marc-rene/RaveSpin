@@ -77,9 +77,11 @@ func _ready() -> void:
     # gotta do this horribleness because "local to scene" did nothing for some reason
     _waveform_mat_1 = M_HORIZONTAL_PAN.duplicate()
     Track_1_waveformVis.material = _waveform_mat_1
+    _configure_hot_cue_shader_colours(_waveform_mat_1)
     
     _waveform_mat_2 = M_HORIZONTAL_PAN.duplicate()
     Track_2_waveformVis.material = _waveform_mat_2
+    _configure_hot_cue_shader_colours(_waveform_mat_2)
     
 
     $"VBoxContainer/Track 1 Container/Track 1 Card".Song_Resource = Track_1
@@ -88,6 +90,15 @@ func _ready() -> void:
     Refresh(false)
 
     _setup_rhythm_notifiers()
+
+
+func _configure_hot_cue_shader_colours(mat: ShaderMaterial) -> void:
+    if mat == null:
+        return
+    for cue_index: int in range(DJ_Controller.PERFORMANCE_PAD_COUNT):
+        var cue_idx: int = cue_index + 1
+        var cue_color: Color = DJ_Controller.Get_Performance_Pad_Color(cue_index)
+        mat.set_shader_parameter("hot_cue_%d_color" % cue_idx, cue_color)
 
 func _setup_rhythm_notifiers() -> void:
     await LibreBox.Get_Instance_await()
@@ -130,6 +141,8 @@ func _process(_delta: float) -> void:
 
     _update_loop_markers(0, _waveform_mat_1)
     _update_loop_markers(1, _waveform_mat_2)
+    _update_hot_cue_markers(0, _waveform_mat_1)
+    _update_hot_cue_markers(1, _waveform_mat_2)
 
 
 func _update_loop_markers(which_track: int, mat: ShaderMaterial) -> void:
@@ -164,3 +177,32 @@ func _update_loop_markers(which_track: int, mat: ShaderMaterial) -> void:
         mat.set_shader_parameter("loop_end_visible", 1.0)
     else:
         mat.set_shader_parameter("loop_end_visible", 0.0)
+
+
+func _update_hot_cue_markers(which_track: int, mat: ShaderMaterial) -> void:
+    if mat == null:
+        return
+
+    which_track = Utility.Clamp_to_Valid_TrackID(which_track)
+    var player: AudioStreamPlayer = DJ_Controller.Get_Track_Playback_Player(which_track)
+    if player == null or player.stream == null:
+        for cue_idx: int in range(1, DJ_Controller.PERFORMANCE_PAD_COUNT + 1):
+            mat.set_shader_parameter("hot_cue_%d_visible" % cue_idx, 0.0)
+        return
+
+    var stream_len_sec: float = float(player.stream.get_length())
+    if stream_len_sec <= 0.001:
+        for cue_idx: int in range(1, DJ_Controller.PERFORMANCE_PAD_COUNT + 1):
+            mat.set_shader_parameter("hot_cue_%d_visible" % cue_idx, 0.0)
+        return
+
+    for cue_index: int in range(DJ_Controller.PERFORMANCE_PAD_COUNT):
+        var cue_sec: float = DJ_Controller.Get_Hot_Cue_Sec(which_track, cue_index)
+        var cue_shader_idx: int = cue_index + 1
+        if cue_sec < 0.0:
+            mat.set_shader_parameter("hot_cue_%d_visible" % cue_shader_idx, 0.0)
+            continue
+
+        var cue_alpha: float = clampf(cue_sec / stream_len_sec, 0.0, 1.0)
+        mat.set_shader_parameter("hot_cue_%d_alpha" % cue_shader_idx, cue_alpha)
+        mat.set_shader_parameter("hot_cue_%d_visible" % cue_shader_idx, 1.0)

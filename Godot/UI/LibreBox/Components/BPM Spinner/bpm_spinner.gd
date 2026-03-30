@@ -9,9 +9,9 @@ const ZERO_ROT : float = 45.0
 @onready var Current_BPM_var_label : Label = $"Base BPM Tip/VBoxContainer/Current BPM var label"
 @onready var Offset_percent_var_label : Label = $"Base BPM Tip/VBoxContainer/Offset percent var label"
 
-@export var Negative_Offset_Colour : Color
-@export var Neutral_Offset_Colour : Color
-@export var Positive_Offset_Colour : Color
+const Negative_Offset_Colour : Color = Color("e94f37ff")
+const Neutral_Offset_Colour : Color = Color(0.422, 0.458, 0.48, 1.0)
+const Positive_Offset_Colour : Color = Color(0.267, 0.733, 0.643, 1.0)
 @export var Alpha : float = 0.0
 var base_bpm : float = 0.0
 var current_bpm : float = 0.0
@@ -31,9 +31,9 @@ func _process(delta: float) -> void:
     if base_bpm > 1 and current_bpm > 1.0:
         Offset_Text = "+" if current_bpm > base_bpm else "-"
         if absf(current_bpm - base_bpm) < 0.5:
-            Offset_percent_var_label.add_theme_color_override("font_color", Neutral_Offset_Colour)
+            Offset_percent_var_label.label_settings.font_color = Neutral_Offset_Colour
         else:
-            Offset_percent_var_label.add_theme_color_override("font_color", (Positive_Offset_Colour if current_bpm > base_bpm else Negative_Offset_Colour))
+            Offset_percent_var_label.label_settings.font_color = Positive_Offset_Colour if current_bpm > base_bpm else Negative_Offset_Colour
         Offset_Text += "%.2f" % float(absf( 1 - (current_bpm / base_bpm) ) * 100.0) # returns just "%.2f" if we dont recast to float... why??
         Offset_Text += "%"
         Offset_percent_var_label.text = Offset_Text

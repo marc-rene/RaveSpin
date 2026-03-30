@@ -63,6 +63,7 @@ static var active_effects_Channel_1 : Dictionary[E_BEAT_FX_TYPE, int] = {} # the
 static var active_effects_Channel_2 : Dictionary[E_BEAT_FX_TYPE, int] = {}
 #var active_effects_Channel_3 : Dictionary[E_BEAT_FX_TYPE, int] = {}
 #var active_effects_Channel_4 : Dictionary[E_BEAT_FX_TYPE, int] = {}
+static var _pitch_shift_scale_override_by_channel: Array[float] = [-1.0, -1.0, -1.0, -1.0]
 
 
 const CFX_LOWPASS_SLOT : int = 2
@@ -76,9 +77,9 @@ enum E_AUDIO_BUSSES
     #MIXER,
     #MICROPHONE_FX,
     MICROPHONE_INPUT,
-    CHANNEL_ONE_FX,
+    #CHANNEL_ONE_FX,
     CHANNEL_ONE_INPUT,
-    CHANNEL_TWO_FX,
+    #CHANNEL_TWO_FX,
     CHANNEL_TWO_INPUT,
     #CHANNEL_THREE_FX,
     CHANNEL_THREE_INPUT,
@@ -223,6 +224,24 @@ const Beat_FX_Translation_Keys: Dictionary[E_BEAT_FX_TYPE, String] = {
 
 static func beat_fx_translation_key(fx: E_BEAT_FX_TYPE) -> String:
     return Beat_FX_Translation_Keys.get(fx, "KEY_FX_DELAY")
+
+
+static func Set_Pitch_Shift_Semitone_Override(channel: int, semitones: int) -> void:
+    channel = Utility.Clamp_to_Valid_TrackID(channel)
+    var scale: float = pow(2.0, float(semitones) / 12.0)
+    _pitch_shift_scale_override_by_channel[channel] = scale
+
+
+static func Clear_Pitch_Shift_Semitone_Override(channel: int) -> void:
+    channel = Utility.Clamp_to_Valid_TrackID(channel)
+    _pitch_shift_scale_override_by_channel[channel] = -1.0
+
+
+static func _get_pitch_shift_scale_override(channel: int) -> float:
+    channel = Utility.Clamp_to_Valid_TrackID(channel)
+    if channel < 0 or channel >= _pitch_shift_scale_override_by_channel.size():
+        return -1.0
+    return _pitch_shift_scale_override_by_channel[channel]
 
 
     
@@ -423,11 +442,11 @@ static func Apply_Beat_FX_Level(channel: int, alpha: float) -> void:
             continue
         var effect: AudioEffect = AudioServer.get_bus_effect(bus_index, slot)
         if effect != null:
-            _set_beat_fx_effect_level(effect, fx_type, alpha)
+            _set_beat_fx_effect_level(effect, fx_type, alpha, channel)
 
 
 ## Per-effect "amount" so that alpha 0 = inaudible, alpha 1 = full. Effect-specific parameter scaling.
-static func _set_beat_fx_effect_level(effect: AudioEffect, fx_type: E_BEAT_FX_TYPE, alpha: float) -> void:
+static func _set_beat_fx_effect_level(effect: AudioEffect, fx_type: E_BEAT_FX_TYPE, alpha: float, channel: int = 0) -> void:
     alpha = clampf(alpha, 0.0, 1.0)
     if effect is AudioEffectDelay:
         var d: AudioEffectDelay = effect as AudioEffectDelay
@@ -449,7 +468,8 @@ static func _set_beat_fx_effect_level(effect: AudioEffect, fx_type: E_BEAT_FX_TY
         p.depth = lerpf(0.0, 1.0, alpha)
     elif effect is AudioEffectPitchShift:
         var ps: AudioEffectPitchShift = effect as AudioEffectPitchShift
-        ps.pitch_scale = lerpf(1.0, 1.5, alpha)
+        var override_scale: float = _get_pitch_shift_scale_override(channel)
+        ps.pitch_scale = override_scale if override_scale > 0.0 else lerpf(1.0, 1.5, alpha)
     elif effect is AudioEffectDistortion:
         var dist: AudioEffectDistortion = effect as AudioEffectDistortion
         dist.drive = lerpf(0.0, 1.0, alpha)

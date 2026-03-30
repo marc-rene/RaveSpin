@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://6edl0ejiokha"
+path="res://.godot/imported/OhDjango_WAV.wav-f69b6c3a6d0ddc1dc78fb5086df47dea.sample"
+
+[deps]
+
+source_file="res://Components/Controls/Performance Pads Audio/OhDjango_WAV.wav"
+dest_files=["res://.godot/imported/OhDjango_WAV.wav-f69b6c3a6d0ddc1dc78fb5086df47dea.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

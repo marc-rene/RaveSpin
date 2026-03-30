@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://cmjd71u8b3bd5"
+path="res://.godot/imported/ErrorCDOxCYm_WAV.wav-7b44cf5cb52a555b485af279e2cdcda6.sample"
+
+[deps]
+
+source_file="res://Components/Controls/Performance Pads Audio/ErrorCDOxCYm_WAV.wav"
+dest_files=["res://.godot/imported/ErrorCDOxCYm_WAV.wav-7b44cf5cb52a555b485af279e2cdcda6.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

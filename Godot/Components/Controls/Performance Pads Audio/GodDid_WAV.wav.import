@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://bigw0v63ums32"
+path="res://.godot/imported/GodDid_WAV.wav-00772189ea65b08f7e93c63cea6d6a6d.sample"
+
+[deps]
+
+source_file="res://Components/Controls/Performance Pads Audio/GodDid_WAV.wav"
+dest_files=["res://.godot/imported/GodDid_WAV.wav-00772189ea65b08f7e93c63cea6d6a6d.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

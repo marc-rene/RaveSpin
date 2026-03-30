@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://c1tju871cckkd"
+path="res://.godot/imported/UyuuuiHuaso2Weno_WAV.wav-05f6add046611c7e471b85f53a3f2cf2.sample"
+
+[deps]
+
+source_file="res://Components/Controls/Performance Pads Audio/UyuuuiHuaso2Weno_WAV.wav"
+dest_files=["res://.godot/imported/UyuuuiHuaso2Weno_WAV.wav-05f6add046611c7e471b85f53a3f2cf2.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://cv34j15l0nrdc"
+path="res://.godot/imported/DjSnakeLilJonTurnDownForWhatyoutubemp3_WAV.wav-d5d62888962a39b9ffea1dd6baec0e14.sample"
+
+[deps]
+
+source_file="res://Components/Controls/Performance Pads Audio/DjSnakeLilJonTurnDownForWhatyoutubemp3_WAV.wav"
+dest_files=["res://.godot/imported/DjSnakeLilJonTurnDownForWhatyoutubemp3_WAV.wav-d5d62888962a39b9ffea1dd6baec0e14.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

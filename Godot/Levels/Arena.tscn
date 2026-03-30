@@ -38,11 +38,13 @@ environment = SubResource("Environment_3sm0n")
 spawn_in_front = NodePath("../../LibreboxScene")
 
 [node name="LibreboxScene" parent="." unique_id=889702823 instance=ExtResource("6_7t5kf")]
-transform = Transform3D(-4.371139e-08, 4.852939e-24, 1.0000005, -1.110223e-16, 1, 0, -1, 1.110223e-16, -4.371141e-08, -0.9999264, 2.074472, 0.4998038)
+transform = Transform3D(-4.371139e-08, 4.852939e-24, 1.0000005, -1.110223e-16, 1, 0, -1, 1.110223e-16, -4.371141e-08, -0.99912125, 2.0718179, 0.49675062)
 
 [node name="DDJ-FLX4" parent="LibreboxScene" unique_id=1624226957 instance=ExtResource("3_lr07p")]
 unique_name_in_owner = true
 transform = Transform3D(2, -3.7683293e-08, 8.538613e-09, 3.7683293e-08, 1.8046594, -0.86209327, 8.538609e-09, 0.86209285, 1.8046585, -0.46281928, -0.48231018, -0.072314024)
+Jogwheel_Audio_Warp_Seconds_Per_Full_Rotation = -3.0
+Use_Snap_Style_Jogwheel_Grab = true
 
 [node name="Label3D" type="Label3D" parent="LibreboxScene" unique_id=1030625250]
 transform = Transform3D(1, -3.0963276e-17, -7.6918824e-17, -3.0963276e-17, 0.7211076, -0.6928232, 7.691882e-17, 0.6928231, 0.72110754, 0, 1.0645151, 0.14983642)
@@ -59,6 +61,20 @@ unique_name_in_owner = true
 autoplay = true
 mix_target = 1
 bus = &"Channel 1 Input"
+
+[node name="Performance Pad Samples Left" type="AudioStreamPlayer" parent="." unique_id=2121451287]
+unique_name_in_owner = true
+autoplay = true
+mix_target = 1
+bus = &"Channel 1 Input"
+playback_type = 2
+
+[node name="Performance Pad Samples Right" type="AudioStreamPlayer" parent="." unique_id=319667178]
+unique_name_in_owner = true
+autoplay = true
+mix_target = 1
+bus = &"Channel 2 Input"
+playback_type = 2
 
 [node name="Track Stream Player Right" type="AudioStreamPlayer" parent="." unique_id=234223147]
 unique_name_in_owner = true

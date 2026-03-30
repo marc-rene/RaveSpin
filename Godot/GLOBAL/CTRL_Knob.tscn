@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://bipqrqt7kgspn" path="res://Scripts/Highlight_Mesh_Knob.gd" id="1_2lspa"]
 [ext_resource type="Material" uid="uid://d18y5golid0sq" path="res://Art/Materials/M_Item_Hovered.tres" id="2_nx18d"]
+[ext_resource type="FontFile" uid="uid://di6oaehdwb84i" path="res://Art/Fonts/FONT_Roboto.ttf" id="3_nlhk3"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_minsn"]
 height = 0.05
@@ -20,6 +21,8 @@ size = Vector3(0.02, 0.02, 0.03)
 
 [node name="CtrlKnob" type="Area3D" unique_id=675621963]
 script = ExtResource("1_2lspa")
+slider_far_distance_meters = 0.2
+slider_far_timeout_seconds = 3.0
 
 [node name="Highlight" type="Area3D" parent="." unique_id=1809041154]
 
@@ -52,23 +55,25 @@ mesh = SubResource("PlaneMesh_2lspa")
 skeleton = NodePath("../Activation")
 
 [node name="Slider Spawn Point" type="Node3D" parent="." unique_id=1867433061]
-transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 3, 0, -1, -1.3113416e-07, 0, 0.12876594, -6.7685757e-10)
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0.120895386, -3.328247e-10)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Slider Spawn Point" unique_id=1957937713]
 shape = SubResource("BoxShape3D_nx18d")
 debug_color = Color(0, 0.60038817, 0.70000815, 1)
 
 [node name="Label3D" type="Label3D" parent="Slider Spawn Point" unique_id=188094012]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 0.333, 0, 0.005836487, 0.061630234)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 0.333, 0, 0.005836487, 0.064028144)
+pixel_size = 0.0003
 billboard = 1
-alpha_cut = 1
+double_sided = false
+alpha_cut = 2
 texture_filter = 0
-modulate = Color(0.9137255, 0.30980393, 0.21568628, 1)
-outline_modulate = Color(0, 0, 0, 0)
-font_size = 11
-outline_size = 0
+modulate = Color(0.26666668, 0.73333335, 0.6431373, 1)
+font = ExtResource("3_nlhk3")
+font_size = 72
+outline_size = 3
 
 [connection signal="area_entered" from="Highlight" to="." method="_on_BASE_highlight_area_entered"]
-[connection signal="area_exited" from="Highlight" to="." method="_on_BASE_highlight_area_entered"]
+[connection signal="area_exited" from="Highlight" to="." method="_on_BASE_highlight_area_exited"]
 [connection signal="area_entered" from="Highlight/Activation" to="." method="_on_activation_area_entered"]
 [connection signal="area_exited" from="Highlight/Activation" to="." method="_on_activation_area_exited"]

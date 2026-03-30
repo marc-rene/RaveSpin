@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://wtmgx8t74wrw"
+path="res://.godot/imported/Scratch1Dj_WAV.wav-050c35722a06fa845f3627a26ad4330d.sample"
+
+[deps]
+
+source_file="res://Components/Controls/Performance Pads Audio/Scratch1Dj_WAV.wav"
+dest_files=["res://.godot/imported/Scratch1Dj_WAV.wav-050c35722a06fa845f3627a26ad4330d.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

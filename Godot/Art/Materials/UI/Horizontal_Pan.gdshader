@@ -22,6 +22,31 @@ uniform float loop_end_visible : hint_range(0.0, 1.0) = 0.0;   // 0/1
 uniform vec4 loop_start_color : source_color = vec4(0.2, 0.8, 0.4, 1.0);
 uniform vec4 loop_end_color : source_color = vec4(0.9, 0.3, 0.2, 1.0);
 uniform float loop_marker_width : hint_range(0.0, 0.02) = 0.003;
+uniform float hot_cue_marker_width : hint_range(0.0, 0.02) = 0.002;
+uniform vec4 hot_cue_1_color : source_color = vec4(0.99, 0.46, 0.24, 1.0);
+uniform vec4 hot_cue_2_color : source_color = vec4(0.99, 0.73, 0.21, 1.0);
+uniform vec4 hot_cue_3_color : source_color = vec4(0.98, 0.93, 0.31, 1.0);
+uniform vec4 hot_cue_4_color : source_color = vec4(0.53, 0.91, 0.35, 1.0);
+uniform vec4 hot_cue_5_color : source_color = vec4(0.30, 0.86, 0.78, 1.0);
+uniform vec4 hot_cue_6_color : source_color = vec4(0.35, 0.64, 0.98, 1.0);
+uniform vec4 hot_cue_7_color : source_color = vec4(0.66, 0.47, 0.96, 1.0);
+uniform vec4 hot_cue_8_color : source_color = vec4(0.94, 0.37, 0.72, 1.0);
+uniform float hot_cue_1_alpha : hint_range(0.0, 1.0) = 0.0;
+uniform float hot_cue_2_alpha : hint_range(0.0, 1.0) = 0.0;
+uniform float hot_cue_3_alpha : hint_range(0.0, 1.0) = 0.0;
+uniform float hot_cue_4_alpha : hint_range(0.0, 1.0) = 0.0;
+uniform float hot_cue_5_alpha : hint_range(0.0, 1.0) = 0.0;
+uniform float hot_cue_6_alpha : hint_range(0.0, 1.0) = 0.0;
+uniform float hot_cue_7_alpha : hint_range(0.0, 1.0) = 0.0;
+uniform float hot_cue_8_alpha : hint_range(0.0, 1.0) = 0.0;
+uniform float hot_cue_1_visible : hint_range(0.0, 1.0) = 0.0;
+uniform float hot_cue_2_visible : hint_range(0.0, 1.0) = 0.0;
+uniform float hot_cue_3_visible : hint_range(0.0, 1.0) = 0.0;
+uniform float hot_cue_4_visible : hint_range(0.0, 1.0) = 0.0;
+uniform float hot_cue_5_visible : hint_range(0.0, 1.0) = 0.0;
+uniform float hot_cue_6_visible : hint_range(0.0, 1.0) = 0.0;
+uniform float hot_cue_7_visible : hint_range(0.0, 1.0) = 0.0;
+uniform float hot_cue_8_visible : hint_range(0.0, 1.0) = 0.0;
 
 void fragment() {
     // Map rect UV so that center (0.5) == alpha on the texture
@@ -69,6 +94,71 @@ void fragment() {
                 COLOR.a = 1.0 - final_colour.a;
                 should_continue = false;
             }
+        }
+    }
+
+    if (should_continue && UV.y >= 0.75) {
+        float hot_cue_x = hot_cue_1_alpha - alpha + 0.5;
+        if (hot_cue_1_visible > 0.5 && hot_cue_x >= 0.0 && hot_cue_x <= 1.0 && abs(UV.x - hot_cue_x) < hot_cue_marker_width) {
+            COLOR.rgb = hot_cue_1_color.rgb * final_colour.rgb;
+            COLOR.a = 1.0 - final_colour.a;
+            should_continue = false;
+        }
+    }
+    if (should_continue && UV.y >= 0.75) {
+        float hot_cue_x = hot_cue_2_alpha - alpha + 0.5;
+        if (hot_cue_2_visible > 0.5 && hot_cue_x >= 0.0 && hot_cue_x <= 1.0 && abs(UV.x - hot_cue_x) < hot_cue_marker_width) {
+            COLOR.rgb = hot_cue_2_color.rgb * final_colour.rgb;
+            COLOR.a = 1.0 - final_colour.a;
+            should_continue = false;
+        }
+    }
+    if (should_continue && UV.y >= 0.75) {
+        float hot_cue_x = hot_cue_3_alpha - alpha + 0.5;
+        if (hot_cue_3_visible > 0.5 && hot_cue_x >= 0.0 && hot_cue_x <= 1.0 && abs(UV.x - hot_cue_x) < hot_cue_marker_width) {
+            COLOR.rgb = hot_cue_3_color.rgb * final_colour.rgb;
+            COLOR.a = 1.0 - final_colour.a;
+            should_continue = false;
+        }
+    }
+    if (should_continue && UV.y >= 0.75) {
+        float hot_cue_x = hot_cue_4_alpha - alpha + 0.5;
+        if (hot_cue_4_visible > 0.5 && hot_cue_x >= 0.0 && hot_cue_x <= 1.0 && abs(UV.x - hot_cue_x) < hot_cue_marker_width) {
+            COLOR.rgb = hot_cue_4_color.rgb * final_colour.rgb;
+            COLOR.a = 1.0 - final_colour.a;
+            should_continue = false;
+        }
+    }
+    if (should_continue && UV.y >= 0.75) {
+        float hot_cue_x = hot_cue_5_alpha - alpha + 0.5;
+        if (hot_cue_5_visible > 0.5 && hot_cue_x >= 0.0 && hot_cue_x <= 1.0 && abs(UV.x - hot_cue_x) < hot_cue_marker_width) {
+            COLOR.rgb = hot_cue_5_color.rgb * final_colour.rgb;
+            COLOR.a = 1.0 - final_colour.a;
+            should_continue = false;
+        }
+    }
+    if (should_continue && UV.y >= 0.75) {
+        float hot_cue_x = hot_cue_6_alpha - alpha + 0.5;
+        if (hot_cue_6_visible > 0.5 && hot_cue_x >= 0.0 && hot_cue_x <= 1.0 && abs(UV.x - hot_cue_x) < hot_cue_marker_width) {
+            COLOR.rgb = hot_cue_6_color.rgb * final_colour.rgb;
+            COLOR.a = 1.0 - final_colour.a;
+            should_continue = false;
+        }
+    }
+    if (should_continue && UV.y >= 0.75) {
+        float hot_cue_x = hot_cue_7_alpha - alpha + 0.5;
+        if (hot_cue_7_visible > 0.5 && hot_cue_x >= 0.0 && hot_cue_x <= 1.0 && abs(UV.x - hot_cue_x) < hot_cue_marker_width) {
+            COLOR.rgb = hot_cue_7_color.rgb * final_colour.rgb;
+            COLOR.a = 1.0 - final_colour.a;
+            should_continue = false;
+        }
+    }
+    if (should_continue && UV.y >= 0.75) {
+        float hot_cue_x = hot_cue_8_alpha - alpha + 0.5;
+        if (hot_cue_8_visible > 0.5 && hot_cue_x >= 0.0 && hot_cue_x <= 1.0 && abs(UV.x - hot_cue_x) < hot_cue_marker_width) {
+            COLOR.rgb = hot_cue_8_color.rgb * final_colour.rgb;
+            COLOR.a = 1.0 - final_colour.a;
+            should_continue = false;
         }
     }
 

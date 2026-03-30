@@ -18,9 +18,9 @@ func _ready() -> void:
         if child is FX_Button_Select and BUS_MANAGER.ONE_FX_AT_A_TIME:
             child.pressed.connect(_refresh_all_fx_buttons)
     
-    for child in $"MarginContainer/VBoxContainer/FX Containers/VBoxContainer_R".get_children():
-        if child is FX_Button_Select and BUS_MANAGER.ONE_FX_AT_A_TIME:
-            child.pressed.connect(_refresh_all_fx_buttons)
+    #for child in $"MarginContainer/VBoxContainer/FX Containers/VBoxContainer_R".get_children():
+        #if child is FX_Button_Select and BUS_MANAGER.ONE_FX_AT_A_TIME:
+            #child.pressed.connect(_refresh_all_fx_buttons)
             
 
 
@@ -50,6 +50,6 @@ func _refresh_all_fx_buttons() -> void:
         if child is FX_Button_Select:
             child.refresh_state()
         
-    for child in $"MarginContainer/VBoxContainer/FX Containers/VBoxContainer_R".get_children():
-        if child is FX_Button_Select:
-            child.refresh_state()
+    #for child in $"MarginContainer/VBoxContainer/FX Containers/VBoxContainer_R".get_children():
+        #if child is FX_Button_Select:
+            #child.refresh_state()

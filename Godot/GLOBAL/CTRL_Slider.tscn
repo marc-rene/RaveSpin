@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://c0630mg08fmut" path="res://Scripts/Highlight_Mesh_Slider.gd" id="1_esrk0"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_l43oc"]
-size = Vector3(0.025, 0.05, 0.055)
+size = Vector3(0.025, 0.05, 0.155)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_pcqki"]
 size = Vector3(0.01, 0.1, 0.005)
@@ -12,7 +12,7 @@ size = Vector3(0.01, 0.1, 0.005)
 size = Vector3(0.01, 0.1, 0.01)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_esrk0"]
-size = Vector3(0.025, 0.02, 0.013)
+size = Vector3(0.025, 0.02, 0.02)
 
 [node name="CtrlSlider" type="Area3D" unique_id=1256535593]
 script = ExtResource("1_esrk0")
@@ -26,14 +26,14 @@ shape = SubResource("BoxShape3D_l43oc")
 debug_color = Color(0, 0.5, 1.15, 1)
 
 [node name="Min point" type="Node3D" parent="Highlight" unique_id=2067178630]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 0.1, 0, 0, -0.02)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 0.1, 0, 0, -0.07000763)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Highlight/Min point" unique_id=993135987]
 shape = SubResource("BoxShape3D_pcqki")
 debug_color = Color(0.96862745, 0, 0.47843137, 1)
 
 [node name="Max point" type="Node3D" parent="Highlight" unique_id=170448258]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 0.1, 0, 0, 0.02)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 0.1, 0, 0, 0.07000764)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Highlight/Max point" unique_id=1014537705]
 shape = SubResource("BoxShape3D_65liy")
