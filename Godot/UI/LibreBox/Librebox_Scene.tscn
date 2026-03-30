@@ -6,6 +6,7 @@
 [ext_resource type="FontFile" uid="uid://di6oaehdwb84i" path="res://Art/Fonts/FONT_Roboto.ttf" id="2_yb6eh"]
 [ext_resource type="PackedScene" uid="uid://d3vfyxnqa8u8p" path="res://UI/LibreBox/Components/Track Selection/Track_Selection.tscn" id="4_vnbwf"]
 [ext_resource type="Script" uid="uid://bnckdx4e6k3hk" path="res://Scripts/Viewport2DIn3DHandTouch.gd" id="5_hand"]
+[ext_resource type="PackedScene" uid="uid://28cxpignjg2r" path="res://UI/LibreBox/Components/UI_ToolTip.tscn" id="6_qt2ci"]
 [ext_resource type="PackedScene" uid="uid://cdx5rxkmy32p5" path="res://UI/LibreBox/Components/Track Selection/Track_Delete_Confirm_UI.tscn" id="7_4oknt"]
 [ext_resource type="PackedScene" uid="uid://cprhr6myydno5" path="res://UI/LibreBox/Components/FX Selection/FX_Selection_Menu.tscn" id="8_83nvb"]
 [ext_resource type="PackedScene" uid="uid://7kyk88qnftlr" path="res://UI/LibreBox/Components/Add Track/Add_Track_UI.tscn" id="9_83nvb"]
@@ -40,6 +41,16 @@ font = ExtResource("2_yb6eh")
 font_size = 40
 outline_size = 0
 
+[node name="ToolTip" parent="." unique_id=187553533 instance=ExtResource("1_ebwc8")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -10, -10)
+screen_size = Vector2(0.2, 0.2)
+scene = ExtResource("6_qt2ci")
+viewport_size = Vector2(800, 800)
+unshaded = true
+
+[node name="HandTouch" type="Node" parent="ToolTip" unique_id=777182557]
+script = ExtResource("5_hand")
+
 [node name="Track 1 Selection" parent="." unique_id=900064892 node_paths=PackedStringArray("Add_Track_UI_node", "Delete_Confirm_Viewport") instance=ExtResource("1_ebwc8")]
 transform = Transform3D(0.34202015, -0.081899606, 0.9361168, 0, 0.9961947, 0.08715574, -0.9396926, -0.029809019, 0.34071866, -0.7, -0.2, 0.33)
 screen_size = Vector2(0.7, 0.7)
@@ -65,7 +76,7 @@ outline_size = 0
 script = ExtResource("5_hand")
 scroll_sensitivity = 0.2
 
-[node name="Track 2 Selection" parent="." unique_id=187553533 node_paths=PackedStringArray("Add_Track_UI_node", "Delete_Confirm_Viewport") instance=ExtResource("1_ebwc8")]
+[node name="Track 2 Selection" parent="." unique_id=158300861 node_paths=PackedStringArray("Add_Track_UI_node", "Delete_Confirm_Viewport") instance=ExtResource("1_ebwc8")]
 transform = Transform3D(0.34202015, 0.081899606, -0.9361168, 0, 0.9961947, 0.08715574, 0.9396926, -0.029809019, 0.34071866, 0.7, -0.2, 0.33)
 screen_size = Vector2(0.7, 0.7)
 scene = ExtResource("4_vnbwf")
