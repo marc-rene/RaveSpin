@@ -116,39 +116,39 @@ extends Node
 
 class _Rhythm:
 
-	signal interval_changed(current_interval: int)
+    signal interval_changed(current_interval: int)
 
-	var repeating: bool
-	var beat_count: float
-	var start_beat: float
-	var last_frame_interval
-	
+    var repeating: bool
+    var beat_count: float
+    var start_beat: float
+    var last_frame_interval
+    
 
-	func _init(_repeating, _beat_count, _start_beat):
-		repeating = _repeating
-		beat_count = _beat_count
-		start_beat = _start_beat
-		
+    func _init(_repeating, _beat_count, _start_beat):
+        repeating = _repeating
+        beat_count = _beat_count
+        start_beat = _start_beat
+        
 
-	const TOO_LATE = .1 # This long after interval starts, we are too late to emit
-	# We pass secs_per_beat so user can change bpm any time
-	func emit_if_needed(position: float, secs_per_beat: float) -> void:
-		var interval_secs = beat_count * secs_per_beat
-		var interval_start_position = start_beat * secs_per_beat
-		var current_interval = int(floor((position - interval_start_position) / interval_secs))
-		var secs_past_interval = fmod(position - interval_start_position, interval_secs)
-		var valid_interval = current_interval >= 0 and (repeating or current_interval == 0)
-		var too_late = secs_past_interval >= TOO_LATE
-		if not valid_interval or too_late:
-			last_frame_interval = null # we WILL emit upon the next valid interval
-		elif last_frame_interval != current_interval:
-			# NB mem leak: CONNECT_ONE_SHOT will remove the connection but leave the _Rhythm
-			# in _rhythms.  If this is an issue, we should intelligently remove unused _Rhythms
-			# (how to be sure user didn't keep a reference to connect to later?)
-			interval_changed.emit(current_interval)
-			last_frame_interval = current_interval
-		else:
-			pass
+    const TOO_LATE = .1 # This long after interval starts, we are too late to emit
+    # We pass secs_per_beat so user can change bpm any time
+    func emit_if_needed(position: float, secs_per_beat: float) -> void:
+        var interval_secs = beat_count * secs_per_beat
+        var interval_start_position = start_beat * secs_per_beat
+        var current_interval = int(floor((position - interval_start_position) / interval_secs))
+        var secs_past_interval = fmod(position - interval_start_position, interval_secs)
+        var valid_interval = current_interval >= 0 and (repeating or current_interval == 0)
+        var too_late = secs_past_interval >= TOO_LATE
+        if not valid_interval or too_late:
+            last_frame_interval = null # we WILL emit upon the next valid interval
+        elif last_frame_interval != current_interval:
+            # NB mem leak: CONNECT_ONE_SHOT will remove the connection but leave the _Rhythm
+            # in _rhythms.  If this is an issue, we should intelligently remove unused _Rhythms
+            # (how to be sure user didn't keep a reference to connect to later?)
+            interval_changed.emit(current_interval)
+            last_frame_interval = current_interval
+        else:
+            pass
 
 
 ## Emitted once per beat, including beat 0.  The [param current_beat] parameter
@@ -161,20 +161,20 @@ signal beat(current_beat: int)
 ## Beats per minute.  Changing this value changes [member beat_length].
 ## [br][br]This value can be changed while [member running] is true.
 @export var bpm: float = 60.0:
-	set(val):
-		if val == 0: return
-		bpm = val
-		notify_property_list_changed()
+    set(val):
+        if val == 0: return
+        bpm = val
+        notify_property_list_changed()
 
 ## Length of one beat in seconds.  Changing this value changes [member bpm].  It is usually more 
 ## precise to specify [member bpm] and let [member beat_length] be calculated automatically,
 ## because song tempos are often an integer bpm.
 @export var beat_length: float = 1.0:
-	get:
-		return 60.0 / bpm
-	set(val):
-		if val == 0: return
-		bpm = 60.0 / val
+    get:
+        return 60.0 / bpm
+    set(val):
+        if val == 0: return
+        bpm = 60.0 / val
 
 ## Optional [AudioStreamPlayer] to synchronize signals with.  While [member audio_stream_player] is
 ## playing, [signal beat] and [method beats] signals will be emitted based on playback position.
@@ -185,69 +185,69 @@ signal beat(current_beat: int)
 ## [code]true[/code] to emit signals without playing a stream.  [member running] is always
 ## [code]true[/code] while [member audio_stream_player] is playing.
 @export var running: bool:
-	get: return _silent_running or _stream_is_playing()
-	set(val):
-		if val == running:
-			return  # No change
-		if _stream_is_playing():
-			return  # Can't override
-		_silent_running = val
-		_position = 0.0
+    get: return _silent_running or _stream_is_playing()
+    set(val):
+        if val == running:
+            return  # No change
+        if _stream_is_playing():
+            return  # Can't override
+        _silent_running = val
+        _position = 0.0
 
 ## The current beat, indexed from [code]0[/code].
 var current_beat: int:
-	get: return int(floor(_position / beat_length))
-	
+    get: return int(floor(_position / beat_length))
+    
 ## The current position in seconds.  If [member audio_stream_player] is playing, this is the
 ## accurate number of seconds into the stream, and setting the value will seek to
 ## that position.  If the audio stream is not playing, this is the number of seconds
 ## that [member running] has been set to true, if any, and setting overrides the value.
 var current_position: float:
-	get: return _position
-	set(val):
-		if _stream_is_playing():
-			audio_stream_player.seek(val)
-		elif _silent_running:
-			_position = val
+    get: return _position
+    set(val):
+        if _stream_is_playing():
+            audio_stream_player.seek(val)
+        elif _silent_running:
+            _position = val
 var _position: float = 0.0
-	
+    
 var _cached_output_latency: float:
-	get:
-		if Time.get_ticks_msec() >= _invalidate_cached_output_latency_by:
-			# Cached because method is expensive per its docs
-			_cached_output_latency = AudioServer.get_output_latency()
-			_invalidate_cached_output_latency_by = Time.get_ticks_msec() + 1000
-		return _cached_output_latency
+    get:
+        if Time.get_ticks_msec() >= _invalidate_cached_output_latency_by:
+            # Cached because method is expensive per its docs
+            _cached_output_latency = AudioServer.get_output_latency()
+            _invalidate_cached_output_latency_by = Time.get_ticks_msec() + 1000
+        return _cached_output_latency
 var _invalidate_cached_output_latency_by := 0
 var _silent_running: bool
 var _rhythms: Array[_Rhythm] = []
 
 
 func _ready():
-	# NB: Without this, the user's unique beats() signals would fire in registration order.
-	# But with this, we move all .beats(1.0) and .beat signals to the front of the
-	# firing queue (_rhythms).  If we don't like that, we could treat .beat as a special
-	# case to check before or after calling .emit_if_needed() on all _rhythms, and document that if
-	# the user needs order consistency they should use .beats(1).connect instead of .beat.connect.
-	# NB using "func()" to support 4.2 which can't connect directly to beat.emit
-	beats(1.0).connect(func(current_interval): beat.emit(current_interval))
+    # NB: Without this, the user's unique beats() signals would fire in registration order.
+    # But with this, we move all .beats(1.0) and .beat signals to the front of the
+    # firing queue (_rhythms).  If we don't like that, we could treat .beat as a special
+    # case to check before or after calling .emit_if_needed() on all _rhythms, and document that if
+    # the user needs order consistency they should use .beats(1).connect instead of .beat.connect.
+    # NB using "func()" to support 4.2 which can't connect directly to beat.emit
+    beats(1.0).connect(func(current_interval): beat.emit(current_interval))
 
 
 # If not stopped, recalculate track position and emit any appropriate signals.
 func _physics_process(delta):
-	if _silent_running and _stream_is_playing():
-		_silent_running = false
-	if not running:
-		return
-	if _silent_running:
-		_position += delta
-	else:
-		_position = audio_stream_player.get_playback_position()
-		_position += AudioServer.get_time_since_last_mix() - _cached_output_latency
-	if Engine.is_editor_hint():
-		return
-	for rhythm in _rhythms:
-		rhythm.emit_if_needed(_position, beat_length)
+    if _silent_running and _stream_is_playing():
+        _silent_running = false
+    if not running:
+        return
+    if _silent_running:
+        _position += delta
+    else:
+        _position = audio_stream_player.get_playback_position()
+        _position += AudioServer.get_time_since_last_mix() - _cached_output_latency
+    if Engine.is_editor_hint():
+        return
+    for rhythm in _rhythms:
+        rhythm.emit_if_needed(_position, beat_length)
 
 
 ## Returns a signal that emits when a specific beat is reached, or repeatedly every specified
@@ -280,19 +280,19 @@ func _physics_process(delta):
 ## beats(4, true, 2).connect(_func, CONNECT_ONE_SHOT)
 ## [/codeblock]
 func beats(beat_count: float, repeating := true, start_beat := 0.0) -> Signal:
-	if not repeating:
-		# unused; make it consistent to aid in reuse below.  And make it large enough
-		# so the math works well in .emit_if_needed
-		beat_count = 100.0
-	for rhythm in _rhythms:
-		if (rhythm.beat_count == beat_count 
-			and rhythm.repeating == repeating
-			and rhythm.start_beat == start_beat):
-			return rhythm.interval_changed
-	var new_rhythm = _Rhythm.new(repeating, beat_count, start_beat)
-	_rhythms.append(new_rhythm)
-	return new_rhythm.interval_changed
-	
+    if not repeating:
+        # unused; make it consistent to aid in reuse below.  And make it large enough
+        # so the math works well in .emit_if_needed
+        beat_count = 100.0
+    for rhythm in _rhythms:
+        if (rhythm.beat_count == beat_count 
+            and rhythm.repeating == repeating
+            and rhythm.start_beat == start_beat):
+            return rhythm.interval_changed
+    var new_rhythm = _Rhythm.new(repeating, beat_count, start_beat)
+    _rhythms.append(new_rhythm)
+    return new_rhythm.interval_changed
+    
 
 func _stream_is_playing():
-	return audio_stream_player != null and audio_stream_player.playing
+    return audio_stream_player != null and audio_stream_player.playing

@@ -11,7 +11,9 @@
 [ext_resource type="PackedScene" uid="uid://7kyk88qnftlr" path="res://UI/LibreBox/Components/Add Track/Add_Track_UI.tscn" id="9_83nvb"]
 [ext_resource type="PackedScene" uid="uid://bukotgtuqys7" path="res://UI/LibreBox/Components/Performance Pad/UI_PerformancePadManager.tscn" id="9_yqoip"]
 [ext_resource type="PackedScene" uid="uid://bowim16kwtx7w" path="res://UI/LibreBox/Components/FX Selection/FX_Allow_More.tscn" id="10_j0p6t"]
+[ext_resource type="PackedScene" uid="uid://hr0l2luuubwe" path="res://UI/LibreBox/Components/Recording/UI_Recording.tscn" id="10_rwfyx"]
 [ext_resource type="PackedScene" uid="uid://b6ltbvcirle8v" path="res://UI/LibreBox/Components/Langauge/UI_LanguageSelection.tscn" id="11_6xn47"]
+[ext_resource type="PackedScene" uid="uid://df2ivkn5t2nfe" path="res://UI/LibreBox/Components/Main_Hub/DB_Meter.tscn" id="11_pkn85"]
 
 [node name="LibreboxScene" type="Node3D" unique_id=889702823]
 script = ExtResource("1_al4tx")
@@ -149,6 +151,33 @@ click_cooldown_seconds = 0.2
 scroll_enabled = false
 scroll_pose_index_pinch = false
 scroll_pose_fist = false
+
+[node name="Recording" parent="." unique_id=2094583484 instance=ExtResource("1_ebwc8")]
+transform = Transform3D(0.9659258, 0, 0.25881904, -0.23266065, 0.43808877, 0.86830133, -0.113385715, -0.89893174, 0.42316124, -0.56792986, -0.6125598, 0.41433245)
+screen_size = Vector2(0.12, 0.12)
+scene = ExtResource("10_rwfyx")
+viewport_size = Vector2(840, 840)
+unshaded = true
+
+[node name="HandTouch" type="Node" parent="Recording" unique_id=50004752]
+script = ExtResource("5_hand")
+click_cooldown_seconds = 0.5
+scroll_enabled = false
+scroll_pose_index_pinch = false
+scroll_pose_fist = false
+
+[node name="Mic Level" parent="." unique_id=197529035 instance=ExtResource("1_ebwc8")]
+transform = Transform3D(0.99999994, 0, 0, 0, 0.46345067, 0.88612264, 0, -0.8861227, 0.46345064, -0.09636105, -0.44032907, 0.048148252)
+screen_size = Vector2(0.05, 0.1)
+scene = ExtResource("11_pkn85")
+viewport_size = Vector2(150, 300)
+unshaded = true
+scene_properties_keys = PackedStringArray("db_meter.gd", "Track_ID", "Min_DB", "Max_DB", "Warning_DB", "Title")
+Track_ID = 0
+Min_DB = -48.0
+Max_DB = 6.0
+Warning_DB = 0.1
+Title = "KEY_DB_LABEL"
 
 [node name="Add Song" parent="." unique_id=357377217 instance=ExtResource("1_ebwc8")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10, 0.357)

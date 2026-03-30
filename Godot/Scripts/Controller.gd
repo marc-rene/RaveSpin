@@ -231,6 +231,7 @@ var Hot_Cue_Sec_By_Track: Array = []
 var _performance_pad_controls_by_track: Array = [[], []]
 var _performance_pad_sampler_players_by_track: Array = [[], []]
 var _performance_pad_pulse_materials_by_track: Array = [[], []]
+var _performance_pad_fx_hold_active_by_track: Array = [[], []]
 var _performance_pad_pulse_time: float = 0.0
 
 static func Get_Performance_Pad_Mode(which_track: int) -> int:
@@ -240,11 +241,18 @@ static func Get_Performance_Pad_Mode(which_track: int) -> int:
 static func Set_Performance_Pad_Mode(which_track: int, mode: int) -> void:
     which_track = Utility.Clamp_to_Valid_TrackID(which_track)
     mode = clampi(mode, E_Performance_Pad_Mode.HOT_CUE, E_Performance_Pad_Mode.KEY_SHIFT)
-    DJ_Controller.Get_Instance().Performance_Pad_Mode_By_Track[which_track] = mode
+    var inst := DJ_Controller.Get_Instance()
+    var previous_mode: int = inst.Performance_Pad_Mode_By_Track[which_track]
+    inst.Performance_Pad_Mode_By_Track[which_track] = mode
     if mode == E_Performance_Pad_Mode.FX_SET_1:
-        DJ_Controller.Get_Instance().Selected_FX_Set_By_Track[which_track] = 1
+        inst.Selected_FX_Set_By_Track[which_track] = 1
     elif mode == E_Performance_Pad_Mode.FX_SET_2:
-        DJ_Controller.Get_Instance().Selected_FX_Set_By_Track[which_track] = 2
+        inst.Selected_FX_Set_By_Track[which_track] = 2
+
+    var was_fx_mode: bool = previous_mode == E_Performance_Pad_Mode.FX_SET_1 or previous_mode == E_Performance_Pad_Mode.FX_SET_2
+    var is_fx_mode: bool = mode == E_Performance_Pad_Mode.FX_SET_1 or mode == E_Performance_Pad_Mode.FX_SET_2
+    if was_fx_mode and not is_fx_mode:
+        inst._clear_held_fx_for_track(which_track)
 
 static func Get_Hot_Cue_Add_Mode(which_track: int) -> bool:
     which_track = Utility.Clamp_to_Valid_TrackID(which_track)
@@ -330,6 +338,7 @@ func _setup_performance_pad_defaults() -> void:
     _performance_pad_controls_by_track = [[], []]
     _performance_pad_sampler_players_by_track = [[], []]
     _performance_pad_pulse_materials_by_track = [[], []]
+    _performance_pad_fx_hold_active_by_track = [[], []]
     _performance_pad_pulse_time = 0.0
 
 
@@ -350,6 +359,7 @@ func _cache_and_connect_performance_pads_for_track(which_track: int, pad_group: 
     var controls_for_track: Array[Base_Control] = []
     var players_for_track: Array[AudioStreamPlayer] = []
     var pulse_materials_for_track: Array[StandardMaterial3D] = []
+    var fx_hold_active_for_track: Array[bool] = []
 
     for child_node: Node in pad_group.get_children():
         var pad_control: Base_Control = child_node as Base_Control
@@ -373,8 +383,17 @@ func _cache_and_connect_performance_pads_for_track(which_track: int, pad_group: 
         var on_activated_callable := Callable(self, "_on_performance_pad_on_activated").bind(which_track, pad_index)
         if not pad_control.is_connected("on_activated", on_activated_callable):
             pad_control.connect("on_activated", on_activated_callable)
+        if perf_pad_control != null:
+            var on_pressed_callable := Callable(self, "_on_performance_pad_pressed").bind(which_track, pad_index)
+            if not perf_pad_control.is_connected("on_pad_pressed", on_pressed_callable):
+                perf_pad_control.connect("on_pad_pressed", on_pressed_callable)
+            var on_released_callable := Callable(self, "_on_performance_pad_released").bind(which_track, pad_index)
+            if not perf_pad_control.is_connected("on_pad_released", on_released_callable):
+                perf_pad_control.connect("on_pad_released", on_released_callable)
 
-        var sampler_player: AudioStreamPlayer = pad_control.get_sampler_player()
+        var sampler_player: AudioStreamPlayer = null
+        if pad_control.has_method("get_sampler_player"):
+            sampler_player = pad_control.get_sampler_player()
         if not sampler_player:
             sampler_player = pad_control.get_node_or_null("AudioStreamPlayer") as AudioStreamPlayer
         
@@ -388,10 +407,12 @@ func _cache_and_connect_performance_pads_for_track(which_track: int, pad_group: 
         pulse_mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
         pulse_mat.albedo_color = Color(1.0, 1.0, 1.0, 0.0)
         pulse_materials_for_track.append(pulse_mat)
+        fx_hold_active_for_track.append(false)
 
     _performance_pad_controls_by_track[which_track] = controls_for_track
     _performance_pad_sampler_players_by_track[which_track] = players_for_track
     _performance_pad_pulse_materials_by_track[which_track] = pulse_materials_for_track
+    _performance_pad_fx_hold_active_by_track[which_track] = fx_hold_active_for_track
 
 
 func _on_performance_pad_on_activated(which_track: int, pad_index: int) -> void:
@@ -405,7 +426,7 @@ func _on_performance_pad_on_activated(which_track: int, pad_index: int) -> void:
         E_Performance_Pad_Mode.SAMPLER:
             _performance_pad_handle_sampler(which_track, pad_index)
         E_Performance_Pad_Mode.FX_SET_1, E_Performance_Pad_Mode.FX_SET_2:
-            _performance_pad_handle_fx_toggle(which_track, pad_index)
+            pass
         E_Performance_Pad_Mode.BEAT_JUMP:
             _performance_pad_handle_beat_jump(which_track, pad_index)
         E_Performance_Pad_Mode.KEY_SHIFT:
@@ -438,12 +459,32 @@ func _performance_pad_handle_sampler(which_track: int, pad_index: int) -> void:
     sampler_player.play()
 
 
-func _performance_pad_handle_fx_toggle(which_track: int, pad_index: int) -> void:
+func _performance_pad_handle_fx_hold(which_track: int, pad_index: int, is_pressed: bool) -> void:
     var selected_set: int = Selected_FX_Set_By_Track[which_track]
     var fx_list: Array[BUS_MANAGER.E_BEAT_FX_TYPE] = FX_SET_1_TYPES if selected_set == 1 else FX_SET_2_TYPES
     if pad_index < 0 or pad_index >= fx_list.size():
         return
-    BUS_MANAGER.toggle_beat_fx(fx_list[pad_index], which_track)
+
+    var hold_state: Array = _performance_pad_fx_hold_active_by_track[which_track]
+    if pad_index < 0 or pad_index >= hold_state.size():
+        return
+
+    var fx_type: BUS_MANAGER.E_BEAT_FX_TYPE = fx_list[pad_index]
+    if is_pressed:
+        if not BUS_MANAGER.is_beat_fx_active(fx_type, which_track):
+            BUS_MANAGER.add_beat_fx(fx_type, which_track)
+        hold_state[pad_index] = true
+    else:
+        BUS_MANAGER.remove_beat_fx(fx_type, which_track)
+        hold_state[pad_index] = false
+
+
+func _clear_held_fx_for_track(which_track: int) -> void:
+    which_track = Utility.Clamp_to_Valid_TrackID(which_track)
+    var hold_state: Array = _performance_pad_fx_hold_active_by_track[which_track]
+    for pad_index: int in range(min(PERFORMANCE_PAD_COUNT, hold_state.size())):
+        if bool(hold_state[pad_index]):
+            _performance_pad_handle_fx_hold(which_track, pad_index, false)
 
 
 func _performance_pad_handle_beat_jump(which_track: int, pad_index: int) -> void:
@@ -480,16 +521,29 @@ func _update_performance_pad_feedback(delta: float) -> void:
 
     for which_track: int in range(0, 2):
         var controls_for_track: Array = _performance_pad_controls_by_track[which_track]
+        var players_for_track: Array = _performance_pad_sampler_players_by_track[which_track]
         var pulse_materials_for_track: Array = _performance_pad_pulse_materials_by_track[which_track]
+        var fx_hold_state_for_track: Array = _performance_pad_fx_hold_active_by_track[which_track]
         var hot_cue_mode_active: bool = Performance_Pad_Mode_By_Track[which_track] == E_Performance_Pad_Mode.HOT_CUE
+        var sampler_mode_active: bool = Performance_Pad_Mode_By_Track[which_track] == E_Performance_Pad_Mode.SAMPLER
+        var fx_mode_active: bool = (
+            Performance_Pad_Mode_By_Track[which_track] == E_Performance_Pad_Mode.FX_SET_1
+            or Performance_Pad_Mode_By_Track[which_track] == E_Performance_Pad_Mode.FX_SET_2
+        )
 
-        for pad_index: int in range(min(PERFORMANCE_PAD_COUNT, controls_for_track.size(), pulse_materials_for_track.size())):
+        for pad_index: int in range(min(PERFORMANCE_PAD_COUNT, controls_for_track.size(), players_for_track.size(), pulse_materials_for_track.size(), fx_hold_state_for_track.size())):
             var pad_control: Base_Control = controls_for_track[pad_index] as Base_Control
+            var sampler_player: AudioStreamPlayer = players_for_track[pad_index] as AudioStreamPlayer
             var pulse_mat: StandardMaterial3D = pulse_materials_for_track[pad_index] as StandardMaterial3D
             if pad_control == null or pulse_mat == null or pad_control.Target_Mesh == null:
                 continue
 
-            var should_pulse: bool = hot_cue_mode_active and Has_Hot_Cue(which_track, pad_index)
+            var sampler_playing: bool = sampler_mode_active and sampler_player != null and sampler_player.playing
+            var should_pulse: bool = (
+                (hot_cue_mode_active and Has_Hot_Cue(which_track, pad_index))
+                or sampler_playing
+                or (fx_mode_active and bool(fx_hold_state_for_track[pad_index]))
+            )
             if should_pulse and pad_control.fully_exited:
                 var pad_color: Color = Get_Performance_Pad_Color(pad_index)
                 pulse_mat.albedo_color = Color(pad_color.r, pad_color.g, pad_color.b, pulse_alpha)
@@ -543,6 +597,22 @@ func _get_fx_context_for_pad(which_track: int, pad_index: int) -> Dictionary:
     if duplicate_indices.size() > 1:
         variant_index = duplicate_indices.find(pad_index) + 1
     return {"fx_type": int(fx_type), "variant_index": variant_index}
+
+
+func _on_performance_pad_pressed(which_track: int, pad_index: int) -> void:
+    which_track = Utility.Clamp_to_Valid_TrackID(which_track)
+    pad_index = clampi(pad_index, 0, PERFORMANCE_PAD_COUNT - 1)
+    var selected_mode: int = Performance_Pad_Mode_By_Track[which_track]
+    if selected_mode == E_Performance_Pad_Mode.FX_SET_1 or selected_mode == E_Performance_Pad_Mode.FX_SET_2:
+        _performance_pad_handle_fx_hold(which_track, pad_index, true)
+
+
+func _on_performance_pad_released(which_track: int, pad_index: int) -> void:
+    which_track = Utility.Clamp_to_Valid_TrackID(which_track)
+    pad_index = clampi(pad_index, 0, PERFORMANCE_PAD_COUNT - 1)
+    var hold_state: Array = _performance_pad_fx_hold_active_by_track[which_track]
+    if pad_index >= 0 and pad_index < hold_state.size() and bool(hold_state[pad_index]):
+        _performance_pad_handle_fx_hold(which_track, pad_index, false)
 
 func _beat_len_stream_sec(which_track: int) -> float:
     which_track = Utility.Clamp_to_Valid_TrackID(which_track)
@@ -1407,6 +1477,8 @@ func _on_reset_area_area_entered(area: Area3D) -> void:
     _jog_resume_after_touch[1] = false
     _jog_has_virtual_position[0] = false
     _jog_has_virtual_position[1] = false
+    _clear_held_fx_for_track(0)
+    _clear_held_fx_for_track(1)
     Performance_Pad_Mode_By_Track[0] = E_Performance_Pad_Mode.HOT_CUE
     Performance_Pad_Mode_By_Track[1] = E_Performance_Pad_Mode.HOT_CUE
     Hot_Cue_Add_Mode_By_Track[0] = true

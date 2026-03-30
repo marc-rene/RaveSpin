@@ -17,11 +17,15 @@ var meter_mat: ShaderMaterial
 
 
 func _ready() -> void:
-    Track_ID = Utility.Clamp_to_Valid_TrackID(Track_ID)
+    # TODO: Make this an enum so it's less jank
+    if Track_ID == 11:
+        bus_index = AudioServer.get_bus_index("Microphone Input")
+    else:
+        Track_ID = Utility.Clamp_to_Valid_TrackID(Track_ID)
+        bus_index = BUS_MANAGER.Get_Channel_Index_i(Track_ID)
+        
     meter_mat = Meter_Fill_ref.material.duplicate()
     Meter_Fill_ref.material = meter_mat
-    
-    bus_index = BUS_MANAGER.Get_Channel_Index_i(Track_ID)
     
     Title_Label_ref.text = tr(Title) # Title is a KEY_* from scene (e.g. KEY_DB_METER_1)
     

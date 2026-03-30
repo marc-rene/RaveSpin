@@ -38,7 +38,7 @@ environment = SubResource("Environment_3sm0n")
 spawn_in_front = NodePath("../../LibreboxScene")
 
 [node name="LibreboxScene" parent="." unique_id=889702823 instance=ExtResource("6_7t5kf")]
-transform = Transform3D(-4.371139e-08, 4.852939e-24, 1.0000005, -1.110223e-16, 1, 0, -1, 1.110223e-16, -4.371141e-08, -0.9999264, 2.074472, 0.4998038)
+transform = Transform3D(-4.371139e-08, 4.852939e-24, 1.0000005, -1.110223e-16, 1, 0, -1, 1.110223e-16, -4.371141e-08, -0.99912125, 2.0718179, 0.49675062)
 
 [node name="DDJ-FLX4" parent="LibreboxScene" unique_id=1624226957 instance=ExtResource("3_lr07p")]
 unique_name_in_owner = true

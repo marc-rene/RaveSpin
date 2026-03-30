@@ -11,6 +11,9 @@ signal on_pad_released
 ## 0 == Pad A, 1 == Pad B ... 7 == Pad H
 @export_range(0, 7, 1) var PAD_INDEX: int = 0
 
+## Whats the nickname you want to give this Sample? like "Vine Boom FX" or something
+@export var Sampler_Sound_Nickname : String = ""
+
 @onready var sampler_player: AudioStreamPlayer = $AudioStreamPlayer
 @onready var label_3d: Label3D = $Label3D
 
@@ -69,7 +72,7 @@ func refresh_runtime_label(
             var cue_letter: String = char(65 + clampi(PAD_INDEX, 0, 7))
             new_label = ("Cue " if hot_cue_add_mode else "Del ") + cue_letter
         MODE_SAMPLER:
-            new_label = "Samp %d" % (PAD_INDEX + 1)
+            new_label = Sampler_Sound_Nickname if Sampler_Sound_Nickname != "" else "Samp %d" % (PAD_INDEX + 1)
         MODE_FX_SET_1, MODE_FX_SET_2:
             new_label = _fx_label(fx_type, fx_variant_index)
         MODE_BEAT_JUMP:
