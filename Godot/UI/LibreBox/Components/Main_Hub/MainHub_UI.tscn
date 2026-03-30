@@ -52,6 +52,7 @@ size_flags_horizontal = 3
 
 [node name="Track 1 DB Meter" parent="VBoxContainer/Track 1 Container" unique_id=1972613103 instance=ExtResource("8_dbmtr")]
 layout_mode = 2
+Track_ID = 2
 Title = "KEY_DB_METER_1"
 
 [node name="Track 1 Waveform preview" type="TextureRect" parent="VBoxContainer" unique_id=792870201]
@@ -84,7 +85,7 @@ Track_ID = 1
 
 [node name="Track 2 DB Meter" parent="VBoxContainer/Track 2 Container" unique_id=1419764152 instance=ExtResource("8_dbmtr")]
 layout_mode = 2
-Track_ID = 1
+Track_ID = 3
 Title = "KEY_DB_METER_2"
 
 [node name="Track 2 Label" type="Label" parent="VBoxContainer" unique_id=1096811934]

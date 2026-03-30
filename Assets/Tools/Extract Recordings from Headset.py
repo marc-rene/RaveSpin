@@ -59,7 +59,7 @@ def pull_file(filename):
 
 
 def main():
-    logger.info("Starting extraction प्रक्रिया...")
+    logger.info("Starting extraction")
 
     os.makedirs(LOCAL_DIR, exist_ok=True)
 

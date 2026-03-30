@@ -1,8 +1,12 @@
 extends PanelContainer
 
-var RECORDINGS_DIR: String = "user://Recordings"
+const RECORDINGS_DIR: String = "user://Recordings"
 const MASTER_BUS_NAME: String = "Master"
 const MIC_BUS_NAME: String = "Microphone Input"
+const ANDROID_MIC_PERMISSION: String = "android.permission.RECORD_AUDIO"
+const MIC_NA_THRESHOLD: float = 0.1
+const MIC_MONITOR_ATTENUATION: float = 0.6
+const MIC_MONITOR_BUFFER_SECONDS: float = 0.25
 
 const KEY_RECORDING_STATUS_IDLE: String = "KEY_RECORDING_STATUS"
 const KEY_RECORDING_START: String = "KEY_START_RECORDING"
@@ -14,17 +18,19 @@ const KEY_RECORDING_SAVE_IN_PROGRESS: String = "KEY_RECORDING_SAVE_IN_PROGRESS"
 const KEY_ENABLE_MICROPHONE: String = "KEY_ENABLE_MICROPHONE"
 const KEY_RECORDING_SAVE_LOCATION: String = "KEY_RECORDING_SAVE_LOCATION"
 
-@onready var _margin_container: MarginContainer = $MarginContainer
-@onready var _status_label: Label = $"MarginContainer/VBoxContainer/Status Label"
-@onready var _record_button: CheckButton = $"MarginContainer/VBoxContainer/START recordin BTN"
-@onready var _save_location_label: Label = $"MarginContainer/VBoxContainer/Save Location/Where File is actually going Label Var"
-@onready var _save_location_prefix_label: Label = $"MarginContainer/VBoxContainer/Save Location/File Save Label"
-@onready var _enable_mic_button: CheckButton = $"MarginContainer/VBoxContainer/Enable Microphone input"
+@onready var main_container : Container = $VBoxContainer
+@onready var _status_label: Label = $"VBoxContainer/Status Label"
+@onready var _record_button: CheckButton = $"VBoxContainer/START recordin BTN"
+@onready var _save_location_label: Label = $"VBoxContainer/Save Location/Where File is actually going Label Var"
+@onready var _save_location_prefix_label: Label = $"VBoxContainer/Save Location/File Save Label"
+@onready var _enable_mic_button: CheckButton = $"VBoxContainer/Enable Microphone input"
 
 var _record_effect: AudioEffectRecord = null
 var _recording_pulse_tween: Tween = null
-var _mic_input_player: AudioStreamPlayer = null
 var _save_thread: Thread = null
+var _mic_monitor_player: AudioStreamPlayer = null
+var _mic_monitor_playback: AudioStreamGeneratorPlayback = null
+var _mic_monitor_db: float = -80.0
 
 var _is_recording: bool = false
 var _save_in_progress: bool = false
@@ -33,7 +39,7 @@ var _status_raw_text: String = ""
 
 
 func _ready() -> void:
-    RECORDINGS_DIR = OS.get_user_data_dir() + "/Recordings" #should still be user:// but just incase
+    add_to_group("librebox_recording")
     _record_button.toggled.connect(_on_record_button_toggled)
     _enable_mic_button.toggled.connect(_on_enable_microphone_toggled)
 
@@ -49,7 +55,7 @@ func _ready() -> void:
 
 
 func _process(_delta: float) -> void:
-    _sync_microphone_level_from_controller()
+    _update_mic_monitor()
     _poll_save_thread()
 
 
@@ -92,8 +98,7 @@ func _on_record_button_toggled(pressed: bool) -> void:
 
 
 func _start_recording() -> void:
-    if _record_effect == null:
-        _record_effect = _ensure_master_record_effect()
+    _record_effect = _ensure_master_record_effect()
     if _record_effect == null:
         _record_button.set_pressed_no_signal(false)
         _set_status_raw("Recording start error: AudioEffectRecord was not found on Master bus.")
@@ -109,6 +114,7 @@ func _start_recording() -> void:
 
 
 func _stop_recording() -> void:
+    _record_effect = _ensure_master_record_effect()
     if _record_effect == null:
         _set_status_raw("Recording stop error: AudioEffectRecord was not found on Master bus.")
         _is_recording = false
@@ -186,47 +192,126 @@ func _thread_save_recording(recorded_stream: AudioStreamWAV, save_path: String) 
 
 
 func _on_enable_microphone_toggled(enabled: bool) -> void:
+    if enabled:
+        var has_permission: bool = await _ensure_android_mic_permission()
+        if not has_permission:
+            _enable_mic_button.set_pressed_no_signal(false)
+            _apply_microphone_enabled_state(false)
+            _set_status_raw("Microphone permission denied. Enable RECORD_AUDIO in Android permissions and grant runtime permission.")
+            return
+
     _apply_microphone_enabled_state(enabled)
 
 
 func _apply_microphone_enabled_state(enabled: bool) -> void:
     var mic_bus_index: int = AudioServer.get_bus_index(MIC_BUS_NAME)
     if mic_bus_index < 0:
+        _set_status_raw("Microphone bus error: '" + MIC_BUS_NAME + "' bus not found.")
         return
 
     if enabled:
-        _ensure_microphone_input_player()
+        AudioServer.set_input_device_active(true)
+        _ensure_mic_monitor_player()
         AudioServer.set_bus_mute(mic_bus_index, false)
-        if _mic_input_player != null and not _mic_input_player.playing:
-            _mic_input_player.play()
+        if _mic_monitor_player != null and not _mic_monitor_player.playing:
+            _mic_monitor_player.play()
+        _debug_print_android_permission_state()
     else:
         AudioServer.set_bus_mute(mic_bus_index, true)
+        if _mic_monitor_player != null and _mic_monitor_player.playing:
+            _mic_monitor_player.stop()
+        _mic_monitor_db = -80.0
 
 
-func _ensure_microphone_input_player() -> void:
-    if _mic_input_player != null and is_instance_valid(_mic_input_player):
+func _ensure_mic_monitor_player() -> void:
+    if _mic_monitor_player != null and is_instance_valid(_mic_monitor_player):
+        if _mic_monitor_playback == null:
+            _mic_monitor_playback = _mic_monitor_player.get_stream_playback() as AudioStreamGeneratorPlayback
         return
 
-    _mic_input_player = AudioStreamPlayer.new()
-    _mic_input_player.name = "Runtime_Microphone_Input_Player"
-    _mic_input_player.bus = MIC_BUS_NAME
-    _mic_input_player.stream = AudioStreamMicrophone.new()
-    add_child(_mic_input_player)
-    _mic_input_player.play()
+    var monitor_stream: AudioStreamGenerator = AudioStreamGenerator.new()
+    monitor_stream.mix_rate = max(1.0, AudioServer.get_input_mix_rate())
+    monitor_stream.buffer_length = MIC_MONITOR_BUFFER_SECONDS
+
+    _mic_monitor_player = AudioStreamPlayer.new()
+    _mic_monitor_player.name = "Runtime_Mic_Monitor_Player"
+    _mic_monitor_player.bus = MIC_BUS_NAME
+    _mic_monitor_player.stream = monitor_stream
+    add_child(_mic_monitor_player)
+    _mic_monitor_player.play()
+    _mic_monitor_playback = _mic_monitor_player.get_stream_playback() as AudioStreamGeneratorPlayback
 
 
-func _sync_microphone_level_from_controller() -> void:
+func _ensure_android_mic_permission() -> bool:
+    if not OS.has_feature("android"):
+        return true
+
+    if _has_android_mic_permission():
+        return true
+
+    if OS.has_method("request_permission"):
+        OS.request_permission(ANDROID_MIC_PERMISSION)
+    elif OS.has_method("request_permissions"):
+        OS.request_permissions()
+    else:
+        return false
+
+    # Let Android runtime permission dialog complete.
+    await get_tree().process_frame
+    await get_tree().create_timer(0.35).timeout
+    return _has_android_mic_permission()
+
+
+func _has_android_mic_permission() -> bool:
+    if not OS.has_feature("android"):
+        return true
+
+    if OS.has_method("get_granted_permissions"):
+        var granted_permissions: PackedStringArray = OS.get_granted_permissions()
+        return granted_permissions.has(ANDROID_MIC_PERMISSION)
+
+    return false
+
+
+func _debug_print_android_permission_state() -> void:
+    if not OS.has_feature("android"):
+        return
+    if not OS.has_method("get_granted_permissions"):
+        print("Android mic permission debug: OS.get_granted_permissions not available.")
+        return
+    var granted_permissions: PackedStringArray = OS.get_granted_permissions()
+    print("Android mic permission granted: " + str(granted_permissions.has(ANDROID_MIC_PERMISSION)))
+    print("Granted permissions: " + str(granted_permissions))
+
+
+func _update_mic_monitor() -> void:
     if not _enable_mic_button.button_pressed:
         return
-
-    var mic_bus_index: int = AudioServer.get_bus_index(MIC_BUS_NAME)
-    if mic_bus_index < 0:
+    if _is_mic_level_too_low():
+        _mic_monitor_db = -80.0
         return
 
-    var mic_knob_alpha: float = _get_controller_mic_knob_value()
-    var mic_linear: float = _map_mic_knob_to_linear_gain(mic_knob_alpha)
-    var safe_linear: float = maxf(0.0001, mic_linear)
-    AudioServer.set_bus_volume_db(mic_bus_index, linear_to_db(safe_linear))
+    _ensure_mic_monitor_player()
+    if _mic_monitor_playback == null:
+        return
+
+    var available_frames: int = AudioServer.get_input_frames_available()
+    if available_frames <= 0:
+        return
+
+    var input_frames: PackedVector2Array = AudioServer.get_input_frames(available_frames)
+    if input_frames.is_empty():
+        return
+
+    var monitor_gain: float = _map_mic_knob_to_linear_gain(_get_controller_mic_knob_value()) * MIC_MONITOR_ATTENUATION
+    var peak_linear: float = 0.0
+    for frame in input_frames:
+        var out_frame: Vector2 = frame * monitor_gain
+        _mic_monitor_playback.push_frame(out_frame)
+        peak_linear = maxf(peak_linear, absf(out_frame.x))
+        peak_linear = maxf(peak_linear, absf(out_frame.y))
+
+    _mic_monitor_db = linear_to_db(maxf(0.0001, peak_linear))
 
 
 func _get_controller_mic_knob_value() -> float:
@@ -250,6 +335,14 @@ func _map_mic_knob_to_linear_gain(alpha: float) -> float:
     if alpha <= 0.5:
         return remap(alpha, 0.0, 0.5, 0.0, 0.5)
     return remap(alpha, 0.5, 1.0, 0.5, 2.0)
+
+
+func _is_mic_level_too_low() -> bool:
+    return _get_controller_mic_knob_value() <= MIC_NA_THRESHOLD
+
+
+func get_mic_monitor_db() -> float:
+    return _mic_monitor_db
 
 
 func _ensure_recordings_directory() -> int:
@@ -276,15 +369,15 @@ func _start_recording_pulse() -> void:
     _stop_recording_pulse()
     _recording_pulse_tween = create_tween()
     _recording_pulse_tween.set_loops()
-    _recording_pulse_tween.tween_property(_margin_container, "modulate", Color(1.0, 0.25, 0.25, 1.0), 0.45).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
-    _recording_pulse_tween.tween_property(_margin_container, "modulate", Color(1.0, 1.0, 1.0, 1.0), 0.45).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+    _recording_pulse_tween.tween_property(main_container, "modulate", Color(1.0, 0.25, 0.25, 1.0), 0.45).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+    _recording_pulse_tween.tween_property(main_container, "modulate", Color(1.0, 1.0, 1.0, 1.0), 0.45).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 
 
 func _stop_recording_pulse() -> void:
     if _recording_pulse_tween != null:
         _recording_pulse_tween.kill()
         _recording_pulse_tween = null
-    _margin_container.modulate = Color(1.0, 1.0, 1.0, 1.0)
+    main_container.modulate = Color(1.0, 1.0, 1.0, 1.0)
 
 
 func _set_status_localized(key: String) -> void:
