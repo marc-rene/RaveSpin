@@ -189,10 +189,6 @@ scroll_pose_index_pinch = false
 scroll_pose_fist = false
 
 [node name="Mic Level" parent="." unique_id=197529035 instance=ExtResource("1_ebwc8")]
-process_mode = 3
-process_thread_group = 2
-process_thread_group_order = 0
-process_thread_messages = 3
 transform = Transform3D(0.99999994, 0, 0, 0, 0.46345067, 0.88612264, 0, -0.8861227, 0.46345064, -0.09636105, -0.46690097, 0.09895402)
 screen_size = Vector2(0.05, 0.1)
 scene = ExtResource("11_pkn85")
@@ -210,10 +206,6 @@ Title = "KEY_DB_LABEL"
 bus_name = &"Microphone Input"
 
 [node name="Track 1 DB Level" parent="." unique_id=1989148492 instance=ExtResource("1_ebwc8")]
-process_mode = 3
-process_thread_group = 2
-process_thread_group_order = 0
-process_thread_messages = 3
 transform = Transform3D(0.99999994, 0, 0, 0, 0.46345067, 0.88612264, 0, -0.8861227, 0.46345064, -0.008808472, -0.58981687, 0.33397064)
 screen_size = Vector2(0.03, 0.09)
 scene = ExtResource("11_pkn85")
@@ -231,10 +223,6 @@ Title = "KEY_DB_LABEL"
 bus_name = &"Channel 1 Input"
 
 [node name="Track 2 DB Level" parent="." unique_id=960159896 instance=ExtResource("1_ebwc8")]
-process_mode = 3
-process_thread_group = 2
-process_thread_group_order = 0
-process_thread_messages = 3
 transform = Transform3D(0.99999994, 0, 0, 0, 0.46345067, 0.88612264, 0, -0.8861227, 0.46345064, 0.046568777, -0.58981687, 0.33397064)
 screen_size = Vector2(0.03, 0.09)
 scene = ExtResource("11_pkn85")

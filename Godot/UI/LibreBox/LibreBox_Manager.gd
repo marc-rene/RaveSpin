@@ -77,6 +77,28 @@ static func Get_Track_BPM(which_track : int) -> float:
     #push_warning("HEY! Track " + str(which_track) + " hasn't been initialised yet... wtf?")
     return -1.0
 
+
+func _configure_db_meter_viewport(viewport_node: XRToolsViewport2DIn3D, meter_bus_name: StringName, use_microphone_input: bool) -> void:
+    if viewport_node == null:
+        return
+
+    # Force continuous redraw for live level meters.
+    viewport_node.update_mode = XRToolsViewport2DIn3D.UpdateMode.UPDATE_ALWAYS
+
+    var meter_scene: Node = viewport_node.get_scene_instance()
+    if meter_scene == null:
+        return
+
+    meter_scene.set("bus_name", meter_bus_name)
+    meter_scene.set("Use_Microphone_Input", use_microphone_input)
+
+
+func _configure_external_db_meter_viewports() -> void:
+    _configure_db_meter_viewport(get_node_or_null("Track 1 DB Level") as XRToolsViewport2DIn3D, &"Channel 1 Input", false)
+    _configure_db_meter_viewport(get_node_or_null("Track 2 DB Level") as XRToolsViewport2DIn3D, &"Channel 2 Input", false)
+    _configure_db_meter_viewport(get_node_or_null("Mic Level") as XRToolsViewport2DIn3D, &"Microphone Input", true)
+
+
 # pause the song... true if pausing happened, false if it was already paused
 static func Pause_Track(p_which_track : int) -> bool:
     p_which_track = Utility.Clamp_to_Valid_TrackID(p_which_track)
@@ -216,6 +238,8 @@ func _ready() -> void:
     var success = Refresh()
     
     await DJ_Controller.Get_Instance_await()
+    await get_tree().process_frame
+    _configure_external_db_meter_viewports()
     if Track_1_Song:
         DJ_Controller.Get_Instance().LoadTrackIntoMemory(0, Track_1_Song)
     if Track_2_Song:
