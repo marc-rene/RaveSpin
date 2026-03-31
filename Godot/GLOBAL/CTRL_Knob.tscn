@@ -26,6 +26,14 @@ slider_far_timeout_seconds = 3.0
 
 [node name="Highlight" type="Area3D" parent="." unique_id=1809041154]
 
+[node name="Label3D" type="Label3D" parent="Highlight" unique_id=1539360147]
+transform = Transform3D(-1, -8.609462e-08, 1.518081e-08, 0, 0.17364822, 0.9848077, -8.742278e-08, 0.9848077, -0.17364822, -1.3964524e-16, 0.002488054, 0.018417098)
+pixel_size = 0.0002
+texture_filter = 1
+modulate = Color(0.92941177, 0.68235296, 0.28627452, 1)
+font_size = 28
+outline_size = 0
+
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Highlight" unique_id=696201531]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.025358014, 0)
 shape = SubResource("CylinderShape3D_minsn")
@@ -46,12 +54,10 @@ skeleton = NodePath("../..")
 
 [node name="Min Rot" type="MeshInstance3D" parent="Highlight" unique_id=1095360270]
 transform = Transform3D(-0.8660254, 0, 0.49999997, 0, 1, 0, -0.49999997, 0, -0.8660254, 0.01, 0, -0.015)
-mesh = SubResource("PlaneMesh_2lspa")
 skeleton = NodePath("../Activation")
 
 [node name="Max Rot" type="MeshInstance3D" parent="Highlight" unique_id=1855770872]
 transform = Transform3D(-0.8660253, 0, -0.49999994, 0, 1, 0, 0.49999994, 0, -0.8660253, -0.01018607, 0, -0.0152538195)
-mesh = SubResource("PlaneMesh_2lspa")
 skeleton = NodePath("../Activation")
 
 [node name="Slider Spawn Point" type="Node3D" parent="." unique_id=1867433061]

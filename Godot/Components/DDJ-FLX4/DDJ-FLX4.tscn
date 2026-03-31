@@ -38,23 +38,23 @@ radius = 0.06
 [sub_resource type="BoxShape3D" id="BoxShape3D_eg1xv"]
 size = Vector3(0.1, 0.1, 0.1)
 
-[node name="FLX4" unique_id=836749725 instance=ExtResource("1_mrnpa")]
+[node name="FLX4" unique_id=511651534 instance=ExtResource("1_mrnpa")]
 process_thread_group = 1
 process_thread_group_order = 0
-process_thread_messages = 1
+process_thread_messages = 0
 transform = Transform3D(1.2, 0, 0, 0, 1.2, 0, 0, 0, 1.2, 0, 0, 0)
 script = ExtResource("2_3ugcv")
 BPM_Adjust_Range = 0.2
 Jogwheel_Audio_Warp_Seconds_Per_Full_Rotation = 2.0
 
-[node name="Crossfade Slider" parent="." index="6" unique_id=1449749422]
+[node name="Crossfade Slider" parent="." index="4" unique_id=138330498]
 transform = Transform3D(1.4190836e-07, 0, -1, 0, 1, 0, 0.7288296, 0, 1.9470718e-07, 0.2408275, 0.042000003, 0.2543439)
 
 [node name="Controls" type="Node3D" parent="." index="53" unique_id=839374979]
 transform = Transform3D(0.99999994, 0, 0, 0, 0.99999994, 0, 0, 0, 0.99999994, 0, 0, 0)
 
 [node name="L Channel Fader" parent="Controls" index="0" unique_id=655477152 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("3_ic1ra")]
-transform = Transform3D(-1, 0, 4.5298744e-08, 0, 1, 0, -1.509958e-07, 0, -0.3, 0.22063504, 0.042000003, 0.20519964)
+transform = Transform3D(-1, 0, 4.5298744e-08, 0, 1, 0, -1.509958e-07, 0, -0.3, 0.20222765, 0.041999932, 0.20500001)
 Value = 0.5
 slider_mode = 2
 Target_Mesh = NodePath("../../L_Channel Fader")
@@ -62,7 +62,7 @@ Control_Display_Name = "KEY_TOOLTIP_NAME_L_CHANNEL_FADER"
 Control_Description = "KEY_TOOLTIP_DESC_L_CHANNEL_FADER"
 
 [node name="R Channel Fader" parent="Controls" index="1" unique_id=1404039826 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("3_ic1ra")]
-transform = Transform3D(-1, 0, 4.5298744e-08, 0, 1, 0, -1.509958e-07, 0, -0.3, 0.26073554, 0.042000003, 0.20519964)
+transform = Transform3D(-1, 0, 4.5298744e-08, 0, 1, 0, -1.509958e-07, 0, -0.3, 0.27919203, 0.042000003, 0.20500001)
 Value = 0.5
 slider_mode = 2
 Target_Mesh = NodePath("../../R_Channel Fader")
@@ -79,6 +79,7 @@ Control_Description = "KEY_TOOLTIP_DESC_L_TEMPO_ADJUST"
 
 [node name="R Tempo Adjust" parent="Controls" index="3" unique_id=935990254 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("3_ic1ra")]
 transform = Transform3D(0.99999994, 0, 0, 0, 0.99999994, 0, 0, 0, 0.5, 0.4590193, 0.042000003, 0.21629128)
+invert_label_spawn = true
 Value = 0.5
 slider_mode = 2
 Target_Mesh = NodePath("../../R_Tempo Adjust")
@@ -175,7 +176,7 @@ Control_Display_Name = "KEY_TOOLTIP_NAME_RIGHT_CUE"
 Control_Description = "KEY_TOOLTIP_DESC_RIGHT_CUE"
 
 [node name="Left Trim" parent="Controls" index="9" unique_id=1241828804 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("5_eg1xv")]
-transform = Transform3D(-0.79999995, 0, -1.2079664e-07, 0, 0.99999976, 0, 1.2079664e-07, 0, -0.79999995, 0.22071464, 0.038605843, 0.0384887)
+transform = Transform3D(-0.79999995, 0, -1.2079664e-07, 0, 0.99999976, 0, 1.2079664e-07, 0, -0.79999995, 0.21675001, 0.037096415, 0.0498)
 knob_label_key = "KEY_KNOB_TRIM"
 knob_memory_key = "TRIM L"
 value_display_mode = 1
@@ -187,7 +188,7 @@ Control_Display_Name = "KEY_TOOLTIP_NAME_LEFT_TRIM"
 Control_Description = "KEY_TOOLTIP_DESC_LEFT_TRIM"
 
 [node name="Right Trim" parent="Controls" index="10" unique_id=1985872117 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("5_eg1xv")]
-transform = Transform3D(-0.8, 0, -1.2079664e-07, 0, 0.99999976, 0, 1.2079664e-07, 0, -0.8, 0.26064044, 0.038605843, 0.0384887)
+transform = Transform3D(-0.8, 0, -1.2079664e-07, 0, 0.99999976, 0, 1.2079664e-07, 0, -0.8, 0.26450002, 0.037096415, 0.0498)
 knob_label_key = "KEY_KNOB_TRIM"
 knob_memory_key = "TRIM R"
 value_display_mode = 1
@@ -199,7 +200,7 @@ Control_Display_Name = "KEY_TOOLTIP_NAME_RIGHT_TRIM"
 Control_Description = "KEY_TOOLTIP_DESC_RIGHT_TRIM"
 
 [node name="Left High Gain" parent="Controls" index="11" unique_id=903259895 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("5_eg1xv")]
-transform = Transform3D(-0.7, 0, -1.0569706e-07, 0, 0.7, 0, 1.0569706e-07, 0, -0.7, 0.22071464, 0.038605843, 0.063578665)
+transform = Transform3D(-0.7, 0, -1.0569706e-07, 0, 0.7, 0, 1.0569706e-07, 0, -0.7, 0.21675001, 0.03756749, 0.0825)
 knob_label_key = "KEY_KNOB_EQ_HI"
 knob_memory_key = "EQ HI L"
 value_display_mode = 1
@@ -211,7 +212,7 @@ Control_Display_Name = "KEY_TOOLTIP_NAME_LEFT_EQ_HIGH"
 Control_Description = "KEY_TOOLTIP_DESC_LEFT_EQ_HIGH"
 
 [node name="Right High Gain" parent="Controls" index="12" unique_id=1964382903 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("5_eg1xv")]
-transform = Transform3D(-0.7, 0, -1.0569706e-07, 0, 0.7, 0, 1.0569706e-07, 0, -0.7, 0.2607247, 0.038605843, 0.06357866)
+transform = Transform3D(-0.7, 0, -1.0569706e-07, 0, 0.7, 0, 1.0569706e-07, 0, -0.7, 0.26450002, 0.03756749, 0.0825)
 knob_label_key = "KEY_KNOB_EQ_HI"
 knob_memory_key = "EQ HI R"
 value_display_mode = 1
@@ -223,7 +224,7 @@ Control_Display_Name = "KEY_TOOLTIP_NAME_RIGHT_EQ_HIGH"
 Control_Description = "KEY_TOOLTIP_DESC_RIGHT_EQ_HIGH"
 
 [node name="Left Medium Gain" parent="Controls" index="13" unique_id=715839658 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("5_eg1xv")]
-transform = Transform3D(-0.7, 0, -1.0569706e-07, 0, 0.7, 0, 1.0569706e-07, 0, -0.7, 0.22071464, 0.038605843, 0.08877772)
+transform = Transform3D(-0.7, 0, -1.0569706e-07, 0, 0.7, 0, 1.0569706e-07, 0, -0.7, 0.21675001, 0.03756749, 0.114750005)
 knob_label_key = "KEY_KNOB_EQ_MID"
 knob_memory_key = "EQ MID L"
 value_display_mode = 1
@@ -235,7 +236,7 @@ Control_Display_Name = "KEY_TOOLTIP_NAME_LEFT_EQ_MID"
 Control_Description = "KEY_TOOLTIP_DESC_LEFT_EQ_MID"
 
 [node name="Right Medium Gain" parent="Controls" index="14" unique_id=33383194 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("5_eg1xv")]
-transform = Transform3D(-0.7, 0, -1.0569706e-07, 0, 0.7, 0, 1.0569706e-07, 0, -0.7, 0.2607247, 0.038605843, 0.08877771)
+transform = Transform3D(-0.7, 0, -1.0569706e-07, 0, 0.7, 0, 1.0569706e-07, 0, -0.7, 0.26450002, 0.03756749, 0.114750005)
 knob_label_key = "KEY_KNOB_EQ_MID"
 knob_memory_key = "EQ MID R"
 value_display_mode = 1
@@ -247,7 +248,7 @@ Control_Display_Name = "KEY_TOOLTIP_NAME_RIGHT_EQ_MID"
 Control_Description = "KEY_TOOLTIP_DESC_RIGHT_EQ_MID"
 
 [node name="Left Low Gain" parent="Controls" index="15" unique_id=2033031456 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("5_eg1xv")]
-transform = Transform3D(-0.7, 0, -1.0569706e-07, 0, 0.7, 0, 1.0569706e-07, 0, -0.7, 0.22071464, 0.038605843, 0.11397676)
+transform = Transform3D(-0.7, 0, -1.0569706e-07, 0, 0.7, 0, 1.0569706e-07, 0, -0.7, 0.21675001, 0.03756749, 0.1473)
 knob_label_key = "KEY_KNOB_EQ_LOW"
 knob_memory_key = "EQ LOW L"
 value_display_mode = 1
@@ -259,7 +260,7 @@ Control_Display_Name = "KEY_TOOLTIP_NAME_LEFT_EQ_LOW"
 Control_Description = "KEY_TOOLTIP_DESC_LEFT_EQ_LOW"
 
 [node name="Right Low Gain" parent="Controls" index="16" unique_id=1696461623 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("5_eg1xv")]
-transform = Transform3D(-0.7, 0, -1.0569706e-07, 0, 0.7, 0, 1.0569706e-07, 0, -0.7, 0.2607247, 0.038605843, 0.11397676)
+transform = Transform3D(-0.7, 0, -1.0569706e-07, 0, 0.7, 0, 1.0569706e-07, 0, -0.7, 0.26450002, 0.03756749, 0.1473)
 knob_label_key = "KEY_KNOB_EQ_LOW"
 knob_memory_key = "EQ LOW R"
 value_display_mode = 1
@@ -271,7 +272,7 @@ Control_Display_Name = "KEY_TOOLTIP_NAME_RIGHT_EQ_LOW"
 Control_Description = "KEY_TOOLTIP_DESC_RIGHT_EQ_LOW"
 
 [node name="Left Colour FX" parent="Controls" index="17" unique_id=1746038056 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("5_eg1xv")]
-transform = Transform3D(-0.85, 0, -1.2834644e-07, 0, 0.85, 0, 1.2834644e-07, 0, -0.85, 0.22071464, 0.038605843, 0.13982153)
+transform = Transform3D(-0.85, 0, -1.2834644e-07, 0, 0.85, 0, 1.2834644e-07, 0, -0.85, 0.18082744, 0.03683195, 0.15575)
 knob_label_key = "KEY_KNOB_CFX"
 knob_memory_key = "CFX L"
 Target_Mesh = NodePath("../../L_Sound Colour FX (Smart CFX)")
@@ -279,7 +280,7 @@ Control_Display_Name = "KEY_TOOLTIP_NAME_LEFT_COLOUR_FX"
 Control_Description = "KEY_TOOLTIP_DESC_LEFT_COLOUR_FX"
 
 [node name="Right Colour FX" parent="Controls" index="18" unique_id=1955597727 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("5_eg1xv")]
-transform = Transform3D(-0.7, 0, -1.0569706e-07, 0, 0.7, 0, 1.0569706e-07, 0, -0.7, 0.26072466, 0.038605843, 0.13982153)
+transform = Transform3D(-0.7, 0, -1.0569706e-07, 0, 0.7, 0, 1.0569706e-07, 0, -0.7, 0.30106822, 0.03756749, 0.15575)
 knob_label_key = "KEY_KNOB_CFX"
 knob_memory_key = "CFX R"
 Target_Mesh = NodePath("../../R_Sound Colour FX (Smart CFX)")
@@ -287,49 +288,49 @@ Control_Display_Name = "KEY_TOOLTIP_NAME_RIGHT_COLOUR_FX"
 Control_Description = "KEY_TOOLTIP_DESC_RIGHT_COLOUR_FX"
 
 [node name="Left_BeatSync" parent="Controls" index="19" unique_id=180992908 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("3_pj43g")]
-transform = Transform3D(-0.14999999, 0, 2.2649369e-08, 0, 0.14999999, 0, -2.2649369e-08, 0, -0.14999999, 0.14397348, 0.038652476, 0.027482145)
+transform = Transform3D(-0.14999999, 0, 2.2649369e-08, 0, 0.14999999, 0, -2.2649369e-08, 0, -0.14999999, 0.14397348, 0.033, 0.027482145)
 Target_Mesh = NodePath("../../L_BeatSync")
 Control_Display_Name = "KEY_TOOLTIP_NAME_LEFT_BEAT_SYNC"
 Control_Description = "KEY_TOOLTIP_DESC_LEFT_BEAT_SYNC"
 
 [node name="Right_BeatSync" parent="Controls" index="20" unique_id=818131832 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("3_pj43g")]
-transform = Transform3D(-0.14999996, 0, 2.2649367e-08, 0, 0.14999996, 0, -2.2649367e-08, 0, -0.14999996, 0.45896953, 0.038652465, 0.026953587)
+transform = Transform3D(-0.14999996, 0, 2.2649367e-08, 0, 0.14999996, 0, -2.2649367e-08, 0, -0.14999996, 0.45896953, 0.033, 0.026953587)
 Target_Mesh = NodePath("../../R_BeatSync")
 Control_Display_Name = "KEY_TOOLTIP_NAME_RIGHT_BEAT_SYNC"
 Control_Description = "KEY_TOOLTIP_DESC_RIGHT_BEAT_SYNC"
 
 [node name="Left_LoopStart" parent="Controls" index="21" unique_id=1522453072 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("3_pj43g")]
-transform = Transform3D(-0.14999996, 0, 2.2649365e-08, 0, 0.15, 0, -2.2649365e-08, 0, -0.14999996, 0.02207329, 0.037608106, 0.026953587)
+transform = Transform3D(-0.14999996, 0, 2.2649365e-08, 0, 0.15, 0, -2.2649365e-08, 0, -0.14999996, 0.02207329, 0.033, 0.026953587)
 Target_Mesh = NodePath("../../L_Loop Input Point")
 Control_Display_Name = "KEY_TOOLTIP_NAME_LEFT_LOOP_START"
 Control_Description = "KEY_TOOLTIP_DESC_LEFT_LOOP_START"
 
 [node name="Right_LoopStart" parent="Controls" index="22" unique_id=886361105 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("3_pj43g")]
-transform = Transform3D(-0.14999996, 0, 2.2649365e-08, 0, 0.15, 0, -2.2649365e-08, 0, -0.14999996, 0.33734995, 0.037608106, 0.026953587)
+transform = Transform3D(-0.14999996, 0, 2.2649365e-08, 0, 0.15, 0, -2.2649365e-08, 0, -0.14999996, 0.33734995, 0.033, 0.026953587)
 Target_Mesh = NodePath("../../R_Loop Input Point")
 Control_Display_Name = "KEY_TOOLTIP_NAME_RIGHT_LOOP_START"
 Control_Description = "KEY_TOOLTIP_DESC_RIGHT_LOOP_START"
 
 [node name="Left_LoopEND" parent="Controls" index="23" unique_id=1446767453 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("3_pj43g")]
-transform = Transform3D(-0.14999996, 0, 2.2649365e-08, 0, 0.15, 0, -2.2649365e-08, 0, -0.14999996, 0.047632758, 0.037724, 0.02686405)
+transform = Transform3D(-0.14999996, 0, 2.2649365e-08, 0, 0.15, 0, -2.2649365e-08, 0, -0.14999996, 0.047632758, 0.033, 0.02686405)
 Target_Mesh = NodePath("../../L_Loop Output Point")
 Control_Display_Name = "KEY_TOOLTIP_NAME_LEFT_LOOP_END"
 Control_Description = "KEY_TOOLTIP_DESC_LEFT_LOOP_END"
 
 [node name="Right_LoopEND" parent="Controls" index="24" unique_id=831853233 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("3_pj43g")]
-transform = Transform3D(-0.14999996, 0, 2.2649365e-08, 0, 0.15, 0, -2.2649365e-08, 0, -0.14999996, 0.36291292, 0.037608106, 0.026953587)
+transform = Transform3D(-0.14999996, 0, 2.2649365e-08, 0, 0.15, 0, -2.2649365e-08, 0, -0.14999996, 0.36291292, 0.033, 0.026953587)
 Target_Mesh = NodePath("../../R_Loop Output Point")
 Control_Display_Name = "KEY_TOOLTIP_NAME_RIGHT_LOOP_END"
 Control_Description = "KEY_TOOLTIP_DESC_RIGHT_LOOP_END"
 
 [node name="Left_Make4BeatLoop" parent="Controls" index="25" unique_id=578749798 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("3_pj43g")]
-transform = Transform3D(-0.14999996, 0, 2.2649365e-08, 0, 0.15, 0, -2.2649365e-08, 0, -0.14999996, 0.07335417, 0.037608106, 0.026953587)
+transform = Transform3D(-0.14999996, 0, 2.2649365e-08, 0, 0.15, 0, -2.2649365e-08, 0, -0.14999996, 0.07335417, 0.033, 0.026953587)
 Target_Mesh = NodePath("../../L_Loop Creation")
 Control_Display_Name = "KEY_TOOLTIP_NAME_LEFT_MAKE_4_BEAT_LOOP"
 Control_Description = "KEY_TOOLTIP_DESC_LEFT_MAKE_4_BEAT_LOOP"
 
 [node name="Right_Make4BeatLoop" parent="Controls" index="26" unique_id=479431467 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("3_pj43g")]
-transform = Transform3D(-0.14999996, 0, 2.2649365e-08, 0, 0.15, 0, -2.2649365e-08, 0, -0.14999996, 0.3886308, 0.037608106, 0.026953587)
+transform = Transform3D(-0.14999996, 0, 2.2649365e-08, 0, 0.15, 0, -2.2649365e-08, 0, -0.14999996, 0.3886308, 0.033, 0.026953587)
 Target_Mesh = NodePath("../../R_Loop Creation")
 Control_Display_Name = "KEY_TOOLTIP_NAME_RIGHT_MAKE_4_BEAT_LOOP"
 Control_Description = "KEY_TOOLTIP_DESC_RIGHT_MAKE_4_BEAT_LOOP"
@@ -359,7 +360,7 @@ Control_Display_Name = "KEY_TOOLTIP_NAME_RIGHT_EXTEND_LOOP"
 Control_Description = "KEY_TOOLTIP_DESC_RIGHT_EXTEND_LOOP"
 
 [node name="Beat FX" parent="Controls" index="31" unique_id=1829892089 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("5_eg1xv")]
-transform = Transform3D(-1, 0, -1.509958e-07, 0, 1, 0, 1.509958e-07, 0, -1, 0.2979233, 0.038605843, 0.19556488)
+transform = Transform3D(-1, 0, -1.509958e-07, 0, 1, 0, 1.509958e-07, 0, -1, 0.2991685, 0.037185945, 0.028)
 knob_label_key = "KEY_KNOB_BEAT_FX_PARAM"
 knob_memory_key = "BEAT FX AMOUNT"
 Target_Mesh = NodePath("../../Beat FX Parameter")
@@ -374,7 +375,7 @@ Control_Display_Name = "KEY_TOOLTIP_NAME_CROSSFADER"
 Control_Description = "KEY_TOOLTIP_DESC_CROSSFADER"
 
 [node name="Master Volume" parent="Controls" index="33" unique_id=436933577 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("5_eg1xv")]
-transform = Transform3D(-0.99999994, 0, -8.742277e-08, 0, 0.99999994, 0, 8.742277e-08, 0, -0.99999994, 0.2977116, 0.038605843, 0.03848871)
+transform = Transform3D(-0.99999994, 0, -8.742277e-08, 0, 0.99999994, 0, 8.742277e-08, 0, -0.99999994, 0.24145767, 0.03727049, 0.017203808)
 knob_label_key = "KEY_KNOB_MASTER"
 knob_memory_key = "MASTER LEVEL"
 value_display_mode = 1
@@ -385,7 +386,7 @@ Control_Display_Name = "KEY_TOOLTIP_NAME_MASTER_VOLUME"
 Control_Description = "KEY_TOOLTIP_DESC_MASTER_VOLUME"
 
 [node name="Mic Level" parent="Controls" index="34" unique_id=103727725 node_paths=PackedStringArray("Target_Mesh") instance=ExtResource("5_eg1xv")]
-transform = Transform3D(-0.85, 0, -1.2834643e-07, 0, 0.85, 0, 1.2834643e-07, 0, -0.85, 0.18364322, 0.038605843, 0.0887777)
+transform = Transform3D(-0.85, 0, -1.2834643e-07, 0, 0.85, 0, 1.2834643e-07, 0, -0.85, 0.18375728, 0.03393801, 0.028)
 knob_label_key = "KEY_KNOB_MIC"
 knob_memory_key = "MIC LEVEL"
 Target_Mesh = NodePath("../../Microphone Level")

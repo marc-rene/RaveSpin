@@ -12,6 +12,7 @@ var update_label_val:bool = false
 var active = false
 var hand_ref : Area3D
 var starting_pos : Vector3
+@export var invert_label_spawn : bool = false
 @export var Value : float# = 0.5
 @export var snap_to_middle_tolerance = 0.05
 @export var slider_mode: E_Slider_Mode = E_Slider_Mode.KNOB_POPUP
@@ -42,6 +43,9 @@ func _ready() -> void:
     enable_press_feedback_tween = false
     _setup_popup_visual_nodes()
     _apply_slider_mode_visual_state()
+    $Highlight/Activation/Label3D.scale = Vector3(0.001,0.001,0.001)
+    if invert_label_spawn:
+        $Highlight/Activation/Label3D.position.x *= -1.0
 
 
 func UpdateAlpha(new_value: float):
@@ -90,8 +94,7 @@ func _on_activation_area_entered(area: Area3D) -> void:
         _popup_entry_anchor_local_z = local_finger_position.z
         _popup_has_entry_anchor = true
         _popup_drag_is_armed = false
-    else:
-        update_label_val = true
+
         
     active = true
     hand_ref = source_finger
@@ -128,7 +131,7 @@ func _on_activation_area_exited(area: Area3D) -> void:
         #UpdateAlpha(Value)
         pass
 
-
+var label_tween_oepning : bool = false
 var label_tween:Tween
 func _process(delta: float) -> void:
     var max_pos = $"Highlight/Max point".position.z
@@ -169,21 +172,34 @@ func _process(delta: float) -> void:
         #Value = 0.5
         #UpdateAlpha(Value)
     if not active or hand_ref == null:
-        label_tween = create_tween()
-        label_tween.set_ease(Tween.EASE_IN)
-        label_tween.set_trans(Tween.TRANS_BACK)
-        label_tween.tween_property($Highlight/Activation/Label3D, "scale", Vector3(0.0001, 0.0001, 0.0001), 1.2)
+        if label_tween_oepning:
+            if label_tween:
+                label_tween.kill()
+            
+            label_tween = get_tree().create_tween()
+            label_tween_oepning = false
+            
+            label_tween.set_ease(Tween.EASE_IN)
+            label_tween.set_trans(Tween.TRANS_BACK)
+            label_tween.tween_property($Highlight/Activation/Label3D, "scale", Vector3(0.0001, 0.0001, 0.0001), 1.2)
+        
     else:
-        label_tween = create_tween()
-        label_tween.set_ease(Tween.EASE_OUT)
-        label_tween.set_trans(Tween.TRANS_BACK)
-        label_tween.tween_property($Highlight/Activation/Label3D, "scale", Vector3(1,1,1), 0.8)
+        if not label_tween_oepning:
+            if label_tween:
+                label_tween.kill()
+            label_tween = get_tree().create_tween()
+            label_tween_oepning = true
+            label_tween.set_ease(Tween.EASE_OUT)
+            label_tween.set_trans(Tween.TRANS_BACK)
+            label_tween.tween_property($Highlight/Activation/Label3D, "scale", Vector3(1,1,1), 0.8)
         #$Highlight/Activation/Label3D.visible = true
         
     if slider_mode == E_Slider_Mode.NORMAL and Target_Mesh != null:
         Target_Mesh.global_position = activation_node.global_position
-        if update_label_val:
-            $Highlight/Activation/Label3D.text = "%.2f" % Value
+    
+    
+    if hand_ref != null:
+        $Highlight/Activation/Label3D.text = "%.2f" % Value
         
            
     _refresh_popup_visual_geometry()

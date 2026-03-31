@@ -48,10 +48,11 @@ shape = SubResource("BoxShape3D_esrk0")
 debug_color = Color(12.130976, 0, 0, 1)
 
 [node name="Label3D" type="Label3D" parent="Highlight/Activation" unique_id=1245708009]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.019048199, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.03, 0.007, 0)
 pixel_size = 0.0005
 billboard = 1
 double_sided = false
+no_depth_test = true
 modulate = Color(0.26666668, 0.73333335, 0.6431373, 1)
 outline_size = 8
 

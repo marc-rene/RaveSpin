@@ -1,17 +1,31 @@
 [gd_scene format=3 uid="uid://df2ivkn5t2nfe"]
 
 [ext_resource type="Script" uid="uid://dt8uq3bjmukb1" path="res://UI/LibreBox/Components/Main_Hub/db_meter.gd" id="1_dbmtr"]
+[ext_resource type="FontFile" uid="uid://di6oaehdwb84i" path="res://Art/Fonts/FONT_Roboto.ttf" id="2_eo05d"]
 [ext_resource type="Shader" uid="uid://duyups7w5bk5g" path="res://Art/Materials/UI/DB_Meter_Fill.gdshader" id="2_shdr"]
-[ext_resource type="LabelSettings" uid="uid://c6r16al1fyqxr" path="res://Art/Themes/Heading_4.tres" id="3_lblsm"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_q7sho"]
+line_spacing = 10.0
+paragraph_spacing = 10.0
+font = ExtResource("2_eo05d")
+font_size = 18
+font_color = Color(0.92941177, 0.68235296, 0.28627452, 1)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_fill"]
 shader = ExtResource("2_shdr")
 shader_parameter/alpha = 0.0
 shader_parameter/warning_alpha = 0.9
 shader_parameter/background_color = Color(0.22352941, 0.24313726, 0.25490198, 1)
-shader_parameter/fill_color = Color(0.26666668, 0.73333335, 0.6431373, 1)
-shader_parameter/warning_color = Color(0.9137255, 0.30980393, 0.21568628, 1)
-shader_parameter/border_color = Color(0.92941177, 0.68235296, 0.28627452, 1)
+shader_parameter/fill_color = Color(0.92941177, 0.68235296, 0.28627452, 1)
+shader_parameter/warning_color = Color(0.93, 0.39525002, 0.2883, 1)
+shader_parameter/border_color = Color(0.93, 0.93, 0.2883, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_uxv6q"]
+line_spacing = 10.0
+paragraph_spacing = 10.0
+font = ExtResource("2_eo05d")
+font_size = 18
+font_color = Color(0.92941177, 0.68235296, 0.28627452, 1)
 
 [node name="DBMeter" type="PanelContainer" unique_id=1120661416]
 custom_minimum_size = Vector2(120, 0)
@@ -38,11 +52,21 @@ alignment = 1
 auto_translate_mode = 1
 layout_mode = 2
 text = "KEY_DB_LABEL"
-label_settings = ExtResource("3_lblsm")
+label_settings = SubResource("LabelSettings_q7sho")
 horizontal_alignment = 1
 autowrap_mode = 2
 
-[node name="Meter Fill" type="ColorRect" parent="MarginContainer/VBoxContainer" unique_id=328908279]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=136921413]
+layout_mode = 2
+
+[node name="L Meter Fill" type="ColorRect" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=328908279]
+material = SubResource("ShaderMaterial_fill")
+custom_minimum_size = Vector2(38, 220)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 3
+
+[node name="R Meter Fill" type="ColorRect" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=359374697]
 material = SubResource("ShaderMaterial_fill")
 custom_minimum_size = Vector2(38, 220)
 layout_mode = 2
@@ -53,6 +77,6 @@ size_flags_vertical = 3
 auto_translate_mode = 1
 layout_mode = 2
 text = "-INF dB"
-label_settings = ExtResource("3_lblsm")
+label_settings = SubResource("LabelSettings_uxv6q")
 horizontal_alignment = 1
 vertical_alignment = 1

@@ -78,8 +78,9 @@ func _ready() -> void:
     _restore_remembered_value_if_any()
     if _persistent_popup_value < 0.0:
         _persistent_popup_value = Value
-    await get_tree().create_timer(4).timeout # TODO: Jank fix for node race condition
+    await get_tree().create_timer(3).timeout # TODO: Jank fix for node race condition
     _ensure_popup_slider_pool_initialized()
+    _update_knob_value_label()
 
 
 func _on_activation_area_entered(area: Area3D) -> void:
@@ -493,7 +494,11 @@ func _remember_current_value() -> void:
 func _update_knob_value_label() -> void:
     var localized_knob_name: String = tr(knob_label_key) if knob_label_key != "" else name
     $"Slider Spawn Point/Label3D".text = localized_knob_name + ": " + _get_formatted_value_text()
+    $Highlight/Label3D.text = localized_knob_name
 
+func _notification(what: int) -> void:
+    if what == NOTIFICATION_TRANSLATION_CHANGED and Utility.all_is_ready:
+        _update_knob_value_label()
 
 func _get_formatted_value_text() -> String:
     if value_display_mode == E_Knob_Value_Display_Mode.DECIBEL:
