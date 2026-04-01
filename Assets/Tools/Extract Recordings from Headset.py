@@ -1,10 +1,11 @@
 import subprocess
 import os
 import logging
+import pathlib
 
 PACKAGE = "com.example.ravespin"
 REMOTE_DIR = "files/Recordings"
-LOCAL_DIR = "All Extracted RaveSpin Recordings"
+LOCAL_DIR = str(pathlib.Path(__file__).parent.absolute()  / "All Extracted RaveSpin Recordings")
 
 # Configure logging
 logging.basicConfig(
@@ -59,7 +60,7 @@ def pull_file(filename):
 
 
 def main():
-    logger.info("Starting extraction")
+    logger.info(f"Starting extraction to {LOCAL_DIR}")
 
     os.makedirs(LOCAL_DIR, exist_ok=True)
 

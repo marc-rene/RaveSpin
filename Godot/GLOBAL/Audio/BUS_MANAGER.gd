@@ -12,6 +12,7 @@ static func Allow_Multiple_FX_at_same_time() -> bool:
 static func Set_Allow_Multiple_FX_at_same_time(enabled : bool):
     ONE_FX_AT_A_TIME = not enabled
     
+    
 ## false means we cant do multiple FX at the same time now 
 static func Toggle_Allow_Multiple_FX_at_same_time() -> bool:
     ONE_FX_AT_A_TIME = not ONE_FX_AT_A_TIME
