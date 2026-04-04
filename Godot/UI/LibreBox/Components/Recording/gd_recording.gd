@@ -1,5 +1,7 @@
 extends PanelContainer
 
+## Recording panel controller.
+## Captures master output to WAV, handles mic input toggling, and shows recording status.
 const RECORDINGS_DIR: String = "user://Recordings"
 const MASTER_BUS_NAME: String = "Master"
 const MIC_BUS_NAME: String = "Microphone Input"
@@ -38,6 +40,7 @@ var _status_translation_key: String = ""
 var _status_raw_text: String = ""
 
 
+## Wires UI events, validates recording setup, and applies initial mic state.
 func _ready() -> void:
     add_to_group("librebox_recording")
     _record_button.toggled.connect(_on_record_button_toggled)
@@ -54,6 +57,7 @@ func _ready() -> void:
     _apply_microphone_enabled_state(_enable_mic_button.button_pressed)
 
 
+## Updates mic monitor and save-thread status.
 func _process(_delta: float) -> void:
     _update_mic_monitor()
     _poll_save_thread()
@@ -97,6 +101,7 @@ func _on_record_button_toggled(pressed: bool) -> void:
         _stop_recording()
 
 
+## Starts recording on the Master bus.
 func _start_recording() -> void:
     _record_effect = _ensure_master_record_effect()
     if _record_effect == null:
@@ -113,6 +118,7 @@ func _start_recording() -> void:
     _refresh_localized_ui()
 
 
+## Stops recording and starts async save to `user://Recordings`.
 func _stop_recording() -> void:
     _record_effect = _ensure_master_record_effect()
     if _record_effect == null:

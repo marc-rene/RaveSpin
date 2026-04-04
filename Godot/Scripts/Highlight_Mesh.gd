@@ -1,6 +1,8 @@
 extends Node3D
 class_name Base_Control
 
+## Base class for physical deck controls.
+## Handles hover/press visual state and pose-gated activation from Player_Finger areas.
 # TODO: refactor and fix this awful crap mess
 # highlight.gd is doing hightlight AND activation?????
 
@@ -63,10 +65,12 @@ func _ready() -> void:
     invalid_pose_mat.albedo_color = Color(0.95, 0.20, 0.24, 0.75)
     
     
+## Restores the control to the default visual state.
 func reset_highlight():
     HighLight(E_ActivationStates.Exited)
     return true
     
+## Applies visual state and emits matching interaction signals.
 func HighLight(p_state = E_ActivationStates.Hoovered):
     if (Utility.all_is_ready):
         match p_state:
@@ -129,6 +133,7 @@ func _on_BASE_activation_area_exited(area: Area3D) -> void:
                 HighLight(E_ActivationStates.InvalidPose)
 
 
+## Validates if an overlapping area is allowed to activate this control.
 func _can_activate_from_area(area: Area3D) -> bool:
     if area == null:
         return false

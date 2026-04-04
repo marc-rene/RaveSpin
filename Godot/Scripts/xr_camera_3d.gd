@@ -1,16 +1,18 @@
 extends XRCamera3D
 class_name RaveSpin_XRCamera3D
 
-# Called when the node enters the scene tree for the first time.
+## XR camera helper used to place the LibreBox/controller rig in front of the user.
 func _ready() -> void:
     pass # Replace with function body.
 
 
 
-@export var distance_in_front:Vector3 = Vector3(-1.1, 0.2, -0.12) # DO NOT RECOMMEND CHANGING THESE... 
+## Offset used when placing the target node in front of the camera after recenter.
+@export var distance_in_front:Vector3 = Vector3(-1.1, 0.2, -0.12) # contributor note: tuned for current setup
 
 @export var spawn_in_front: Node3D 
 
+## Repositions and rotates `spawn_in_front` based on headset yaw.
 func recenter():
     # var y = spawn_in_front.global_position.y
     # print("Head pos" + str(global_position))
@@ -30,6 +32,6 @@ func recenter():
 
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
+## Reserved for future camera update logic.
 func _process(delta: float) -> void:
     pass

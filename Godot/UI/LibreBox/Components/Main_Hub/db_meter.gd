@@ -1,6 +1,8 @@
 extends PanelContainer
 class_name DB_Meter
 
+## Real-time dB meter for deck/microphone bus monitoring.
+## Reads bus peaks and drives shader-based meter fills.
 
 @export var Use_Microphone_Input: bool = false
 @export var Microphone_NA_Threshold: float = 0.1
@@ -21,6 +23,7 @@ var R_meter_mat: ShaderMaterial
 var _recording_node: Node = null
 
 
+## Initialises meter materials and warning thresholds.
 func _ready() -> void:
     
 
@@ -40,6 +43,7 @@ func _ready() -> void:
     
 
 
+## Samples current bus level and updates meter display.
 var peak_db_l: float
 var peak_db_r: float
 var bus_index : int
@@ -71,6 +75,7 @@ func _process(_delta: float) -> void:
 
 
 
+## Applies dB values to meter shader and numeric label.
 func update_metre(L_peak_db: float, R_peak_db: float) -> void:
     
     if L_peak_db == null or is_inf(L_peak_db) or L_peak_db <= Min_DB:

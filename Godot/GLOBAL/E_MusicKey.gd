@@ -2,6 +2,8 @@
 class_name EMusicKey 
 extends Object
 
+## Music key value object (note + scale).
+## Used by song metadata and key-related DJ features.
 var m_note_index : m_notes_enum
 var m_scale_index : m_scales_enum
     
@@ -53,17 +55,20 @@ func GetScale(capitalise = false) -> StringName:
     return m_scales_str[m_scale_index] if capitalise else m_scales_str[m_scale_index]
 
 
+## Compares this key with another key.
 func Equals(other_music_key : EMusicKey):
     return  (other_music_key.m_note_index == m_note_index) \
     and     (other_music_key.m_scale_index == m_scale_index) 
 
 
+## Returns a display string in "NOTE SCALE" format.
 func _to_string() -> String:
     return "%s %s" % [GetNote(), GetScale()]
 
 
 ## NOTE: We Don't use flats, only sharps, and please notate as '#'
 ## A Sharp Major should be {"A#", "Major"}
+## Parses note/scale strings into enum values.
 func Set_with_String(note = "A", scale = "Major"):
     
     #var stripped_note = note.remove_chars(" _-!\"£$%^&*()+}{~@:<>?/.,|\\").to_upper()
@@ -95,11 +100,13 @@ func Set_with_String(note = "A", scale = "Major"):
 
 
 
+## Creates a key from enum values.
 func _init(note : m_notes_enum = m_notes_enum.C, scale : m_scales_enum = m_scales_enum.UNKNOWN):
     m_note_index = note
     m_scale_index = scale
 
 
+## Helper constructor from enum note + scale.
 static func Make_with_Enum(note : m_notes_enum, scale : m_scales_enum) -> EMusicKey:
     var key = EMusicKey
     key.m_note_index = note
@@ -108,6 +115,7 @@ static func Make_with_Enum(note : m_notes_enum, scale : m_scales_enum) -> EMusic
     return key
 
 
+## Parses "NOTE SCALE" text into an `EMusicKey`.
 static func String_to_MusicKey(music_key_string : String) -> EMusicKey:
     var split_point = music_key_string.find(" ")
     var note = music_key_string.substr(0, (split_point + 1))
@@ -120,15 +128,15 @@ static func String_to_MusicKey(music_key_string : String) -> EMusicKey:
     
     
 
-# An Enum version of the m_notes_str Array
+## Enum version of `m_notes_str`.
 enum m_notes_enum {C,                      Cs,                     D,                      
 Ds,                     E,                      F,                      
 Fs,                     G,                      Gs,                     
 A,                      As,                     B,                      
 }
 
-# A function to translate any m_notes_str StringNames to m_notes_enum Enums
-# NOTE: You must supply the UPPERCASE version...
+## Converts note text to note enum.
+## Input should be uppercase note text.
 
 static func m_notes_str_to_m_notes_enum(string_version : String):
     match string_version:
@@ -166,7 +174,7 @@ static func m_notes_str_to_m_notes_enum(string_version : String):
 
 ### INSERT ENUM VERSION HERE ##
 
-# An Enum version of the m_scales_str Array
+## Enum version of `m_scales_str`.
 enum m_scales_enum {UNKNOWN,                MAJOR,                  NATURAL_MINOR,          
 HARMONIC_MINOR,         MELODIC_MINOR,          GYPSY_MINOR,            
 NEAPOLITAN_MINOR,       HUNGARIAN_MINOR,        MAJOR_PENTATONIC,       
@@ -174,8 +182,8 @@ MINOR_PENTATONIC,       BLUES,                  DORIAN,
 PHRYGIAN,               LYDIAN,                 MIXOLYDIAN,             
 LOCRIAN,                CHROMATIC,              WHOLE_TONE,             
 OCTATONIC,              ARABIC,                 }
-# A function to translate any m_scales_str StringNames to m_scales_enum Enums
-# NOTE: You must supply the UPPERCASE version...
+## Converts scale text to scale enum.
+## Input should be uppercase scale text.
 
 static func m_scales_str_to_m_scales_enum(string_version : String):
     string_version = string_version.to_upper().strip_edges().strip_escapes()

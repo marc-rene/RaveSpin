@@ -1,6 +1,8 @@
 extends Node
 class_name Track_Card
 
+## Track card UI item used in song selection lists.
+## Shows metadata and emits selection/remove events for its song resource.
 @export var Song_Resource : Song
 
 @onready var Origin_Platform_Logo : TextureRect = %"Origin Platform Logo"
@@ -33,6 +35,7 @@ signal Remove_Requested(target_song: Song)
 
 @onready var Card_Button_ref : Button = $"."
 
+## Assigns a new song and refreshes card visuals.
 func Set_New_Song(New_Song: Song) -> bool:
     if New_Song == Song_Resource:
         return false
@@ -43,6 +46,7 @@ func Set_New_Song(New_Song: Song) -> bool:
     Refresh_Details()
     return true
 
+## Builds card text/images from `Song_Resource`.
 func Refresh_Details() -> bool:
     if Song_Resource == null:
         return false
@@ -129,6 +133,7 @@ func Refresh_Details() -> bool:
     return true
 
 
+## Clears card UI when no song is assigned.
 func _clear_card_visuals() -> void:
     if Track_Genres_Containers:
         for genre_child in Track_Genres_Containers.get_children():
@@ -144,6 +149,7 @@ func _clear_card_visuals() -> void:
         Remove_Track_Button.hide()
 
 
+## Shows remove button only for deletable user-imported metadata.
 func _update_remove_button_visibility() -> void:
     if Remove_Track_Button == null:
         return
@@ -152,6 +158,7 @@ func _update_remove_button_visibility() -> void:
     Remove_Track_Button.visible = can_delete
 
 
+## Initialises remove button and first detail refresh.
 func _ready() -> void:
     if Remove_Track_Button != null:
         Remove_Track_Button.pressed.connect(_on_remove_track_pressed)
@@ -165,6 +172,7 @@ func _on_remove_track_pressed() -> void:
     Remove_Requested.emit(Song_Resource)
 
 
+## Emits selection event when card is pressed.
 func _on_pressed() -> void:
     if Song_Resource:
         print("CARD was pressed with song: " + Utility.Return_Valid(Song_Resource.Song_Title, "N/A"))

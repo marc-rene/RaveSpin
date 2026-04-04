@@ -1,6 +1,8 @@
 extends Node
 class_name LibreBox
 
+## Main manager for in-world LibreBox UI.
+## Bridges track selection and hub visuals with DJ_Controller playback state.
 @export var Track_1_Song : Song
 @export var Track_2_Song : Song
 
@@ -15,6 +17,7 @@ class_name LibreBox
 static var LibreBox_instance : LibreBox
 
 
+## Reloads both track picker lists, useful after library changes.
 static func refresh_both_track_selection_lists() -> void:
     if LibreBox_instance == null:
         return
@@ -22,6 +25,7 @@ static func refresh_both_track_selection_lists() -> void:
     LibreBox_instance.Track_2_Selection_ref.Refresh()
 
 
+## Applies removal of a song from active decks if that metadata resource was deleted.
 static func apply_song_deleted_from_library(deleted_metadata_path: String) -> void:
     if deleted_metadata_path.is_empty():
         return
@@ -58,6 +62,7 @@ static func Get_Instance_await() -> LibreBox:
     
     
 # Get BPM of whatever track we're on
+## Returns source metadata BPM for a deck, or -1 when no song loaded.
 static func Get_Track_BPM(which_track : int) -> float:
     which_track = Utility.Clamp_to_Valid_TrackID(which_track)
     
@@ -137,6 +142,7 @@ func Play_Pause(p_which_track : int):
         Pause_Track(p_which_track)
 
     
+## Loads selected track into DJ_Controller and refreshes the matching HUB card.
 func Update_Controller_and_Hub(Which_Track: int, New_Song: Song):
     print("MAIN MANAGER CALLED TO CHANGE TRACK #" + str(Which_Track) + " TO SONG: " + New_Song.Song_Title)       
     
@@ -228,6 +234,7 @@ func _notification(what: int) -> void:
         _apply_viewport_space_labels()
 
 
+## Boot sequence for LibreBox scene and first-time song load into the controller.
 func _ready() -> void:
     _apply_viewport_space_labels()
     HUB_Menu_ref.Track_1 = Track_1_Song

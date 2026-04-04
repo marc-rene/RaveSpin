@@ -1,5 +1,7 @@
 extends PanelContainer
 
+## UI controller for deck performance pad modes.
+## Mirrors and edits `DJ_Controller` pad mode state for one target track.
 @export_range(0,1,1) var Which_track_are_we_targetting : int
 
 @onready var _jump_hot_cue_btn: Button = $"MarginContainer/GridContainer/VBoxContainer/Jump to Hot Cue Mode"
@@ -18,6 +20,7 @@ var _ticks: int = 0
 var _syncing_ui: bool = false
 
 
+## Binds UI controls and syncs initial state from controller.
 func _ready() -> void:
     Which_track_are_we_targetting = _guess_track_from_viewport_owner(Which_track_are_we_targetting)
     if DJ_Controller.Get_Instance() == null:
@@ -42,6 +45,7 @@ func _process(_delta: float) -> void:
         _sync_ui_from_controller()
 
 
+## Guesses target track from owning viewport name when needed.
 func _guess_track_from_viewport_owner(fallback_track: int) -> int:
     var fallback: int = Utility.Clamp_to_Valid_TrackID(fallback_track)
     var vp: Viewport = get_viewport()
@@ -60,6 +64,7 @@ func _guess_track_from_viewport_owner(fallback_track: int) -> int:
     return fallback
 
 
+## Applies translated labels to panel controls.
 func _apply_localized_text() -> void:
     _jump_hot_cue_btn.text = tr("KEY_ACTIVATE_HOT_CUE_MODE")
     _jump_fx_set_1_btn.text = tr("KEY_USE_FX_SET_1")
@@ -76,6 +81,7 @@ func _refresh_hot_cue_toggle_label() -> void:
     _hot_cue_mode_btn.text = tr("KEY_PAD_ADD_CUE_POINT") if add_mode else tr("KEY_PAD_DELETE_CUE_POINT")
 
 
+## Pulls current mode/toggle state from `DJ_Controller` into UI widgets.
 func _sync_ui_from_controller() -> void:
     _syncing_ui = true
     var mode: int = DJ_Controller.Get_Performance_Pad_Mode(Which_track_are_we_targetting)

@@ -1,8 +1,10 @@
 extends Object
 class_name ETrackOrigins
 
+## Track origin catalogue.
+## Maps platform labels to enum values and optional logo textures.
 
-# All possible origins / platforms that we could get a song from
+## All known source platform labels used by metadata and UI.
 const Track_Origins_str : Array[StringName] = [
     "Other",
 
@@ -111,10 +113,12 @@ const Track_Origins_str : Array[StringName] = [
 
 
 
+## Converts origin enum to display string.
 static func Track_Origin_toString(origin : Track_Origins_enum) -> StringName:
     return Track_Origins_str[origin]
     
     
+## Converts origin display string to enum value.
 static func Track_Origin_toEnum(origin : StringName) -> Track_Origins_enum:
     var index = Track_Origins_str.find(origin)
     if index < 0:
@@ -126,7 +130,7 @@ static func Track_Origin_toEnum(origin : StringName) -> Track_Origins_enum:
     return Track_Origins_str_to_Track_Origins_enum(origin.to_upper())
 
 
-# Return a path to the png logo (128 x 128) for the music platform
+## Returns UI logo texture path for a given source platform.
 static func Get_Origin_Platform_Logo(platform : Track_Origins_enum) -> StringName:
     match platform:
         Track_Origins_enum.LOCAL_STORAGE:
@@ -204,7 +208,7 @@ static func Get_Origin_Platform_Logo(platform : Track_Origins_enum) -> StringNam
 
 ### INSERT ENUM VERSION HERE ###
 
-# An Enum version of the Track_Origins_str Array
+## Enum version of `Track_Origins_str`.
 enum Track_Origins_enum {OTHER,                  LOCAL_STORAGE,          LOCAL_NETWORK_SMB,      
 LOCAL_NETWORK_DLNA_UPNP, DIRECT_URL_HTTP,        FTP,                    
 SFTP,                   SPOTIFY,                APPLE_MUSIC,            
@@ -233,8 +237,8 @@ NHACCUATUI,             LANGIT_MUSIK,           ANGHAMI,
 BOOMPLAY,               MDUNDO,                 NAXOS_MUSIC_LIBRARY,    
 }
 
-# A function to translate any Track_Origins_str StringNames to Track_Origins_enum Enums
-# NOTE: You must supply the UPPERCASE version...
+## Converts platform label text to enum value.
+## Input should be uppercase for exact match behaviour.
 
 static func Track_Origins_str_to_Track_Origins_enum(string_version : String):
     match string_version:

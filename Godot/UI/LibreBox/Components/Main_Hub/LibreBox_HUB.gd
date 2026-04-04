@@ -1,6 +1,8 @@
 extends Control
 class_name LibreBox_HUB
 
+## Main LibreBox hub UI controller.
+## Syncs deck cards, waveform materials, beat pulses, and cue/loop markers.
 @export var Track_1 : Song
 @export var Track_2 : Song
 
@@ -9,7 +11,7 @@ const WAVEFORM_WINDOW_WIDTH = 1650 # TODO figure out how to compute this runtime
 const WAVEFORM_WINDOW_HEIGHT = 240 
 
 
-# For our waveforms, how many pixels (x-axis) make up a single minute of playtime for a wav/mp3 file?
+## Waveform generation ratio used by project waveform assets.
 const PIXELS_PER_MINUTE = 1024 # THIS WAS DECIDED BY Assets/tools/generate_waveforms.py
 
 
@@ -33,6 +35,7 @@ var _rhythm_2: RhythmNotifier
 
 
 
+## Refreshes one side of the hub (track card + waveform texture + notifier BPM).
 func Refresh(Set_Track_1 : bool) -> bool:
     var success = true
     if Set_Track_1:
@@ -73,6 +76,7 @@ func Refresh(Set_Track_1 : bool) -> bool:
     
     
     
+## Initialises shader material instances and rhythm notifier nodes.
 func _ready() -> void:
     # gotta do this horribleness because "local to scene" did nothing for some reason
     _waveform_mat_1 = M_HORIZONTAL_PAN.duplicate()
@@ -92,6 +96,7 @@ func _ready() -> void:
     _setup_rhythm_notifiers()
 
 
+## Applies configured pad colours to waveform hot-cue marker shader parameters.
 func _configure_hot_cue_shader_colours(mat: ShaderMaterial) -> void:
     if mat == null:
         return
@@ -101,6 +106,7 @@ func _configure_hot_cue_shader_colours(mat: ShaderMaterial) -> void:
         mat.set_shader_parameter("hot_cue_%d_color" % cue_idx, cue_color)
     mat.set_shader_parameter("cue_visible", 0.0)
 
+## Creates rhythm notifiers bound to left/right playback players.
 func _setup_rhythm_notifiers() -> void:
     await LibreBox.Get_Instance_await()
     _rhythm_1 = RhythmNotifier.new()
@@ -134,6 +140,7 @@ func _on_track_2_beat(_current_beat: int) -> void:
     _pulse_line(_waveform_mat_2)
 
 
+## Updates waveform playhead and cue/loop marker shader values each frame.
 func _process(_delta: float) -> void:
     var a1: float = LibreBox.Get_Track_Playback_Alpha(0)
     var a2: float = LibreBox.Get_Track_Playback_Alpha(1)

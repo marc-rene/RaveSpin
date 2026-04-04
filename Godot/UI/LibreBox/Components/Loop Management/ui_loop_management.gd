@@ -1,6 +1,8 @@
 extends PanelContainer
 
-# Are we targetting the left track? (Track 0) or the right track? (Track 1)
+## Loop management UI for one target deck.
+## Shows loop status, allows clear loop, and toggles beat snapping.
+## Target deck index (0 = left, 1 = right).
 @export_range(0,1,1) var Which_track_are_we_targetting : int
 
 @onready var _status_label: Label = $"MarginContainer/VBoxContainer/Status of the Loop"
@@ -13,6 +15,7 @@ var _controller: DJ_Controller
 var _ticks: int = 0
 
 
+## Resolves deck target, wires controls, and applies initial state.
 func _ready() -> void:
     # XRToolsViewport2DIn3D does not reliably apply forwarded scene properties at runtime.
     # Determine which deck we are on from the owning 3D viewport node name.
@@ -33,6 +36,7 @@ func _ready() -> void:
     _refresh_status_text()
 
 
+## Attempts to infer deck side from viewport owner naming.
 func _guess_track_from_viewport_owner(fallback_track: int) -> int:
     var fallback: int = Utility.Clamp_to_Valid_TrackID(fallback_track)
     var vp: Viewport = get_viewport()
@@ -52,6 +56,7 @@ func _physics_process(_delta: float) -> void:
     pass
 
 
+## Polls loop status text in viewport UI context.
 func _process(_delta: float) -> void:
     # This UI runs inside a 2D viewport in 3D; `_process` is more reliable for updates here.
     _ticks += 1
@@ -59,6 +64,7 @@ func _process(_delta: float) -> void:
         _refresh_status_text()
 
 
+## Applies translated label/button text.
 func _apply_localized_text() -> void:
     if _status_label != null:
         _status_label.text = tr("KEY_LOOP_STATUS")
@@ -88,6 +94,7 @@ func _on_snap_toggled(enabled: bool) -> void:
     _refresh_status_text()
 
 
+## Writes current loop status text for the target deck.
 func _refresh_status_text() -> void:
     if _status_label == null:
         return

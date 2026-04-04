@@ -1,11 +1,13 @@
 extends Node3D
 class_name DJ_Controller
 
+## Central FLX4-style runtime controller.
+## Owns deck state, transport, loop/cue/pad modes, and per-frame mixer/audio updates.
 #@onready var LibreBox_ref : LibreBox = $LibreboxScene
 # Too many issues with Init'ing
 #var AudioSourceList : Array[AudioStream] = [Track_1_AudioSource, Track_2_AudioSource, Track_3_AudioSource, Track_4_AudioSource]
 
-# Have these here because everyframe get_trackplayback_position is hell, cache it once here
+## Cached playback position/length values to avoid repeated per-frame lookups elsewhere.
 @export var Track_1_playback_pos : float
 @export var Track_2_playback_pos : float
 @export var Track_1_playback_length : float
@@ -25,6 +27,7 @@ var BeatSyncState : E_BPM_Lock_Status = E_BPM_Lock_Status.BOTH_FREE
 
 static var Controller_Instance : DJ_Controller = null
 
+## Waits until singleton instance exists, then returns it.
 static func Get_Instance_await() -> DJ_Controller:
     if Controller_Instance == null:
         await Controller_Instance
@@ -32,6 +35,7 @@ static func Get_Instance_await() -> DJ_Controller:
     return Controller_Instance
     
 
+## Returns the active singleton instance.
 static func Get_Instance() -> DJ_Controller:
     return Controller_Instance
       
@@ -60,7 +64,7 @@ var Bus_Layout : AudioBusLayout
 #@onready var Channel_1_FX_Bus_Index := BUS_MANAGER.Get_Channel_Index(BUS_MANAGER.E_AUDIO_BUSSES.CHANNEL_ONE_FX)
 #@onready var Channel_2_FX_Bus_Index := BUS_MANAGER.Get_Channel_Index(BUS_MANAGER.E_AUDIO_BUSSES.CHANNEL_TWO_FX)
 
-# Single place: knob paths per channel (trim, hi, mid, low, cfx) EQ uses +-24 dB so high/low gonna be strong
+## Core mixer knob references for both decks (trim, EQ low/mid/high, colour FX).
 
 @onready var Core_FX_Knobs_TRIM_L : Knob_Control    =   $"Controls/Left Trim"
 @onready var Core_FX_Knobs_EQ_LOW_L : Knob_Control  =   $"Controls/Left Low Gain"
@@ -76,7 +80,7 @@ var Bus_Layout : AudioBusLayout
 @onready var Core_FX_Knobs_EQ_HIGH_R : Knob_Control        =   $"Controls/Right High Gain"
 @onready var Core_FX_Knobs_SOUND_COLOR_FX_R : Knob_Control =   $"Controls/Right Colour FX"
 
-# One knob sets "power" of whatever Beat FX is active (0 = no effect, 1 = full) — FLX4 style
+## Beat FX intensity control (0 = no audible effect, 1 = full effect).
 @onready var Beat_FX_Knob : Knob_Control = $"Controls/Beat FX"
 
 
@@ -88,11 +92,11 @@ var Crossfade_Alpha = 0.5
 
 #var Seek_Thread
 
-# Default is 10% Tempo Adjust Range
+## Tempo slider range as a multiplier offset around 1.0 (default +/-10%).
 @export var BPM_Adjust_Range = 0.1
 @export var Restrict_Jogwheel_To_Matching_Hand: bool = false
-# How many seconds of track time one FULL jogwheel turn should move.
-# Example: 1.0 means 1 full rotation moves playback by 1 second.
+## Track-time warp amount for one full jogwheel rotation.
+## Example: 1.0 means one full turn seeks by one second.
 @export var Jogwheel_Audio_Warp_Seconds_Per_Full_Rotation: float = 1.0
 @export var Jogwheel_Auto_Spin_Rotations_Per_Second_At_Normal_Speed: float = 1.0
 @export var Jogwheel_Grab_Radius_Meters: float = 0.06
@@ -127,6 +131,7 @@ static func Get_Track_Playback_Position(which_track : int) -> float:
     
     
 
+## Returns 0..1 progress through current track stream, or -1 when missing stream.
 static func Get_Track_Playback_Alpha(which_track : int) -> float:
     which_track = Utility.Clamp_to_Valid_TrackID(which_track)
     if Controller_Instance.AudioPlayerList[which_track].stream:
@@ -138,27 +143,23 @@ static func Get_Track_Playback_Alpha(which_track : int) -> float:
         return -1.0
 
 
+## Returns AudioStreamPlayer backing the requested deck.
 static func Get_Track_Playback_Player(which_track : int) -> AudioStreamPlayer:
     which_track = Utility.Clamp_to_Valid_TrackID(which_track)
     return Controller_Instance.AudioPlayerList[which_track]
 
 
-# I can NOT STRESS THIS ENOUGH
-# NEVER ever change this to false... 
-# I thought multithreading would be risky, but sweet jesus no, 
-# if we dont multithread... everything refuses to launch... godot say "YES" but the meta quest 3 says "NO"
-# I am not sure what causes this, Godot? Meta? This is confusing malicious compliance at its PEAK
-# That is an entire day of work... when I am already stress-cramming... just to realise... Multithreading can't be avoid...WHY?
+## Loop handling must stay threaded for stable runtime behaviour on target XR hardware.
+## Disabling this has previously caused startup/runtime failures on device.
 const Use_Multi_threaded_looping : bool = true # DO NOT CHANGE THIS EVER
 
 
 
 
 
-# --- Loop management (per track) ---
-# Loop points are in *stream seconds* (same space as get_playback_position()).
-# Beat snapping uses the track's *base BPM* from metadata (LibreBox.Get_Track_BPM),
-# consistent with beat sync and other beat-derived UI.
+## --- Loop management (per track) ---
+## Loop points are stored in stream seconds (`get_playback_position()` space).
+## Beat snapping uses base BPM metadata (`LibreBox.Get_Track_BPM`).
 var Loop_Point_Snapping_Enabled: Array[bool] = [true, true, true, true]
 var Loop_Enabled: Array[bool] = [false, false, false, false]
 var Loop_Start_Sec: Array[float] = [0.0, 0.0, 0.0, 0.0]
@@ -176,11 +177,11 @@ const LOOP_MAX_BEATS: float = 128.0
 
 const PERFORMANCE_PAD_COUNT: int = 8
 const HOT_CUE_UNSET_SEC: float = -1.0
-# FLX4 manual default Beat Jump mapping:
-# pad 1/2 = -/+1 beat, 3/4 = -/+2 beats, 5/6 = -/+4 beats, 7/8 = -/+8 beats.
+## FLX4 default Beat Jump mapping:
+## pad 1/2 = -/+1 beat, 3/4 = -/+2 beats, 5/6 = -/+4 beats, 7/8 = -/+8 beats.
 const BEAT_JUMP_STEPS_BEATS: Array[float] = [-1.0, 1.0, -2.0, 2.0, -4.0, 4.0, -8.0, 8.0]
-# FLX4 manual default Key Shift mapping:
-# pads 1..8 = +4, +5, +6, +7, 0, +1, +2, +3 semitones.
+## FLX4 default Key Shift mapping:
+## pads 1..8 = +4, +5, +6, +7, 0, +1, +2, +3 semitones.
 const KEY_SHIFT_STEPS_SEMITONES: Array[int] = [4, 5, 6, 7, 0, 1, 2, 3]
 const PERFORMANCE_PAD_COLOURS: Array[Color] = [
     Color(0.99, 0.46, 0.24, 1.0),
@@ -1365,7 +1366,7 @@ func _on_cue_released(which_track: int) -> void:
         
 
 
-# Adjust Channel Decibel output
+## Updates channel output levels using crossfader and channel faders.
 func Update_Channel_DBs():
     # Apply Crossfade
     if not Utility.all_is_ready:
@@ -1383,7 +1384,8 @@ func Update_Channel_DBs():
 
 
 
-# Trim (slot 0), EQ Hi/Mid/Low (slot 1), CFX (slot 2 = low pass, slot 3 = high pass) Both channels use same 3-slot layout EQ +-24 dB
+## Updates trim, EQ, and colour FX bus effect parameters for both decks.
+## Slot layout: trim=0, EQ=1, low-pass=2, high-pass=3.
 func Update_Channel_Trim_EQ_CFX() -> void:
     #var buses: Array = [Channel_1_Left_Bus_Index, Channel_2_Right_Bus_Index]
     var channel_1 : int = BUS_MANAGER.Get_Channel_Index_i(0)
@@ -1472,7 +1474,7 @@ static func Get_Track_Speed_Mult(which_track : int) -> float:
         
 
 
-# Adjust BPM/Tempo of our Tracks in range of +-BPM_Adjust_Range 
+## Updates per-deck tempo/pitch from tempo sliders and sync state.
 func Update_Channel_Tempo_Adjusts():
     const tolerance : float = 0.05
     # Where are our Sliders set right now?
@@ -1681,8 +1683,8 @@ func _on_right_extend_loop_on_activated() -> void:
 
 
 
-# Im sorry for cramming all the vars up here... this function HITCHES bad and the profiles 
-# TODO: Offload _seek_track_phase_to_match to a different thread and pray that the result is the same but with no hitch??
+## Cached temporaries for beat-phase sync to reduce allocations in a hot path.
+# TODO: Move `_seek_track_phase_to_match` off the main thread if we can preserve behaviour and reduce hitching.
 var ref_bpm : float = 0.0
 var move_bpm : float = 0.0
 var stream_length: float
@@ -1694,8 +1696,8 @@ var move_pos: float
 var phase_ratio: float
 var move_beat_index: int
 var new_pos: float
-# Aligns track_to_move so its beat phase matches reference_track. Only adjusts phase (same pos
-# within the beat); never snaps the moved track to the reference track's position in the song
+## Aligns moved track beat phase to reference track.
+## This adjusts beat phase only, not absolute song position.
 func _seek_track_phase_to_match(track_to_move: int, reference_track: int):
     track_to_move = Utility.Clamp_to_Valid_TrackID(track_to_move)
     reference_track = Utility.Clamp_to_Valid_TrackID(reference_track)

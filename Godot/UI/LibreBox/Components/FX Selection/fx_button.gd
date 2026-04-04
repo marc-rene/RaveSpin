@@ -1,18 +1,22 @@
 extends CheckButton
 class_name FX_Button_Select
 
+## Toggle button for a specific Beat FX type.
+## Applies selected FX to whichever decks are currently allowed to receive FX.
 @export var FX_Type : BUS_MANAGER.E_BEAT_FX_TYPE
 
 const Inactive_Colour_Mod : Color = Color8(100, 100, 140)
 const Active_Colour_Mod : Color = Color8(255, 255, 255)
 
 
+## Initialises label, click binding, and current active state.
 func _ready() -> void:
     text = tr(BUS_MANAGER.beat_fx_translation_key(FX_Type))
     pressed.connect(_on_pressed)
     refresh_state()
 
 
+## Handles manual button press and routes FX add/remove per deck policy.
 func _on_pressed() -> void:
 
     if _any_track_can_take_fx():
@@ -32,6 +36,7 @@ func _on_pressed() -> void:
     refresh_state()
 
 
+## Rebuilds visual/button state from `BUS_MANAGER` active FX data.
 func refresh_state() -> void:
     #print("FX type: " + str(FX_Type) + " is active on 1?: " + str(BUS_MANAGER.is_beat_fx_active(FX_Type, 0)) + " and 2?" + str(BUS_MANAGER.is_beat_fx_active(FX_Type, 1)) )
     # TODO: refactor this into a sep function because this is silly
@@ -61,10 +66,12 @@ func refresh_state() -> void:
         
 
 
+## Returns true when at least one deck is currently allowed to receive FX.
 func _any_track_can_take_fx() -> bool:
     return BUS_MANAGER.Can_Track_1_Take_FX() or BUS_MANAGER.Can_Track_2_Take_FX()
 
 
+## Returns true when this FX type is active on any supported deck.
 func _is_fx_active_on_any_track() -> bool:
     if BUS_MANAGER.is_beat_fx_active(FX_Type, 0):
         return true

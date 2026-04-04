@@ -438,7 +438,7 @@ func _generate_and_assign_waveform_png(audio_path: String) -> void:
     var exit_code: int = WaveformGenerator.generate(temp_input_global, temp_output_global, 1200, 240)
     print("ADD_TRACK 1: Exit code was %d" % exit_code)
     
-    # Some Android plugin writes asynchronously; poll briefly.
+    ## Some Android plugin writes asynchronously, so we poll briefly for output.
     var wait_slices: int = 0
     while wait_slices < 20 and (not FileAccess.file_exists(output_png)): 
         await get_tree().create_timer(0.05).timeout

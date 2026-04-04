@@ -1,5 +1,7 @@
 extends PanelContainer
 
+## Language selection panel for LibreBox UI.
+## Applies locale changes through `Language_Manager`.
 
 @onready var _vbox: VBoxContainer = $MarginContainer/VBoxContainer
 @onready var _title: Label = $MarginContainer/VBoxContainer/Label
@@ -10,6 +12,7 @@ extends PanelContainer
 @onready var Lang_Chinese : Button = $MarginContainer/VBoxContainer/LangBTN_Chinese
 
 
+## Connects language buttons.
 func _ready() -> void:
     Lang_English.pressed.connect(_on_Lang_English_clicked)
     Lang_Irish.pressed.connect(_on_Lang_Irish_clicked)
@@ -29,5 +32,6 @@ func _on_Lang_Chinese_clicked():
 
 
 
+## Applies selected locale code.
 func _on_pick_language(locale: String) -> void:
     Language_Manager.apply_locale(locale)

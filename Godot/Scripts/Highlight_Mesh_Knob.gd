@@ -1,19 +1,23 @@
 extends "res://Scripts/Highlight_Mesh.gd"
 class_name Knob_Control
 
+## 3D knob control with optional popup slider assist.
+## Supports hand rotation input and persistent value memory across interactions.
 enum E_Knob_Value_Display_Mode
 {
     NORMALIZED,
     DECIBEL
 }
 
+## Runtime gate used by popup slider open/close transitions.
 var all_good : bool = false
 
+## Updates runtime gate for popup slider transitions.
 func ok_NOW_ready(yes := true, is_left_hand:bool = true):
     # Keep side-effect free to avoid async races.
     all_good = yes
 
-# 0..1 normalised knob value
+## Current knob value in normalized range (0..1).
 @export var Value: float = 0.5
 @export var slider_spawn_tween_seconds: float = 0.12
 @export var slider_despawn_tween_seconds: float = 0.10
@@ -28,7 +32,7 @@ func ok_NOW_ready(yes := true, is_left_hand:bool = true):
 @export var decibel_linear_max: float = 2.0
 
 var active = false
-# Local-space min and max rotations for the knob
+## Local-space min/max rotations used to map value to knob orientation.
 @export var min_quat: Quaternion = Quaternion()
 @export var max_quat: Quaternion = Quaternion()
 

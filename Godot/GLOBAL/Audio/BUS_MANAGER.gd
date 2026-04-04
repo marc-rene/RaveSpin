@@ -1,14 +1,18 @@
 extends Node
 class_name BUS_MANAGER
 
+## Audio bus and FX helper for DJ controller runtime.
+## Keeps bus names/slots aligned with `Main Audio Bus Layout V2.tres`.
 
 # ---- Beat FX: single vs multiple, and active state ---
 static var ONE_FX_AT_A_TIME: bool = true # FLX4 style (one FX at a time) or allow stacking (AWFUL PERFORMANCE)?
 
+## Returns true when stacking more than one beat FX at once is allowed.
 static func Allow_Multiple_FX_at_same_time() -> bool:
     return ONE_FX_AT_A_TIME == false
     
     
+## Enables or disables beat FX stacking mode.
 static func Set_Allow_Multiple_FX_at_same_time(enabled : bool):
     ONE_FX_AT_A_TIME = not enabled
     
@@ -295,10 +299,12 @@ static func Calculate_Weights_DB(low_alpha : float = 0.5, mid_alpha : float = 0.
 
 
 
+## Returns AudioServer bus index for enum bus id.
 static func Get_Channel_Index_e(Which_Bus : E_AUDIO_BUSSES) -> int:
     return AudioServer.get_bus_index(BUS_NAMES[Which_Bus])
 
 
+## Returns deck input bus index for track number.
 static func Get_Channel_Index_i(Which_Channel : int) -> int:
     var temp_channel_bus : E_AUDIO_BUSSES
     temp_channel_bus = E_AUDIO_BUSSES.CHANNEL_ONE_INPUT if Which_Channel == 0 else E_AUDIO_BUSSES.CHANNEL_TWO_INPUT
@@ -370,6 +376,7 @@ static func _create_beat_fx_instance(fx_type: E_BEAT_FX_TYPE) -> AudioEffect:
     return effect
 
 
+## Adds or replaces beat FX on the selected track bus.
 static func add_beat_fx(fx_type: E_BEAT_FX_TYPE, channel: int) -> void:
     channel = Utility.Clamp_to_Valid_TrackID(channel)
     var bus_index: int = Get_Channel_Index_i(channel)
@@ -399,6 +406,7 @@ static func add_beat_fx(fx_type: E_BEAT_FX_TYPE, channel: int) -> void:
             active_fx[fx_type] = slot
 
 
+## Removes beat FX from selected track bus.
 static func remove_beat_fx(fx_type: E_BEAT_FX_TYPE, channel: int) -> void:
     channel = Utility.Clamp_to_Valid_TrackID(channel)
     var bus_index: int = Get_Channel_Index_i(channel)

@@ -1,6 +1,8 @@
 extends Control
 class_name LibreBox_TrackSelection
 
+## Track library selection panel for one deck.
+## Builds track cards, handles hover scrolling, and routes selection/removal actions.
 @onready var Tracks_Holder: Container = $"VBoxContainer/ScrollContainer/Song Cards Container"
 @onready var root_node: Control = $"."
 @onready var Scroll_Container: ScrollContainer = $"VBoxContainer/ScrollContainer"
@@ -27,6 +29,7 @@ var _pending_delete_metadata_path: String = ""
 signal track_selected(Song_Resource: Song)
 
 
+## Scrolls list while hover zones are active.
 func _process(delta: float) -> void:
     if Current_Scroll_Direction == E_SCROLL_DIRECTION.NONE:
         return
@@ -48,6 +51,7 @@ func _on_scroll_hover_ended() -> void:
     Current_Scroll_Direction = E_SCROLL_DIRECTION.NONE
 
 
+## Rebuilds the card list from all song metadata resources.
 func Refresh() -> void:
     for kid in Tracks_Holder.get_children():
         kid.free()
@@ -64,10 +68,12 @@ func Refresh() -> void:
             print("Card for " + str(new_track.Song_Resource.Song_Title) + " created and hooked up successfully")
 
 
+## Emits selected track for parent manager to load.
 func New_Track_Selected(New_Song: Song) -> void:
     track_selected.emit(New_Song)
 
 
+## Opens Add Track viewport panel.
 func show_add_track() -> void:
     if Add_Track_UI_node == null:
         Add_Track_UI_node = get_node("/root/Arena/LibreboxScene/Add Song") as XRToolsViewport2DIn3D
@@ -76,6 +82,7 @@ func show_add_track() -> void:
         Add_Track_UI_node.call_deferred("set_enabled", true)
 
 
+## Opens delete confirmation dialog for selected song.
 func _on_track_card_remove_requested(target_song: Song) -> void:
     if target_song == null:
         return
@@ -113,6 +120,7 @@ func _on_track_card_remove_requested(target_song: Song) -> void:
     Delete_Confirm_Viewport.position.y = 0
 
 
+## Confirms deletion, removes song files, and refreshes both deck lists.
 func _on_delete_confirmed() -> void:
     var path_to_delete: String = _pending_delete_metadata_path
     _hide_delete_confirm_dialog()
@@ -138,6 +146,7 @@ func _hide_delete_confirm_dialog() -> void:
         Delete_Confirm_Viewport.position.y = 2
 
 
+## Initialises scroll handlers and card list.
 func _ready() -> void:
     root_node.mouse_exited.connect(_on_scroll_hover_ended)
     Scroll_Up_Node.mouse_entered.connect(_on_scroll_up_hovered)

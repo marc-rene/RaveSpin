@@ -1,5 +1,7 @@
 extends PanelContainer
 
+## In-world tooltip manager for deck controls.
+## Opens on hover, follows camera orientation, and can be disabled for a session.
 @export var hover_delay_seconds: float = 1.2
 @export var unhover_close_delay_seconds: float = 10.0
 @export var hover_y_offset_meters: float = 0.27
@@ -11,6 +13,7 @@ extends PanelContainer
 @export var bop_cycle_seconds: float = 3
 @export var camera_slerp_speed: float = 2.0
 
+## Session-wide toggle for tooltip visibility.
 static var session_tooltips_enabled: bool = true
 
 var _tooltip_viewport_node: Node3D = null
@@ -36,6 +39,7 @@ var _bop_tween: Tween = null
 @onready var ok_close_button: Button = $"MarginContainer/VBoxContainer/BoxContainer2/OK_Close Btn"
 
 
+## Binds tooltip buttons, finds target nodes, and connects all controls.
 func _ready() -> void:
     disable_tooltips_button.pressed.connect(_on_disable_tooltips_pressed)
     ok_close_button.pressed.connect(_on_ok_close_pressed)
@@ -61,6 +65,7 @@ func _notification(what: int) -> void:
                 _apply_tooltip_text_for_control(_active_control)
 
 
+## Keeps tooltip anchored and facing camera while open.
 func _process(delta: float) -> void:
     if _tooltip_viewport_node == null:
         return
@@ -70,6 +75,7 @@ func _process(delta: float) -> void:
         _slerp_tooltip_towards_camera(delta)
 
 
+## Finds every `Base_Control` in the current scene and wires hover callbacks.
 func _connect_all_controls() -> void:
     var current_scene: Node = get_tree().current_scene
     if current_scene == null:
@@ -128,6 +134,7 @@ func _show_tooltip_after_hover_delay(ticket_for_hover: int) -> void:
     _open_or_move_tooltip_for_control(_current_hovered_control)
 
 
+## Opens or repositions tooltip for currently hovered control.
 func _open_or_move_tooltip_for_control(control: Base_Control) -> void:
     if _tooltip_viewport_node == null:
         return
@@ -164,6 +171,7 @@ func _open_or_move_tooltip_for_control(control: Base_Control) -> void:
     _start_bop_tween()
 
 
+## Writes title/description text for the hovered control.
 func _apply_tooltip_text_for_control(control: Base_Control) -> void:
     var display_name: String = control.Control_Display_Name
     if display_name.strip_edges().is_empty():

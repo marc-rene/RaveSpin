@@ -1,18 +1,19 @@
 extends Node
 class_name Viewport2DIn3DHandTouch
 
-# add physical hand/finger interact for XRToolsViewport2DIn3D
+## Adds physical hand/finger interaction to `XRToolsViewport2DIn3D`.
+## Converts finger overlap into viewport clicks and optional gesture scrolling.
 
 @export_flags_3d_physics var hand_collision_mask: int = 1
 
-# Minimum seconds between clicks
+## Minimum time between accepted clicks per finger collider.
 @export var click_cooldown_seconds: float = 0.25
 
 ## When enabled: long-press (0.4s) sends double-click (e.g. FileDialog folders). When disabled: only single clicks.
 @export var enable_double: bool = false
 @export var double_click_hold_seconds: float = 0.4
 
-# Scroll-by-pose: index pinch or fist + move hand up/down to scroll (like dragging the menu)
+## Scroll-by-pose: index pinch or fist plus hand movement scrolls viewport content.
 @export var scroll_enabled: bool = true
 @export var scroll_pose_index_pinch: bool = true
 @export var scroll_pose_fist: bool = true
@@ -24,12 +25,12 @@ var _screen_body: Node  # StaticBody3D with viewport_2d_in_3d_body.gd (has globa
 var _touch_area: Area3D
 var _cooldown_by_area: Dictionary = {}  # area -> cooldown end time
 
-# Double-click (when enable_double): hold 0.4s to send double-click
+## Double-click state used when long-press is enabled.
 var _pending_tap_area: Area3D = null
 var _pending_tap_pos: Vector2 = Vector2.ZERO
 var _long_press_fired: bool = false
 
-# Scroll state: pinch/fist + hand movement
+## Active scroll gesture state.
 var _scroll_active: bool = false
 var _scroll_finger: Player_Finger = null
 var _scroll_hand_right: bool = false

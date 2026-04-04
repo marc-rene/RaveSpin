@@ -1,6 +1,8 @@
 class_name StartXR
 extends Node
 
+## OpenXR bootstrap for Arena.
+## Handles session lifecycle, refresh rate selection, focus pause, and recentre events.
 # This script uses "A Better XR Start Script" in the Godot Docs as a starting template
 # https://docs.godotengine.org/en/latest/tutorials/xr/a_better_xr_start_script.html
 
@@ -18,6 +20,7 @@ var xr_is_focussed = false
 
 
 # Called when the node enters the scene tree for the first time.
+## Initialises OpenXR on the current viewport and hooks runtime callbacks.
 func _ready():
     xr_interface = XRServer.find_interface("OpenXR")
     if xr_interface and xr_interface.is_initialized():
@@ -53,6 +56,7 @@ func _ready():
 
 
 # Handle OpenXR session ready
+## Picks best available refresh rate then aligns physics tick rate to it.
 func _on_openxr_session_begun() -> void:
     # Get the reported refresh rate
     var current_refresh_rate = xr_interface.get_display_refresh_rate()
@@ -85,6 +89,7 @@ func _on_openxr_session_begun() -> void:
 
 
 # Handle OpenXR visible state
+## Marks focus lost and pauses processing when headset session is only visible.
 func _on_openxr_visible_state() -> void:
     # We always pass this state at startup,
     # but the second time we get this it means our player took off their headset
@@ -100,6 +105,7 @@ func _on_openxr_visible_state() -> void:
 
 
 # Handle OpenXR focused state
+## Restores processing when headset session is focused again.
 func _on_openxr_focused_state() -> void:
     print("OpenXR gained focus")
     xr_is_focussed = true
@@ -111,6 +117,7 @@ func _on_openxr_focused_state() -> void:
 
 
 # Handle OpenXR stopping state
+## Handles runtime session stop and exits in automated simulator test mode.
 func _on_openxr_stopping() -> void:
     # Our session is being stopped.
     print("OpenXR is stopping")
@@ -125,11 +132,13 @@ var passthrough_enabled: bool = true
 @onready var world_environment: WorldEnvironment = $"../WorldEnvironment"
 
 # Handle OpenXR pose recentered signal
+## Relays recentre events so other nodes can reposition their content.
 func _on_openxr_pose_recentered() -> void:
     # User recentered view, we have to react to this by recentering the view.
     # This is game implementation dependent.
     emit_signal("pose_recentered")
     
+## Enables passthrough if available, otherwise uses alpha blend mode fallback.
 func enable_passthrough() -> bool:
     if xr_interface and xr_interface.is_passthrough_supported():		
         return xr_interface.start_passthrough()

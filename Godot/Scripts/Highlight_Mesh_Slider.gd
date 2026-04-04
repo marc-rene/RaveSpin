@@ -1,6 +1,8 @@
 extends "res://Scripts/Highlight_Mesh.gd"
 class_name Slider_Control
 
+## 3D slider/fader control.
+## Can run in normal hardware mode or popup mode used by knob interactions.
 enum E_Slider_Mode
 {
     NORMAL = 2,
@@ -26,7 +28,7 @@ var starting_pos : Vector3
 @onready var activation_node: Node3D = $Highlight/Activation
 @onready var activation_collision_shape: CollisionShape3D = $"Highlight/Activation/CollisionShape3D"
 
-# we want it to auto-hide after the user lets go
+## Auto-close popup mode after interaction ends.
 @export var auto_hide : bool = false
 signal request_close
 var _time_since_interaction : float = 0.0
@@ -38,6 +40,7 @@ var _popup_entry_anchor_local_z: float = 0.0
 var _popup_has_entry_anchor: bool = false
 var _popup_drag_is_armed: bool = false
 
+## Initialises slider visuals and interaction mode.
 func _ready() -> void:
     super._ready()
     enable_press_feedback_tween = false
@@ -48,6 +51,7 @@ func _ready() -> void:
         $Highlight/Activation/Label3D.position.x *= -1.0
 
 
+## Updates slider handle position from a normalized value.
 func UpdateAlpha(new_value: float):
     #print("Alpha: %.3f" % new_value)
     var max_pos = max_point_node.position.z
@@ -63,6 +67,7 @@ func Set_MinMax_offset(new_offset : float = 0.02):
     _refresh_popup_visual_geometry()
 
 
+## Sets slider mode and refreshes related visuals/collision behaviour.
 func Set_Slider_Mode(new_mode: E_Slider_Mode) -> void:
     slider_mode = new_mode
     _apply_slider_mode_visual_state()

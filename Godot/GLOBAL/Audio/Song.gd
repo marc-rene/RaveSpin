@@ -2,29 +2,31 @@
 class_name Song
 extends Resource
 
-# Where will all of our Music Metadatas be saved to?
+## Song metadata resource used by LibreBox and DJ_Controller.
+## Stores music metadata plus stream/waveform references for built-in and user-imported tracks.
+## Root directory for built-in song metadata resources.
 const ROOT_MUSIC_DIR = "res://Music/Song Metadatas/"
 ## User-imported songs (Add Track on device) save .tres here so they persist on Quest/Android.
 const USER_SONG_METADATA_DIR: String = "user://Music/"
 
-# Name??
+## Song title shown in UI.
 @export var Song_Title: StringName
 
 
-# Who 'owns' this song? Even if it was a collab
+## Primary artist for this song.
 @export var Main_Artist: Artist
 
 
-# Who was featured on this song too?
+## Optional list of featured artists.
 @export var Guest_Artists: Array[Artist]
 
 
-# Which Album does this song belong to? 
-# Singles will still have an Album of the same name
+## Album resource for this song.
+## Singles can still use a same-name album resource.
 @export var Song_Album: Album
 
 
-# Genres that describe this song
+## Genre IDs describing this song.
 ## Done in Ints, use Int_to_Id3Genre_str() to get the Genre Display
 @export var Song_Genres: Array[EGenre.E_ID3Genres]
 
@@ -38,45 +40,45 @@ static func Id3_to_DisplayTitle(Genre_ID : int) -> String:
     
     
 
-# What's the actual data for this song? Its MP3/WAV file 
+## Playable audio stream asset for this song.
 @export var Audio_File: AudioStream
 ## For user-imported songs (Add Local): path to the file under user:// so it persists.
 ## When set, get_audio_stream() loads from this path if Audio_File is null.
 @export var Audio_File_Path: String
 @export var Audio_File_Waveform: Texture2D
 
-# How many Beats Per Minute for this song?
+## Base BPM value used by tempo/beat logic.
 @export var Track_BPM: float
 
 
-# Whats the root note for this song (if it has multiple I recommend just choose any)
+## Root note of the track key.
 @export var Track_Key_Note: EMusicKey.m_notes_enum
 
 
-# Is this a Major, Minor, Diminished SOng? If it switches just choose what you think is the most common
+## Scale for the track key.
 @export var Track_Scale: EMusicKey.m_scales_enum
 
 
-# Derived from Track_Key_Note & Track_Scale
+## Derived key object built from note + scale values.
 var Track_Key: EMusicKey = EMusicKey.new(Track_Key_Note, Track_Scale)
 
-# Sometimes Track_Key doesn't updated properly with Track_Key_Note & Track_Scale
+## Rebuilds `Track_Key` from current note/scale fields.
 func Refresh_Music_Key():
     Track_Key = EMusicKey.new(Track_Key_Note, Track_Scale)
 
-# Where did you get this song from? (ONLY LOCAL IS SUPPORTED FOR NOW)
+## Source platform for this track.
 @export var Song_Origin_Platform: ETrackOrigins.Track_Origins_enum
 
 
-# Well... is it?
+## Favourite marker used by library views.
 @export var Favourite: bool
 
 
-# Extra information about the song...A personal note
+## Optional user note attached to this song.
 @export var User_Sidenote : String
 
 
-# This will make future Metadata retrieval easier
+## Optional MusicBrainz identifier for metadata linkage.
 @export var MusicBrainz_ID: StringName
 
 
@@ -316,7 +318,7 @@ func _to_string() -> String:
 
         
         
-# Get paths to all song metadata .tres under res:// and user:// (no guaranteed order).
+## Returns metadata `.tres` paths from both `res://` and `user://` stores.
 static func Get_All_Song_Paths() -> PackedStringArray:
     var paths: PackedStringArray = PackedStringArray()
     if DirAccess.dir_exists_absolute(ROOT_MUSIC_DIR):

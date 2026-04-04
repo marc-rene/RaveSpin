@@ -1,8 +1,9 @@
 extends Object
 
-# use_music_rules just means will '#' become an 's' instead
-# Convert String from "7 digital music" to "DIGITAL_MUSIC_7"
-# DEPRECATED
+## Deprecated string normaliser for enum-like identifiers.
+## Example: "7 digital music" -> "DIGITAL_MUSIC_7".
+## When `use_music_rules` is true, `#` is converted to `s`.
+## @deprecated: Prefer explicit enum mapping functions in dedicated enum classes.
 static func Convert_String_to_Enum(string_version : String, use_music_rules = true) -> String:
     var enum_str = string_version.to_upper().strip_edges()
     var is_letter = RegEx.new()
@@ -14,7 +15,7 @@ static func Convert_String_to_Enum(string_version : String, use_music_rules = tr
     is_not_alphanumeric.compile("[^A-Za-z0-9]+")
     is_music.compile("#")
     
-    # Can't have anything starting with a number 
+    ## Enum-like identifiers should not start with a digit.
     if is_letter.search(enum_str, 0, 1) == null and enum_str.length() >= 2:
         print("%s got a dodgy enum conversion" % enum_str)
         

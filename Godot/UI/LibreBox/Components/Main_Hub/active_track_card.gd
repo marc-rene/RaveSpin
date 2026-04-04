@@ -1,6 +1,8 @@
 extends Panel
 class_name Active_Track_Card
 
+## Deck status card shown in LibreBox main hub.
+## Displays track metadata, runtime info, BPM offset, and active FX labels.
 @export var Track_ID : int = 0
 @onready var AudioPlayer_ref : AudioStreamPlayer
 
@@ -34,6 +36,7 @@ var position_sec : float
 var beats_elapsed : float
 var alpha : float
 
+## Updates runtime labels and spinner beat state each frame.
 func _process(delta: float) -> void:
     if AudioPlayer_ref == null:
         AudioPlayer_ref = DJ_Controller.Get_Track_Playback_Player(Track_ID)
@@ -63,10 +66,11 @@ func _process(delta: float) -> void:
         prev_beat_alpha = -1.0
     
 
-# when our track has a BEAT
+## Called when this deck crosses a beat boundary.
 func _on_beat():
     pass
 
+## Initialises player references and periodic FX sync thread state.
 func _ready():
     
     Track_ID = Utility.Clamp_to_Valid_TrackID(Track_ID)
@@ -109,6 +113,7 @@ func _clear_dynamic_fx_labels() -> void:
             lab.queue_free()
 
 
+## Synchronises active FX labels with BUS_MANAGER channel state.
 func _sync_active_fx_labels(active_dict: Dictionary) -> void:
     var remove_keys: Array = []
     for fx_type in fx_labels.keys():
@@ -133,6 +138,7 @@ func _sync_active_fx_labels(active_dict: Dictionary) -> void:
         fx_labels[fx_type] = new_label
 
 
+## Sets a new song resource and refreshes card details.
 func Set_New_Song(New_Song: Song) -> bool:
     if New_Song == null or New_Song == Song_Resource:
         return false
@@ -142,6 +148,7 @@ func Set_New_Song(New_Song: Song) -> bool:
         return true
         
 
+## Rebuilds metadata and status labels from current `Song_Resource`.
 func Refresh_Details() -> bool:
     if Song_Resource == null:
         return false
@@ -180,6 +187,7 @@ func Refresh_Details() -> bool:
     
 
 var i : int = 0
+## Updates current/max runtime labels using controller playback caches.
 func Update_runtime_text():
     if i % 4 == 0:
         if AudioPlayer_ref and AudioPlayer_ref.stream:

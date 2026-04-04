@@ -1,6 +1,8 @@
 class_name EGenre
 extends Object
 
+## ID3 genre enum used by song metadata resources.
+## Values mirror common ID3 genre ordering for consistent serialisation.
 
 enum E_ID3Genres {
 Blues,

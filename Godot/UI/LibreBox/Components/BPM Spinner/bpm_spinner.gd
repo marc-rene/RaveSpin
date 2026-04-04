@@ -2,6 +2,8 @@
 extends AspectRatioContainer
 class_name BPM_Spinner
 
+## Visual BPM spinner used by active track cards.
+## Shows current BPM plus percentage offset from base BPM.
 @onready var Spinner : Control = $"Base BPM Tip/BPM Guage bit"
 
 const ZERO_ROT : float = 45.0
@@ -21,11 +23,13 @@ const M_SIMPLE_EMISSIVE : ShaderMaterial = preload("res://Art/Materials/UI/Emiss
 
 var Offset_Text : String
 
+## Initialises spinner material instance.
 func _ready():
     guage_bit_mat = M_SIMPLE_EMISSIVE.duplicate()
     Spinner.material = guage_bit_mat
 
 
+## Refreshes spinner angle and BPM/offset labels.
 func _process(delta: float) -> void:
     rotate_spinny(Alpha)
     if base_bpm > 1 and current_bpm > 1.0:
@@ -43,6 +47,7 @@ func _process(delta: float) -> void:
         Current_BPM_var_label.text = "NaN"
 
 
+## Rotates spinner around one full cycle using alpha (0..1).
 func rotate_spinny(new_alpha: float):
     Spinner.rotation_degrees = remap(new_alpha, 0, 1, ZERO_ROT, (360.0 + ZERO_ROT))
     Alpha = fmod(Alpha, 1.0)
@@ -60,8 +65,10 @@ func On_Beat() -> void:
 
 
 
+## Sets metadata/base BPM reference for offset calculation.
 func Set_Base_BPM(New_Base_BPM : float):
     base_bpm = New_Base_BPM
 
+## Sets currently effective deck BPM.
 func Refresh_BPM(New_Current_BPM : float):
     current_bpm = New_Current_BPM

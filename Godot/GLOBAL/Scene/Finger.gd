@@ -1,6 +1,8 @@
 extends Area3D
 class_name Player_Finger
 
+## Runtime finger collider used for XR deck interaction.
+## Pose detector updates active state so only valid fingers can press controls.
 enum E_FINGER
 {
     FIRST,  # thumb
@@ -100,6 +102,7 @@ signal ThumbsUp_Pose_End_L
 #@onready var XR_Hand_Ref_FP_L : XRToolsFunctionPointer = %Left_MainFuctionPointer
 #@onready var XR_Hand_Ref_FP_R : XRToolsFunctionPointer = %Right_MainFuctionPointer
 
+## Enables or disables the pointer visuals for the selected hand.
 func Set_Pointer_Enabled(use_right_hand: bool, Is_Enabled: bool):
     if use_right_hand and is_main_signaller:
         #XR_Hand_Ref_FP_R.set_enabled(Is_Enabled)
@@ -117,6 +120,7 @@ func Set_Pointer_Enabled(use_right_hand: bool, Is_Enabled: bool):
 
         
         
+## Triggers a pointer click action from pose transition logic.
 func Do_Pointer_Click(use_right_hand: bool):
     if use_right_hand and is_main_signaller:
         #XR_Hand_Ref_FP_R._on_button_pressed("trigger_click", XR_Hand_Ref_R)
@@ -139,6 +143,7 @@ func _simulate_pointer_click(pointer: XRToolsFunctionPointer, hand: XRController
     
     pointer._on_button_released("trigger_click", hand)
     
+## Updates whether this finger collider should count as interactive for current pose.
 func Set_Finger_Active_Status(New_Pose : E_POSES):
     var is_ok_to_activate = false
     match New_Pose:
@@ -175,6 +180,7 @@ func Set_Finger_Active_Status(New_Pose : E_POSES):
 
 
 
+## Converts detector pose names into the local enum used by interaction logic.
 static func translate_pose_name_to_enum(pose_name : String) -> E_POSES:
     match pose_name:
         "ThumbsUp":
@@ -201,6 +207,7 @@ static func translate_pose_name_to_enum(pose_name : String) -> E_POSES:
 
 
 # --------------- LEFT HAND ---------------- 
+## Left-hand pose start event handler.
 func _on_hand_pose_detector_pose_started_L(p_name: String) -> void:
     if is_main_signaller:
         DEBUG_Left_Label.text = p_name
@@ -215,6 +222,7 @@ func _on_hand_pose_detector_pose_started_L(p_name: String) -> void:
             ThumbsUp_Pose_End_L.emit()
     Set_Finger_Active_Status(CURRENT_LEFT_HAND_POSE)
         
+## Left-hand pose end event handler.
 func _on_hand_pose_detector_pose_ended_L(p_name: String) -> void:
     var ended_pose: E_POSES = translate_pose_name_to_enum(p_name)
     if CURRENT_LEFT_HAND_POSE == ended_pose:
@@ -234,6 +242,7 @@ func _on_hand_pose_detector_pose_ended_L(p_name: String) -> void:
 
 
 # --------------- RIGHT HAND --------------- 
+## Right-hand pose start event handler.
 func _on_hand_pose_detector_pose_started_R(p_name: String) -> void:
     if is_main_signaller:
         DEBUG_Right_Label.text = p_name
@@ -248,6 +257,7 @@ func _on_hand_pose_detector_pose_started_R(p_name: String) -> void:
             ThumbsUp_Pose_End_R.emit()
     Set_Finger_Active_Status(CURRENT_RIGHT_HAND_POSE)
         
+## Right-hand pose end event handler.
 func _on_hand_pose_detector_pose_ended_R(p_name: String) -> void:
     var ended_pose: E_POSES = translate_pose_name_to_enum(p_name)
     if CURRENT_RIGHT_HAND_POSE == ended_pose:

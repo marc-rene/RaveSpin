@@ -1,32 +1,37 @@
 extends Object
 class_name Utility
 
-# Just a handy collection of helper functions
+## Shared helper methods used across runtime systems.
+## This class keeps small static utilities so game scripts stay cleaner.
 
-# Only return object if it's valid... otherwise use the backup
+## Returns `object` unless it is null, then returns `backup`.
 static func Return_Valid(object, backup):
     if object == null:
         return backup
     return object
 
+## Global startup gate used by interaction scripts to avoid early node races.
 static var all_is_ready : bool = false : set = set_all_is_ready
 
+## Sets startup gate once and logs first successful transition.
 static func set_all_is_ready(all_ready : bool):
     if all_is_ready == false:
         all_is_ready = all_ready
         print("All ready to start!!!")
 
 
-# instead of doing clamp(value, 0 , 3) a hundred times, just use this
+## Clamps deck index to valid runtime range (0..3).
 static func Clamp_to_Valid_TrackID(which_track : int) -> int:
     return clampi(which_track , 0, 3)
 
 
+## Returns global startup gate.
 static func is_all_ready() -> bool:
     return all_is_ready
 
 
 
+## Formats seconds into a short human-readable time string.
 static func Seconds_to_MM_SS_MS(seconds : float, truncate_zero_value : bool = true, include_ms : bool = false) -> String:
     if seconds:
         var temp_str : String = ""
@@ -47,6 +52,8 @@ static func Seconds_to_MM_SS_MS(seconds : float, truncate_zero_value : bool = tr
          
 
 
+## Generic validity check used by metadata/UI code.
+## Strings must be non-empty, arrays must have at least one item, objects must be valid.
 static func is_Valid(object) -> bool:
     match typeof(object):
         TYPE_STRING:
