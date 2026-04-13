@@ -85,12 +85,9 @@ def generate_waveform(path: Path) -> Path | None:
 
     return output_path
 
-
+# By defualt, GOdot's going to try make its own .import file for our waveform...
+# usually it's good enough but we need to tweak it, otherwise we will have a capacity and rendering disaster
 def patch_import_file(import_path: Path) -> None:
-    """
-    Patch a single .import file to enforce the requested [remap] and [params] settings,
-    while leaving unrelated keys (path, dest_files, deps, etc.) as-is.
-    """
     try:
         text = import_path.read_text(encoding="utf-8")
     except Exception as e:
@@ -104,7 +101,7 @@ def patch_import_file(import_path: Path) -> None:
     in_remap = False
     in_params = False
 
-    # Track whether we have seen/overridden certain keys so we can append if missing.
+    # Track whether we have seen/overridden certain keys so we can append if missing
     seen_importer = False
     seen_type = False
     seen_metadata = False

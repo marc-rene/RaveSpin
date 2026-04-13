@@ -1,10 +1,10 @@
 extends Object
 class_name ETrackOrigins
 
-## Track origin catalogue.
-## Maps platform labels to enum values and optional logo textures.
+## Catalogue of where a Track can origininate from
+## Maps platform labels to enums and logos.
 
-## All known source platform labels used by metadata and UI.
+## All known source platform labels used by metadata and UI
 const Track_Origins_str : Array[StringName] = [
     "Other",
 
