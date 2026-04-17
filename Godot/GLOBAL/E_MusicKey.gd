@@ -70,31 +70,7 @@ func _to_string() -> String:
 ## A Sharp Major should be {"A#", "Major"}
 ## Parses note/scale strings into enum values.
 func Set_with_String(note = "A", scale = "Major"):
-    
-    #var stripped_note = note.remove_chars(" _-!\"£$%^&*()+}{~@:<>?/.,|\\").to_upper()
-    #if stripped_note.length() == 2:
-        #if stripped_note[1] != null:
-            #stripped_note[1] = '#' 
-#
-    #if stripped_note[0] not in "ABCDEFG":
-        #stripped_note[0] = 'C'
-        #printerr("Given an invalid note : %s" % stripped_note)
-    #
-    #if m_notes_str.has(stripped_note):
-        #printerr("Given an invalid note : %s" % stripped_note)
-         #
-    #m_note_index = m_notes_str.find(stripped_note)
-    #
-    #var letters_only = RegEx.new()
-    #letters_only.compile("[^A-Z1-7]")
-    #var stripped_scale : String = scale.to_upper()
-    #stripped_scale = letters_only.sub(stripped_scale, "", true)
-    #
-    #for current_scale in m_scales_str:
-        #var compare_string = letters_only.sub(current_scale.to_upper(), "", true)
-        #if compare_string == stripped_scale:
-            #m_scale_index = m_scales_str.find(current_scale)
-            #break;
+
     m_note_index = m_notes_str_to_m_notes_enum(note.to_upper())
     m_scale_index = m_scales_str_to_m_scales_enum(scale.to_upper())
 

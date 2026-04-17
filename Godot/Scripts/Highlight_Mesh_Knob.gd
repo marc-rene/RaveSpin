@@ -87,6 +87,7 @@ func _ready() -> void:
     _update_knob_value_label()
 
 
+
 func _on_activation_area_entered(area: Area3D) -> void:
     if (Utility.is_all_ready()):
         if area is Player_Finger:

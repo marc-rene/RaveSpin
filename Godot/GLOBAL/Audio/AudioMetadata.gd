@@ -1,21 +1,22 @@
 class_name AudioMetadata
 extends RefCounted
 
-## Unified metadata extraction: [MusicMetadata] addon first, then hand-written parsers as backup.
-## Does not use WaveformGenerator (waveforms are generated separately via WaveformGenerator.generate).
+## Right so we're going to use MusicMetadata addon first, and then if that doesn't work, then we'll try our own parsing
+## Most of this is taken from Segfault game Engine and translated from C++ to GD-Script
 
 const USER_IMPORTS_DIR: String = Song.USER_SONG_METADATA_DIR
-## Internal key: [MusicMetadata] instance for album art; stripped before persisting.
+
+## Internal key for [MusicMetadata] instance for album art; stripped before persisting
 const PLUGIN_METADATA_KEY: StringName = &"_plugin_music_metadata"
 
-## Keys: title, artist, album, album_artist, composer, comment, genre, genres, year, bpm,
-## duration_seconds, musicbrainz_id, initial_key, plus PLUGIN_METADATA_KEY (MusicMetadata).
+## Keys: title, artist, album, album_artist, composer, comment, genre, genres, year, bpm
+## duration_seconds, musicbrainz_id, initial_key, plus PLUGIN_METADATA_KEY (MusicMetadata)
 static func extract_from_path(path: String) -> Dictionary:
     var result: Dictionary = _empty_result()
     var music_meta: MusicMetadata = _build_music_metadata(path)
     _apply_music_metadata_plugin(music_meta, result)
     _backup_fill_from_legacy_parsers(path, result, music_meta)
-    _finalize_genres_array(result)
+    _finalise_genres_array(result)
     var stream_duration: AudioStream = _load_stream_from_path(path)
     if stream_duration != null:
         var length_seconds: float = stream_duration.get_length()
@@ -26,13 +27,15 @@ static func extract_from_path(path: String) -> Dictionary:
     return result
 
 
-## Removes and returns the embedded [MusicMetadata] from a dict returned by [method extract_from_path].
+
+## Removes and returns the embedded [MusicMetadata] from a dict returned by [method extract_from_path]
 static func take_plugin_metadata(result: Dictionary) -> MusicMetadata:
     var embedded: Variant = result.get(PLUGIN_METADATA_KEY, null)
     result.erase(PLUGIN_METADATA_KEY)
     if embedded is MusicMetadata:
         return embedded as MusicMetadata
     return null
+
 
 
 static func _empty_result() -> Dictionary:
@@ -52,6 +55,7 @@ static func _empty_result() -> Dictionary:
     }
 
 
+
 static func _build_music_metadata(path: String) -> MusicMetadata:
     var music_meta: MusicMetadata = MusicMetadata.new()
     var file_bytes: PackedByteArray = FileAccess.get_file_as_bytes(path)
@@ -62,6 +66,7 @@ static func _build_music_metadata(path: String) -> MusicMetadata:
             if loaded_stream != null:
                 music_meta.update_from_stream(loaded_stream)
     return music_meta
+
 
 
 static func _apply_music_metadata_plugin(music_meta: MusicMetadata, result: Dictionary) -> void:
@@ -90,11 +95,14 @@ static func _apply_music_metadata_plugin(music_meta: MusicMetadata, result: Dict
     var tag_key2: Variant = music_meta.get_tag("initialkey", "")
     if String(result["initial_key"]).strip_edges() == "" and String(tag_key2).strip_edges() != "":
         result["initial_key"] = String(tag_key2)
+        
     _apply_musicbrainz_from_plugin(music_meta, result)
+
 
 
 static func _apply_musicbrainz_from_plugin(music_meta: MusicMetadata, result: Dictionary) -> void:
     var urls: Dictionary = music_meta.urls
+    
     for url_key in urls.keys():
         var key_upper: String = String(url_key).to_upper()
         if key_upper.contains("MUSICBRAINZ") or key_upper.contains("MBID") or key_upper.contains("MUSICBRAINZ_TRACKID"):
@@ -102,9 +110,11 @@ static func _apply_musicbrainz_from_plugin(music_meta: MusicMetadata, result: Di
             if url_value != "":
                 result["musicbrainz_id"] = url_value
                 return
+                
     var mb_tag: Variant = music_meta.get_tag("musicbrainz_trackid", "")
     if String(mb_tag).strip_edges() != "":
         result["musicbrainz_id"] = String(mb_tag).strip_edges()
+
 
 
 static func _backup_fill_from_legacy_parsers(path: String, result: Dictionary, _music_meta: MusicMetadata) -> void:
@@ -112,14 +122,19 @@ static func _backup_fill_from_legacy_parsers(path: String, result: Dictionary, _
     var backup: Dictionary = _empty_result()
     if ext == "mp3":
         _extract_id3v2(path, backup)
+
+    #TODO: needs fixing
     elif ext == "ogg":
         _extract_ogg_vorbis(path, backup)
+
     elif ext == "wav":
         _extract_wav_info(path, backup)
+
     else:
         backup["title"] = path.get_file().get_basename()
 
     _merge_backup_if_empty(result, backup)
+
 
 
 static func _merge_backup_if_empty(primary: Dictionary, backup: Dictionary) -> void:
@@ -127,36 +142,47 @@ static func _merge_backup_if_empty(primary: Dictionary, backup: Dictionary) -> v
         "title", "artist", "album", "album_artist", "comment", "genre", "year",
         "initial_key", "musicbrainz_id",
     ]
+    
     for key_index: int in range(keys.size()):
         var key_name: String = keys[key_index]
         
         if String(primary.get(key_name, "")).strip_edges() == "" and String(backup.get(key_name, "")).strip_edges() != "":
             primary[key_name] = backup[key_name]
+            
     if float(primary["bpm"]) <= 0.0 and float(backup["bpm"]) > 0.0:
         primary["bpm"] = backup["bpm"]
+        
     if float(primary["duration_seconds"]) <= 0.0 and float(backup["duration_seconds"]) > 0.0:
         primary["duration_seconds"] = backup["duration_seconds"]
 
 
-static func _finalize_genres_array(result: Dictionary) -> void:
+
+static func _finalise_genres_array(result: Dictionary) -> void:
     var packed: PackedStringArray = PackedStringArray()
     _append_genre_tokens(packed, String(result["genre"]))
+    
     if packed.is_empty() and String(result["genre"]).strip_edges() != "":
         _append_genre_tokens(packed, String(result["genre"]))
+        
     result["genres"] = packed
+
 
 
 static func _append_genre_tokens(target: PackedStringArray, raw_genre: String) -> void:
     var trimmed: String = raw_genre.strip_edges()
     if trimmed.is_empty():
         return
+        
     var normalized: String = trimmed.replace("|", ";")
     var pieces: PackedStringArray = normalized.split(";", false)
     for piece_index: int in range(pieces.size()):
         var segment: String = pieces[piece_index].strip_edges()
+            
         if segment.is_empty():
             continue
+        
         var subparts: PackedStringArray = segment.split("/", false)
+        
         for sub_index: int in range(subparts.size()):
             var label: String = subparts[sub_index].strip_edges()
             if label.is_empty():
@@ -165,34 +191,46 @@ static func _append_genre_tokens(target: PackedStringArray, raw_genre: String) -
                 target.append(label)
 
 
+
 static func _packed_string_array_contains_ci(haystack: PackedStringArray, needle: String) -> bool:
     var needle_upper: String = needle.to_upper()
+    
     for stack_index: int in range(haystack.size()):
         if haystack[stack_index].to_upper() == needle_upper:
             return true
     return false
 
 
+
+## MP3 Metadata extraction... copy + pasted from Segfault game engine, why can't Godot easily call raw c++ from gd-script :(
 static func _extract_id3v2(path: String, result: Dictionary) -> void:
     var file: FileAccess = FileAccess.open(path, FileAccess.READ)
+    
     if file == null:
         result["title"] = path.get_file().get_basename()
         return
+    
     var header: PackedByteArray = file.get_buffer(10)
+    
     if header.size() < 10:
         file.close()
         result["title"] = path.get_file().get_basename()
         return
+    
     if header[0] != 0x49 or header[1] != 0x44 or header[2] != 0x33:
         file.close()
         result["title"] = path.get_file().get_basename()
         return
+    
     var tag_size: int = _synchsafe_to_int(header[6], header[7], header[8], header[9])
+    
     if tag_size <= 0:
         file.close()
         result["title"] = path.get_file().get_basename()
         return
+        
     var tag_data: PackedByteArray = file.get_buffer(mini(tag_size, 256 * 1024))
+    
     file.close()
 
     var text_frames: Dictionary = {
@@ -207,19 +245,27 @@ static func _extract_id3v2(path: String, result: Dictionary) -> void:
         "TBPM": "bpm",
         "TKEY": "initial_key",
     }
+    
     var pos: int = 0
+    
     while pos + 10 <= tag_data.size():
+        
         var frame_id: String = tag_data.slice(pos, pos + 4).get_string_from_ascii()
         var frame_size: int = _synchsafe_to_int(tag_data[pos + 4], tag_data[pos + 5], tag_data[pos + 6], tag_data[pos + 7])
+        
         pos += 10
+        
         if frame_size <= 0 or pos + frame_size > tag_data.size():
             break
+            
         var payload: PackedByteArray = tag_data.slice(pos, pos + frame_size)
+        
         pos += frame_size
         if frame_id == "TBPM":
             var bpm_str: String = _read_id3_text(payload)
             result["bpm"] = _parse_float(bpm_str)
             continue
+            
         if frame_id == "COMM":
             if payload.size() > 5:
                 var enc: int = payload[0]
@@ -233,6 +279,7 @@ static func _extract_id3v2(path: String, result: Dictionary) -> void:
                     comment_payload.append_array(payload.slice(payload_pos, payload.size()))
                     result["comment"] = _read_id3_text(comment_payload)
             continue
+            
         if text_frames.has(frame_id):
             var map_key: String = text_frames[frame_id]
             var value: String = _read_id3_text(payload)
@@ -242,21 +289,30 @@ static func _extract_id3v2(path: String, result: Dictionary) -> void:
                 result["bpm"] = _parse_float(value)
             elif map_key != "year":
                 result[map_key] = value
+                
     if String(result["title"]).is_empty():
         result["title"] = path.get_file().get_basename()
 
 
+
+# also copied from segfault engine
 static func _extract_ogg_vorbis(path: String, result: Dictionary) -> void:
     var file: FileAccess = FileAccess.open(path, FileAccess.READ)
+    
     if file == null:
         result["title"] = path.get_file().get_basename()
         return
+        
     var data: PackedByteArray = file.get_buffer(file.get_length())
+    
     file.close()
+    
     if data.is_empty():
         result["title"] = path.get_file().get_basename()
         return
+        
     var search_start: int = 0
+    
     while search_start < data.size() - 20:
         var idx: int = data.find(0x03, search_start)
         if idx < 0:
@@ -264,46 +320,61 @@ static func _extract_ogg_vorbis(path: String, result: Dictionary) -> void:
         if idx + 7 > data.size():
             break
         var vorbis_magic: String = data.slice(idx + 1, idx + 7).get_string_from_ascii()
+        
         if vorbis_magic == "vorbis":
             if _try_parse_vorbis_comment_packet(data, idx, result):
                 break
         search_start = idx + 1
+        
     if String(result["title"]).is_empty():
         result["title"] = path.get_file().get_basename()
 
 
+
+# Copied from segfault again but oh my god this part was painful
 static func _try_parse_vorbis_comment_packet(data: PackedByteArray, offset: int, result: Dictionary) -> bool:
     if offset + 11 > data.size():
         return false
+        
     if data[offset] != 0x03:
         return false
+        
     if data.slice(offset + 1, offset + 7).get_string_from_ascii() != "vorbis":
         return false
+        
     var pos: int = offset + 7
     if pos + 4 > data.size():
         return false
+        
     var vendor_len: int = data.decode_u32(pos)
     if vendor_len < 0 or vendor_len > 65536:
         return false
+        
     pos += 4 + vendor_len
     if pos + 4 > data.size():
         return false
+        
     var comment_count: int = data.decode_u32(pos)
     if comment_count < 0 or comment_count > 4096:
         return false
+        
     pos += 4
     for comment_index: int in range(comment_count):
         if pos + 4 > data.size():
             break
+            
         var comment_len: int = data.decode_u32(pos)
         pos += 4
+        
         if comment_len < 0 or pos + comment_len > data.size():
             break
+            
         var line: String = data.slice(pos, pos + comment_len).get_string_from_utf8()
         pos += comment_len
         var eq: int = line.find("=")
         if eq <= 0:
             continue
+            
         var label: String = line.substr(0, eq).strip_edges().to_upper()
         var value: String = line.substr(eq + 1).strip_edges()
         match label:
@@ -349,8 +420,10 @@ static func _try_parse_vorbis_comment_packet(data: PackedByteArray, offset: int,
     return true
 
 
+# copied from segault ... thanks MattKC for Lego island Wav video :)
 static func _extract_wav_info(path: String, result: Dictionary) -> void:
     var file: FileAccess = FileAccess.open(path, FileAccess.READ)
+    
     if file == null:
         result["title"] = path.get_file().get_basename()
         return
@@ -358,18 +431,23 @@ static func _extract_wav_info(path: String, result: Dictionary) -> void:
         file.close()
         result["title"] = path.get_file().get_basename()
         return
+        
     file.get_32()
+    
     if file.get_buffer(4).get_string_from_ascii() != "WAVE":
         file.close()
         result["title"] = path.get_file().get_basename()
         return
+        
     while file.get_position() + 8 <= file.get_length():
         var chunk_id: String = file.get_buffer(4).get_string_from_ascii()
         var chunk_size: int = file.get_32()
         if chunk_size < 0:
             break
+            
         var chunk_body_start: int = file.get_position()
         var chunk_body_end: int = chunk_body_start + chunk_size
+        
         if chunk_id == "LIST":
             var list_type: String = file.get_buffer(4).get_string_from_ascii()
             if list_type == "INFO":
@@ -402,16 +480,20 @@ static func _extract_wav_info(path: String, result: Dictionary) -> void:
                         "ICRD":
                             if String(result["year"]).is_empty():
                                 result["year"] = text
+                                
                 file.seek(chunk_body_end)
             else:
                 file.seek(chunk_body_end)
         else:
             file.seek(chunk_body_end)
+            
         if chunk_size % 2 == 1:
             file.seek(file.get_position() + 1)
     file.close()
+    
     if String(result["title"]).is_empty():
         result["title"] = path.get_file().get_basename()
+
 
 
 static func _read_id3_text(payload: PackedByteArray) -> String:
@@ -426,8 +508,11 @@ static func _read_id3_text(payload: PackedByteArray) -> String:
     return data.get_string_from_utf8()
 
 
+
+
 static func _synchsafe_to_int(a: int, b: int, c: int, d: int) -> int:
     return (a & 0x7f) << 21 | (b & 0x7f) << 14 | (c & 0x7f) << 7 | (d & 0x7f)
+
 
 
 static func _parse_float(text: String) -> float:
@@ -437,24 +522,29 @@ static func _parse_float(text: String) -> float:
     return 0.0
 
 
+
 static func _load_stream_from_path(path: String) -> AudioStream:
     var ext: String = path.get_extension().to_lower()
     if ext == "mp3":
         return AudioStreamMP3.load_from_file(path)
+        
     if ext == "wav":
-        # AudioStreamWAV.data is decoded PCM payload, not the whole WAV file bytes.
-        # Decode via load_from_buffer to respect WAV encoding/header.
+        # AudioStreamWAV.data is decoded PCM payload, not the whole WAV file bytes
+        # Decode via load_from_buffer to respect WAV encoding/header
         var bytes: PackedByteArray = FileAccess.get_file_as_bytes(path)
         if bytes.is_empty():
             return null
         return AudioStreamWAV.load_from_buffer(bytes)
+        
     if ext == "ogg":
         # Decode via load_from_buffer to avoid interpreting container bytes as payload.
         var bytes: PackedByteArray = FileAccess.get_file_as_bytes(path)
         if bytes.is_empty():
             return null
         return AudioStreamOggVorbis.load_from_buffer(bytes)
+        
     return null
+
 
 
 static func copy_to_user_imports(source_path: String, file_extension_hint: String = "") -> String:
@@ -507,6 +597,7 @@ static func copy_to_user_imports(source_path: String, file_extension_hint: Strin
     return dest_path
 
 
+
 static func _infer_audio_extension_from_file_magic(source_path: String) -> String:
     var file: FileAccess = FileAccess.open(source_path, FileAccess.READ)
     if file == null:
@@ -517,7 +608,7 @@ static func _infer_audio_extension_from_file_magic(source_path: String) -> Strin
     if header_bytes.is_empty():
         return ""
 
-    # MP3 (often ID3 at the beginning)
+    # MP3 (ID3 at the beginning)
     if header_bytes.size() >= 3 and header_bytes[0] == 0x49 and header_bytes[1] == 0x44 and header_bytes[2] == 0x33:
         return "mp3"
 

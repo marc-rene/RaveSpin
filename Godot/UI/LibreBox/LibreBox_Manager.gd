@@ -1,8 +1,11 @@
 extends Node
 class_name LibreBox
 
-## Main manager for in-world LibreBox UI.
-## Bridges track selection and hub visuals with DJ_Controller playback state.
+## Main manager for in-world LibreBox UI
+## Acts as the main intermediatery between the DJ Controller and spatial XR 2D in 3D viewports
+
+
+
 @export var Track_1_Song : Song
 @export var Track_2_Song : Song
 

@@ -7,19 +7,22 @@ uniform bool Enable_Cheap_Blend = false;
 
 uniform float Alpha_Cutoff_Point : hint_range(0.01, 0.99, 0.01) = 0.0001f;
 
-void fragment() {
+void fragment() 
+{
     if (texture(TEXTURE, UV).a <= Alpha_Cutoff_Point)
     {
         COLOR.r = Force_Background_Colour.r;
         COLOR.g = Force_Background_Colour.g;
         COLOR.b = Force_Background_Colour.b;
     }
+
     else if (Enable_Cheap_Blend && (texture(TEXTURE, UV).a <= (Alpha_Cutoff_Point * 2.0f)))
     {
         COLOR.r = Force_Background_Colour.r * texture(TEXTURE, UV).r ;
         COLOR.g = Force_Background_Colour.g * texture(TEXTURE, UV).g;
         COLOR.b = Force_Background_Colour.b * texture(TEXTURE, UV).b;
     }
+
     else
     {
         COLOR.r = texture(TEXTURE, UV).r;

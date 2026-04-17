@@ -44,13 +44,6 @@ enum E_ActivationStates {
 }
     
     
-#func Start_Flashing():
-    #flashing = true
-#
-#
-#func Stop_Flashing():
-    #flashing = false
-    
 
 
 func _ready() -> void:  

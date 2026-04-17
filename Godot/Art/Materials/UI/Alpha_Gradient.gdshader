@@ -4,12 +4,13 @@ render_mode unshaded, blend_mix;
 uniform vec4 start_colour : source_color = vec4(0.0, 0.0, 0.0, 0.85); // colour + max alpha
 uniform float fade_start = 0.0; // 0 = top, 1 = bottom (after flip)
 uniform float fade_end   = 1.0; // where it reaches fully transparent
-uniform bool flip = false;           // false == top->bottom, true == bottom->top
+uniform bool flip = false;      // false == top->bottom, true == bottom->top
 
 
 
 
-void fragment() {
+void fragment() 
+{
     float temp_y = UV.y;
     
     if (flip == true)

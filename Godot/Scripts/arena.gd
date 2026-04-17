@@ -1,15 +1,15 @@
 extends Node3D
 
-## Arena root runtime script.
-## Enables XR viewport output, passthrough, and recentres the gameplay setup.
+## Arena root runtime script
+## Enables XR viewport output, passthrough, and recentres the gameplay setup
 var xr_interface: XRInterface
 @onready var environment:Environment = $"WorldEnvironment".environment
 
 
 
-## Try passthrough first, then alpha blend fallback if supported.
+## Try passthrough first, then alpha blend fallback if supported
 func enable_passthrough() -> bool:
-    if xr_interface and xr_interface.is_passthrough_supported():		
+    if xr_interface and xr_interface.is_passthrough_supported():
         return xr_interface.start_passthrough()
     else:
         var modes = xr_interface.get_supported_environment_blend_modes()
@@ -22,11 +22,11 @@ func enable_passthrough() -> bool:
             
 
 @export var Player_cam : RaveSpin_XRCamera3D
-## Recentres the in-world layout from the active XR camera orientation.
+## Recentres the in-world layout from the active XR camera orientation
 func recenter():
     Player_cam.recenter()
 
-## Grabs XR interface and applies startup XR configuration for the main scene.
+## Grabs XR interface and applies startup XR configuration for the main scene
 func _ready():
     xr_interface = XRServer.primary_interface
     if xr_interface and xr_interface.is_initialized():

@@ -71,4 +71,3 @@ func _save_locale(locale: String) -> void:
     cfg.load(CONFIG_PATH)
     cfg.set_value(CONFIG_SECTION, CONFIG_KEY_LOCALE, locale)
     cfg.save(CONFIG_PATH)
-

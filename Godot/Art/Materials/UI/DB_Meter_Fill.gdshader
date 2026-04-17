@@ -19,7 +19,8 @@ uniform vec4 border_color : source_color = vec4(0.93, 0.68, 0.29, 0.5);
 
 const float border_width = 0.02;
 
-void fragment() {
+void fragment() 
+{
     float clamped_alpha = clamp(alpha, 0.0, 1.0);
     float fill_start = 1.0 - clamped_alpha;
     float fill_mask = step(fill_start, UV.y);

@@ -14,8 +14,7 @@ func _ready() -> void:
 
 ## Repositions and rotates `spawn_in_front` based on headset yaw.
 func recenter():
-    # var y = spawn_in_front.global_position.y
-    # print("Head pos" + str(global_position))
+
     var projected = global_basis.z
     projected.y = 0
     projected = projected.normalized()

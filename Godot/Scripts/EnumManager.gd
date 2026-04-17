@@ -1,9 +1,6 @@
 extends Object
 
-## Deprecated string normaliser for enum-like identifiers.
-## Example: "7 digital music" -> "DIGITAL_MUSIC_7".
-## When `use_music_rules` is true, `#` is converted to `s`.
-## @deprecated: Prefer explicit enum mapping functions in dedicated enum classes.
+## @deprecated: USE CONVERT ENUM PYTHON SCRIPT
 static func Convert_String_to_Enum(string_version : String, use_music_rules = true) -> String:
     var enum_str = string_version.to_upper().strip_edges()
     var is_letter = RegEx.new()

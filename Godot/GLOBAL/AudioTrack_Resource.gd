@@ -17,7 +17,7 @@ class_name AudioTrackResource extends Resource
 
 @export var Track_BPM : float
 
-## Cached runtime in milliseconds derived from the audio stream length.
+## Cached runtime in milliseconds derived from the audio stream length
 # Dont need a tracker for this because we can defer this from All_Audio_Files.length()
 var Track_Runtime_ms : int
 
@@ -34,7 +34,7 @@ var Track_Key : EMusicKey
 
     
     
-## Creates a metadata resource from supplied values.
+## Creates a metadata resource from supplied values
 func _init( p_audio_file : AudioStream = null,
             p_track_title : String = "NA",
             p_track_artist : StringName = "NA",

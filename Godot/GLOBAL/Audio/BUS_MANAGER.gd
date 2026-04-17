@@ -1,7 +1,7 @@
 extends Node
 class_name BUS_MANAGER
 
-## Audio bus and FX helper for DJ controller runtime.
+## Audio bus and FX helper for DJ controller runtime
 ## Keeps bus names/slots aligned with `Main Audio Bus Layout V2.tres`.
 
 # ---- Beat FX: single vs multiple, and active state ---
@@ -271,8 +271,8 @@ static func Calculate_Weights_Normal(low_alpha : float = 0.5, mid_alpha : float 
 
 
 
-# Same thing as Calculate_Weights_Normal, except returns raw dB values for each EQ6 band.
-# Input is still low/mid/high alpha (0-1), which is remapped to EQ_DB_MIN...EQ_DB_MAX first.
+# Same thing as Calculate_Weights_Normal, except returns raw dB values for each EQ6 band
+# Input is still low/mid/high alpha (0-1), which is remapped to EQ_DB_MIN...EQ_DB_MAX first
 static func Calculate_Weights_DB(low_alpha : float = 0.5, mid_alpha : float = 0.5, high_alpha : float = 0.5) -> Dictionary[E_BAND_HZ, float]:
     low_alpha = remap(low_alpha, 0.0, 1.0, 0.0, 2.0)
     mid_alpha = remap(mid_alpha, 0.0, 1.0, 0.0, 2.0)
@@ -299,12 +299,12 @@ static func Calculate_Weights_DB(low_alpha : float = 0.5, mid_alpha : float = 0.
 
 
 
-## Returns AudioServer bus index for enum bus id.
+## Returns AudioServer bus index for enum bus id
 static func Get_Channel_Index_e(Which_Bus : E_AUDIO_BUSSES) -> int:
     return AudioServer.get_bus_index(BUS_NAMES[Which_Bus])
 
 
-## Returns deck input bus index for track number.
+## Returns deck input bus index for track number
 static func Get_Channel_Index_i(Which_Channel : int) -> int:
     var temp_channel_bus : E_AUDIO_BUSSES
     temp_channel_bus = E_AUDIO_BUSSES.CHANNEL_ONE_INPUT if Which_Channel == 0 else E_AUDIO_BUSSES.CHANNEL_TWO_INPUT
@@ -338,7 +338,6 @@ static func get_beat_fx_class(fx_type: E_BEAT_FX_TYPE) -> Variant:
             return AudioEffectStereoEnhance
         _:
             return null
-
 
 
 
@@ -406,6 +405,7 @@ static func add_beat_fx(fx_type: E_BEAT_FX_TYPE, channel: int) -> void:
             active_fx[fx_type] = slot
 
 
+
 ## Removes beat FX from selected track bus.
 static func remove_beat_fx(fx_type: E_BEAT_FX_TYPE, channel: int) -> void:
     channel = Utility.Clamp_to_Valid_TrackID(channel)
@@ -426,6 +426,7 @@ static func remove_beat_fx(fx_type: E_BEAT_FX_TYPE, channel: int) -> void:
                 active_fx[fx_key] = active_fx[fx_key] - 1
 
 
+
 static func toggle_beat_fx(fx_type: E_BEAT_FX_TYPE, channel : int) -> void:
     if is_beat_fx_active(fx_type, channel):
         remove_beat_fx(fx_type, channel)
@@ -433,11 +434,13 @@ static func toggle_beat_fx(fx_type: E_BEAT_FX_TYPE, channel : int) -> void:
         add_beat_fx(fx_type, channel)
 
 
+
 static func is_beat_fx_active(fx_type: E_BEAT_FX_TYPE, channel : int) -> bool:
     return _get_active_effects_for_channel(channel).has(fx_type)
 
 
-## Beat FX "power" knob: alpha 0 = no audible effect (like off), alpha 1 = full effect. Call every frame from Controller.
+
+## Beat FX "power" knob: alpha 0 = no audible effect (like off), alpha 1 = full effect. Call every frame from Controller
 static func Apply_Beat_FX_Level(channel: int, alpha: float) -> void:
     channel = Utility.Clamp_to_Valid_TrackID(channel)
     alpha = clampf(alpha, 0.0, 1.0)
@@ -454,46 +457,58 @@ static func Apply_Beat_FX_Level(channel: int, alpha: float) -> void:
             _set_beat_fx_effect_level(effect, fx_type, alpha, channel)
 
 
-## Per-effect "amount" so that alpha 0 = inaudible, alpha 1 = full. Effect-specific parameter scaling.
+
+## Per-effect "amount" so that alpha 0 = inaudible, alpha 1 = full. Effect-specific parameter scaling
 static func _set_beat_fx_effect_level(effect: AudioEffect, fx_type: E_BEAT_FX_TYPE, alpha: float, channel: int = 0) -> void:
     alpha = clampf(alpha, 0.0, 1.0)
+    
     if effect is AudioEffectDelay:
-        var d: AudioEffectDelay = effect as AudioEffectDelay
+        var delay: AudioEffectDelay = effect as AudioEffectDelay
         var db_off: float = -80.0
-        d.tap1_level_db = lerpf(db_off, 0.0, alpha)
-        d.tap2_level_db = lerpf(db_off, -6.0, alpha)
-        d.feedback_level_db = lerpf(db_off, -6.0, alpha)
+        delay.tap1_level_db = lerpf(db_off, 0.0, alpha)
+        delay.tap2_level_db = lerpf(db_off, -6.0, alpha)
+        delay.feedback_level_db = lerpf(db_off, -6.0, alpha)
+        
     elif effect is AudioEffectReverb:
-        var r: AudioEffectReverb = effect as AudioEffectReverb
-        r.dry = 1.0 - alpha
-        r.wet = alpha
+        var reverb: AudioEffectReverb = effect as AudioEffectReverb
+        reverb.dry = 1.0 - alpha
+        reverb.wet = alpha
+        
     elif effect is AudioEffectChorus:
-        var c: AudioEffectChorus = effect as AudioEffectChorus
-        for i in range(c.voice_count):
-            c.set_voice_depth_ms(i, lerpf(0.0, 3.0, alpha))
-            c.set_voice_level_db(i, lerpf(-80.0, 0.0, alpha))
+        var chorsus: AudioEffectChorus = effect as AudioEffectChorus
+        for i in range(chorsus.voice_count):
+            chorsus.set_voice_depth_ms(i, lerpf(0.0, 3.0, alpha))
+            chorsus.set_voice_level_db(i, lerpf(-80.0, 0.0, alpha))
+            
     elif effect is AudioEffectPhaser:
-        var p: AudioEffectPhaser = effect as AudioEffectPhaser
-        p.depth = lerpf(0.0, 1.0, alpha)
+        var phaser: AudioEffectPhaser = effect as AudioEffectPhaser
+        phaser.depth = lerpf(0.0, 1.0, alpha)
+        
     elif effect is AudioEffectPitchShift:
-        var ps: AudioEffectPitchShift = effect as AudioEffectPitchShift
+        var pitchshift: AudioEffectPitchShift = effect as AudioEffectPitchShift
         var override_scale: float = _get_pitch_shift_scale_override(channel)
-        ps.pitch_scale = override_scale if override_scale > 0.0 else lerpf(1.0, 1.5, alpha)
+        pitchshift.pitch_scale = override_scale if override_scale > 0.0 else lerpf(1.0, 1.5, alpha)
+        
     elif effect is AudioEffectDistortion:
         var dist: AudioEffectDistortion = effect as AudioEffectDistortion
         dist.drive = lerpf(0.0, 1.0, alpha)
+        
     elif effect is AudioEffectCompressor:
-        var comp: AudioEffectCompressor = effect as AudioEffectCompressor
-        comp.ratio = lerpf(1.0, 4.0, alpha)
+        var compress: AudioEffectCompressor = effect as AudioEffectCompressor
+        compress.ratio = lerpf(1.0, 4.0, alpha)
+        
     elif effect is AudioEffectLimiter:
-        var lim: AudioEffectLimiter = effect as AudioEffectLimiter
-        lim.threshold_db = lerpf(6.0, -12.0, alpha)
+        var limiter: AudioEffectLimiter = effect as AudioEffectLimiter
+        limiter.threshold_db = lerpf(6.0, -12.0, alpha)
+        
     elif effect is AudioEffectBandPassFilter:
-        var bp: AudioEffectBandPassFilter = effect as AudioEffectBandPassFilter
-        bp.resonance = lerpf(0.1, 2.0, alpha)
+        var bandpassp: AudioEffectBandPassFilter = effect as AudioEffectBandPassFilter
+        bandpassp.resonance = lerpf(0.1, 2.0, alpha)
+        
     elif effect is AudioEffectPanner:
-        var pan: AudioEffectPanner = effect as AudioEffectPanner
-        pan.pan = lerpf(0.0, 1.0, alpha)
+        var pannner: AudioEffectPanner = effect as AudioEffectPanner
+        pannner.pan = lerpf(0.0, 1.0, alpha)
+        
     elif effect is AudioEffectStereoEnhance:
-        var se: AudioEffectStereoEnhance = effect as AudioEffectStereoEnhance
-        se.pan_pullout = lerpf(0.0, 1.0, alpha)
+        var steroenchance: AudioEffectStereoEnhance = effect as AudioEffectStereoEnhance
+        steroenchance.pan_pullout = lerpf(0.0, 1.0, alpha)

@@ -1,12 +1,12 @@
 extends PanelContainer
 class_name Add_Track
 
-## Add local song: native file picker -> user:// copy -> MusicMetadata + AudioMetadata; waveform PNG via WaveformGenerator only.
+## Add local song from Local storage... if the song is a WAV it might use Waveform preview pluggin if FFMPEG doesn't work
 
-## Placeholder row in genre OptionButtons; not written to Song_Genres.
+## Placeholder row in genre OptionButtons; not written to Song_Genres
 const GENRE_OPTION_ID_NONE: int = -1
 
-## Order matches EMusicKey.m_scales_str (Language/LANG_Translation.csv).
+## Order matches EMusicKey.m_scales_str
 const _SCALE_I18N_KEYS: Array[String] = [
     "KEY_SCALE_UNKNOWN",
     "KEY_SCALE_MAJOR",
@@ -34,7 +34,7 @@ var _pending_song: Song
 var _pending_audio_path: String
 var _picking_file: bool = false
 
-## Cached ID3 rows { "id": int, "label": String } in catalog order (0..191, 192 CR, 193 RX).
+## Cached ID3 rows { "id": int, "label": String } in order (0..191, 192 CR, 193 RX)
 var _id3_genre_catalog_rows: Array[Dictionary] = []
 
 ## Cached lists for dropdowns (sorted by name)
@@ -60,11 +60,12 @@ var _genre_pickers: Array[OptionButton] = []
 
 var _default_album_art: Texture2D
 var _fallback_file_dialog: FileDialog
-## Latest [MusicMetadata] from the addon (embedded cover art).
+
+## Latest MusicMetadata from metadata pluggin (embedded cover art)
 var _last_extracted_music_metadata: MusicMetadata
 
-## Embedded cover texture extracted from the current selected song.
-## Used to persist `Album.Album_Artwork` when saving the song to the library.
+## Embedded cover texture extracted from the current selected song
+## Used to persist Album.Album_Artwork when saving the song to the library
 var _pending_album_artwork_texture: Texture2D
 
 
@@ -88,6 +89,7 @@ func _ready() -> void:
     _refresh_artist_album_lists()
     _fill_choose_artist_dropdown()
     _fill_choose_album_dropdown()
+    
     if _choose_artist_opt != null:
         _choose_artist_opt.item_selected.connect(_on_choose_artist_selected)
     if _choose_album_opt != null:
@@ -102,6 +104,7 @@ func _ready() -> void:
     _fill_music_key_dropdowns()
 
 
+
 func _setup_fallback_file_dialog() -> void:
     _fallback_file_dialog = FileDialog.new()
     _fallback_file_dialog.file_mode = FileDialog.FILE_MODE_OPEN_FILE
@@ -114,7 +117,9 @@ func _setup_fallback_file_dialog() -> void:
     _fallback_file_dialog.add_filter("*.ogg", tr("KEY_FILETYPE_OGG"))
     _fallback_file_dialog.file_selected.connect(_on_fallback_file_dialog_file_selected)
     _fallback_file_dialog.canceled.connect(_on_fallback_file_dialog_canceled)
+    
     get_tree().root.add_child(_fallback_file_dialog)
+
 
 
 func _fill_music_key_dropdowns() -> void:
@@ -123,11 +128,13 @@ func _fill_music_key_dropdowns() -> void:
         var note_labels: Array[StringName] = EMusicKey.m_notes_str
         for note_index: int in range(note_labels.size()):
             _music_key_note_option.add_item(String(note_labels[note_index]), note_index)
+            
     if _music_key_scale_option != null:
         _music_key_scale_option.clear()
         var scale_labels: Array[StringName] = EMusicKey.m_scales_str
         for scale_index: int in range(scale_labels.size()):
             _music_key_scale_option.add_item(tr(_SCALE_I18N_KEYS[scale_index]), scale_index)
+
 
 
 func _select_music_key_dropdowns(note_enum: EMusicKey.m_notes_enum, scale_enum: EMusicKey.m_scales_enum) -> void:
@@ -143,6 +150,7 @@ func _select_music_key_dropdowns(note_enum: EMusicKey.m_notes_enum, scale_enum: 
             if _music_key_scale_option.get_item_id(item_index) == scale_id:
                 _music_key_scale_option.select(item_index)
                 break
+
 
 
 func _build_id3_genre_catalog_cache() -> void:
@@ -161,6 +169,7 @@ func _build_id3_genre_catalog_cache() -> void:
         _id3_genre_catalog_rows.append({"id": 193, "label": String(MusicMetadataTools.ID3_GENRE_IDS["RX"])})
 
 
+
 func _refresh_artist_album_lists() -> void:
     _artists_sorted = _load_artists_from_disk()
     _albums_sorted = _load_albums_from_disk()
@@ -168,10 +177,12 @@ func _refresh_artist_album_lists() -> void:
     _albums_sorted.sort_custom(func(left: Album, right: Album) -> bool: return String(left.Album_Name) < String(right.Album_Name))
 
 
+
 func _load_artists_from_disk() -> Array[Artist]:
     var result: Array[Artist] = []
     var seen_keys: Dictionary = {}
     var bases: Array[String] = ["res://Music/Artists/", "user://Music/Artists/"]
+    
     for base_index: int in range(bases.size()):
         var base_path: String = bases[base_index]
         if not DirAccess.dir_exists_absolute(base_path):
@@ -181,59 +192,69 @@ func _load_artists_from_disk() -> Array[Artist]:
             continue
         dir.list_dir_begin()
         var entry_name: String = dir.get_next()
+        
         while entry_name != "":
             if (not dir.current_is_dir()) and entry_name.ends_with(".tres"):
                 var resource_path: String = base_path.path_join(entry_name)
                 var loaded: Resource = ResourceLoader.load(resource_path)
                 if loaded is Artist:
-                    var artist: Artist = loaded as Artist
-                    var dedupe_key: String = "A:" + String(artist.Artist_Name)
-                    if not seen_keys.has(dedupe_key):
-                        seen_keys[dedupe_key] = true
-                        result.append(artist)
+                    if not seen_keys.has(loaded.Artist_Name):
+                        seen_keys[loaded.Artist_Name] = true
+                        result.append(loaded)
+                        
             entry_name = dir.get_next()
         dir.list_dir_end()
     return result
+
 
 
 func _load_albums_from_disk() -> Array[Album]:
     var result: Array[Album] = []
     var seen_keys: Dictionary = {}
     var bases: Array[String] = ["res://Music/Albums/", "user://Music/Albums/"]
+    
     for base_index: int in range(bases.size()):
         var base_path: String = bases[base_index]
         if not DirAccess.dir_exists_absolute(base_path):
             continue
+            
         var dir: DirAccess = DirAccess.open(base_path)
         if dir == null:
             continue
+            
         dir.list_dir_begin()
         var entry_name: String = dir.get_next()
+        
         while entry_name != "":
             if (not dir.current_is_dir()) and entry_name.ends_with(".tres"):
                 var resource_path: String = base_path.path_join(entry_name)
                 var loaded: Resource = ResourceLoader.load(resource_path)
+                
                 if loaded is Album:
                     var album: Album = loaded as Album
-                    var dedupe_key: String = "L:" + String(album.Album_Name)
-                    if not seen_keys.has(dedupe_key):
-                        seen_keys[dedupe_key] = true
+                    if not seen_keys.has(album.Album_Name):
+                        seen_keys[album.Album_Name] = true
                         result.append(album)
+                        
             entry_name = dir.get_next()
         dir.list_dir_end()
     return result
 
 
+
 func _fill_choose_artist_dropdown() -> void:
     if _choose_artist_opt == null:
         return
+        
     _choose_artist_opt.clear()
     _choose_artist_opt.add_item(tr("KEY_CHOOSE_EXISTING_ARTISTS"), 0)
     _choose_artist_opt.set_item_disabled(0, true)
     _choose_artist_opt.add_separator()
+    
     var next_id: int = 1
     _choose_artist_opt.add_item(tr("KEY_ADD_NEW_ARTIST_OPTION"), next_id)
     next_id += 1
+    
     for artist_index: int in range(_artists_sorted.size()):
         var artist: Artist = _artists_sorted[artist_index]
         _choose_artist_opt.add_item(String(artist.Artist_Name), next_id)
@@ -241,16 +262,20 @@ func _fill_choose_artist_dropdown() -> void:
         next_id += 1
 
 
+
 func _fill_choose_album_dropdown() -> void:
     if _choose_album_opt == null:
         return
+        
     _choose_album_opt.clear()
     _choose_album_opt.add_item(tr("KEY_CHOOSE_EXISTING_ALBUMS"), 0)
     _choose_album_opt.set_item_disabled(0, true)
     _choose_album_opt.add_separator()
+    
     var next_id: int = 1
     _choose_album_opt.add_item(tr("KEY_ADD_NEW_ALBUM_OPTION"), next_id)
     next_id += 1
+    
     for album_index: int in range(_albums_sorted.size()):
         var album: Album = _albums_sorted[album_index]
         _choose_album_opt.add_item(String(album.Album_Name), next_id)
@@ -258,28 +283,35 @@ func _fill_choose_album_dropdown() -> void:
         next_id += 1
 
 
+
 func _artist_id_for_add_new() -> int:
     return 1
+
 
 
 func _album_id_for_add_new() -> int:
     return 1
 
 
+
 func _on_choose_artist_selected(_unused_index: int) -> void:
     var artist_line_edit: LineEdit = _details_container.get_node_or_null("New Artist Name/New ArtistName") as LineEdit
     if artist_line_edit == null:
         return
+        
     var selected_id: int = _choose_artist_opt.get_item_id(_choose_artist_opt.selected)
     if selected_id <= 0:
         return
+        
     if selected_id == _artist_id_for_add_new():
         artist_line_edit.placeholder_text = tr("KEY_ENTER_NEW_ARTIST_NAME")
         return
+        
     var metadata_value: Variant = _choose_artist_opt.get_item_metadata(_choose_artist_opt.selected)
     if metadata_value is Artist:
         var selected_artist: Artist = metadata_value as Artist
         artist_line_edit.text = String(selected_artist.Artist_Name)
+
 
 
 func _on_choose_album_selected(_unused_index: int) -> void:
@@ -296,6 +328,7 @@ func _on_choose_album_selected(_unused_index: int) -> void:
     if metadata_value is Album:
         var selected_album: Album = metadata_value as Album
         album_line_edit.text = String(selected_album.Album_Name)
+
 
 
 func _on_add_local_song_pressed() -> void:
@@ -323,8 +356,10 @@ func _on_add_local_song_pressed() -> void:
             _fallback_file_dialog.popup_centered_ratio(0.85)
 
 
+
 func _should_use_native_file_dialog() -> bool:
     return DisplayServer.has_feature(DisplayServer.FEATURE_NATIVE_DIALOG)
+
 
 
 func _on_native_file_dialog_result(status: bool, paths: PackedStringArray, _filter_index: int) -> void:
@@ -338,14 +373,17 @@ func _on_native_file_dialog_result(status: bool, paths: PackedStringArray, _filt
     _on_audio_file_selected(first_path, file_extension_hint)
 
 
+
 func _on_fallback_file_dialog_file_selected(path: String) -> void:
     _picking_file = false
     var detected_extension: String = path.get_extension().to_lower()
     _on_audio_file_selected(path, detected_extension)
 
 
+
 func _on_fallback_file_dialog_canceled() -> void:
     _picking_file = false
+
 
 
 func _on_audio_file_selected(selected_path: String, file_extension_hint: String = "") -> void:
@@ -374,6 +412,7 @@ func _on_audio_file_selected(selected_path: String, file_extension_hint: String 
     _populate_form_from_metadata(meta)
     _apply_album_artwork(_last_extracted_music_metadata)
     _generate_and_assign_waveform_png(dest_path)
+
 
 
 ## Infers `mp3`/`wav`/`ogg` by reading the first bytes from the native picker URI.
@@ -410,10 +449,12 @@ func _extension_hint_for_native_path_by_magic(native_path_string: String) -> Str
     return ""
 
 
+
 func _extract_metadata_merged(audio_path: String) -> Dictionary:
     var merged: Dictionary = AudioMetadata.extract_from_path(audio_path)
     _last_extracted_music_metadata = AudioMetadata.take_plugin_metadata(merged)
     return merged
+
 
 
 ## Writes a waveform PNG next to the imported audio file and assigns [member Song.Audio_File_Waveform].
@@ -465,75 +506,29 @@ func _generate_and_assign_waveform_png(audio_path: String) -> void:
         else:
             print("Not even the fallback worked")
             
-    #var output_directory_user: String = output_png.get_base_dir()
-    #DirAccess.make_dir_recursive_absolute(output_directory_user)
-    #DirAccess.make_dir_recursive_absolute("user://waveforms/")
-#
-    ## Wrapper now globalizes paths internally (matches extract_album_artwork behavior).
-    #print("Add_Track: waveform generator exit_code: %d" % exit_code)
-#
-    #var temp_output_global: String = ProjectSettings.globalize_path(output_png)
-    #print("ADD_TRACK: Global Path of PNG is at %s" % output_png)
-    #var temp_output_alt_internal: String = _android_alt_internal_files_fallback(temp_output_global)
-    #var temp_output_external: String = _android_external_files_fallback(temp_output_global)
-    #var target_output_global: String = ProjectSettings.globalize_path(output_png)
-#
-    ## Some Android plugin writes asynchronously; poll briefly.
-    #var wait_slices: int = 0
-    #while wait_slices < 20 \
-            #and (not FileAccess.file_exists(temp_output_global)) \
-            #and (temp_output_alt_internal.is_empty() or (not FileAccess.file_exists(temp_output_alt_internal))) \
-            #and (temp_output_external.is_empty() or (not FileAccess.file_exists(temp_output_external))):
-        #await get_tree().create_timer(0.05).timeout
-        #wait_slices += 1
-#
-    #var found_temp_global: String = ""
-    #if FileAccess.file_exists(temp_output_global):
-        #found_temp_global = temp_output_global
-    #elif not temp_output_alt_internal.is_empty() and FileAccess.file_exists(temp_output_alt_internal):
-        #found_temp_global = temp_output_alt_internal
-    #elif not temp_output_external.is_empty() and FileAccess.file_exists(temp_output_external):
-        #found_temp_global = temp_output_external
-#
-    #if found_temp_global.is_empty():
-        #print("Add_Track: waveform temp PNG not found after generation: %s" % temp_output_global)
-        #if not temp_output_alt_internal.is_empty():
-            #print("Add_Track: also not found at alt internal path: %s" % temp_output_alt_internal)
-        #if not temp_output_external.is_empty():
-            #print("Add_Track: also not found at external path: %s" % temp_output_external)
-        #await _fallback_generate_waveform_png_with_audio_preview(audio_path, target_output_global)
-        #_pending_song.Attempt_Find_waveform_from_audio_file_path()
-        #return
-#
-    ## Copy beside the audio file so existing loaders keep working.
-    #var copy_error: Error = DirAccess.copy_absolute(found_temp_global, target_output_global)
-    #if copy_error != OK:
-        #print("Add_Track: failed to copy waveform PNG to target: %s (error=%d)" % [target_output_global, copy_error])
-        #return
-#
-    #_pending_song.Attempt_Find_waveform_from_audio_file_path()
 
 
 func _android_external_files_fallback(internal_global_path: String) -> String:
-    if not OS.has_feature("android"):
-        return ""
     var marker: String = "/data/data/"
     var idx: int = internal_global_path.find(marker)
     if idx < 0:
         return ""
+        
     var after: String = internal_global_path.substr(idx + marker.length())
     var slash_idx: int = after.find("/")
     if slash_idx < 0:
         return ""
+        
     var package_name: String = after.substr(0, slash_idx)
     var rest: String = after.substr(slash_idx) # includes "/files/..."
     return "/storage/emulated/0/Android/data/%s%s" % [package_name, rest]
 
 
+
 func _android_alt_internal_files_fallback(internal_global_path: String) -> String:
-    if not OS.has_feature("android"):
-        return ""
+
     # Some environments expose app files under /data/<package>/files instead of /data/data/<package>/files
+    # ... I hate android development with a passion
     var marker: String = "/data/data/"
     var idx: int = internal_global_path.find(marker)
     if idx < 0:
@@ -547,8 +542,9 @@ func _android_alt_internal_files_fallback(internal_global_path: String) -> Strin
     return "/data/%s%s" % [package_name, rest]
 
 
-## WAV-only fallback waveform generator using `addons/audio_preview` (pure GDScript).
-## This is only used when WaveformGenerator says success but no PNG appears on disk.
+
+## WAV-only fallback waveform generator using audio_preview addon...
+## This is used when FFMPEG addon says "success!" but no PNG appears on disk... so not really a success
 func _fallback_generate_waveform_png_with_audio_preview(audio_path: String, output_png_global_path: String) -> bool:
     var success : bool = false
     var extension_lower: String = audio_path.get_extension().to_lower()
@@ -577,6 +573,8 @@ func _fallback_generate_waveform_png_with_audio_preview(audio_path: String, outp
     return success
 
 
+
+# I know this is ugly...im sorry, Im using recommmened by AudioPreview addon guy
 func _await_audio_preview_texture(generator_node: Node, wav_stream: AudioStreamWAV) -> Texture2D:
     var texture_variant: Variant = null
     var callable: Callable = func(tex: Variant) -> void: texture_variant = tex
@@ -589,9 +587,10 @@ func _await_audio_preview_texture(generator_node: Node, wav_stream: AudioStreamW
     return null
 
 
+
 func _sanitize_waveform_base_name(raw_base_name: String) -> String:
     var sanitized: String = raw_base_name.strip_edges()
-    # FFmpeg treats '%' specially (image sequences). Also avoid other path-hostile chars.
+    # FFmpeg gets really weird with characters, need to make sure it's all consistent
     sanitized = sanitized.replace("%", "_")
     sanitized = sanitized.replace(":", "_")
     sanitized = sanitized.replace("/", "_")
@@ -603,12 +602,15 @@ func _sanitize_waveform_base_name(raw_base_name: String) -> String:
     sanitized = sanitized.replace(">", "_")
     sanitized = sanitized.replace("|", "_")
     sanitized = sanitized.replace(" ", "_")
+    
     while sanitized.contains("__"):
         sanitized = sanitized.replace("__", "_")
     sanitized = sanitized.strip_edges()
+    
     if sanitized.is_empty():
         sanitized = "ImportedSong"
     return sanitized
+
 
 
 func _append_genre_tag_strings_to(target: PackedStringArray, raw_genre: String) -> void:
@@ -617,6 +619,7 @@ func _append_genre_tag_strings_to(target: PackedStringArray, raw_genre: String) 
         return
     var normalized: String = trimmed.replace("|", ";")
     var pieces: PackedStringArray = normalized.split(";", false)
+    
     for piece_index: int in range(pieces.size()):
         var segment: String = pieces[piece_index].strip_edges()
         if segment.is_empty():
@@ -630,12 +633,14 @@ func _append_genre_tag_strings_to(target: PackedStringArray, raw_genre: String) 
                 target.append(label)
 
 
+
 func _packed_string_array_contains_ci(haystack: PackedStringArray, needle: String) -> bool:
     var needle_upper: String = needle.to_upper()
     for stack_index: int in range(haystack.size()):
         if haystack[stack_index].to_upper() == needle_upper:
             return true
     return false
+
 
 
 func _apply_initial_key_from_metadata(meta: Dictionary) -> void:
@@ -660,6 +665,7 @@ func _meta_title(meta: Dictionary, dest_path: String) -> StringName:
     return StringName(title_text)
 
 
+
 func _meta_bpm(meta: Dictionary) -> float:
     var raw: Variant = meta.get("bpm", 0.0)
     if raw is float:
@@ -671,11 +677,13 @@ func _meta_bpm(meta: Dictionary) -> float:
     return 0.0
 
 
+
 func _meta_comment(meta: Dictionary) -> String:
     return String(meta.get("comment", ""))
 
 
-## Map tag text / numeric ID3 index from files into Song's int genre IDs (0..191, 192 CR, 193 RX, or none).
+## Map tag text / numeric ID3 index from files into Song's int genre IDs (0..191, 192 CR, 193 RX... or nada)
+## stolen from https://exiftool.org/TagNames/ID3.html
 func _resolve_genre_tag_to_id3_int(genre_tag: String) -> int:
     var trimmed: String = genre_tag.strip_edges()
     if trimmed.is_empty():
@@ -686,17 +694,21 @@ func _resolve_genre_tag_to_id3_int(genre_tag: String) -> int:
             var key: String = str(numeric)
             if MusicMetadataTools.ID3_GENRE_IDS.has(key):
                 return numeric
+                
     if trimmed == "CR" or trimmed.to_upper() == "COVER":
         return 192
     if trimmed == "RX" or trimmed.to_upper() == "REMIX":
         return 193
+        
     var upper_label: String = trimmed.to_upper()
     for row_index: int in range(_id3_genre_catalog_rows.size()):
         var row: Dictionary = _id3_genre_catalog_rows[row_index]
         var label: String = String(row.get("label", "")).to_upper()
         if label == upper_label:
             return int(row.get("id", GENRE_OPTION_ID_NONE))
+            
     return GENRE_OPTION_ID_NONE
+
 
 
 func _apply_album_artwork(music_meta: MusicMetadata) -> void:
@@ -715,6 +727,8 @@ func _apply_album_artwork(music_meta: MusicMetadata) -> void:
         _album_art_rect.texture = _default_album_art
 
 
+
+# TODO: Refactor this horribleness
 func _populate_form_from_metadata(meta: Dictionary) -> void:
     var title_edit: LineEdit = _details_container.get_node_or_null("Song Title Row/SongTitleLineEdit") as LineEdit
     if title_edit != null:
@@ -766,11 +780,14 @@ func _populate_form_from_metadata(meta: Dictionary) -> void:
                 _set_genre_picker_by_id3_id(_genre_pickers[extra_index], next_id)
 
 
+
 func _sync_dropdowns_from_text() -> void:
     var artist_edit: LineEdit = _details_container.get_node_or_null("New Artist Name/New ArtistName") as LineEdit
     var album_edit: LineEdit = _details_container.get_node_or_null("New Album Name/New ArtistName") as LineEdit
+    
     if artist_edit == null or _choose_artist_opt == null:
         return
+        
     var artist_text: String = artist_edit.text.strip_edges()
     for artist_item_index: int in range(_choose_artist_opt.item_count):
         var artist_meta: Variant = _choose_artist_opt.get_item_metadata(artist_item_index)
@@ -779,6 +796,7 @@ func _sync_dropdowns_from_text() -> void:
             if String(from_dropdown.Artist_Name) == artist_text:
                 _choose_artist_opt.select(artist_item_index)
                 break
+                
     if album_edit != null and _choose_album_opt != null:
         var album_text: String = album_edit.text.strip_edges()
         for album_item_index: int in range(_choose_album_opt.item_count):
@@ -790,6 +808,7 @@ func _sync_dropdowns_from_text() -> void:
                     break
 
 
+
 func _reset_genre_pickers_to_unknown() -> void:
     while _genre_pickers.size() > 1:
         var removed_picker: OptionButton = _genre_pickers.pop_back() as OptionButton
@@ -797,6 +816,7 @@ func _reset_genre_pickers_to_unknown() -> void:
             removed_picker.queue_free()
     _refresh_all_genre_dropdowns()
     _set_genre_picker_by_id3_id(_genre_pickers[0], GENRE_OPTION_ID_NONE)
+
 
 
 func _set_genre_picker_by_id3_id(genre_option: OptionButton, id3_genre_id: int) -> void:
@@ -812,6 +832,7 @@ func _set_genre_picker_by_id3_id(genre_option: OptionButton, id3_genre_id: int) 
     genre_option.set_block_signals(false)
 
 
+
 func _selected_id3_genre_ids_excluding(genre_option: OptionButton) -> Array[int]:
     var taken_ids: Array[int] = []
     for picker_index: int in range(_genre_pickers.size()):
@@ -823,6 +844,9 @@ func _selected_id3_genre_ids_excluding(genre_option: OptionButton) -> Array[int]
             taken_ids.append(other_selected_id)
     return taken_ids
 
+
+
+## Need to do this for language change
 func _notification(what: int) -> void:
     if what == NOTIFICATION_TRANSLATION_CHANGED:
         _fill_choose_artist_dropdown()
@@ -831,6 +855,8 @@ func _notification(what: int) -> void:
         if _pending_song != null:
             _select_music_key_dropdowns(_pending_song.Track_Key_Note, _pending_song.Track_Scale)
         _refresh_all_genre_dropdowns()
+        
+        
         
 func _refresh_all_genre_dropdowns() -> void:
     for picker_index: int in range(_genre_pickers.size()):
@@ -859,6 +885,7 @@ func _refresh_all_genre_dropdowns() -> void:
         genre_option.set_block_signals(false)
 
 
+
 func _on_any_genre_selected(_unused_item_index: int, genre_option: OptionButton) -> void:
     var selected_genre_id: int = genre_option.get_item_id(genre_option.selected)
     var picker_slot_index: int = _genre_pickers.find(genre_option)
@@ -881,6 +908,7 @@ func _on_any_genre_selected(_unused_item_index: int, genre_option: OptionButton)
         _refresh_all_genre_dropdowns()
 
 
+
 func _spawn_genre_picker_if_needed() -> void:
     if _genre_pickers.is_empty():
         return
@@ -890,6 +918,7 @@ func _spawn_genre_picker_if_needed() -> void:
     _genre_flow.add_child(new_genre_option)
     _genre_pickers.append(new_genre_option)
     _refresh_all_genre_dropdowns()
+
 
 
 func _collect_song_genres() -> Array[EGenre.E_ID3Genres]:
@@ -902,6 +931,7 @@ func _collect_song_genres() -> Array[EGenre.E_ID3Genres]:
         if selected_id >= 0 and selected_id <= 193:
             id3_ids.append(selected_id as EGenre.E_ID3Genres)
     return id3_ids
+
 
 
 func _on_save_to_library_pressed() -> void:
@@ -917,6 +947,9 @@ func _on_save_to_library_pressed() -> void:
         _save_to_library_btn.text = tr("KEY_SAVE_TO_LIBRARY")
 
 
+
+# I want to say I am so sorry... this is horrible... this took me a full day to do, I hate it with a passion, I am so sorry
+#TODO: Refactor this mess
 func _save_internal() -> String:
     if _pending_song == null or _pending_audio_path.is_empty():
         return tr("KEY_ERR_NO_SONG")
@@ -969,7 +1002,7 @@ func _save_internal() -> String:
         else:
             return tr("KEY_ERR_ALBUM_INVALID")
 
-    # Persist extracted cover art onto the selected album resource (if the album has none yet).
+    # save extracted cover art onto the selected album resource
     if _pending_song.Song_Album != null and _pending_album_artwork_texture != null and _pending_song.Song_Album.Album_Artwork == null:
         _pending_song.Song_Album.Album_Artwork = _pending_album_artwork_texture
         if not _pending_song.Song_Album.resource_path.is_empty():
@@ -1001,7 +1034,7 @@ func _save_internal() -> String:
     safe_name = safe_name.replace("/", "-").replace("\\", "-").strip_edges()
     if safe_name.is_empty():
         safe_name = "Untitled"
-    safe_name = _sanitize_resource_filename(safe_name)
+    safe_name = _sanitise_resource_filename(safe_name)
     var save_dir: String
     if Engine.is_editor_hint():
         save_dir = Song.ROOT_MUSIC_DIR
@@ -1025,6 +1058,7 @@ func _save_internal() -> String:
     _fill_choose_album_dropdown()
     _refresh_librebox_track_selections()
     return ""
+
 
 
 func _reset_form_after_success() -> void:
@@ -1056,19 +1090,21 @@ func _reset_form_after_success() -> void:
     _select_music_key_dropdowns(EMusicKey.m_notes_enum.C, EMusicKey.m_scales_enum.UNKNOWN)
 
 
+
 func _refresh_librebox_track_selections() -> void:
     LibreBox.refresh_both_track_selection_lists()
 
 
-## Kept for external callers
+
 func save_current_song_to_library() -> bool:
     return _save_internal().is_empty()
+
 
 
 func _create_or_get_artist(name_str: StringName) -> Artist:
     var artist: Artist = Artist.new()
     artist.Artist_Name = name_str
-    var safe_filename: String = _sanitize_resource_filename(String(name_str))
+    var safe_filename: String = _sanitise_resource_filename(String(name_str))
     var artist_path: String
     if Engine.is_editor_hint():
         var editor_dir: String = "res://Music/Artists"
@@ -1084,12 +1120,13 @@ func _create_or_get_artist(name_str: StringName) -> Artist:
     return ResourceLoader.load(artist_path) as Artist
 
 
+
 func _create_or_get_album(name_str: StringName) -> Album:
     var album: Album = Album.new()
     album.Album_Name = name_str
     if _pending_song.Main_Artist != null:
         album.Album_Artist = _pending_song.Main_Artist
-    var safe_filename: String = _sanitize_resource_filename(String(name_str))
+    var safe_filename: String = _sanitise_resource_filename(String(name_str))
     var album_path: String
     if Engine.is_editor_hint():
         var editor_dir: String = "res://Music/Albums"
@@ -1105,17 +1142,15 @@ func _create_or_get_album(name_str: StringName) -> Album:
     return ResourceLoader.load(album_path) as Album
 
 
-func _sanitize_resource_filename(raw_name: String) -> String:
-    var sanitized: String = raw_name.strip_edges()
-    sanitized = sanitized.replace("/", "-").replace("\\", "-")
-    sanitized = sanitized.replace(" ", "_")
 
-    # Replace any character that isn't a safe filename char.
-    var invalid_char_regex: RegEx = RegEx.new()
-    invalid_char_regex.compile("[^A-Za-z0-9_-]")
-    sanitized = invalid_char_regex.sub(sanitized, "_", true)
+func _sanitise_resource_filename(raw_name: String) -> String:
+    var sanitised: String = raw_name.strip_edges()
+    sanitised = sanitised.replace("/", "-").replace("\\", "-")
+    sanitised = sanitised.replace(" ", "_")
 
-    sanitized = sanitized.strip_edges()
-    if sanitized.is_empty():
-        sanitized = "Unknown"
-    return sanitized
+    sanitised = sanitised.strip_edges().strip_escapes()
+
+    sanitised = sanitised.strip_edges()
+    if sanitised.is_empty():
+        sanitised = "Unknown"
+    return sanitised

@@ -1,8 +1,11 @@
 extends Panel
 class_name Active_Track_Card
 
-## Deck status card shown in LibreBox main hub.
-## Displays track metadata, runtime info, BPM offset, and active FX labels.
+## Deck status card shown in LibreBox main hub
+## Displays track metadata, runtime info, BPM offset, and active FX labels
+
+
+
 @export var Track_ID : int = 0
 @onready var AudioPlayer_ref : AudioStreamPlayer
 
@@ -36,7 +39,9 @@ var position_sec : float
 var beats_elapsed : float
 var alpha : float
 
-## Updates runtime labels and spinner beat state each frame.
+
+
+## Updates runtime labels and spinner beat state each frame
 func _process(delta: float) -> void:
     if AudioPlayer_ref == null:
         AudioPlayer_ref = DJ_Controller.Get_Track_Playback_Player(Track_ID)
@@ -66,11 +71,14 @@ func _process(delta: float) -> void:
         prev_beat_alpha = -1.0
     
 
-## Called when this deck crosses a beat boundary.
+
+## Called when deck crosses a beat boundary
 func _on_beat():
     pass
 
-## Initialises player references and periodic FX sync thread state.
+
+
+## Initialises player references and periodic FX sync thread state
 func _ready():
     
     Track_ID = Utility.Clamp_to_Valid_TrackID(Track_ID)
@@ -79,10 +87,10 @@ func _ready():
     AudioPlayer_ref = DJ_Controller.Get_Track_Playback_Player(Track_ID)
     
     CheckFX_thread = Thread.new()
-    
+
+
 
 var fx_labels : Dictionary[BUS_MANAGER.E_BEAT_FX_TYPE, Label]
-
 var wait_t : int = 0
 func _physics_process(_delta: float) -> void:
     if wait_t % 4 == 0:
@@ -104,6 +112,7 @@ func _physics_process(_delta: float) -> void:
     wait_t += 1
 
 
+
 func _clear_dynamic_fx_labels() -> void:
     var to_drop: Array = fx_labels.keys().duplicate()
     for fx_type in to_drop:
@@ -113,12 +122,15 @@ func _clear_dynamic_fx_labels() -> void:
             lab.queue_free()
 
 
-## Synchronises active FX labels with BUS_MANAGER channel state.
+
+## Sync active FX labels with BUS_MANAGER channel state
 func _sync_active_fx_labels(active_dict: Dictionary) -> void:
     var remove_keys: Array = []
+    
     for fx_type in fx_labels.keys():
         if not active_dict.has(fx_type):
             remove_keys.append(fx_type)
+            
     for fx_type in remove_keys:
         var lab: Label = fx_labels[fx_type]
         fx_labels.erase(fx_type)
@@ -138,7 +150,8 @@ func _sync_active_fx_labels(active_dict: Dictionary) -> void:
         fx_labels[fx_type] = new_label
 
 
-## Sets a new song resource and refreshes card details.
+
+## Sets a new song and refreshes card details
 func Set_New_Song(New_Song: Song) -> bool:
     if New_Song == null or New_Song == Song_Resource:
         return false
@@ -147,8 +160,9 @@ func Set_New_Song(New_Song: Song) -> bool:
         Refresh_Details()
         return true
         
+        
 
-## Rebuilds metadata and status labels from current `Song_Resource`.
+## Rebuilds metadata and status labels from current Song
 func Refresh_Details() -> bool:
     if Song_Resource == null:
         return false
@@ -186,8 +200,9 @@ func Refresh_Details() -> bool:
     return true
     
 
+
 var i : int = 0
-## Updates current/max runtime labels using controller playback caches.
+## Updates current/max runtime labels using controller playback caches
 func Update_runtime_text():
     if i % 4 == 0:
         if AudioPlayer_ref and AudioPlayer_ref.stream:
@@ -195,4 +210,4 @@ func Update_runtime_text():
             $"VBoxContainer/Time Remaining Container/Max Runtime".text = Utility.Seconds_to_MM_SS_MS( DJ_Controller.Get_Instance().Track_1_playback_length if Track_ID == 0 else DJ_Controller.Get_Instance().Track_2_playback_length, false, true)
     i += 1
     
-    #$"VBoxContainer/Time Remaining Container/Max Runtime".text = Utility.Seconds_to_MM_SS_MS( (Song_Resource.Audio_File.get_length() * DJ_Controller.Get_Track_Speed_Mult(Track_ID)) , false, true)
+  

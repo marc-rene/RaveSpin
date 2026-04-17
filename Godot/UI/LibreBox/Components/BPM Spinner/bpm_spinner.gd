@@ -2,8 +2,8 @@
 extends AspectRatioContainer
 class_name BPM_Spinner
 
-## Visual BPM spinner used by active track cards.
-## Shows current BPM plus percentage offset from base BPM.
+## Visual BPM spinner used by active track cards
+## Shows current BPM plus percentage offset from base BPM
 @onready var Spinner : Control = $"Base BPM Tip/BPM Guage bit"
 
 const ZERO_ROT : float = 45.0
@@ -23,15 +23,16 @@ const M_SIMPLE_EMISSIVE : ShaderMaterial = preload("res://Art/Materials/UI/Emiss
 
 var Offset_Text : String
 
-## Initialises spinner material instance.
+## Initialises spinner material instance
 func _ready():
     guage_bit_mat = M_SIMPLE_EMISSIVE.duplicate()
     Spinner.material = guage_bit_mat
 
 
-## Refreshes spinner angle and BPM/offset labels.
+## Refreshes spinner angle and BPM/offset labels
 func _process(delta: float) -> void:
     rotate_spinny(Alpha)
+    
     if base_bpm > 1 and current_bpm > 1.0:
         Offset_Text = "+" if current_bpm > base_bpm else "-"
         if absf(current_bpm - base_bpm) < 0.5:
@@ -47,12 +48,12 @@ func _process(delta: float) -> void:
         Current_BPM_var_label.text = "NaN"
 
 
-## Rotates spinner around one full cycle using alpha (0..1).
+## Rotates spinner around one full cycle using alpha (0...1)
 func rotate_spinny(new_alpha: float):
     Spinner.rotation_degrees = remap(new_alpha, 0, 1, ZERO_ROT, (360.0 + ZERO_ROT))
     Alpha = fmod(Alpha, 1.0)
 
-## Called when a beat has just occurred (alpha reached 1 and wrapped to 0). Use for visual feedback (e.g. pulse).
+## Called when a beat has just occurred (alpha reached 1 and wrapped to 0)... Use for visual feedback (e.g. pulse)
 func On_Beat() -> void:
     guage_bit_mat.set_shader_parameter("Force_Foreground_Colour", LibreBox_HUB.LINE_COLOR_BEAT)
     var tween : Tween = create_tween()
@@ -65,10 +66,10 @@ func On_Beat() -> void:
 
 
 
-## Sets metadata/base BPM reference for offset calculation.
+## Sets metadata/base BPM reference for offset 
 func Set_Base_BPM(New_Base_BPM : float):
     base_bpm = New_Base_BPM
 
-## Sets currently effective deck BPM.
+## Sets currently effective deck BPM
 func Refresh_BPM(New_Current_BPM : float):
     current_bpm = New_Current_BPM

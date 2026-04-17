@@ -1,8 +1,8 @@
 extends PanelContainer
 class_name DB_Meter
 
-## Real-time dB meter for deck/microphone bus monitoring.
-## Reads bus peaks and drives shader-based meter fills.
+## Real-time dB meter for deck/microphone bus monitoring
+## Reads bus peaks and drives shader-based meter fills
 
 @export var Use_Microphone_Input: bool = false
 @export var Microphone_NA_Threshold: float = 0.1
