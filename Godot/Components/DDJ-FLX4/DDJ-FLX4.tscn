@@ -47,7 +47,7 @@ script = ExtResource("2_3ugcv")
 BPM_Adjust_Range = 0.2
 Jogwheel_Audio_Warp_Seconds_Per_Full_Rotation = 2.0
 
-[node name="Crossfade Slider" parent="." index="4" unique_id=138330498]
+[node name="Crossfade Slider" parent="." index="4" unique_id=423976402]
 transform = Transform3D(1.4190836e-07, 0, -1, 0, 1, 0, 0.7288296, 0, 1.9470718e-07, 0.2408275, 0.042000003, 0.2543439)
 
 [node name="Controls" type="Node3D" parent="." index="53" unique_id=839374979]
@@ -549,10 +549,10 @@ horizontal_alignment = 0
 uppercase = true
 
 [node name="Node3D" type="Node3D" parent="." index="57" unique_id=1407980680]
-transform = Transform3D(0.99999976, 0, 0, 0, 0.99999976, 0, 0, 0, 0.99999976, 0, 0.13219994, 1.3341887)
+transform = Transform3D(0.99999976, 0, 0, 0, 0.99999976, 0, 0, 0, 0.99999976, 0, -3.403375, 1.3341887)
 
 [node name="ResetArea" type="Area3D" parent="Node3D" index="0" unique_id=1489515822]
-transform = Transform3D(0.9999999, 0, 0, 0, 0.9999999, 0, 0, 0, 0.9999999, 0, 0.14722902, -0.24263602)
+transform = Transform3D(0.9999999, 0, 0, 0, 0.9999999, 0, 0, 0, 0.9999999, 0, 0.14722903, 0.97368073)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Node3D/ResetArea" index="0" unique_id=1268655654]
 shape = SubResource("BoxShape3D_eg1xv")
@@ -569,7 +569,7 @@ font_size = 12
 outline_size = 0
 
 [node name="DisableDebigShapes" type="Area3D" parent="Node3D" index="1" unique_id=257516032]
-transform = Transform3D(0.9999999, 0, 0, 0, 0.9999999, 0, 0, 0, 0.9999999, 0.5882827, 0.14722902, -0.242636)
+transform = Transform3D(0.9999999, 0, 0, 0, 0.9999999, 0, 0, 0, 0.9999999, 0.58828264, 0.14722903, 0.9504497)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Node3D/DisableDebigShapes" index="0" unique_id=820522434]
 shape = SubResource("BoxShape3D_eg1xv")
