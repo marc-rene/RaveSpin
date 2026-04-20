@@ -9,4 +9,4 @@ The idea behind Rave-Spin, is using a mixed-reality (XR) headset, such as the Me
 
 ## More detailed documentation
 
-Extra in-depth documentation can be found on the [RaveSpin Documentation Website](https://github.com/marc-rene/RaveSpin-Documentation)
+Extra in-depth documentation can be found on the [RaveSpin Documentation Website](https://marc-rene.github.io/RaveSpin-Documentation/)
